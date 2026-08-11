@@ -1,0 +1,12 @@
+# Agent/tool artifacts
+.codebase-memory/
+.claude/settings.local.json
+.claude/*.lock
+
+# Secrets — references only, never values
+.env
+.env.*
+*.pem
+
+# OS
+.DS_Store
