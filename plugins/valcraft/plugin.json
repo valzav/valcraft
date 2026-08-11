@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "valcraft",
+  "description": "Val's Claude Code skills: forge (spec-driven project scaffold) and hone (prompt refinement).",
+  "author": {
+    "name": "Val",
+    "url": "https://github.com/valzav"
+  },
+  "homepage": "https://github.com/valzav/valcraft",
+  "repository": "https://github.com/valzav/valcraft",
+  "license": "MIT",
+  "keywords": ["skills", "sdd", "scaffold", "prompt-engineering"]
+}

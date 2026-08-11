@@ -1,0 +1,14 @@
+# Agent/tool artifacts (day-0 — the reference project committed these, then had to clean up)
+.codebase-memory/
+.claude/settings.local.json
+.claude/*.lock
+
+# Secrets — references only, never values
+.env
+.env.*
+*.pem
+
+# OS
+.DS_Store
+
+# Stack ignores: append language/framework entries (target dirs, node_modules, etc.)

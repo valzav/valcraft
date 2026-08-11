@@ -1,0 +1,20 @@
+{
+  "name": "valcraft",
+  "metadata": {
+    "description": "Val's Claude Code skills, distributed as a plugin marketplace."
+  },
+  "owner": {
+    "name": "Val",
+    "url": "https://github.com/valzav"
+  },
+  "plugins": [
+    {
+      "name": "valcraft",
+      "source": "./plugins/valcraft",
+      "description": "Val's Claude Code skills: forge (spec-driven project scaffold) and hone (prompt refinement).",
+      "category": "productivity",
+      "homepage": "https://github.com/valzav/valcraft",
+      "tags": ["skills", "sdd", "scaffold", "prompt-engineering"]
+    }
+  ]
+}
