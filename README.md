@@ -27,6 +27,10 @@ claude plugin install valcraft@valcraft
 Installing copies the plugin subtree into Claude Code's versioned cache
 (`~/.claude/plugins/cache/`); no clone of this repository is required to consume it.
 
+This repository is currently **private**, so the commands above need a GitHub account
+with read access — Claude Code clones it over SSH. Nothing else about the install path
+changes.
+
 ## Update
 
 Auto-update stays off for third-party marketplaces, so pull changes with the update pair:
