@@ -9,12 +9,13 @@ Alpha — the packaging is settled; the skill set grows one skill at a time.
 
 ## Skills
 
-| Skill   | Invoke            | What it does                                                                      |
-| ------- | ----------------- | --------------------------------------------------------------------------------- |
-| `forge` | `/valcraft:forge` | Bootstrap a new project with the lean spec-driven development (SDD) scaffold.     |
-| `hone`  | `/valcraft:hone`  | Refine an existing prompt, skill, or agent instruction file against model guides. |
+| Skill     | Invoke              | What it does                                                                      |
+| --------- | ------------------- | --------------------------------------------------------------------------------- |
+| `forge`   | `/valcraft:forge`   | Bootstrap a new project with the lean spec-driven development (SDD) scaffold.     |
+| `hone`    | `/valcraft:hone`    | Refine an existing prompt, skill, or agent instruction file against model guides. |
+| `distill` | `/valcraft:distill` | Reduce a prompt or skill to its goal-directed essence: goal, steps, constraints.  |
 
-Both skills also trigger automatically from their descriptions — the slash commands are
+All skills also trigger automatically from their descriptions — the slash commands are
 the explicit path, not the only one.
 
 ## Install

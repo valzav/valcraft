@@ -1,6 +1,6 @@
 {
   "name": "valcraft",
-  "description": "Val's Claude Code skills: forge (spec-driven project scaffold) and hone (prompt refinement).",
+  "description": "Val's Claude Code skills: forge (spec-driven project scaffold), hone (prompt refinement), and distill (prompt distillation).",
   "author": {
     "name": "Val",
     "url": "https://github.com/valzav"
