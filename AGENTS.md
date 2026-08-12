@@ -48,6 +48,10 @@ and JSON.
 - Verify the portable manifest: validate `plugins/valcraft/plugin.json` against
   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json` with any JSON Schema
   validator.
+- Run a skill's evals (`plugins/valcraft/skills/<skill>/evals/evals.json`): invoke the
+  skill-creator skill with "run the evals for plugins/valcraft/skills/<skill>". Direct
+  its workspace to `.local/` (gitignored) — never to the default sibling location inside
+  `plugins/valcraft/`.
 
 ## Architecture constraints
 

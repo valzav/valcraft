@@ -1,0 +1,37 @@
+{
+  "skill_name": "distill",
+  "evals": [
+    {
+      "id": 1,
+      "name": "study-noisy-prompt",
+      "prompt": "/valcraft:distill — I want to understand what this support-bot prompt actually does under the noise:\n\nYou are a world-class, incredibly helpful customer support agent for Acme Cloud. Always think step by step. Be concise. Remember: studies show polite agents get 40% better ratings, so always be polite! Look up the customer's plan in billing.db before answering pricing questions. Be concise and to the point. Never promise refunds — only the billing team approves refunds. If you don't know, say you don't know. Always use your tools when appropriate. End every reply with 'Is there anything else I can help with?'",
+      "expected_output": "Study-mode distillate presented in chat without asking a mode question (the request names the goal): the prompt's goal, applicability, the surviving steps (look up billing.db before pricing answers; never promise refunds; admit unknowns; the fixed closing line as an output contract), and one line totaling dropped noise by group. The source is never edited.",
+      "files": [],
+      "assertions": [
+        "No mode question asked — the request already names the study goal",
+        "Source prompt is not edited or rewritten",
+        "Distillate states the goal before the steps",
+        "Surviving steps keep concrete names (billing.db, refunds, the closing line) rather than vague paraphrase",
+        "The 'never promise refunds' safety rule and the fixed closing line survive as contract terms",
+        "'Think step by step', 'use tools when appropriate', the 40% statistic, and the duplicate 'be concise' are dropped",
+        "A 'Dropped:' line totals the noise by group (repetition, default behavior, ceremony)",
+        "Save options offered, including 'don't save'"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "clean-skill-copy",
+      "prompt": "/valcraft:distill ~/dev/example/skills/report-writer/ — make me a leaner copy I'll run instead of this one. The SKILL.md has 40 numbered steps telling the model how to open files, read them carefully, double-check every word, and apologize for mistakes, around a real workflow: gather sources, draft the report with a Summary/Progress/Blockers structure, save to reports/.",
+      "expected_output": "Clean-mode cleaned copy: the original frontmatter name and description preserved (they control triggering), the Summary/Progress/Blockers output contract and the reports/ save path kept, mechanical competence steps and apology instructions dropped. The copy is saved to ~/.claude/skills/report-writer/SKILL.md (or the custom-name variant on collision); the original directory is untouched. The chat report gives the word delta and the dropped groups.",
+      "files": [],
+      "assertions": [
+        "Original skill directory is not modified",
+        "Cleaned copy preserves the frontmatter name and description",
+        "Summary/Progress/Blockers output contract and the reports/ save path survive",
+        "Open/read/re-read/double-check competence steps and apology instructions are dropped",
+        "Cleaned copy is saved under ~/.claude/skills/ by default, with the collision caveat honored",
+        "Report states the word delta and the dropped noise groups"
+      ]
+    }
+  ]
+}

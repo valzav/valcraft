@@ -1,0 +1,37 @@
+{
+  "skill_name": "msw",
+  "evals": [
+    {
+      "id": 1,
+      "name": "plan-deletion-test",
+      "prompt": "/valcraft:msw docs/plans/2026-08-10-001-feat-csv-export-plan.md — the plan implements CSV export for the orders table. Besides the real steps (add the export endpoint, stream rows, add the integration test proving a round-trip), it restates the streaming requirement in three different sections, opens with two paragraphs on why exports matter for enterprise customers, and ends with 'double-check your work thoroughly before finishing'.",
+      "expected_output": "The plan edited in place, deletions only: the contract stated first (CSV export of orders, proven by the round-trip integration test), the streaming requirement kept once, the motivational paragraphs and the double-check exhortation deleted, surviving text not rewritten. The report follows the kernel format: outcome against the contract, grouped proof for surviving sections, rejected claims one line each, flagged claims.",
+      "files": [],
+      "assertions": [
+        "Contract stated before any judgment",
+        "Target file edited in place; deletions and forced repairs only, no added content, no rewriting of surviving text",
+        "Streaming requirement survives exactly once",
+        "Motivational 'why exports matter' paragraphs deleted",
+        "'Double-check your work' deleted as default model behavior",
+        "The endpoint, streaming, and integration-test steps all survive",
+        "Report contains all four kernel sections: outcome, proof, rejected claims, flagged claims",
+        "No rejected claim is softened into a TODO or deferred follow-up"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "unauthorized-limits",
+      "prompt": "/valcraft:msw specs/003-import/spec.md — the spec requires imports to finish within 30 seconds (the platform gateway times out at 30s), and also says to retry failed rows at most 3 times, cap files at 5 MB, and keep functional requirements to no more than 10 per spec. Nobody decided those last three numbers; the 30s one comes from the gateway.",
+      "expected_output": "Limits pass applied to every numeric cap: the 30-second limit survives with its platform-contract authority; the retry count, file-size cap, and FR-count cap have no stated authority — each is deleted, or kept and flagged as an owner decision where the value looks necessary (plausibly the file-size cap). The report lists each limit with its verdict and authority.",
+      "files": [],
+      "assertions": [
+        "The 30-second limit survives, with the gateway timeout named as its authority",
+        "The 10-FRs-per-spec cap is deleted as a limit without authority",
+        "The retry count and file-size cap are each either deleted or kept-and-flagged as an unresolved owner choice — never silently kept",
+        "Deleted limits appear in the rejected-claims section, one line each, with the reason",
+        "Surviving functional requirements are not rewritten",
+        "No deleted limit is reintroduced as a recommendation or default"
+      ]
+    }
+  ]
+}
