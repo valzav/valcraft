@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "valcraft",
-  "description": "Val's Claude Code skills: forge (spec-driven project scaffold), hone (prompt refinement), and distill (prompt distillation).",
+  "description": "Val's Claude Code skills: forge (spec-driven project scaffold), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
     "name": "Val",
     "url": "https://github.com/valzav"
