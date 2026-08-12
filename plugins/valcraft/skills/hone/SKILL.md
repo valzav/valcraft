@@ -5,7 +5,7 @@ description: Refine an existing prompt artifact — inline prompt text, markdown
 
 # hone
 
-Take a prompt artifact and make it work better on current frontier models. Both vendors converge on the same headline: **modern models need steering, not enumeration, and shorter prompts usually perform better.** OpenAI measured ~10–15% eval gains with 41–66% fewer tokens from leaner system prompts; Anthropic reports that skills written for older models are often too prescriptive for Claude Fable 5 and degrade its output. Deletion is your primary tool. A refinement that makes the prompt longer needs a specific justification for every added line.
+Take a prompt artifact and make it work better on current frontier models. Both vendors converge on the same headline: **modern models need steering, not enumeration, and shorter prompts usually perform better** — OpenAI measured double-digit eval gains from leaner system prompts at roughly half the tokens, and Anthropic reports that skills written for older models are often too prescriptive for Claude Fable 5 and degrade its output. Deletion is your primary tool. A refinement that makes the prompt longer needs a specific justification for every added line.
 
 Sources: [Prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5) · [GPT-5.6 model guidance](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.6#prompting-best-practices)
 
@@ -15,7 +15,7 @@ Sources: [Prompting Claude Fable 5](https://platform.claude.com/docs/en/build-wi
 2. **Determine the target model family.** Claude, Codex, or both. Infer from context: frontmatter, harness (a Claude Code skill targets Claude; an AGENTS.md often targets Codex), or the user's words. When unclear, refine against the shared checklist below and add divergence notes only where the two families genuinely differ. Ask only if the answer would materially change the rewrite.
 3. **Load the matching reference(s):** `references/claude.md` for Claude targets, `references/codex.md` for Codex targets, both for model-agnostic artifacts. They contain the audit items and canonical snippets from each guide — reuse proven snippet language rather than inventing your own.
 4. **Audit before rewriting.** Walk the checklist and note findings with line references. This ordering matters: auditing first keeps the rewrite surgical instead of a from-scratch rewrite that loses the author's intent.
-5. **Rewrite.** Files and skill directories: edit in place unless the user asked for a copy. Inline text: return the refined prompt in a code block. Preserve intent throughout — you are changing _how_ the prompt instructs, never _what_ it is for. When a passage is ambiguous between "redundant" and "product requirement", keep it and flag it instead of deleting.
+5. **Rewrite.** Files and skill directories: edit in place unless the user asked for a copy. Inline text: return the refined prompt in a code block. The intent and deletion boundaries are in "What not to do" below.
 6. **Report.** List each change with the guideline that motivated it (one line each). Separately flag judgment calls the author should confirm — e.g. removed examples that might encode a product requirement, or a Claude-only snippet added to a prompt that may also run on Codex.
 
 ## Shared checklist (both model families agree)
