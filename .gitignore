@@ -1,4 +1,5 @@
 # Agent/tool artifacts
+.local/
 .codebase-memory/
 .claude/settings.local.json
 .claude/*.lock
