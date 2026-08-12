@@ -18,7 +18,12 @@ that achieves its goal, presented as a short structured summary (the distillate)
 
 ## Decisions
 
-- Output goes to chat by default; a file is written only when the user asks to save.
+- Output goes to chat as a short summary (goal, applicability, steps, one dropped-total
+  line); distill then offers save options: a cleaned skill in `~/.claude/skills/<name>/`
+  (with a custom-name variant on collision or request), the YAML distillate, or the full
+  summary markdown — the latter two in the current working directory. Nothing saves next
+  to the source: skills usually live in caches the user never opens. (Amended
+  2026-08-12; the original decision was chat-only with save on request.)
 - Compare mode is built in: two inputs produce two step-aligned distillates plus a
   difference summary.
 - The distillate ends with a "Testable behaviors" section: each step or constraint as an
@@ -37,6 +42,11 @@ that achieves its goal, presented as a short structured summary (the distillate)
   private versioned schema into a shipped plugin couples every consumer to it.
 - Boundary with `hone`: `hone` rewrites the artifact in place; `distill` produces a
   derived summary and never edits the source.
+- Two modes, asked up front unless the request names one (amended 2026-08-12): study —
+  maximum reduction, distillate output; clean — an operability-preserving leaner copy
+  that keeps the original frontmatter, structure, resource references, and output
+  contracts, dropping a line only when the artifact does its job identically without
+  it.
 
 ## Tasks
 
