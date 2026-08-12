@@ -32,6 +32,24 @@
         "Cleaned copy is saved under ~/.claude/skills/ by default, with the collision caveat honored",
         "Report states the word delta and the dropped noise groups"
       ]
+    },
+    {
+      "id": 3,
+      "name": "compare-two-skills",
+      "prompt": "/valcraft:distill — compare ~/dev/example/skills/weekly-report/ and ~/dev/example/skills/status-update/. Both turn recent work into a summary document; I want to know where their behavior and results actually differ.",
+      "expected_output": "Compare mode without a mode question: two subagents launched in parallel (one per skill), each returning a YAML distillate of its skill. The main agent compares the distillates only — it does not re-read the sources and does not run either skill. The report is a behavioral diff: the shared core in one or two lines, differences grouped (only in A; only in B; same step under different constraints), and the divergence in results for the same input, inferred from the distillates. No verdict on which skill is better. Save options offered for the two distillates; neither source is edited.",
+      "files": [],
+      "assertions": [
+        "No mode question asked — a comparison request implies study mode",
+        "Two subagents are launched in one parallel message, one per artifact",
+        "Each subagent returns the YAML distillate as the handoff format",
+        "The main agent compares distillates only — sources are not re-read after fan-out",
+        "Neither skill is executed; result differences are inferred from the distillates",
+        "Report gives the shared core plus differences grouped as only-in-A, only-in-B, and same step under different constraints",
+        "Report describes how results diverge for the same input",
+        "No verdict or recommendation is given unprompted",
+        "Neither source artifact is edited"
+      ]
     }
   ]
 }
