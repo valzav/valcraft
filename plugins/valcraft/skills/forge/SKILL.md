@@ -7,7 +7,8 @@ description: >
   plan → implement → review working loop. Use whenever Val starts a new project or
   repository, says "new project", "start building X", "scaffold this", "set up
   specs", or wants to retrofit spec-driven structure onto an existing codebase,
-  even if he doesn't mention SDD or docs explicitly.
+  even if he doesn't mention SDD or docs explicitly. Also use when Val asks to
+  activate or synchronize GitHub Issues as a project's task tracker.
 ---
 
 # forge
@@ -102,10 +103,10 @@ copied instruction file.
 
 Record the selected mode in the generated files. `AGENTS.md` is authoritative and carries
 one exact declaration: `project_tracker: local` or `project_tracker: github`. Every
-`tasks.md` mirrors it in `tracker:`. A `local` project records `spec_issue: null`. A
-`github` project records `spec_issue: TBD` until activation writes the issue number and
-records `github_repository: TBD` until the target is approved. A mirror disagreement is
-an error, never a per-spec override.
+`tasks.md` mirrors it in `tracker:`. A `local` project omits `github_repository` and
+records `spec_issue: null`. A `github` project records `spec_issue: TBD` until activation
+writes the issue number and records `github_repository: TBD` until the target is
+approved. A mirror disagreement is an error, never a per-spec override.
 
 Opt-in additions — create only when the trigger is real:
 

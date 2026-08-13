@@ -2,17 +2,25 @@
 
 ## Project metadata
 
-These generated declarations are the project-level authority for task tracking. Replace
-the placeholders when forge creates or retrofits the project.
+These generated declarations are the project-level authority for task tracking. Render
+the local shape or the GitHub shape when forge creates or retrofits the project.
+
+Local:
 
 ```yaml
-project_tracker: <local | github>
+project_tracker: local
+```
+
+GitHub:
+
+```yaml
+project_tracker: github
 github_repository: <host>/<owner>/<repo> | TBD
 ```
 
-`github_repository` remains `TBD` until the GitHub target passes preflight and the
-operator approves it. Do not infer a different target from the current directory after
-activation.
+In GitHub mode, `github_repository` remains `TBD` until the GitHub target passes
+preflight and the operator approves it. Do not infer a different target from the current
+directory after activation. Omit `github_repository` entirely in local mode.
 
 ## Orientation
 
