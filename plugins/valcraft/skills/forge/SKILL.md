@@ -3,7 +3,7 @@ name: forge
 description: >
   Bootstrap a new project with Val's lean spec-driven development (SDD) scaffold —
   README, AGENTS.md (+ CLAUDE.md symlink), product brief, ADRs, and numbered
-  numbered spec+design+tasks triplets under specs/ — then run the
+  spec+design+tasks triplets under specs/ — then run the
   plan → implement → review working loop. Use whenever Val starts a new project or
   repository, says "new project", "start building X", "scaffold this", "set up
   specs", or wants to retrofit spec-driven structure onto an existing codebase,
