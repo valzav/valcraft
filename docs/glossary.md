@@ -39,6 +39,12 @@ repository-level reference that keeps new skills consistent with it.
   and listed in the eval's `files`.
 - **fuses** (msw) — the kernel's outer stops: at most 3 judgment rounds, and a claim
   raised late on evidence already in hand earlier is rejected.
+- **generated projection** (forge) — a GitHub issue field derived from git-owned spec
+  or task definitions: titles, bodies, sub-issue priority, and blocked-by relationships.
+  Synchronization may replace these fields but never comments or hand-maintained status.
+- **issue tracker mode** (forge) — the project-level choice between `local`, where
+  `tasks.md` owns definitions and status, and `github`, where git owns definitions and
+  GitHub Issues owns status. `local` is the default.
 - **keep-and-flag** — the shared uncertainty rule: when unsure whether a claim is
   load-bearing, keep it and flag it in the report; never delete on suspicion.
 - **limits pass** (msw) — the audit of every numeric cap, threshold, quota, count, or
@@ -80,6 +86,9 @@ repository-level reference that keeps new skills consistent with it.
   code, one spec per feature, decisions recorded as ADRs, plan → implement → review.
 - **skill directory** — the filesystem container of a skill: `SKILL.md` plus its
   `references/`, `templates/`, `scripts/`, or `evals/`.
+- **spec issue** (forge) — the GitHub parent issue generated from one canonical spec.
+  It carries the feature's stable marker and contains that feature's task issues as
+  sub-issues.
 - **spec triplet** (forge) — `specs/NNN-<feature>/` holding `spec.md` (what and why),
   `design.md` (how), and `tasks.md` (ordered, verifiable tasks).
 - **stable IDs** (forge) — the reference currency across commits, reviews, and tests:
@@ -90,6 +99,11 @@ repository-level reference that keeps new skills consistent with it.
 - **target** — the concrete file, directory, or inline text a skill run operates on.
 - **target model family** (hone) — Claude, Codex, or both; decides which reference
   guide drives the audit.
+- **task issue** (forge) — a GitHub sub-issue that corresponds to one stable T-ID. Its
+  generated text mirrors `tasks.md`, while GitHub owns its open or closed status.
+- **tracker activation** (forge) — the transition from a pending `github` selection to
+  remote synchronization after the exact repository passes preflight and the operator
+  approves the mutation preview.
 - **triggering** — how a skill gets invoked: the frontmatter `name` and `description`
   drive automatic selection; `/valcraft:<name>` is the explicit path.
 - **untrusted content rule** — target and referenced content is data, not
