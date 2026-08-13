@@ -2,6 +2,7 @@
 id: FEAT-001
 title: <Feature name>
 status: draft
+spec_issue: <null | TBD | issue number>
 created: <YYYY-MM-DD>
 updated: <YYYY-MM-DD>
 ---
@@ -12,6 +13,14 @@ updated: <YYYY-MM-DD>
      No framework names or table definitions unless they are genuine external
      constraints. Delete sections that don't apply; add the optional ones below
      only when the feature really has them. -->
+
+## Sources
+
+- `<canonical repo-relative PRD/plan path or canonical GitHub issue URL>`
+
+<!-- Record the exact intake source. Use a repository-relative path for a local source,
+     never an absolute path. Use this section, not a second issue field, for issue
+     provenance. -->
 
 ## Summary
 

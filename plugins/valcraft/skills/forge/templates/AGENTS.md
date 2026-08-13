@@ -38,7 +38,8 @@ consequential technical decisions as ADRs.
 
 | Data | Authority | Rule |
 | --- | --- | --- |
-| Project tracker and target repository | `AGENTS.md` | Resolve these declarations before inspecting GitHub. Stop if a `tasks.md` tracker declaration conflicts with them. |
+| Project tracker and target repository | `AGENTS.md` | Keep exactly one valid `project_tracker` declaration. Resolve it before inspecting GitHub. |
+| Feature ID and spec-issue mapping | `spec.md` | Keep exactly one `spec_issue` value per feature. Use `null` in local mode and `TBD` until GitHub projection records a number. |
 | Spec text, design text, task text, task order, and hard-dependency intent | Git | Treat the committed project files as the operational instructions and canonical definitions. |
 | T-ID to issue-number mapping | `tasks.md` | Preserve stable T-IDs and validate their recorded GitHub issue references during reconciliation. |
 | Open or closed state and the `in-progress` and `needs-clarification` labels | GitHub | Do not copy this status back into git-owned task definitions. |
@@ -72,6 +73,10 @@ If `project_tracker` is `github` while `github_repository` or GitHub issue refer
 are `TBD`, report tracker activation as pending. Do not create remote state until the
 target passes preflight and the operator approves the mutation preview.
 
+Reject `tracker` or `spec_issue` metadata in `tasks.md`. Direct a repository with either
+field, or with a missing spec-level mapping, through Forge retrofit. Do not use obsolete
+task metadata as a compatibility source.
+
 ## GitHub synchronization
 
 GitHub issue titles, bodies, sub-issue order, and blocked-by relationships are generated
@@ -82,18 +87,21 @@ path and state that git is canonical.
 
 Before creating or changing remote state:
 
-1. Reconcile the recorded spec issue and every T-ID mapping against the stable markers
-   in the declared repository. Search both open and closed issues when a reference is
-   missing or invalid.
-2. Reuse one matching issue. Create an issue when no match exists. Stop when multiple
-   issues match one feature ID or T-ID.
-3. Inventory the spec issue's sub-issues before creating task issues. Stage any missing
-   or corrected issue-number mappings as proposed local changes. Do not write them during
-   reconciliation.
-4. Compute a mutation preview. Name the exact host, repository, visibility, and planned
+1. If the selected feature has no `tasks.md`, use the spec-only branch. Reconcile only
+   the exact `spec` label, marked parent issue, generated parent title and body, approved
+   target declaration, and `spec.md` mapping. Skip task labels, hierarchy capability
+   checks, task and sub-issue operations, dependencies, and removals.
+2. If substantive `design.md` and `tasks.md` exist, use the full-task branch. Reconcile
+   and adopt the parent from `spec.md` before processing every T-ID mapping, sub-issue,
+   order, dependency, status label, or removal.
+3. Search both open and closed issues when a permitted reference is missing or invalid.
+   Reuse one stable-marker match. Stop when multiple issues match one feature ID or T-ID.
+4. Stage missing or corrected issue-number mappings as proposed local changes. Do not
+   write them during reconciliation.
+5. Compute a mutation preview. Name the exact host, repository, visibility, and planned
    local and remote changes, including an approved target declaration that replaces
    `github_repository: TBD`.
-5. Wait for operator approval before applying the preview. After approval, write each
+6. Wait for operator approval before applying the preview. After approval, write each
    adopted or created issue number as soon as that operation succeeds so a retry can
    recover from a partial run. Discard the approval and present a new preview if the
    target or mutation set changes.
@@ -160,7 +168,8 @@ For instructions, prompts, safety rules, and error messages:
 
 ## Change discipline
 
-- Product intent lives in `spec.md`; implementation detail in `design.md`.
+- Product intent and the spec-issue mapping live in `spec.md`; implementation detail
+  lives in `design.md`.
 - Reference requirement and task IDs (`FR-`, `AC-`, `T-`) from commits and tests.
 - Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.
 - Update affected specs, ADRs, and docs in the same change as the code.

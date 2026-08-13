@@ -1,8 +1,6 @@
 ---
 feature: FEAT-001
 status: draft
-tracker: <local | github>
-spec_issue: <null | TBD | issue number>
 created: <YYYY-MM-DD>
 updated: <YYYY-MM-DD>
 ---
@@ -14,18 +12,19 @@ updated: <YYYY-MM-DD>
 The feature is complete when all applicable acceptance criteria are verified, automated
 checks pass, and affected docs (specs, ADRs) are current.
 
-<!-- Render exactly one task shape throughout this file. Remove the unused shapes and
-     this instruction from the generated file.
+<!-- Read project_tracker from the root AGENTS.md. Render exactly one task shape
+     throughout this file. Remove the unused shapes and this instruction from the
+     generated file.
 
-     Local (`tracker: local`, `spec_issue: null`):
+     Local (`project_tracker: local`):
      - [ ] T-001 <Task>; verifies FR-001.
      - [ ] T-002 <Task>; verifies FR-002; blocked by T-001.
 
-     GitHub before activation (`tracker: github`, `spec_issue: TBD`):
+     GitHub before activation (`project_tracker: github`):
      - T-001 <Task>; verifies FR-001. → TBD
      - T-002 <Task>; verifies FR-002; blocked by T-001. → TBD
 
-     GitHub after activation (`tracker: github`, `spec_issue: <issue number>`):
+     GitHub after activation (`project_tracker: github`):
      - T-001 <Task>; verifies FR-001. → #123
      - T-002 <Task>; verifies FR-002; blocked by T-001. → #124
 -->
@@ -34,6 +33,9 @@ checks pass, and affected docs (specs, ADRs) are current.
      `TBD` until activation records the issue number. List position expresses intended
      order, not a hard dependency. Only `blocked by T-XXX` declares a dependency; never
      use an issue number there.
+
+     This file contains neither the project tracker nor the spec-issue mapping. Root
+     AGENTS.md owns the tracker. The paired spec.md owns the spec-issue mapping.
 
      Git owns task text, phases, order, and dependency intent. GitHub titles, bodies,
      sub-issue order, and blocked-by relationships are generated from this file. GitHub
