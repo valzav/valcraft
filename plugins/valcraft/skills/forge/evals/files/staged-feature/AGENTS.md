@@ -1,7 +1,8 @@
-# Agent notes
+# Agent instructions
 
 project_tracker: github
 github_repository: TBD
 
-- Install with `npm install`.
+## Commands
+
 - Test with `npm test`.

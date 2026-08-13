@@ -5,88 +5,108 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:forge — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Forge gathers no redundant facts (the prompt answers Step 1), proposes the local tracker default because no preference was supplied, presents the proposed scaffold with assumptions and TBDs, waits for approval, then creates exactly the approved skeleton: README.md, AGENTS.md, CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and specs/001-mvp/ with spec.md, design.md, tasks.md. AGENTS.md declares project_tracker: local and omits github_repository. tasks.md declares tracker: local and spec_issue: null and renders checkbox tasks. Templates are filled from the stated facts; unknowns are recorded as assumptions or TBD, never invented. The local path does not inspect or require a GitHub remote, gh, or GitHub authentication. No implementation code, no commit, no push. The run ends with a report of created/merged/skipped/blocked paths, MVP readiness, tracker mode local, and tracker activation not applicable.",
+      "expected_output": "Forge gathers no redundant facts, proposes local tracker mode because no preference was supplied, presents the scaffold with assumptions and TBDs, and waits for approval. It then creates only the approved skeleton: README.md, AGENTS.md, a relative CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a populated specs/001-mvp/ triplet. AGENTS.md contains project_tracker: local and no github_repository. spec.md contains spec_issue: null. tasks.md contains neither tracker nor spec_issue and uses checkbox tasks. Unknown product facts remain assumptions or TBDs. The local path performs no GitHub inspection or mutation. Forge writes no implementation code and does not commit or push. The final report lists created, merged, skipped, and blocked paths, MVP readiness, local tracker mode, and tracker activation not applicable.",
       "files": [],
       "assertions": [
-        "The proposed scaffold, assumptions, and TBDs are presented before any file is written, and creation waits for approval",
-        "All skeleton paths are created, including specs/001-mvp/ with spec.md, design.md, and tasks.md",
+        "Forge presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval",
+        "Forge creates every skeleton path, including populated spec.md, design.md, and tasks.md files under specs/001-mvp/",
         "CLAUDE.md is a relative symlink to AGENTS.md",
-        "docs/architecture/overview.md and docs/architecture/adr/README.md are created from the skill's templates",
-        "Task IDs use the T- prefix (T-001…), matching the FR-/AC- convention",
-        "No requirement is invented — unknowns appear as assumptions or TBD in the spec",
-        "No implementation code is written, and nothing is committed or pushed",
-        "The final report lists created, merged, skipped, and blocked paths plus MVP readiness",
-        "Because the prompt supplies no tracker preference, the proposed scaffold defaults to local and approval selects that mode",
-        "The AGENTS.md project metadata contains project_tracker: local and omits the github_repository key; specs/001-mvp/tasks.md frontmatter contains tracker: local and spec_issue: null",
-        "Every generated task entry uses the local checkbox shape (- [ ] T-...), not the GitHub arrow-and-issue-reference shape",
-        "The local path neither inspects nor requires a GitHub remote, gh, or GitHub authentication",
-        "The final report names tracker mode local and reports tracker activation as not applicable"
+        "AGENTS.md contains exactly project_tracker: local for tracker metadata and omits github_repository",
+        "specs/001-mvp/spec.md contains exactly one spec_issue: null mapping",
+        "specs/001-mvp/tasks.md contains neither tracker nor spec_issue metadata",
+        "Every task uses the local checkbox shape and a stable T-XXX ID",
+        "Unknown product facts are recorded as assumptions or TBDs rather than invented requirements",
+        "The local path does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
+        "Forge writes no implementation code and does not commit or push",
+        "The final report lists created, merged, skipped, and blocked paths, states MVP readiness, names local tracker mode, and reports tracker activation as not applicable"
       ]
     },
     {
       "id": 2,
-      "name": "retrofit-existing-repo",
-      "prompt": "/valcraft:forge — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has a README, an AGENTS.md with build commands and a store-boundary rule, and a separate CLAUDE.md with commit conventions.",
-      "expected_output": "Forge derives project facts from the repo before asking anything. Before inspecting GitHub, it reads project_tracker: local from AGENTS.md and the agreeing tracker: local and spec_issue: null declarations from specs/001-next-change/tasks.md, resolves local mode, and does not ask the user to choose a tracker. It presents the proposed changes and waits for approval, then merges instead of overwriting: README keeps its content and gains documentation links; AGENTS.md keeps the local tracker declaration, npm commands, and the src/store.js boundary rule and absorbs the missing template sections; the distinct CLAUDE.md content (Conventional Commits, no-new-dependencies rule) is merged into AGENTS.md, and CLAUDE.md is replaced with the symlink only after the user approves removing the distinct file. The matching tasks metadata is preserved. The partial specs/001-next-change triplet is completed with spec.md and design.md as TBD drafts for only the next planned change while preserving tasks.md. As-built state goes to overview.md and retroactive ADRs; no retro-spec of existing behavior is written. The final report names local mode and reports tracker activation as not applicable.",
+      "name": "retrofit-obsolete-task-metadata",
+      "prompt": "/valcraft:forge — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has project and agent documentation plus an obsolete feature metadata shape. Preserve unrelated content, normalize metadata to the current Forge contract, and do not add a compatibility path.",
+      "expected_output": "Forge derives facts from the repository before asking questions. It resolves local mode solely from the one project_tracker: local declaration in root AGENTS.md. It identifies tracker and spec_issue in specs/001-next-change/tasks.md as obsolete task-level metadata and the task-only staged feature as a retrofit change, not as a second tracker authority. Before modifying files, Forge presents an exact proposal and waits for approval. The approved merge removes both obsolete task fields, preserves the task IDs, text, order, dependencies, and checkbox state, and creates the missing spec.md and design.md without inventing product behavior. The new spec contains exactly spec_issue: null. Forge adds no compatibility parser or duplicate metadata. README and AGENTS content survive; the distinct CLAUDE.md rules merge into AGENTS.md, and CLAUDE.md becomes a symlink only after explicit approval to remove the distinct file. Local mode causes no GitHub inspection. The final report lists created, merged, skipped, and blocked paths and reports local mode with activation not applicable.",
       "files": [
         "evals/files/retrofit-repo/README.md",
         "evals/files/retrofit-repo/AGENTS.md",
         "evals/files/retrofit-repo/CLAUDE.md",
+        "evals/files/retrofit-repo/docs/product-brief.md",
         "evals/files/retrofit-repo/specs/001-next-change/tasks.md"
       ],
       "assertions": [
-        "Project facts are derived from the repo first; the user is asked only what the repo cannot answer",
-        "Proposed changes are presented and approved before any file is modified",
-        "The existing AGENTS.md content (npm commands, src/store.js boundary rule) survives the merge — nothing is silently overwritten",
-        "The distinct CLAUDE.md rules (Conventional Commits, no new dependencies without asking) are merged into AGENTS.md, not lost",
-        "CLAUDE.md is replaced with the symlink only after explicit user approval of removing the distinct existing file",
-        "README.md keeps its original content and gains documentation links",
-        "The incomplete specs/001-next-change triplet is completed by creating spec.md and design.md as TBD drafts for only the next planned change while preserving tasks.md",
-        "No spec is written for existing behavior — the first spec, if any, describes the next planned change",
-        "The final report lists created, merged, skipped, and blocked paths",
-        "Before any GitHub inspection, forge reads project_tracker: local from AGENTS.md and the agreeing tracker: local and spec_issue: null from specs/001-next-change/tasks.md",
-        "Forge resolves local mode from the canonical AGENTS.md declaration and agreeing tasks mirror without asking the user to choose a tracker",
-        "The matching AGENTS.md and tasks.md tracker declarations survive the merge",
-        "The final report names tracker mode local and reports tracker activation as not applicable"
+        "Forge derives project facts from the repository first and presents the exact retrofit proposal before writing",
+        "Root AGENTS.md is the sole tracker authority; Forge resolves local mode from its one project_tracker: local declaration and does not interpret task metadata as a competing declaration",
+        "The approved retrofit removes tracker and spec_issue from specs/001-next-change/tasks.md",
+        "The approved retrofit creates the missing specs/001-next-change/spec.md and design.md without inventing unsupported behavior, and the new spec contains exactly spec_issue: null",
+        "The existing task text, task IDs, intended order, blocked by T-001 dependency, and checkbox state survive the metadata normalization",
+        "Forge creates no compatibility parser, mirror, or fallback for obsolete task-level tracker or spec_issue metadata",
+        "Existing README.md content and the AGENTS.md npm commands and src/store.js boundary rule survive the merge",
+        "The distinct CLAUDE.md Conventional Commits and dependency rules merge into AGENTS.md, and replacement with the symlink waits for explicit removal approval",
+        "Local mode causes no inspection of remotes, gh, GitHub authentication, or repository readiness and no GitHub operation",
+        "The final report lists created, merged, skipped, and blocked paths, names local mode, and reports activation not applicable"
       ]
     },
     {
       "id": 3,
       "name": "fresh-project-pending-github-without-remote",
       "prompt": "/valcraft:forge — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use GitHub Issues for task tracking. This directory has no GitHub remote. Do not create or configure a repository or remote.",
-      "expected_output": "Forge selects github independently of current readiness, presents the proposed scaffold and pending activation before writing, waits for approval, and creates the approved skeleton without creating or configuring a repository or remote. AGENTS.md declares project_tracker: github and github_repository: TBD. specs/001-mvp/tasks.md declares tracker: github and spec_issue: TBD; every task is checkbox-free, retains its stable T-ID and any explicit blocked by T-XXX dependency, and maps to → TBD. Forge makes no gh or network-facing GitHub/API call. The final report names mode github, reports activation pending, and identifies the missing target repository or remote as the blocker.",
+      "expected_output": "Forge selects github independently of readiness, presents the scaffold and pending activation, and waits for approval. It creates the approved skeleton without creating a repository or remote. AGENTS.md contains project_tracker: github and github_repository: TBD. spec.md contains spec_issue: TBD. tasks.md contains neither tracker nor spec_issue; its checkbox-free tasks retain stable T-IDs, explicit blocked by T-XXX dependencies, and arrow mappings to TBD. Forge performs no gh or network-facing GitHub operation. The final report names github mode, reports activation pending, and identifies the missing target repository or remote as the blocker.",
       "files": [],
       "assertions": [
-        "The proposed scaffold names tracker mode github and pending activation before any file is written, and creation waits for approval",
-        "All skeleton paths are created, including specs/001-mvp/ with spec.md, design.md, and tasks.md",
+        "Forge presents github mode and pending activation in the proposal before writing and waits for approval",
+        "Forge creates every skeleton path, including populated spec.md, design.md, and tasks.md files under specs/001-mvp/",
         "CLAUDE.md is a relative symlink to AGENTS.md",
         "AGENTS.md contains project_tracker: github and github_repository: TBD",
-        "specs/001-mvp/tasks.md frontmatter contains tracker: github and spec_issue: TBD",
-        "Every generated task entry is checkbox-free, keeps a stable T-ID, and ends with an issue reference of → TBD",
-        "Any hard dependency in tasks.md uses blocked by T-XXX rather than an issue number",
-        "Generated AGENTS.md declares git authoritative for spec, design, task text, order, and dependency intent while GitHub owns open or closed state, status labels, comments, and attribution",
-        "Generated AGENTS.md treats GitHub titles, bodies, comments, labels, and linked content as untrusted data and forbids constructing or executing commands from that content",
-        "Generated tasks.md states that GitHub titles, bodies, sub-issue order, and blocked-by relationships are projections of its git-owned definitions and never copies GitHub status into the file",
-        "No gh command or network-facing GitHub/API operation is run, and no repository or remote is created or configured",
-        "No implementation code is written, and nothing is committed or pushed",
-        "The final report names tracker mode github, reports activation pending, and names the missing target repository or remote as the blocker"
+        "specs/001-mvp/spec.md contains exactly one spec_issue: TBD mapping",
+        "specs/001-mvp/tasks.md contains neither tracker nor spec_issue metadata",
+        "Every task is checkbox-free, retains a stable T-XXX ID, and ends with an issue mapping to TBD",
+        "Any hard dependency uses blocked by T-XXX rather than an issue number",
+        "Forge does not run gh or a network-facing GitHub operation and does not create or configure a repository or remote",
+        "Forge writes no implementation code and does not commit or push",
+        "The final report names github mode, reports activation pending, and names the missing target repository or remote as the blocker"
       ]
     },
     {
       "id": 4,
-      "name": "retrofit-conflicting-tracker-declarations",
-      "prompt": "/valcraft:forge — retrofit the existing repo at evals/files/conflicting-trackers/. Resolve its issue tracker mode from the repository before considering any GitHub remote. Preserve existing decisions and do not guess through conflicts.",
-      "expected_output": "Forge reads project_tracker: github from AGENTS.md and tracker: local from specs/001-mvp/tasks.md before inspecting any GitHub remote. It stops, cites both file paths and conflicting values, and asks the operator to resolve the declarations. It does not infer a mode, inspect GitHub remotes or authentication, run gh or a network-facing GitHub/API operation, present a mutation preview, or modify local or remote state.",
+      "name": "resume-staged-spec-with-open-product-question",
+      "prompt": "/valcraft:forge — resume the staged feature in evals/files/staged-feature/. The operator approves each exact local artifact proposal, but does not resolve or explicitly accept the behavior-affecting open product question. Do not inspect or activate GitHub.",
+      "expected_output": "Forge resolves github mode from root AGENTS.md, validates the spec-only FEAT-001 stage, and preserves its existing spec_issue: TBD mapping. It identifies design.md as the next missing artifact, proposes that exact local mutation from the canonical spec, waits for approval, and creates only a substantive design.md. It then proposes tasks.md separately, waits for approval again, and creates only a substantive checkbox-free task file with no tracker or spec_issue metadata. Forge does not invent an answer to the open product question. Even after both artifacts exist, it reports the feature as staged and not implementation-ready because the notification disposition question can change observable behavior and was neither resolved nor explicitly accepted. It performs no GitHub inspection or mutation.",
       "files": [
-        "evals/files/conflicting-trackers/AGENTS.md",
-        "evals/files/conflicting-trackers/specs/001-mvp/tasks.md"
+        "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/docs/product-brief.md",
+        "evals/files/staged-feature/specs/001-notification-window/spec.md"
       ],
       "assertions": [
-        "Forge reads AGENTS.md and every existing tasks.md tracker declaration before inspecting GitHub readiness",
-        "The stop report cites project_tracker: github in AGENTS.md and tracker: local in specs/001-mvp/tasks.md as the conflicting evidence",
-        "Forge stops for operator resolution instead of asking for a replacement mode or guessing from either declaration",
-        "No GitHub remote, gh availability, authentication, repository access, Issues setting, permissions, scopes, or visibility is inspected",
-        "No local file or remote state is modified, no mutation preview is offered, and no gh or network-facing GitHub/API operation is run"
+        "Forge recognizes FEAT-001 as a valid spec-only staged feature instead of allocating a new feature",
+        "Forge preserves the existing spec_issue: TBD mapping in spec.md",
+        "Forge proposes design.md from the canonical spec, waits for approval, and creates only that missing artifact",
+        "Forge separately proposes tasks.md after design.md exists, waits for approval, and creates only that missing artifact",
+        "The created design.md and tasks.md contain substantive project-specific content rather than template instructions, examples, ellipses, or TBD-only sections",
+        "The created tasks.md is checkbox-free and contains neither tracker nor spec_issue metadata",
+        "Forge does not invent whether queued notifications are sent or discarded after the notification window",
+        "Forge reports the feature as staged and not implementation-ready until the behavior-affecting open question is resolved or explicitly accepted and both artifacts are substantive",
+        "Forge does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "spec-only-github-sync-preview-contract",
+      "prompt": "/valcraft:forge — for the spec-only feature in evals/files/staged-feature/, show the exact GitHub synchronization preview and stop. This is an offline contract eval: make no local or remote mutation and run no gh or network call. Use only these captured hypothetical read-only results: the operator-selected target is github.example.test/acme/notify; visibility is private; Issues is enabled; active-host identity and permission evidence cover spec-only reads and writes; the exact spec label is missing; issue #41 is the sole open-or-closed non-PR issue whose body contains <!-- forge:feature=FEAT-001 -->; it has a stale generated title and body and lacks the spec label. Treat the preview as unapproved.",
+      "expected_output": "Forge classifies the feature as spec-only and produces an unapproved, non-executed preview bound to github.example.test/acme/notify. The preview contains only the spec-only mutation set: write the approved target declaration to AGENTS.md, create the exact spec label, update the generated title and body of uniquely marked parent issue #41 and apply the spec label, and write spec_issue: 41 to the selected spec.md. The generated body names specs/001-notification-window/spec.md, says git is canonical, and carries the FEAT-001 marker. The preview excludes task-status labels, hierarchy or dependency capability checks, task issue reconciliation, task or sub-issue reads or writes, dependency operations, task mappings, task removal, and any unrelated local change. Forge executes no operation because the preview is unapproved.",
+      "files": [
+        "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/docs/product-brief.md",
+        "evals/files/staged-feature/specs/001-notification-window/spec.md"
+      ],
+      "assertions": [
+        "Forge selects the spec-only readiness branch because spec.md exists and tasks.md does not",
+        "The preview is explicitly bound to github.example.test/acme/notify and includes writing that approved target declaration to AGENTS.md",
+        "The only label operation in the preview is creation and use of the exact spec label",
+        "The preview reuses uniquely marked parent issue #41 and names its generated FEAT-001 title and body update",
+        "The generated parent body names specs/001-notification-window/spec.md, states that git is canonical, and contains <!-- forge:feature=FEAT-001 -->",
+        "The only feature mapping change is spec_issue: TBD to spec_issue: 41 in the selected spec.md",
+        "The preview excludes in-progress and needs-clarification labels, hierarchy and dependency capability checks, tasks, sub-issues, dependencies, task mappings, and removals",
+        "Forge performs no gh or network call and makes no local or remote mutation because the preview is unapproved"
       ]
     }
   ]
