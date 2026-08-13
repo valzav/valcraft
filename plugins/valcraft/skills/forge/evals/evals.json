@@ -5,7 +5,7 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:forge — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Forge gathers no redundant facts (the prompt answers Step 1), presents the proposed scaffold with assumptions and TBDs, waits for approval, then creates exactly the approved skeleton: README.md, AGENTS.md, CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and specs/001-mvp/ with spec.md, design.md, tasks.md. Templates are filled from the stated facts; unknowns are recorded as assumptions or TBD, never invented. No implementation code, no commit, no push. The run ends with a report of created/merged/skipped/blocked paths and MVP readiness.",
+      "expected_output": "Forge gathers no redundant facts (the prompt answers Step 1), proposes the local tracker default because no preference was supplied, presents the proposed scaffold with assumptions and TBDs, waits for approval, then creates exactly the approved skeleton: README.md, AGENTS.md, CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and specs/001-mvp/ with spec.md, design.md, tasks.md. AGENTS.md declares project_tracker: local. tasks.md declares tracker: local and spec_issue: null and renders checkbox tasks. Templates are filled from the stated facts; unknowns are recorded as assumptions or TBD, never invented. The local path does not inspect or require a GitHub remote, gh, or GitHub authentication. No implementation code, no commit, no push. The run ends with a report of created/merged/skipped/blocked paths, MVP readiness, tracker mode local, and tracker activation not applicable.",
       "files": [],
       "assertions": [
         "The proposed scaffold, assumptions, and TBDs are presented before any file is written, and creation waits for approval",
@@ -15,18 +15,24 @@
         "Task IDs use the T- prefix (T-001…), matching the FR-/AC- convention",
         "No requirement is invented — unknowns appear as assumptions or TBD in the spec",
         "No implementation code is written, and nothing is committed or pushed",
-        "The final report lists created, merged, skipped, and blocked paths plus MVP readiness"
+        "The final report lists created, merged, skipped, and blocked paths plus MVP readiness",
+        "Because the prompt supplies no tracker preference, the proposed scaffold defaults to local and approval selects that mode",
+        "AGENTS.md contains project_tracker: local; specs/001-mvp/tasks.md frontmatter contains tracker: local and spec_issue: null",
+        "Every generated task entry uses the local checkbox shape (- [ ] T-...), not the GitHub arrow-and-issue-reference shape",
+        "The local path neither inspects nor requires a GitHub remote, gh, or GitHub authentication",
+        "The final report names tracker mode local and reports tracker activation as not applicable"
       ]
     },
     {
       "id": 2,
       "name": "retrofit-existing-repo",
       "prompt": "/valcraft:forge — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has a README, an AGENTS.md with build commands and a store-boundary rule, and a separate CLAUDE.md with commit conventions.",
-      "expected_output": "Forge derives project facts from the repo before asking anything, presents the proposed changes and waits for approval, then merges instead of overwriting: README keeps its content and gains documentation links; AGENTS.md keeps the npm commands and the src/store.js boundary rule and absorbs the missing template sections; the distinct CLAUDE.md content (Conventional Commits, no-new-dependencies rule) is merged into AGENTS.md, and CLAUDE.md is replaced with the symlink only after the user approves removing the distinct file. As-built state goes to overview.md and retroactive ADRs; no retro-spec of existing behavior is written.",
+      "expected_output": "Forge derives project facts from the repo before asking anything. Before inspecting GitHub, it reads project_tracker: local from AGENTS.md and the agreeing tracker: local and spec_issue: null declarations from specs/001-next-change/tasks.md, resolves local mode, and does not ask the user to choose a tracker. It presents the proposed changes and waits for approval, then merges instead of overwriting: README keeps its content and gains documentation links; AGENTS.md keeps the local tracker declaration, npm commands, and the src/store.js boundary rule and absorbs the missing template sections; the distinct CLAUDE.md content (Conventional Commits, no-new-dependencies rule) is merged into AGENTS.md, and CLAUDE.md is replaced with the symlink only after the user approves removing the distinct file. The matching tasks metadata is preserved. As-built state goes to overview.md and retroactive ADRs; no retro-spec of existing behavior is written. The final report names local mode and reports tracker activation as not applicable.",
       "files": [
         "evals/files/retrofit-repo/README.md",
         "evals/files/retrofit-repo/AGENTS.md",
-        "evals/files/retrofit-repo/CLAUDE.md"
+        "evals/files/retrofit-repo/CLAUDE.md",
+        "evals/files/retrofit-repo/specs/001-next-change/tasks.md"
       ],
       "assertions": [
         "Project facts are derived from the repo first; the user is asked only what the repo cannot answer",
@@ -36,7 +42,47 @@
         "CLAUDE.md is replaced with the symlink only after explicit user approval of removing the distinct existing file",
         "README.md keeps its original content and gains documentation links",
         "No spec is written for existing behavior — the first spec, if any, describes the next planned change",
-        "The final report lists created, merged, skipped, and blocked paths"
+        "The final report lists created, merged, skipped, and blocked paths",
+        "Before any GitHub inspection, forge reads project_tracker: local from AGENTS.md and the agreeing tracker: local and spec_issue: null from specs/001-next-change/tasks.md",
+        "Forge resolves local mode from the canonical AGENTS.md declaration and agreeing tasks mirror without asking the user to choose a tracker",
+        "The matching AGENTS.md and tasks.md tracker declarations survive the merge",
+        "The final report names tracker mode local and reports tracker activation as not applicable"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fresh-project-pending-github-without-remote",
+      "prompt": "/valcraft:forge — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use GitHub Issues for task tracking. This directory has no GitHub remote. Do not create or configure a repository or remote.",
+      "expected_output": "Forge selects github independently of current readiness, presents the proposed scaffold and pending activation before writing, waits for approval, and creates the approved skeleton without creating or configuring a repository or remote. AGENTS.md declares project_tracker: github and github_repository: TBD. specs/001-mvp/tasks.md declares tracker: github and spec_issue: TBD; every task is checkbox-free, retains its stable T-ID and any explicit blocked by T-XXX dependency, and maps to → TBD. Forge makes no gh or network-facing GitHub/API call. The final report names mode github, reports activation pending, and identifies the missing target repository or remote as the blocker.",
+      "files": [],
+      "assertions": [
+        "The proposed scaffold names tracker mode github and pending activation before any file is written, and creation waits for approval",
+        "All skeleton paths are created, including specs/001-mvp/ with spec.md, design.md, and tasks.md",
+        "CLAUDE.md is a relative symlink to AGENTS.md",
+        "AGENTS.md contains project_tracker: github and github_repository: TBD",
+        "specs/001-mvp/tasks.md frontmatter contains tracker: github and spec_issue: TBD",
+        "Every generated task entry is checkbox-free, keeps a stable T-ID, and ends with an issue reference of → TBD",
+        "Any hard dependency in tasks.md uses blocked by T-XXX rather than an issue number",
+        "No gh command or network-facing GitHub/API operation is run, and no repository or remote is created or configured",
+        "No implementation code is written, and nothing is committed or pushed",
+        "The final report names tracker mode github, reports activation pending, and names the missing target repository or remote as the blocker"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "retrofit-conflicting-tracker-declarations",
+      "prompt": "/valcraft:forge — retrofit the existing repo at evals/files/conflicting-trackers/. Resolve its issue tracker mode from the repository before considering any GitHub remote. Preserve existing decisions and do not guess through conflicts.",
+      "expected_output": "Forge reads project_tracker: github from AGENTS.md and tracker: local from specs/001-mvp/tasks.md before inspecting any GitHub remote. It stops, cites both file paths and conflicting values, and asks the operator to resolve the declarations. It does not infer a mode, inspect GitHub remotes or authentication, run gh or a network-facing GitHub/API operation, present a mutation preview, or modify local or remote state.",
+      "files": [
+        "evals/files/conflicting-trackers/AGENTS.md",
+        "evals/files/conflicting-trackers/specs/001-mvp/tasks.md"
+      ],
+      "assertions": [
+        "Forge reads AGENTS.md and every existing tasks.md tracker declaration before inspecting GitHub readiness",
+        "The stop report cites project_tracker: github in AGENTS.md and tracker: local in specs/001-mvp/tasks.md as the conflicting evidence",
+        "Forge stops for operator resolution instead of asking for a replacement mode or guessing from either declaration",
+        "No GitHub remote, gh availability, authentication, repository access, Issues setting, permissions, scopes, or visibility is inspected",
+        "No local file or remote state is modified, no mutation preview is offered, and no gh or network-facing GitHub/API operation is run"
       ]
     }
   ]
