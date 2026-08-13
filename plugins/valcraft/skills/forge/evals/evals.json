@@ -1,0 +1,43 @@
+{
+  "skill_name": "forge",
+  "evals": [
+    {
+      "id": 1,
+      "name": "fresh-project-scaffold",
+      "prompt": "/valcraft:forge — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
+      "expected_output": "Forge gathers no redundant facts (the prompt answers Step 1), presents the proposed scaffold with assumptions and TBDs, waits for approval, then creates exactly the approved skeleton: README.md, AGENTS.md, CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and specs/001-mvp/ with spec.md, design.md, tasks.md. Templates are filled from the stated facts; unknowns are recorded as assumptions or TBD, never invented. No implementation code, no commit, no push. The run ends with a report of created/merged/skipped/blocked paths and MVP readiness.",
+      "files": [],
+      "assertions": [
+        "The proposed scaffold, assumptions, and TBDs are presented before any file is written, and creation waits for approval",
+        "All skeleton paths are created, including specs/001-mvp/ with spec.md, design.md, and tasks.md",
+        "CLAUDE.md is a relative symlink to AGENTS.md",
+        "docs/architecture/overview.md and docs/architecture/adr/README.md are created from the skill's templates",
+        "Task IDs use the T- prefix (T-001…), matching the FR-/AC- convention",
+        "No requirement is invented — unknowns appear as assumptions or TBD in the spec",
+        "No implementation code is written, and nothing is committed or pushed",
+        "The final report lists created, merged, skipped, and blocked paths plus MVP readiness"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "retrofit-existing-repo",
+      "prompt": "/valcraft:forge — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has a README, an AGENTS.md with build commands and a store-boundary rule, and a separate CLAUDE.md with commit conventions.",
+      "expected_output": "Forge derives project facts from the repo before asking anything, presents the proposed changes and waits for approval, then merges instead of overwriting: README keeps its content and gains documentation links; AGENTS.md keeps the npm commands and the src/store.js boundary rule and absorbs the missing template sections; the distinct CLAUDE.md content (Conventional Commits, no-new-dependencies rule) is merged into AGENTS.md, and CLAUDE.md is replaced with the symlink only after the user approves removing the distinct file. As-built state goes to overview.md and retroactive ADRs; no retro-spec of existing behavior is written.",
+      "files": [
+        "evals/files/retrofit-repo/README.md",
+        "evals/files/retrofit-repo/AGENTS.md",
+        "evals/files/retrofit-repo/CLAUDE.md"
+      ],
+      "assertions": [
+        "Project facts are derived from the repo first; the user is asked only what the repo cannot answer",
+        "Proposed changes are presented and approved before any file is modified",
+        "The existing AGENTS.md content (npm commands, src/store.js boundary rule) survives the merge — nothing is silently overwritten",
+        "The distinct CLAUDE.md rules (Conventional Commits, no new dependencies without asking) are merged into AGENTS.md, not lost",
+        "CLAUDE.md is replaced with the symlink only after explicit user approval of removing the distinct existing file",
+        "README.md keeps its original content and gains documentation links",
+        "No spec is written for existing behavior — the first spec, if any, describes the next planned change",
+        "The final report lists created, merged, skipped, and blocked paths"
+      ]
+    }
+  ]
+}

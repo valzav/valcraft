@@ -5,12 +5,12 @@
       "id": 1,
       "name": "study-noisy-prompt",
       "prompt": "/valcraft:distill — I want to understand what this support-bot prompt actually does under the noise:\n\nYou are a world-class, incredibly helpful customer support agent for Acme Cloud. Always think step by step. Be concise. Remember: studies show polite agents get 40% better ratings, so always be polite! Look up the customer's plan in billing.db before answering pricing questions. Be concise and to the point. Never promise refunds — only the billing team approves refunds. If you don't know, say you don't know. Always use your tools when appropriate. End every reply with 'Is there anything else I can help with?'",
-      "expected_output": "Study-mode distillate presented in chat without asking a mode question (the request names the goal): the prompt's goal, applicability, the surviving steps (look up billing.db before pricing answers; never promise refunds; admit unknowns; the fixed closing line as an output contract), and one line totaling dropped noise by group. The source is never edited.",
+      "expected_output": "Study-mode distillate presented in chat without asking a mode question (the request names the goal): the prompt's contract, applicability, the surviving steps (look up billing.db before pricing answers; never promise refunds; admit unknowns; the fixed closing line as an output contract), and one line totaling dropped noise by group. The source is never edited.",
       "files": [],
       "assertions": [
         "No mode question asked — the request already names the study goal",
         "Source prompt is not edited or rewritten",
-        "Distillate states the goal before the steps",
+        "Distillate states the contract before the steps",
         "Surviving steps keep concrete names (billing.db, refunds, the closing line) rather than vague paraphrase",
         "The 'never promise refunds' safety rule and the fixed closing line survive as contract terms",
         "'Think step by step', 'use tools when appropriate', the 40% statistic, and the duplicate 'be concise' are dropped",
@@ -21,32 +21,39 @@
     {
       "id": 2,
       "name": "clean-skill-copy",
-      "prompt": "/valcraft:distill ~/dev/example/skills/report-writer/ — make me a leaner copy I'll run instead of this one. The SKILL.md has 40 numbered steps telling the model how to open files, read them carefully, double-check every word, and apologize for mistakes, around a real workflow: gather sources, draft the report with a Summary/Progress/Blockers structure, save to reports/.",
-      "expected_output": "Clean-mode cleaned copy: the original frontmatter name and description preserved (they control triggering), the Summary/Progress/Blockers output contract and the reports/ save path kept, mechanical competence steps and apology instructions dropped. The copy is saved to ~/.claude/skills/report-writer/SKILL.md (or the custom-name variant on collision); the original directory is untouched. The chat report gives the word delta and the dropped groups.",
-      "files": [],
+      "prompt": "/valcraft:distill evals/files/report-writer/ — make me a leaner copy I'll run instead of this one. The SKILL.md buries a real workflow (gather sources, draft the report with the Summary/Progress/Blockers structure from references/format.md, save to reports/) under steps telling the model how to open files, read them carefully, double-check every word, and apologize for mistakes.",
+      "expected_output": "Clean-mode cleaned copy: the complete skill directory copied to ~/.claude/skills/report-writer/ (or the custom-name variant on collision), references/format.md preserved because a surviving step references it, and only SKILL.md replaced with the cleaned version — original frontmatter name and description kept, the Summary/Progress/Blockers output contract and the reports/ save path kept, mechanical competence steps and apology instructions dropped. The source directory is untouched. The chat report gives the word delta and the dropped groups.",
+      "files": [
+        "evals/files/report-writer/SKILL.md",
+        "evals/files/report-writer/references/format.md"
+      ],
       "assertions": [
-        "Original skill directory is not modified",
-        "Cleaned copy preserves the frontmatter name and description",
-        "Summary/Progress/Blockers output contract and the reports/ save path survive",
+        "Source skill directory is not modified",
+        "The complete directory is copied to the destination, then only its SKILL.md replaced — references/format.md exists at the destination unchanged",
+        "Cleaned SKILL.md preserves the frontmatter name and description",
+        "The Summary/Progress/Blockers contract, the references/format.md reference, and the reports/ save path survive",
         "Open/read/re-read/double-check competence steps and apology instructions are dropped",
-        "Cleaned copy is saved under ~/.claude/skills/ by default, with the collision caveat honored",
+        "On destination collision the user is asked for a new skill name — the existing skill is never overwritten silently",
         "Report states the word delta and the dropped noise groups"
       ]
     },
     {
       "id": 3,
       "name": "compare-two-skills",
-      "prompt": "/valcraft:distill — compare ~/dev/example/skills/weekly-report/ and ~/dev/example/skills/status-update/. Both turn recent work into a summary document; I want to know where their behavior and results actually differ.",
-      "expected_output": "Compare mode without a mode question: two subagents launched in parallel (one per skill), each returning a YAML distillate of its skill. The main agent compares the distillates only — it does not re-read the sources and does not run either skill. The report is a behavioral diff: the shared core in one or two lines, differences grouped (only in A; only in B; same step under different constraints), and the divergence in results for the same input, inferred from the distillates. No verdict on which skill is better. Save options offered for the two distillates; neither source is edited.",
-      "files": [],
+      "prompt": "/valcraft:distill — compare evals/files/weekly-report/ and evals/files/status-update/. Both turn recent work into a summary document; I want to know where their behavior and results actually differ.",
+      "expected_output": "Compare mode without a mode question: two subagents launched in parallel (one per skill), each returning a YAML distillate of its skill; a harness without concurrent subagents falls back to sequential isolated passes with the same YAML handoff. The main agent compares the distillates only — it does not re-read the sources and does not run either skill. The report is a behavioral diff: the shared core in one or two lines, differences grouped (only in A; only in B; same step under different constraints — e.g. commit-ID references required vs forbidden, file save vs channel post, 150-word cap), and the divergence in results for the same input. No verdict on which skill is better. Save options offered for the two distillates; neither source is edited.",
+      "files": [
+        "evals/files/weekly-report/SKILL.md",
+        "evals/files/status-update/SKILL.md"
+      ],
       "assertions": [
         "No mode question asked — a comparison request implies study mode",
-        "Two subagents are launched in one parallel message, one per artifact",
-        "Each subagent returns the YAML distillate as the handoff format",
+        "Two subagents are launched in one parallel message, one per artifact (or sequential isolated passes when the harness cannot run subagents concurrently)",
+        "Each per-artifact pass returns the YAML distillate as the handoff format",
         "The main agent compares distillates only — sources are not re-read after fan-out",
         "Neither skill is executed; result differences are inferred from the distillates",
         "Report gives the shared core plus differences grouped as only-in-A, only-in-B, and same step under different constraints",
-        "Report describes how results diverge for the same input",
+        "Report captures real behavioral divergences from the fixtures (commit references required vs forbidden, reports/weekly/ file vs #status channel, the 150-word cap)",
         "No verdict or recommendation is given unprompted",
         "Neither source artifact is edited"
       ]

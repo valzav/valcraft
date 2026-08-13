@@ -19,6 +19,9 @@ Alpha — the packaging is settled; the skill set grows one skill at a time.
 All skills also trigger automatically from their descriptions — the slash commands are
 the explicit path, not the only one.
 
+MSW Kernel origin: designed by "Fable at mega high monkey effort", published by
+[@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
+
 ## Install
 
 ```bash

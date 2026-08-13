@@ -1,8 +1,5 @@
 # MSW — the kernel
 
-Origin: designed by "Fable at mega high monkey effort", published by @aienginerd
-(https://x.com/aienginerd/status/2085342869850603672).
-
 ## program — complete
 
 ```

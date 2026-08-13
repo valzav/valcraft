@@ -14,20 +14,21 @@ description: >
 
 Lean SDD project scaffold. Resist reintroducing heavyweight
 machinery unless the project demonstrably needs it — the goal is durable context, not
-documentation theater. The "Deliberately omitted" section names what was dropped and why.
+documentation theater.
 
 ## Principles
 
 - **Docs before code.** The first commit is a documentation baseline. Code arrives after
   the stack and boundaries are settled in ADRs.
-- **Stable IDs are the working currency.** `FR-001`, `AC-003`, `T012`, `ADR-0009` get
+- **Stable IDs are the working currency.** `FR-001`, `AC-003`, `T-012`, `ADR-0009` get
   referenced from commit subjects, reviews, tests, and follow-up plans. IDs + links give
   you traceability for free; matrices are theater.
 - **Never invent missing requirements.** Record assumptions and open questions in the
   spec instead. Populate documents from evidence in priority order: facts the user gave →
   existing repo/code → established conventions → clearly-marked assumptions.
-- **Scale docs to the project.** Every file below is opt-in past the skeleton. A weekend
-  tool needs five files; a system with real machine boundaries grows contracts/ later.
+- **Scale docs to the project.** Every file below is opt-in past the skeleton. Small
+  projects stop at the skeleton; add optional documents only when their stated trigger
+  exists.
 - **Specs stay reviewable.** A spec is too large when a reviewer would skim it and trust
   the agent. Slice oversized features into independently valuable `specs/NNN-` entries;
   trim generated verbosity before committing.
@@ -43,19 +44,24 @@ Ask only what changes the scaffold; `TBD` is an acceptable answer for the rest.
 5. Machine interfaces? (public API / events / multi-service → plan a `contracts/` dir later)
 6. Domain-heavy vocabulary? (→ add `docs/glossary.md`)
 
+Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before
+writing anything. In an attended run, wait for approval. Create only the approved
+scaffold. Do not start implementation, commit, or push unless the user explicitly
+requested that work.
+
 ## Step 2: Create the skeleton
 
 ```text
 README.md                     # from templates/README.md
-AGENTS.md                     # from templates/AGENTS.md — keep it ~100 lines
+AGENTS.md                     # from templates/AGENTS.md
 CLAUDE.md                     # symlink → AGENTS.md (one instruction file, every agent host)
 .gitignore                    # from templates/gitignore-base + stack ignores
 docs/
 ├── product-brief.md          # from templates/product-brief.md (system requirements folded in)
 ├── plans/                    # working plans — tracked in git, NOT ignored
 └── architecture/
-    ├── overview.md           # short: context, components, boundaries, data ownership
-    └── adr/README.md         # ADR index (one line per ADR)
+    ├── overview.md           # from templates/overview.md — context, components, boundaries
+    └── adr/README.md         # from templates/adr-index.md — ADR index (one line per ADR)
 specs/
 └── 001-mvp/
     ├── spec.md               # from templates/spec.md — what and why
@@ -63,8 +69,12 @@ specs/
     └── tasks.md              # from templates/tasks.md — ordered, verifiable
 ```
 
-Copy templates from this skill's `templates/` directory and fill them in. Create the
-CLAUDE.md symlink with `ln -s AGENTS.md CLAUDE.md` (relative, so the repo moves cleanly).
+Copy each named template from this skill's `templates/` directory and fill it from
+project evidence. For a new scaffold, create the CLAUDE.md symlink with
+`ln -s AGENTS.md CLAUDE.md` (relative, so the repo moves cleanly). For a retrofit,
+inspect existing `AGENTS.md` and `CLAUDE.md`, merge their binding instructions into
+`AGENTS.md`, and replace `CLAUDE.md` with the symlink only after the user approves
+removal of a distinct existing file.
 
 Opt-in additions — create only when the trigger is real:
 
@@ -83,8 +93,8 @@ Opt-in additions — create only when the trigger is real:
   requirements (`FR-`), acceptance criteria (`AC-`), non-goals, edge cases.
 - Identify consequential technical decisions. Write each as an ADR
   (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or
-  explicitly open. The reference project accepted 16 ADRs in the first week; cheap to write, expensive
-  to reconstruct. Small implementation choices don't need ADRs.
+  explicitly open. ADRs are cheap to write and expensive to reconstruct. Small
+  implementation choices don't need ADRs.
 - Ready to code when: user + problem stated, MVP journey specified with IDs, non-goals
   explicit, stack decided or an open ADR says why not, build/test/lint commands in
   AGENTS.md, assumptions visible.
@@ -92,18 +102,23 @@ Opt-in additions — create only when the trigger is real:
 ## Step 4: The working loop (per feature/task)
 
 1. **Plan** — non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`
-   (e.g. `2026-08-02-001-feat-t030-predicate-compiler-plan.md`). Plans referenced from
-   tasks.md are tracked in git — never gitignored (the reference project tried, reverted same day).
+   (e.g. `2026-08-02-001-feat-t-030-predicate-compiler-plan.md`). Plans referenced from
+   tasks.md are tracked in git — never gitignored.
    For features past 001, check the new spec against existing specs for conflicts and
    shared boundaries before planning.
 2. **Implement** — small verifiable tasks; commit subjects reference IDs
-   (`T029: predicate registry…`, `fix(t030): resolve the material findings…`).
+   (`T-029: predicate registry…`, `fix(T-030): resolve the material findings…`).
 3. **Review** — run an independent review (second model or fresh agent). Findings get IDs
    (`R-001…`), material ones get a remediation plan in `docs/plans/`, resolution commits
-   cite the IDs. **Do not commit raw review records** — the reference project committed one and removed
-   it the next commit; findings live in the remediation plan and commit messages.
+   cite the IDs. **Do not commit raw review records** — findings live in the remediation
+   plan and commit messages.
 4. **Update docs in the same change** — specs, ADRs, and contracts affected by the code
    change move with it, not in a later sweep.
+
+## Report
+
+End the scaffold run with a report: the paths created, merged, skipped, and blocked,
+plus whether the MVP is ready to plan or code.
 
 ## Retrofitting an existing project
 
@@ -125,13 +140,3 @@ the user picks:
 - `valcraft:hone` on the pre-existing agent-instruction files (CLAUDE.md, AGENTS.md).
 - `valcraft:msw` on each planning document the user imports into `docs/plans/` or
   `specs/`.
-
-## Deliberately omitted (don't add back without cause)
-
-From the source template, dropped after practice on the reference project:
-
-- ISO/IEEE standards references and document-lifecycle machinery — a `status:` line in
-  frontmatter is enough.
-- The 20-section spec/design templates — actors tables, analytics, rollout constraints,
-  state models are opt-in sections listed inside the lean templates.
-- Committing the starter template into the project repo — the skill is its durable home.

@@ -4,10 +4,11 @@
     {
       "id": 1,
       "name": "support-bot-dedupe",
-      "prompt": "/valcraft:hone — here's the system prompt for my support bot, tighten it up:\n\nYou are a helpful, friendly, empathetic customer support agent. Always be concise. Always think step by step before answering. Be concise and keep answers short. NEVER make up information. ALWAYS ask the user for permission before doing anything. Before taking any action, ask first. If the user asks a question, answer it helpfully. Remember to always be polite and friendly and never rude. Explain your reasoning in your response so the user can follow your thought process.",
-      "expected_output": "A refined prompt that deduplicates the repeated conciseness/ask-first/friendly instructions, replaces 'be concise' with a what-to-include priority order, replaces 'friendly/empathetic' with concrete writing choices, replaces the blanket ask-first with a tiered autonomy policy, removes 'think step by step', and (for Claude targets) removes or flags the 'explain your reasoning in your response' line as a reasoning_extraction refusal risk with a Codex-vs-Claude note.",
+      "prompt": "/valcraft:hone — here's the system prompt for my support bot, tighten it up (no need to distill first, just refine it):\n\nYou are a helpful, friendly, empathetic customer support agent. Always be concise. Always think step by step before answering. Be concise and keep answers short. NEVER make up information. ALWAYS ask the user for permission before doing anything. Before taking any action, ask first. If the user asks a question, answer it helpfully. Remember to always be polite and friendly and never rude. Explain your reasoning in your response so the user can follow your thought process.",
+      "expected_output": "Refine mode without a mode or distill question (the request answers both): a refined prompt that deduplicates the repeated conciseness/ask-first/friendly instructions, replaces 'be concise' with a what-to-include priority order, replaces 'friendly/empathetic' with concrete writing choices, replaces the blanket ask-first with a tiered autonomy policy, removes 'think step by step', and (for Claude targets) removes or flags the 'explain your reasoning in your response' line as a reasoning_extraction refusal risk with a Codex-vs-Claude note.",
       "files": [],
       "assertions": [
+        "No distill question asked — the request already declines it",
         "Conciseness instruction appears at most once and specifies what a short answer must include, not just 'be concise'",
         "'Think step by step' instruction removed",
         "Tone labels (friendly/empathetic/polite) replaced with concrete writing choices",
@@ -20,32 +21,34 @@
     {
       "id": 2,
       "name": "claude35-skill-modernize",
-      "prompt": "Refine this skill for current models, it was written for Claude 3.5: ~/dev/example/skills/report-writer/ — it has a SKILL.md with 40 numbered steps telling the model exactly how to open files, read them, think about them, double-check its work, and apologize if it makes mistakes.",
-      "expected_output": "In-place edit of the skill directory: prescriptive competence-spelling steps pruned to the real workflow contract, self-critique replaced with verifier guidance where relevant, each instruction stated once, a change→guideline report, and flagged judgment calls rather than silent deletion of possibly load-bearing steps.",
-      "files": [],
+      "prompt": "Refine the skill at evals/files/report-writer/ for current models — it was written for Claude 3.5, with 40 numbered steps telling the model exactly how to open files, read them, think about them, double-check its work, and apologize if it makes mistakes. Yes, run the distill pass first.",
+      "expected_output": "Refine mode with the distill pass accepted: distill's deletion-test analysis runs over the already-read target and its deletions are applied to the target in place as the first refinement pass, attributed to distill in the change report. Then guide-based refinement: prescriptive competence-spelling steps pruned to the real workflow contract, self-critique replaced with verifier guidance where relevant, each instruction stated once, a change→guideline report, and flagged judgment calls rather than silent deletion of possibly load-bearing steps.",
+      "files": ["evals/files/report-writer/SKILL.md"],
       "assertions": [
-        "Numbered procedural steps reduced by at least half (fixture has 40)",
+        "The distill pass runs first and its deletions are applied in place, attributed to distill in the change report",
+        "Mechanical competence steps are removed; every surviving numbered step maps to a workflow requirement, output contract, safety rule, or measured model-specific need",
         "Apology instructions removed",
-        "Mechanical competence steps (open/read/re-read/verify-word-by-word) removed",
         "'Explain your reasoning step by step in your final response' removed or flagged as a Claude reasoning_extraction refusal risk",
         "Frontmatter name 'report-writer' and the Summary/Progress/Blockers output contract preserved",
-        "SKILL.md edited in place (inputs copy differs from the original fixture)",
+        "The reports/ save path survives",
+        "SKILL.md edited in place (the result differs from the original fixture)",
         "Change report maps changes to motivating guidelines"
       ]
     },
     {
       "id": 3,
       "name": "codex-agents-md",
-      "prompt": "I have an AGENTS.md for our Codex CI agent that keeps stopping to ask for approval on safe read-only steps, and its answers got weirdly terse after we moved to gpt-5.6. Can you apply the current prompting best practices to it?",
-      "expected_output": "Codex-targeted refinement: consolidates scattered ask-first fragments into the single three-tier autonomy policy naming safe local actions, audits/removes stale 'be concise' lines (GPT-5.6 is more concise by default), moves generic length steering toward text.verbosity with task-specific content in the prompt, and reports each change with its motivating guideline.",
-      "files": [],
+      "prompt": "The AGENTS.md at evals/files/codex-agents/AGENTS.md drives our Codex CI agent. It keeps stopping to ask for approval on safe read-only steps, and its answers got weirdly terse after we moved to gpt-5.6. Apply the current prompting best practices to it — don't bother distilling first.",
+      "expected_output": "Codex-targeted refinement with the distill offer declined: consolidates the scattered ask-first fragments into the single three-tier autonomy policy naming safe local actions, audits/removes stale 'be concise' lines (GPT-5.6 is more concise by default), removes 'generate several candidate fixes' and 'use tools when appropriate', keeps the scope contract intact, notes text.verbosity as the Responses API length control where the caller controls that configuration, and reports each change with its motivating guideline.",
+      "files": ["evals/files/codex-agents/AGENTS.md"],
       "assertions": [
+        "No distill pass runs — the request declines it",
         "Scattered ask-first rules consolidated into a single tiered autonomy policy that names safe local actions (reading logs/files, running tests) as no-approval",
         "'Be concise / keep it short' repetitions removed; at most one length instruction, phrased as what to include",
         "'Generate several candidate fixes' removed (GPT-5.6 guidance: don't prompt for candidate generation)",
         "'Use tools when appropriate' removed (restates default behavior)",
-        "Scope contract preserved (never push to main, open a PR, allowed paths)",
-        "text.verbosity mentioned as the API-level length control in the refined file or the change report",
+        "Scope contract preserved (never push to main, PR-only, src/ and test/ paths, no CI-config edits)",
+        "text.verbosity mentioned as the Responses-API-level length control in the refined file or the change report",
         "Refined AGENTS.md has fewer words than the original"
       ]
     }

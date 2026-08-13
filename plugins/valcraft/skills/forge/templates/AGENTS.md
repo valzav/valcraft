@@ -45,7 +45,7 @@ For instructions, prompts, safety rules, and error messages:
 
 ## Architecture constraints
 
-<Only real, binding constraints — 3 to 6 lines. Examples:>
+<Only real, binding constraints. Examples:>
 
 - Business logic must not depend on UI components.
 - Database access goes through <the established boundary>.
