@@ -13,6 +13,10 @@ Require all of the following before feature intake:
 - a readable `specs/` directory; and
 - exactly one `spec_issue` mapping in every existing `spec.md` frontmatter.
 
+Read root `AGENTS.md` and resolve its tracker declaration before running `git remote`,
+listing remotes, or performing any GitHub-readiness check. When it resolves to `local`,
+do not inspect remote or GitHub state.
+
 Reject any `tracker` or `spec_issue` field in an existing `tasks.md`. Reject a missing,
 duplicate, or invalid `spec_issue` mapping in `spec.md`. Direct either repository through
 Forge retrofit before accepting another feature. Do not parse obsolete task metadata as
@@ -23,7 +27,8 @@ A local spec mapping is exactly `spec_issue: null`. A GitHub spec mapping is
 project tracker.
 
 `AGENTS.md` alone owns the project tracker and GitHub target. Each `spec.md` owns its
-spec-issue mapping. Each `tasks.md` owns T-ID-to-task-issue mappings only.
+spec-issue mapping. Each `tasks.md` owns T-ID-to-task-issue mappings only. Do not restate
+the tracker mode or GitHub repository target in task frontmatter, headings, or prose.
 
 ## Validate staged features and IDs
 
@@ -107,7 +112,14 @@ by recency or directory number.
 
 Use the canonical `spec.md` to propose the missing next artifact. Present the exact local
 mutation and wait for approval before creating `design.md` or `tasks.md`. Create only the
-approved missing file. Never regenerate or overwrite an existing artifact.
+approved missing file. Then repeat for the next missing artifact until the triplet is
+complete or the operator withholds approval. Never regenerate or overwrite an existing
+artifact.
+
+Preserve unresolved product questions in the proposed artifacts without inventing an
+answer. Such a question blocks the final implementation-ready verdict unless the operator
+resolves it or explicitly accepts the uncertainty. It does not block creation of the
+missing design or task artifact.
 
 Call a feature implementation-ready only when:
 

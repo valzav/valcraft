@@ -58,7 +58,9 @@ Resolve the mode before inspecting GitHub readiness:
 
 - For a fresh project, use the operator's explicit choice. If the operator gives no
   preference, propose `local`; approval of that scaffold selects it.
-- For a retrofit, inspect the root `AGENTS.md` before any GitHub readiness. Preserve its
+- For a retrofit, make the root `AGENTS.md` the first tracker-related read. Read it before
+  running `git remote`, listing remotes, or performing any other GitHub-readiness check.
+  Do not bundle remote discovery into general repository inspection. Preserve its
   mode only when it contains exactly one valid `project_tracker: local` or
   `project_tracker: github` declaration. If the declaration is missing, duplicated, or
   invalid, require an explicit operator choice and include the exact correction in the
@@ -67,6 +69,14 @@ Resolve the mode before inspecting GitHub readiness:
   task-level `tracker` or `spec_issue` field. Propose the mode-appropriate `spec_issue`
   mapping in every spec that lacks one. Do not copy obsolete task metadata into a spec or
   keep a compatibility parser.
+- When legacy `tasks.md` exists without `spec.md` or `design.md`, include both missing
+  canonical artifacts in the retrofit proposal. Populate them from the product brief,
+  existing task definitions, and repository facts. Preserve stable feature and requirement
+  IDs that the tasks already cite. Record unsupported behavior as assumptions, open
+  questions, or `TBD`; do not invent an answer. An unresolved answer can block
+  implementation readiness, but it does not by itself block the approved normalization.
+  Stop only when the available evidence cannot identify one coherent feature without
+  fabricating its core product intent.
 
 Once the proposal resolves to `local`, do not inspect git remotes, `gh`, GitHub
 authentication, or repository readiness. Those facts cannot change the selected mode or
@@ -194,9 +204,12 @@ Apply the selected tracker mode throughout the loop:
 
 Before allocating a later feature, validate existing feature IDs and stages through
 `references/spec-intake.md`. Resume a staged feature when selected. If several features
-are staged, ask the operator which one to resume. Propose each missing `design.md` or
-`tasks.md` from the canonical spec, wait for approval, and create only that missing file.
-Preserve the spec's existing `spec_issue` mapping.
+are staged, ask the operator which one to resume. From the canonical spec, propose the
+next missing artifact, wait for approval, and create only that artifact. Repeat this
+proposal-and-approval cycle for every remaining missing artifact. An unresolved product
+question affects the final implementation-readiness verdict; it does not stop Forge from
+proposing substantive `design.md` and `tasks.md` files that preserve the question without
+inventing an answer. Preserve the spec's existing `spec_issue` mapping.
 
 1. **Plan** — non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`
    (e.g. `2026-08-02-001-feat-t-030-predicate-compiler-plan.md`). Plans referenced from
