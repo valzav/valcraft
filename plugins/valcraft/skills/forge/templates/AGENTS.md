@@ -79,13 +79,16 @@ Before creating or changing remote state:
    missing or invalid.
 2. Reuse one matching issue. Create an issue when no match exists. Stop when multiple
    issues match one feature ID or T-ID.
-3. Inventory the spec issue's sub-issues before creating task issues. Write each
-   successfully resolved issue number to `tasks.md` immediately so a retry can recover
-   from a partial run.
+3. Inventory the spec issue's sub-issues before creating task issues. Stage any missing
+   or corrected issue-number mappings as proposed local changes. Do not write them during
+   reconciliation.
 4. Compute a mutation preview. Name the exact host, repository, visibility, and planned
-   local and remote changes.
-5. Wait for operator approval before applying the preview. Discard the approval and
-   present a new preview if the target or mutation set changes.
+   local and remote changes, including an approved target declaration that replaces
+   `github_repository: TBD`.
+5. Wait for operator approval before applying the preview. After approval, write each
+   adopted or created issue number as soon as that operation succeeds so a retry can
+   recover from a partial run. Discard the approval and present a new preview if the
+   target or mutation set changes.
 
 Synchronization may replace generated titles and bodies, sub-issue order, and
 blocked-by relationships. It must preserve open or closed state, status labels, and

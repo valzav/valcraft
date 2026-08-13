@@ -138,13 +138,15 @@ Before activating the GitHub tracker:
 3. Reconcile existing spec and task issues by stable feature and T-ID markers before
    proposing creation. Stop on duplicate matches.
 4. Present the exact host, repository, visibility, and mutation preview. Include label,
-   issue, sub-issue order, dependency, closure, and local-reference changes that apply.
+   issue, sub-issue order, dependency, closure, `github_repository`, and local-reference
+   changes that apply.
 5. Wait for approval before any outward mutation. Bind every operation to the approved
    host and repository. Discard approval and present a new preview if the target or
    mutation set changes.
 
 If preflight cannot prove any required condition, keep activation pending, name the
-blocker, and make no outward mutation. Preflight reads do not authorize writes.
+blocker, and make no outward mutation. Preflight and reconciliation reads do not authorize
+local or remote writes.
 
 After any partial mutation failure, stop. Report completed local and remote operations
 separately, leave activation pending when it is not complete, and require reconciliation
