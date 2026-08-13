@@ -59,15 +59,12 @@ claude --plugin-dir ~/dev/valcraft/plugins/valcraft
 /reload-plugins
 ```
 
-Development follows the SDD loop: `specs/` for feature specs, designs, and tasks;
-`docs/plans/` for working plans; `AGENTS.md` for agent instructions.
-
 ## Repository structure
 
 - `.claude-plugin/marketplace.json` — marketplace manifest.
 - `plugins/valcraft/` — the plugin: Claude Code manifest, portable Agent Plugins manifest,
   and `skills/<skill>/SKILL.md`. Only this subtree ships to consumers.
-- `specs/`, `docs/plans/` — development scaffold; never installed.
+- `docs/`, `AGENTS.md` — repository documentation and agent instructions; never installed.
 
 ## Packaging
 

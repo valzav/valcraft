@@ -6,19 +6,15 @@
   consumer's plugin cache on install; everything outside it is development scaffold.
 - `plugins/valcraft/skills/<skill>/SKILL.md` — one directory per skill, with its own
   `references/`, `templates/`, or `evals/` beside it.
-- `specs/` — feature behavior (`spec.md`), technical design (`design.md`), ordered
-  implementation tasks (`tasks.md`).
-- `docs/plans/` — working plans, tracked in git.
+- `docs/` — repository documentation.
 
-Read the docs relevant to your change before modifying a skill or a manifest. On conflict,
-accepted ADRs prevail, then `specs/`, then derived `docs/`. Do not invent missing
-requirements — record assumptions and open questions in the relevant spec, and
-consequential technical decisions as ADRs under `docs/architecture/adr/`.
+Read the docs relevant to your change before modifying a skill or a manifest. Do not
+invent missing requirements — ask, or record the assumption in the change.
 
 ## Writing standard
 
-Use these rules for documentation, specifications, ADRs, plans, skill instructions, code
-comments, reviews, issues, commit messages, and PR text.
+Use these rules for documentation, plans, skill instructions, code comments, reviews,
+issues, commit messages, and PR text.
 
 - Write for quick and unambiguous reading.
 - Preserve precise terms, necessary qualifiers, and natural English.
@@ -74,10 +70,9 @@ and JSON.
 
 ## Change discipline
 
-- Product intent lives in `spec.md`; implementation detail in `design.md`.
-- Reference requirement and task IDs (`FR-`, `AC-`, `T-`) from commits and tests.
-- Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.
-- Update affected specs, ADRs, and docs in the same change as the skill edit.
+- Non-trivial work starts with a plan; working plans live in `.local/plans/`
+  (gitignored), not in the repository.
+- Update affected docs in the same change as the skill edit.
 - Renaming a skill directory changes its invocation string. Update the skill's `name:`
   field, every self-reference in its description and body, and the README table together.
 
@@ -88,5 +83,5 @@ Before marking work complete:
 1. Load the changed skill in a `--plugin-dir` session and confirm it appears under the
    `valcraft:` namespace and triggers.
 2. Validate `plugins/valcraft/plugin.json` against the published schema if it changed.
-3. Update affected specifications, designs, and ADRs.
+3. Update affected docs.
 4. Confirm no secret material was added.
