@@ -112,6 +112,9 @@ Opt-in additions — create only when the trigger is real:
 
 ### GitHub tracker activation
 
+Read `references/github-tracker.md` before any GitHub preflight, activation,
+synchronization, or retry. Follow its explicit-target commands and reconciliation order.
+
 Treat selection and activation as separate decisions. Selecting `github` without a remote
 still creates the approved local scaffold with pending declarations. Do not create a
 repository, add a remote, or make any outward write unless the operator separately asks
