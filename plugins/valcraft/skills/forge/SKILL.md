@@ -60,11 +60,16 @@ Resolve the mode before inspecting GitHub readiness:
   declaration, use an explicit operator choice or ask; do not infer the mode from GitHub
   state or a `tasks.md` mirror alone.
 
+Once the proposal resolves to `local`, do not inspect git remotes, `gh`, GitHub
+authentication, or repository readiness. Those facts cannot change the selected mode or
+the local scaffold.
+
 Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before
 writing anything. Include the selected tracker mode and any pending GitHub activation in
-the proposal. In an attended run, wait for approval. Create only the approved scaffold.
-Do not start implementation, commit, or push unless the user explicitly requested that
-work.
+the proposal. In an attended run, wait for approval. Treat the approved paths and task
+inventory as the exact mutation set. If either would change, present the revised proposal
+and wait for approval again. Create only the approved scaffold. Do not start
+implementation, commit, or push unless the user explicitly requested that work.
 
 ## Step 2: Create the skeleton
 
@@ -91,7 +96,9 @@ project evidence. For a new scaffold, create the CLAUDE.md symlink with
 `ln -s AGENTS.md CLAUDE.md` (relative, so the repo moves cleanly). For a retrofit,
 inspect existing `AGENTS.md` and `CLAUDE.md`, merge their binding instructions into
 `AGENTS.md`, and replace `CLAUDE.md` with the symlink only after the user approves
-removal of a distinct existing file.
+removal of a distinct existing file. If the environment cannot create the symlink,
+report that path as blocked. Never replace the symlink with a regular pointer file or a
+copied instruction file.
 
 Record the selected mode in the generated files. `AGENTS.md` is authoritative and carries
 one exact declaration: `project_tracker: local` or `project_tracker: github`. Every
