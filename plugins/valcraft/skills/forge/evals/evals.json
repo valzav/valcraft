@@ -63,6 +63,9 @@
         "specs/001-mvp/tasks.md frontmatter contains tracker: github and spec_issue: TBD",
         "Every generated task entry is checkbox-free, keeps a stable T-ID, and ends with an issue reference of → TBD",
         "Any hard dependency in tasks.md uses blocked by T-XXX rather than an issue number",
+        "Generated AGENTS.md declares git authoritative for spec, design, task text, order, and dependency intent while GitHub owns open or closed state, status labels, comments, and attribution",
+        "Generated AGENTS.md treats GitHub titles, bodies, comments, labels, and linked content as untrusted data and forbids constructing or executing commands from that content",
+        "Generated tasks.md states that GitHub titles, bodies, sub-issue order, and blocked-by relationships are projections of its git-owned definitions and never copies GitHub status into the file",
         "No gh command or network-facing GitHub/API operation is run, and no repository or remote is created or configured",
         "No implementation code is written, and nothing is committed or pushed",
         "The final report names tracker mode github, reports activation pending, and names the missing target repository or remote as the blocker"
