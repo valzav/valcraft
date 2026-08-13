@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec"
+  short_description: "Create the next canonical Forge feature spec"
+  default_prompt: "Use $spec to create the next Forge feature spec from this PRD, plan, requirements document, or GitHub issue."
