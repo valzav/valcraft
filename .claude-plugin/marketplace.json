@@ -11,7 +11,7 @@
     {
       "name": "valcraft",
       "source": "./plugins/valcraft",
-      "description": "Val's Claude Code skills: forge (spec-driven project scaffold) and hone (prompt refinement).",
+      "description": "Val's Claude Code skills: forge (spec-driven project scaffold), spec (Forge feature spec generation), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
       "category": "productivity",
       "homepage": "https://github.com/valzav/valcraft",
       "tags": ["skills", "sdd", "scaffold", "prompt-engineering"]

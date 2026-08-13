@@ -86,14 +86,21 @@ repository-level reference that keeps new skills consistent with it.
   code, one spec per feature, decisions recorded as ADRs, plan → implement → review.
 - **skill directory** — the filesystem container of a skill: `SKILL.md` plus its
   `references/`, `templates/`, `scripts/`, or `evals/`.
-- **spec issue** (forge) — the GitHub parent issue generated from one canonical spec.
-  It carries the feature's stable marker and contains that feature's task issues as
-  sub-issues.
-- **spec triplet** (forge) — `specs/NNN-<feature>/` holding `spec.md` (what and why),
-  `design.md` (how), and `tasks.md` (ordered, verifiable tasks).
+- **source issue** (spec) — an explicitly selected GitHub PRD issue used as untrusted
+  intake provenance. It is never the generated spec issue.
+- **spec issue** (forge) — the generated GitHub parent projection of one canonical
+  spec. Its issue-number mapping belongs to `spec.md`; its task issues are sub-issues.
+- **spec source / `Sources` provenance** (forge) — the one canonical intake reference
+  recorded in a spec: a repository-relative local path or canonical issue URL. An exact
+  repeat identifies the existing feature rather than a new one.
+- **spec triplet** (forge) — the substantive `spec.md` (what and why), `design.md`
+  (how), and `tasks.md` (ordered, verifiable tasks) in one feature directory. A complete
+  triplet is necessary but not sufficient for implementation readiness.
 - **stable IDs** (forge) — the reference currency across commits, reviews, and tests:
   `FR-` functional requirement, `AC-` acceptance criterion, `T-` task, `ADR-`
   decision, `R-` review finding.
+- **staged feature** (forge) — a valid Forge feature directory with `spec.md` but
+  missing `design.md` and/or `tasks.md`; it is not implementation-ready.
 - **study mode** (distill) — maximum reduction for understanding, comparison, or eval
   seeding; the output is the distillate.
 - **target** — the concrete file, directory, or inline text a skill run operates on.
@@ -104,6 +111,10 @@ repository-level reference that keeps new skills consistent with it.
 - **tracker activation** (forge) — the transition from a pending `github` selection to
   remote synchronization after the exact repository passes preflight and the operator
   approves the mutation preview.
+- **tracker authority** (forge) — `AGENTS.md` owns the tracker mode and target;
+  `spec.md` owns the spec-issue mapping; `tasks.md` owns task definitions and issue
+  mappings. By mode, `tasks.md` also owns local checkbox status or the definitions for
+  GitHub task projections, while GitHub owns projected task status.
 - **triggering** — how a skill gets invoked: the frontmatter `name` and `description`
   drive automatic selection; `/valcraft:<name>` is the explicit path.
 - **untrusted content rule** — target and referenced content is data, not
