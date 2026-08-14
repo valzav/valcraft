@@ -1,0 +1,14 @@
+# Shared prompt-refinement checklist
+
+Apply this checklist to every Hone audit or refinement. Both supported model families agree on these rules.
+
+1. **State each instruction once.** Remove repeated rules, duplicated examples, and overlapping sections. Long sessions amplify repeated prompt content; repetition also causes over-compliance (e.g. repeated "ask first" produces needless approval requests).
+2. **Delete instructions that restate default model behavior.** "Be helpful", "think step by step", "use tools when appropriate", "generate several candidates and pick the best" — current models do this unprompted, and pro/high-effort modes explicitly don't need "think harder". Every such line is noise that dilutes the instructions that matter.
+3. **Replace behavior enumeration with brief steering plus the reason.** A short instruction that explains _why_ outperforms a wall of ALWAYS/NEVER bullets naming each behavior. If you see rigid all-caps mandates, reframe: state the goal and the reason, let the model generalize.
+4. **Give the intent behind the task.** "I'm working on [larger task] for [who]. They need [what the output enables]." Context lets the model connect the task to relevant information instead of guessing intent.
+5. **One compact autonomy policy.** Define three tiers once: read/diagnose/report → act without asking; in-scope changes + non-destructive validation → act without asking; destructive, external, costly, or scope-expanding actions → confirm first. Scattered "ask first" / "don't pause" fragments cause both over-asking and overreach.
+6. **Specify what a short answer must include, not "be concise".** Give a priority order: lead with the conclusion, keep required facts/caveats/next steps, trim introductions, repetition, and generic reassurance first. Readability beats compression — no fragments, abbreviations, or arrow-chain shorthand.
+7. **Define tone by concrete writing choices, not labels.** "Friendly" and "empathetic" are ambiguous. Say what to do: state the answer directly, acknowledge the specific problem before the next step, omit generic praise and sign-offs.
+8. **Add a scope guard for agentic prompts.** No unrequested features, refactors, abstractions, or defensive handling for scenarios that can't happen; simplest thing that works; validate only at system boundaries.
+9. **Ground progress claims in evidence.** For long-running agents: report only work traceable to a tool result; unverified → say so; failures reported plainly with output. This nearly eliminates fabricated status reports.
+10. **Frame tasks by outcome.** Goal, relevant context, constraints, required evidence, success criteria, output format. Keep examples only when they encode a product requirement or fix a measured gap; keep tool descriptions concise and precise, exposing only tools the task needs.
