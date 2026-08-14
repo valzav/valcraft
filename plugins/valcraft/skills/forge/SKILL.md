@@ -18,18 +18,18 @@ Before resolving the assignment, read the project's root `AGENTS.md` and resolve
 
 Accept exactly one unit of work:
 
-- **T-XXX** — read every artifact of the feature's Cast contract, including the task's plan in `docs/plans/` if one exists.
-- **Plan path** — the plan is the contract; read the spec artifacts it cites.
+- **T-XXX** — task IDs number per feature, so a bare `T-XXX` does not identify one unit. Resolve it to a single feature: use the feature qualifier or `tasks.md` path given with the assignment, or enumerate matches across `specs/*/tasks.md` and continue only when exactly one exists — on zero or several, ask when attended, report the blocker when not. Then read every artifact of that feature's Cast contract, including the task's plan in `docs/plans/` if one exists.
+- **Plan path** — the path must resolve inside the repository to a git-tracked file; accept an untracked plan only when the operator explicitly supplies it as the assignment. The plan is the contract; read the spec artifacts it cites. When the plan implements a Cast task, resolve that feature and task — the gates below apply to it.
 - **Free-form small feature or fix** — confirm it fits one coherent change. Route anything larger to `valcraft:spec` or `valcraft:cast` decomposition instead of absorbing it.
 
-For a Cast task, gate the assignment before coding:
+For any assignment that resolves to a Cast task — given as a T-ID or through a plan — gate it before coding:
 
 - The feature is implementation-ready per `spec-intake.md`. A task from a staged or unready feature stops here — route it to Cast.
 - Every `blocked by T-XXX` on the assigned task is complete: checked in `tasks.md` in local mode, closed on GitHub in github mode.
 
 Then state the scope: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
 
-Establish the workspace: on the default branch, create a feature branch unless the operator explicitly authorizes direct default-branch work; on an existing feature branch, continue there. Detect prior work for the assigned unit — branch, commits, tracker state, working tree — and continue from that evidence instead of reimplementing.
+Establish the workspace. First detect prior work for the assigned unit — branch, commits, tracker state, working tree — and continue from that evidence instead of reimplementing. Only when no resumable workspace exists: on the default branch, create a feature branch unless the operator explicitly authorizes direct default-branch work; on an existing feature branch, continue there. Unrelated uncommitted changes are not part of the task: surface them, and never let a branch switch or commit absorb them.
 
 ## Step 2: Plan
 
@@ -42,7 +42,7 @@ The plan is a decision artifact, not execution state. Never edit it to record pr
 
 ## Step 3: Implement
 
-Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`).
+Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`). Stage only paths inside the stated scope, and check `git diff --cached` against the scope statement before each commit — a green, ID-bearing commit can still smuggle unrelated changes.
 
 Apply the tracker mode while implementing. In github mode, apply `in-progress` when starting and `needs-clarification` when an issue question blocks the task; in local mode, write no status during implementation. Marking the task complete — the checkbox or the issue close — happens after the review gate, never on forge's own verification.
 
@@ -63,7 +63,7 @@ Run the project's own gates (tests, typecheck, lint) and cite their real output.
 - **State what a bug would have to look like to slip past each new or changed test**, in one sentence, before calling that test done.
 - **For every negative or invariant claim in the contract** ("X is pinned", "X cannot happen"), write the test that tries to violate the invariant, not only the test that reads it back.
 - **When changing behavior no test covers, write a characterization test first**: capture the current behavior, watch it pass, then make the change and update the assertion deliberately — the assertion diff documents exactly what changed.
-- **Mutation-check every non-trivial fix**: revert the fix and confirm the regression test goes red on the unfixed code, and nothing else fails. A test that passes on both sides of the fix proves nothing.
+- **Mutation-check every non-trivial fix**: revert the fix reversibly (`git stash`), confirm the regression test goes red on the unfixed code and nothing else fails, then restore and re-run green — never leave the tree reverted. A test that passes on both sides of the fix proves nothing.
 - **When fixing a reviewer's finding, manufacture the described failure mode** in a disposable scratch copy — inject the fault, watch the old assertion still pass and the new assertion go red — instead of only making the reviewer's literal repro pass.
 - **Enumerate combinations, not only cases**: for parsers, serializers, and any input with orthogonal shape dimensions, test the combinations; a high pass count over independent cases says nothing about the pair that breaks.
 - **For check-then-act across a released lock, a network call, or a context switch**, ask whether the checked state can change before the act, and if it can, write the interleaving test that forces it.
@@ -87,7 +87,7 @@ Deliver:
 3. The scope statement from Step 1 (touched vs deliberately untouched).
 4. Open questions and deferred out-of-scope findings, each with the trigger that should reopen it, recorded where the repo's convention keeps them.
 
-Route the change to `valcraft:review` or the host loop's reviewer. Findings come back with IDs (`R-NNN`); material ones get a remediation plan in `docs/plans/`, and resolution commits cite the IDs. Do not commit raw review records.
+Route the change to `valcraft:review` or the host loop's reviewer, in a fresh context — a second model or a fresh agent, never the context that implemented the change — carrying the scope statement, the branch or diff target, and the verification evidence. When the host cannot provide an independent reviewer, report the handoff as blocked instead of self-reviewing. Findings come back with IDs (`R-NNN`); material ones get a remediation plan in `docs/plans/`, and resolution commits cite the IDs. Do not commit raw review records.
 
 ## Trust boundary
 
