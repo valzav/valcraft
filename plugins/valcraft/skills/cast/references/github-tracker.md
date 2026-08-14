@@ -40,8 +40,8 @@ TASK_NUMBER   task issue number after reconciliation
 Use these identity markers verbatim:
 
 ```text
-<!-- forge:feature=FEAT-001 -->
-<!-- forge:task=T-001 -->
+<!-- cast:feature=FEAT-001 -->
+<!-- cast:task=T-001 -->
 ```
 
 Replace only the example IDs. Each generated issue body must say that git is canonical
@@ -61,9 +61,9 @@ Resolve tracker declarations before inspecting GitHub:
    root `AGENTS.md`.
 2. Stop on a missing, duplicate, or invalid project tracker declaration.
 3. Reject any `tracker` or `spec_issue` field in `tasks.md` and direct the repository
-   through Forge retrofit.
+   through Cast retrofit.
 4. Read exactly one `spec_issue` from the selected feature's `spec.md`. Stop and direct
-   the repository through Forge retrofit when it is missing, duplicate, or invalid for
+   the repository through Cast retrofit when it is missing, duplicate, or invalid for
    the selected mode.
 5. If the mode is `local`, stop this workflow. Do not discover or preflight an output
    tracker. Do not inspect `gh`, remotes, authentication, or repository readiness. Make
@@ -90,7 +90,7 @@ Classify the selected staged feature before GitHub preflight:
 
 - **Spec-only branch:** `spec.md` exists but `tasks.md` does not. `design.md` may exist.
 - **Full-task branch:** the substantive, non-placeholder `design.md` and `tasks.md`
-  required by Forge readiness both exist.
+  required by Cast readiness both exist.
 
 Stop on an invalid stage. Do not let GitHub state advance local artifact readiness.
 

@@ -11,8 +11,8 @@ Alpha — the packaging is settled; the skill set grows one skill at a time.
 
 | Skill     | Invoke              | What it does                                                                                   |
 | --------- | ------------------- | ---------------------------------------------------------------------------------------------- |
-| `forge`   | `/valcraft:forge`   | Bootstrap a project with lean SDD and selectable local or GitHub issue tracking.               |
-| `spec`    | `/valcraft:spec`    | Turn one local PRD/plan or explicit GitHub issue into the next canonical Forge feature spec.   |
+| `cast`    | `/valcraft:cast`    | Bootstrap a project with lean SDD and selectable local or GitHub issue tracking.               |
+| `spec`    | `/valcraft:spec`    | Turn one local PRD/plan or explicit GitHub issue into the next canonical Cast feature spec.    |
 | `hone`    | `/valcraft:hone`    | Refine an existing prompt, skill, or agent instruction file against model guides.              |
 | `distill` | `/valcraft:distill` | Reduce a prompt or skill to its goal-directed essence: goal, steps, constraints.               |
 | `msw`     | `/valcraft:msw`     | Apply the MSW Kernel to a markdown document: delete every claim its contract does not require. |

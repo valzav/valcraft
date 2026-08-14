@@ -1,7 +1,7 @@
 # Feature spec intake
 
-Use this contract whenever Forge validates a scaffold, creates a feature, or resumes a
-staged feature. `spec.md` is canonical product intent. Forge remains the SDD authority.
+Use this contract whenever Cast validates a scaffold, creates a feature, or resumes a
+staged feature. `spec.md` is canonical product intent. Cast remains the SDD authority.
 
 ## Preflight the scaffold
 
@@ -19,7 +19,7 @@ do not inspect remote or GitHub state.
 
 Reject any `tracker` or `spec_issue` field in an existing `tasks.md`. Reject a missing,
 duplicate, or invalid `spec_issue` mapping in `spec.md`. Direct either repository through
-Forge retrofit before accepting another feature. Do not parse obsolete task metadata as
+Cast retrofit before accepting another feature. Do not parse obsolete task metadata as
 a compatibility source.
 
 A local spec mapping is exactly `spec_issue: null`. A GitHub spec mapping is
@@ -97,7 +97,7 @@ Allocate only after the scaffold, stages, IDs, and provenance pass validation.
 
 Create the directory and `spec.md` only when the final path is absent. Never append a
 suffix, overwrite a file, merge into a collision, reuse a gap, or mutate an existing
-feature through the creation path. The initial Forge scaffold is the exception to staged
+feature through the creation path. The initial Cast scaffold is the exception to staged
 creation: it creates and populates the complete `specs/001-mvp/` triplet.
 
 Set `spec_issue: null` for local mode. Set `spec_issue: TBD` for GitHub mode until an
