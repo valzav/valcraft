@@ -1,0 +1,119 @@
+{
+  "skill_name": "forge",
+  "evals": [
+    {
+      "id": 1,
+      "name": "blocked-dependency-stops-before-coding",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/blocked-task/, implement T-002 of specs/001-workspace-invites/.",
+      "expected_output": "Forge loads the Cast contracts, resolves project_tracker: local from the root AGENTS.md, and gates the assignment before coding. T-002 declares `blocked by T-001`, and T-001's checkbox in tasks.md is unchecked, so the dependency is not complete and forge stops and reports the blocker. It writes no implementation code, creates no test, makes no commit, and does not mark or unmark any checkbox. It does not implement T-001 on its own initiative to unblock itself, and it does not reinterpret the dependency as advisory ordering. The report names T-001 as the incomplete dependency and states that the local checkbox is the status authority in this mode.",
+      "files": [
+        "evals/files/blocked-task/AGENTS.md",
+        "evals/files/blocked-task/docs/product-brief.md",
+        "evals/files/blocked-task/specs/001-workspace-invites/spec.md",
+        "evals/files/blocked-task/specs/001-workspace-invites/design.md",
+        "evals/files/blocked-task/specs/001-workspace-invites/tasks.md"
+      ],
+      "assertions": [
+        "Forge reads the root AGENTS.md and resolves project_tracker: local before task work",
+        "Forge checks T-002's `blocked by T-001` annotation against T-001's status in tasks.md",
+        "Forge stops because T-001 is unchecked, and names T-001 as the incomplete dependency",
+        "No implementation file, test file, or commit is produced",
+        "No checkbox in tasks.md is marked or unmarked",
+        "Forge does not implement T-001 to unblock itself and does not treat the dependency as advisory ordering"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "unready-feature-routes-back-to-cast",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/unready-feature/, implement T-001 of specs/001-save-conflicts/.",
+      "expected_output": "Forge loads the Cast contracts and applies the implementation-readiness gate from the cast spec-intake reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior for AC-001. Forge stops, names both blockers, and routes the feature back to Cast to complete the design and resolve the product question. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
+      "files": [
+        "evals/files/unready-feature/AGENTS.md",
+        "evals/files/unready-feature/docs/product-brief.md",
+        "evals/files/unready-feature/specs/001-save-conflicts/spec.md",
+        "evals/files/unready-feature/specs/001-save-conflicts/design.md",
+        "evals/files/unready-feature/specs/001-save-conflicts/tasks.md"
+      ],
+      "assertions": [
+        "Forge applies the implementation-readiness gate from the cast spec-intake reference before writing code",
+        "The stop report identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
+        "The stop report identifies the unresolved question about the member's unsaved text as behavior-affecting for AC-001",
+        "Forge routes the feature back to Cast rather than completing the design itself",
+        "No implementation code, test, or commit is produced, and no design placeholder is filled in",
+        "No answer to the open product question is invented or assumed"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "implement-task-and-stop-at-review-gate",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/implement-local/, implement T-001 of specs/001-retention-windows/. This run is unattended.",
+      "expected_output": "Forge resolves the assignment, confirms the feature is implementation-ready, states its scope, and implements `parse_window` in src/retention.py exactly as design.md specifies: a positive whole number followed by `h` or `d` returns the equivalent whole seconds, and every other input raises ValueError, including an empty string, surrounding whitespace, a zero or negative count, a non-integer count, a missing unit, and an unknown unit. It adds unit tests in the existing `unittest` style of tests/test_validation.py covering each accepted unit and every rejection case named in AC-002, and runs the project's documented test command, citing the real output. It reports the evidence, including what a bug would have to look like to pass the new tests. It hands the change to review and stops at the review gate: it does not mark T-001's checkbox complete, does not declare the task done or shipped, and does not merge. Any commit it makes references T-001 and leaves the tests passing.",
+      "files": [
+        "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/docs/product-brief.md",
+        "evals/files/implement-local/specs/001-retention-windows/spec.md",
+        "evals/files/implement-local/specs/001-retention-windows/design.md",
+        "evals/files/implement-local/specs/001-retention-windows/tasks.md",
+        "evals/files/implement-local/src/validation.py",
+        "evals/files/implement-local/tests/test_validation.py"
+      ],
+      "assertions": [
+        "Forge states the scope — the files and tasks it will touch and the adjacent ones it leaves untouched — before implementing",
+        "src/retention.py defines parse_window, returning 2592000 for `30d` and 43200 for `12h`",
+        "parse_window raises ValueError for an empty string, surrounding whitespace, a zero or negative count, a non-integer count, a missing unit, and an unknown unit",
+        "New tests follow the existing unittest style in tests/test_validation.py and cover each rejection case named in AC-002",
+        "Forge runs the documented test command and cites its real output as evidence rather than asserting that tests pass",
+        "T-001's checkbox in tasks.md remains unchecked because completion follows the review gate",
+        "The run ends by handing the change to review; it does not declare the task shipped, close it, or merge",
+        "Any commit subject references T-001, and the tree is left with passing tests"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "undefined-behavior-stops-without-inventing",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/missing-requirement/, implement T-002 of specs/001-api-rate-limits/. This run is unattended.",
+      "expected_output": "Forge resolves the assignment and finds T-001 complete, so the dependency gate passes and the triplet is substantive. While preparing T-002 it finds that no authority states the allowance a workspace may consume in a window, nor what a refused request returns to the caller. The spec, design, tasks, and product brief are all silent, and there is no ADR. Forge does not invent a numeric allowance, a status code, or a response body, and does not copy a value from a comparable product. Because the run is unattended, it reports the blocker rather than asking, names the exact undefined decisions, and records them as open questions for the operator. It writes no implementation of the refusal path that depends on the undefined values and makes no commit claiming FR-002 or AC-002 is satisfied.",
+      "files": [
+        "evals/files/missing-requirement/AGENTS.md",
+        "evals/files/missing-requirement/docs/product-brief.md",
+        "evals/files/missing-requirement/specs/001-api-rate-limits/spec.md",
+        "evals/files/missing-requirement/specs/001-api-rate-limits/design.md",
+        "evals/files/missing-requirement/specs/001-api-rate-limits/tasks.md",
+        "evals/files/missing-requirement/src/rate_limits.py"
+      ],
+      "assertions": [
+        "Forge confirms T-001 is complete so the dependency gate is not the blocker",
+        "Forge identifies that no authority defines the per-workspace allowance for a window",
+        "Forge identifies that no authority defines what a refused request returns to the caller",
+        "No allowance value, status code, or response body is invented, defaulted, or borrowed from another product",
+        "Because the run is unattended, forge reports the blocker instead of asking a question and waiting",
+        "The undefined decisions are recorded as open questions naming exactly what must be decided",
+        "No commit is made claiming FR-002 or AC-002 is satisfied"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "accepted-adr-outranks-design",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/adr-precedence/, implement T-001 of specs/001-daily-digest/. This run is unattended.",
+      "expected_output": "Forge loads the Cast contracts, including accepted ADR-0001, and finds that design.md directs storing `send_at` as workspace-local wall-clock time while ADR-0001 requires every persisted timestamp to be stored in UTC with the timezone kept as a separate field. Cast's precedence resolves this: accepted ADRs prevail over specs/, so forge implements the UTC storage the ADR requires rather than the local-time storage the design describes, and does not stop the task. It surfaces the conflict explicitly in its report so design.md can be corrected, rather than silently following either authority. The stored timezone remains available so AC-002's workspace-timezone send time is still satisfiable. Forge stops at the review gate without marking T-001 complete.",
+      "files": [
+        "evals/files/adr-precedence/AGENTS.md",
+        "evals/files/adr-precedence/docs/product-brief.md",
+        "evals/files/adr-precedence/docs/architecture/adr/README.md",
+        "evals/files/adr-precedence/docs/architecture/adr/0001-store-timestamps-in-utc.md",
+        "evals/files/adr-precedence/specs/001-daily-digest/spec.md",
+        "evals/files/adr-precedence/specs/001-daily-digest/design.md",
+        "evals/files/adr-precedence/specs/001-daily-digest/tasks.md"
+      ],
+      "assertions": [
+        "Forge reads accepted ADR-0001 as part of the Cast contract for this task",
+        "Forge detects the conflict between design.md's local wall-clock storage and ADR-0001's UTC storage rule",
+        "Cast's precedence is applied: the accepted ADR prevails over the design, so the implementation stores UTC with the timezone as a separate field",
+        "Forge does not stop the task, because precedence resolves the conflict",
+        "The conflict is surfaced explicitly in the report so design.md can be corrected, rather than followed or ignored silently",
+        "The implementation still preserves the workspace timezone so AC-002 remains satisfiable",
+        "T-001's checkbox remains unchecked and the run ends at the review gate"
+      ]
+    }
+  ]
+}

@@ -4,6 +4,11 @@
 .claude/settings.local.json
 .claude/*.lock
 
+# Build artifacts from running the Python eval fixtures
+__pycache__/
+*.pyc
+.ruff_cache/
+
 # Secrets — references only, never values
 .env
 .env.*
