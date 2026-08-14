@@ -3,7 +3,7 @@ name: spec
 description: >
   Create the next canonical Forge feature spec from exactly one readable local PRD,
   plan, or requirements document, or one explicitly selected GitHub PRD issue. Use
-  when Val asks to create, write, or generate the next spec under specs/ from a PRD,
+  when user asks to create, write, or generate the next spec under specs/ from a PRD,
   plan, requirements document, or GitHub issue. Do not use for implementation,
   technical design-only work, editing an existing spec, or tracker-only synchronization.
 ---

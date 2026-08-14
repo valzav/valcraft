@@ -1,6 +1,6 @@
 # valcraft
 
-Val's Claude Code skills, distributed as a plugin marketplace. One marketplace, one plugin
+Reusable agent skills, distributed as a plugin marketplace. One marketplace, one plugin
 (`valcraft`), one directory per skill.
 
 ## Status
@@ -33,10 +33,6 @@ claude plugin install valcraft@valcraft
 Installing copies the plugin subtree into Claude Code's versioned cache
 (`~/.claude/plugins/cache/`); no clone of this repository is required to consume it.
 
-This repository is currently **private**, so the commands above need a GitHub account
-with read access — Claude Code clones it over SSH. Nothing else about the install path
-changes.
-
 ## Update
 
 Auto-update stays off for third-party marketplaces, so pull changes with the update pair:
@@ -55,7 +51,7 @@ Editing a skill in a clone does not affect installed sessions (the cache holds a
 For live editing, start a session against the plugin directory and reload after each edit:
 
 ```bash
-claude --plugin-dir ~/dev/valcraft/plugins/valcraft
+claude --plugin-dir /path/to/valcraft/plugins/valcraft
 # edit a SKILL.md, then in-session:
 /reload-plugins
 ```

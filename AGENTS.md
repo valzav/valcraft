@@ -39,7 +39,7 @@ For instructions, prompts, safety rules, and error messages:
 There is no build, no dependency install, and no test runner — the repository is markdown
 and JSON.
 
-- Develop a skill live: `claude --plugin-dir ~/dev/valcraft/plugins/valcraft`, then
+- Develop a skill live: `claude --plugin-dir /path/to/valcraft/plugins/valcraft`, then
   `/reload-plugins` after each edit.
 - Verify the portable manifest: validate `plugins/valcraft/plugin.json` against
   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json` with any JSON Schema
