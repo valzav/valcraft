@@ -76,6 +76,7 @@ Opt-in additions — create only when the trigger is real:
 | `docs/use-cases/uc-NNN-*.md`               | Product steering needs narrative scenarios (interview output)  |
 | `contracts/` + README                      | Real machine boundaries: public API, events, multiple services |
 | `specs/NNN-*/research.md`, `data-model.md` | A feature is complex enough to need them                       |
+| `docs/retro/`                              | Created by the first `valcraft:temper` retrospective report    |
 
 ### GitHub tracker activation
 
@@ -117,6 +118,8 @@ Before allocating a later feature, validate existing feature IDs and stages thro
 2. **Implement** — small verifiable tasks; commit subjects reference IDs (`T-029: predicate registry…`, `fix(T-030): resolve the material findings…`). `valcraft:forge` executes this step for one task, including its verification discipline and the hand-off to review.
 3. **Review** — run an independent review (second model or fresh agent); `valcraft:review` defines the review itself (plan mode and code mode). Findings get IDs (`R-001…`), material ones get a remediation plan in `docs/plans/`, resolution commits cite the IDs. **Do not commit raw review records** — findings live in the remediation plan and commit messages.
 4. **Update docs in the same change** — specs, ADRs, and contracts affected by the code change move with it, not in a later sweep.
+
+After a feature ships — or another milestone closes a body of work — optionally run `valcraft:temper` over it: the retrospective report lands in `docs/retro/`, and lessons that pass its promotion gate are proposed as standing rules for `AGENTS.md`.
 
 ### Trust boundary
 
