@@ -50,30 +50,11 @@ The verdict is exactly one of:
 
 ## Plan mode
 
-- **Cross-check the authorities against each other**, not only against the plan: a plan can sit consistently on a spec and a design that already contradict each other, or misattribute an ADR. Resolve contradictions by the precedence order above; report an unresolved contradiction between authorities as its own finding.
-- **For every requirement the plan claims to close, check its verification covers every shape the requirement names** — enumerate the requirement's own listed cases and match each to a test; the plan will otherwise verify the simplest one.
-- **Separate what the plan asserts from what it assumes about current system state** (fixture contents, "starts empty", "no prior rows"). Route assumptions to a live-data check demand, not to stronger prose — a hardened assertion on a false premise still fails.
-- **For every asserted invariant, trace "why would this test still pass if the property were false"** — reason through the scheduling/ordering/state contract the invariant depends on.
-- **Wherever the plan frames untrusted content with a boundary marker** — a delimiter string, a fixed prefix or suffix, a path root — ask whether content from that source can reproduce the boundary itself. "We'll validate later" does not close the question; the answer is a structural encoding decision made now.
-- **Trace each new failure mode through the actual dispatcher or handler code** before accepting the plan's prose about the outcome. "This becomes a skip" may in fact mark the item durably handled and lose it permanently.
-- **Any infrastructure or library claim the plan relies on** (a config flag works, a documented workaround is safe) must be tested empirically — by the plan or by you — not cited to documentation.
-- **Compare the plan's proposed work against the spec's goals and non-goals.** Work no requirement asks for is scope creep, and it hides best in a plan that is otherwise faithful.
-- **When the target is a feature spec, check its structural contract from `spec-intake.md`**: the directory number matches the frontmatter `id`, the `Sources` section holds exactly one canonical entry, and the `spec_issue` mapping matches the tracker mode.
-- **When the target is `tasks.md`, map every `FR-` and `AC-` — and every `NFR-` and `BR-` the spec declares — to at least one task that verifies it**, and check each `blocked by T-XXX` names an existing task — an unverified requirement is a gap regardless of how complete the task list looks.
-- **When the target completes the spec triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a material finding citing the readiness contract.
+Read `references/plan-mode.md` before reviewing. It owns the authority cross-check, requirement coverage, assumption, invariant, trust-boundary, empirical-claim, scope, structural-contract, and implementation-readiness checks for this mode.
 
 ## Code mode
 
-Preflight the target by normalizing it to a pinned base and head before diffing: a PR → its recorded base and head; a commit range `A..B` → A and B; a branch under review → its merge-base with the default branch, and the branch tip; a bare base ref → its merge-base with `HEAD`, and `HEAD`. Verify both resolve (`git rev-parse <base> <head>`), pin the diff (`git diff <base>...<head>`), and capture the commit list (`git log <base>..<head> --oneline`). When the target is the current working tree, diff the base against the tree itself (`git diff <base>`) and disclose untracked paths (`git status --porcelain`). An unresolvable target or an empty diff is a **blocked** verdict, not a mid-review failure. Then map the diff to its governing contract: commit subjects cite `T-`/`FR-`/`R-` IDs, and `tasks.md` maps T-IDs to the feature. A change that no task or requirement governs is itself a finding.
-
-- **Attack every user-controlled string** that reaches a prompt, path, filename, or generated identifier: construct the smallest adversarial input — an embedded delimiter, `../`, a leading `/`, a newline, an empty or whitespace-only value — and check whether the code rejects it or is corrupted by it.
-- **Revert the fix.** When a change ships with a regression test, confirm the test goes red against the pre-change code. Run this in a disposable `git worktree` pinned to the reviewed revisions — review is report-only and never mutates the target checkout. A test green on both sides is vacuous, and vacuous regression tests recur.
-- **"Nothing else changed" tests must compare whole rows or values**, not field subsets or containment — an omitted field can change silently behind a passing partial comparison.
-- **Hunt the silent-replacement pattern**: an operation whose no-error path can return empty, partial, or default output, then used to overwrite or stand in for real content. Happy-path tests do not catch it; read the control flow for this shape deliberately.
-- **Check combination coverage**: input dimensions tested only independently, never together, are a blind spot regardless of the suite's pass count.
-- **Re-run the verification the change leans on hardest yourself.** Local wrappers can swallow a real failure and report clean; a CI check mark is a conclusion, not evidence — read the log content for the load-bearing lines (what loaded, what ran, the counts).
-- **Hunt scope creep**: behavior in the diff that no requirement asks for, including speculative generality — abstraction, parameters, or hooks for needs no requirement states. Cite the non-goal it violates or the requirement it lacks.
-- **Check Cast's change discipline**: affected specs, ADRs, and docs move in the same change as the code; commit subjects cite the IDs they implement or resolve; generated files are not edited by hand. Cite the violated `AGENTS.md` clause.
+Read `references/code-mode.md` before reviewing. It owns target pinning, contract mapping, adversarial-input, vacuous-test, silent-replacement, combination-coverage, load-bearing-verification, scope, and change-discipline checks for this mode.
 
 ## Report
 
