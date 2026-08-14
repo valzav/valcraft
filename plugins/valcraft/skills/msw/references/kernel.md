@@ -2,7 +2,7 @@
 
 ## program — complete
 
-```
+```text
 contract ← the requested outcome + the smallest criteria that prove it
 
 while ∃ claim c : deleting c leaves contract unmet ∨ unproven
@@ -43,7 +43,7 @@ user's attention, one line each. Nothing else.
 
 ## fuses — outside the program, for when its evaluator fails
 
-```
+```text
 rounds = 3 → halt anyway ; report open items, do not chase them
 
 claim raised in round n+1 whose evidence was already in hand during round n → rejected

@@ -1,0 +1,20 @@
+{
+  // Lint every tracked markdown file; directories below are untracked
+  // agent/worktree artifacts that only exist locally.
+  "globs": ["**/*.md"],
+  "ignores": [".local/**", ".worktrees/**", "node_modules/**"],
+  "config": {
+    "default": true,
+    // Skill descriptions and one-line rules are intentionally long single
+    // lines; wrapping them would change the shipped prompt surface.
+    "MD013": false,
+    // Templates carry HTML comments as authoring guidance.
+    "MD033": false,
+    // Repeated section names (per-harness subsections) are intentional;
+    // only duplicate siblings indicate an authoring error.
+    "MD024": { "siblings_only": true },
+    // Cast artifacts carry a frontmatter `title:` plus a body H1;
+    // don't count the frontmatter title as a second top-level heading.
+    "MD025": { "front_matter_title": "" }
+  }
+}
