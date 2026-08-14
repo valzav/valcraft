@@ -18,16 +18,16 @@ Before resolving the assignment, read the project's root `AGENTS.md` and resolve
 
 Accept exactly one unit of work:
 
-- **T-XXX** — read the feature's `spec.md`, `design.md`, the `tasks.md` entry, its governing `FR-`/`AC-` IDs and ADRs, and the task's plan in `docs/plans/` if one exists.
+- **T-XXX** — read every artifact of the feature's Cast contract, including the task's plan in `docs/plans/` if one exists.
 - **Plan path** — the plan is the contract; read the spec artifacts it cites.
-- **Free-form small feature or fix** — confirm it fits one coherent change (one PR). Route anything larger to `valcraft:spec` or `valcraft:cast` decomposition instead of absorbing it.
+- **Free-form small feature or fix** — confirm it fits one coherent change. Route anything larger to `valcraft:spec` or `valcraft:cast` decomposition instead of absorbing it.
 
 For a Cast task, gate the assignment before coding:
 
 - The feature is implementation-ready per `spec-intake.md`. A task from a staged or unready feature stops here — route it to Cast.
 - Every `blocked by T-XXX` on the assigned task is complete: checked in `tasks.md` in local mode, closed on GitHub in github mode.
 
-Then state the scope before coding: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
+Then state the scope: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
 
 Establish the workspace: on the default branch, create a feature branch unless the operator explicitly authorizes direct default-branch work; on an existing feature branch, continue there. Detect prior work for the assigned unit — branch, commits, tracker state, working tree — and continue from that evidence instead of reimplementing.
 
