@@ -1,4 +1,4 @@
 interface:
   display_name: "Spec"
   short_description: "Create the next canonical Cast feature spec"
-  default_prompt: "Use $spec to create the next Cast feature spec from this PRD, plan, requirements document, or GitHub issue."
+  default_prompt: "Use $valcraft:spec to create the next Cast feature spec from this PRD, plan, requirements document, or GitHub issue."

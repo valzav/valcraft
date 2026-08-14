@@ -41,6 +41,11 @@ and JSON.
 
 - Develop a skill live: `claude --plugin-dir /path/to/valcraft/plugins/valcraft`, then
   `/reload-plugins` after each edit.
+- Exercise the Codex packaging path: add the repository as a local marketplace with
+  `codex plugin marketplace add /path/to/valcraft`, then install the cached copy with
+  `codex plugin add valcraft@valcraft`. Advance the Codex manifest version before a
+  reinstall. Use an isolated Codex profile for verification; never mutate the operator's
+  live configuration without explicit approval.
 - Verify the portable manifest: validate `plugins/valcraft/plugin.json` against
   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json` with any JSON Schema
   validator.
@@ -53,15 +58,18 @@ and JSON.
 
 - The plugin subtree ships; the repository root does not. Never place development-only
   material under `plugins/valcraft/`.
-- `.claude-plugin/marketplace.json`'s `name`, the plugin's name, and the marketplace key in
-  the consumer's `plugins.toml` are all the single string `valcraft`. A mismatch causes
-  perpetual sync churn and failed installs.
-- Neither manifest carries a `version` field. Version resolution falls through to the
-  repository's commit SHA, so every push is a new version.
-- The two manifests (`plugins/valcraft/.claude-plugin/plugin.json` and
-  `plugins/valcraft/plugin.json`) never merge. Update both when plugin metadata changes.
+- Both marketplace manifests, both native plugin manifests, the portable plugin
+  manifest, and the marketplace key in a Claude Code consumer's `plugins.toml` use the
+  single name `valcraft`. A mismatch causes sync churn or failed installs.
+- The Claude Code and portable manifests carry no `version` field. Claude Code version
+  resolution falls through to the repository's commit SHA, so every push is a new
+  version. The native Codex manifest requires its own semantic version. Advance it
+  whenever published plugin content changes so Codex does not reuse a stale cache entry.
+- The native Claude Code, native Codex, and portable manifests never merge. Update their
+  shared metadata together. Keep host-specific fields in the matching native manifest.
+  Add a separate native manifest when a future harness requires one.
 - The portable manifest allows no unknown top-level fields. Adding a Claude Code field
-  there breaks schema validation.
+  or Codex field there breaks schema validation.
 - No `~/.claude/skills` symlink may ever point into this repository. A bare skills
   directory auto-registers as an unmanaged `@skills-dir` plugin and breaks Claude Code
   config sync. Consumption is plugin-only.
@@ -80,8 +88,14 @@ and JSON.
 
 Before marking work complete:
 
-1. Load the changed skill in a `--plugin-dir` session and confirm it appears under the
-   `valcraft:` namespace and triggers.
-2. Validate `plugins/valcraft/plugin.json` against the published schema if it changed.
-3. Update affected docs.
-4. Confirm no secret material was added.
+1. Load each changed skill in every supported harness affected by the change. For Claude
+   Code, use a `--plugin-dir` session and confirm the `valcraft:` namespace triggers. For
+   Codex, install from the repository marketplace in an isolated profile and confirm the
+   `$valcraft:<skill>` namespace triggers. If an isolated profile is unavailable, do not
+   mutate the operator's live profile; report the skipped runtime check explicitly.
+2. Validate each changed manifest with its native validator or schema. Run the Codex
+   plugin validator for `plugins/valcraft`. Validate `plugins/valcraft/plugin.json`
+   against the published portable schema if it changed.
+3. Parse every changed JSON or YAML file and confirm all skill-relative paths resolve.
+4. Update affected docs.
+5. Confirm no secret material was added.

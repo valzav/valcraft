@@ -1,6 +1,6 @@
 ---
 name: distill
-description: Distill a prompt artifact — inline prompt text, a markdown prompt file (system prompt, agent instructions, slash command), a skill directory, or a workflow — into its minimal goal-directed essence, a short structured summary of goal, applicability, steps, and load-bearing constraints. Use whenever the user runs /valcraft:distill, or asks to distill, condense, deconstruct, or boil down a prompt or skill, asks what a skill actually does under the noise, wants a cleaned minimal copy of a skill saved as a new skill, or wants to compare two similar skills or prompts. Read-only over the source — for improving the artifact in place, use `valcraft:hone`.
+description: Distill a prompt artifact — inline prompt text, a markdown prompt file (system prompt, agent instructions, slash command), a skill directory, or a workflow — into its minimal goal-directed essence, a short structured summary of goal, applicability, steps, and load-bearing constraints. Use when explicitly invoked, or when the user asks to distill, condense, deconstruct, or boil down a prompt or skill, asks what a skill actually does under the noise, wants a cleaned minimal copy of a skill saved as a new skill, or wants to compare two similar skills or prompts. Read-only over the source — for improving the artifact in place, use `valcraft:hone`.
 ---
 
 # distill
