@@ -1,0 +1,113 @@
+{
+  "skill_name": "cast",
+  "evals": [
+    {
+      "id": 1,
+      "name": "fresh-project-scaffold",
+      "prompt": "/valcraft:cast — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
+      "expected_output": "Cast gathers no redundant facts, proposes local tracker mode because no preference was supplied, presents the scaffold with assumptions and TBDs, and waits for approval. It then creates only the approved skeleton: README.md, AGENTS.md, a relative CLAUDE.md symlink to AGENTS.md, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a populated specs/001-mvp/ triplet. AGENTS.md contains project_tracker: local and no github_repository. spec.md contains spec_issue: null. tasks.md contains neither tracker nor spec_issue and uses checkbox tasks. Unknown product facts remain assumptions or TBDs. The local path performs no GitHub inspection or mutation. Cast writes no implementation code and does not commit or push. The final report lists created, merged, skipped, and blocked paths, MVP readiness, local tracker mode, and tracker activation not applicable.",
+      "files": [],
+      "assertions": [
+        "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval",
+        "Cast creates every skeleton path, including populated spec.md, design.md, and tasks.md files under specs/001-mvp/",
+        "CLAUDE.md is a relative symlink to AGENTS.md",
+        "AGENTS.md contains exactly project_tracker: local for tracker metadata and omits github_repository",
+        "specs/001-mvp/spec.md contains exactly one spec_issue: null mapping",
+        "specs/001-mvp/tasks.md contains neither tracker nor spec_issue metadata",
+        "Every task uses the local checkbox shape and a stable T-XXX ID",
+        "Unknown product facts are recorded as assumptions or TBDs rather than invented requirements",
+        "The local path does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
+        "Cast writes no implementation code and does not commit or push",
+        "The final report lists created, merged, skipped, and blocked paths, states MVP readiness, names local tracker mode, and reports tracker activation as not applicable"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "retrofit-obsolete-task-metadata",
+      "prompt": "/valcraft:cast — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has project and agent documentation plus an obsolete feature metadata shape. Preserve unrelated content, normalize metadata to the current Cast contract, and do not add a compatibility path.",
+      "expected_output": "Cast derives facts from the repository before asking questions. It resolves local mode solely from the one project_tracker: local declaration in root AGENTS.md. It identifies tracker and spec_issue in specs/001-next-change/tasks.md as obsolete task-level metadata and the task-only staged feature as a retrofit change, not as a second tracker authority. Before modifying files, Cast presents an exact proposal and waits for approval. The approved merge removes both obsolete task fields, preserves the task IDs, text, order, dependencies, and checkbox state, and creates the missing spec.md and design.md without inventing product behavior. The new spec contains exactly spec_issue: null. Cast adds no compatibility parser or duplicate metadata. README and AGENTS content survive; the distinct CLAUDE.md rules merge into AGENTS.md, and CLAUDE.md becomes a symlink only after explicit approval to remove the distinct file. Local mode causes no GitHub inspection. The final report lists created, merged, skipped, and blocked paths and reports local mode with activation not applicable.",
+      "files": [
+        "evals/files/retrofit-repo/README.md",
+        "evals/files/retrofit-repo/AGENTS.md",
+        "evals/files/retrofit-repo/CLAUDE.md",
+        "evals/files/retrofit-repo/docs/product-brief.md",
+        "evals/files/retrofit-repo/specs/001-next-change/tasks.md"
+      ],
+      "assertions": [
+        "Cast derives project facts from the repository first and presents the exact retrofit proposal before writing",
+        "Root AGENTS.md is the sole tracker authority; Cast resolves local mode from its one project_tracker: local declaration and does not interpret task metadata as a competing declaration",
+        "The approved retrofit removes tracker and spec_issue from specs/001-next-change/tasks.md",
+        "The approved retrofit creates the missing specs/001-next-change/spec.md and design.md without inventing unsupported behavior, and the new spec contains exactly spec_issue: null",
+        "The existing task text, task IDs, intended order, blocked by T-001 dependency, and checkbox state survive the metadata normalization",
+        "Cast creates no compatibility parser, mirror, or fallback for obsolete task-level tracker or spec_issue metadata",
+        "Existing README.md content and the AGENTS.md npm commands and src/store.js boundary rule survive the merge",
+        "The distinct CLAUDE.md Conventional Commits and dependency rules merge into AGENTS.md, and replacement with the symlink waits for explicit removal approval",
+        "Local mode causes no inspection of remotes, gh, GitHub authentication, or repository readiness and no GitHub operation",
+        "The final report lists created, merged, skipped, and blocked paths, names local mode, and reports activation not applicable"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fresh-project-pending-github-without-remote",
+      "prompt": "/valcraft:cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use GitHub Issues for task tracking. This directory has no GitHub remote. Do not create or configure a repository or remote.",
+      "expected_output": "Cast selects github independently of readiness, presents the scaffold and pending activation, and waits for approval. It creates the approved skeleton without creating a repository or remote. AGENTS.md contains project_tracker: github and github_repository: TBD. spec.md contains spec_issue: TBD. tasks.md contains neither tracker nor spec_issue; its checkbox-free tasks retain stable T-IDs, explicit blocked by T-XXX dependencies, and arrow mappings to TBD. Cast performs no gh or network-facing GitHub operation. The final report names github mode, reports activation pending, and identifies the missing target repository or remote as the blocker.",
+      "files": [],
+      "assertions": [
+        "Cast presents github mode and pending activation in the proposal before writing and waits for approval",
+        "Cast creates every skeleton path, including populated spec.md, design.md, and tasks.md files under specs/001-mvp/",
+        "CLAUDE.md is a relative symlink to AGENTS.md",
+        "AGENTS.md contains project_tracker: github and github_repository: TBD",
+        "specs/001-mvp/spec.md contains exactly one spec_issue: TBD mapping",
+        "specs/001-mvp/tasks.md contains neither tracker nor spec_issue metadata",
+        "Every task is checkbox-free, retains a stable T-XXX ID, and ends with an issue mapping to TBD",
+        "Any hard dependency uses blocked by T-XXX rather than an issue number",
+        "Cast does not run gh or a network-facing GitHub operation and does not create or configure a repository or remote",
+        "Cast writes no implementation code and does not commit or push",
+        "The final report names github mode, reports activation pending, and names the missing target repository or remote as the blocker"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "resume-staged-spec-with-open-product-question",
+      "prompt": "/valcraft:cast — resume the staged feature in evals/files/staged-feature/. The operator approves each exact local artifact proposal, but does not resolve or explicitly accept the behavior-affecting open product question. Do not inspect or activate GitHub.",
+      "expected_output": "Cast resolves github mode from root AGENTS.md, validates the spec-only FEAT-001 stage, and preserves its existing spec_issue: TBD mapping. It identifies design.md as the next missing artifact, proposes that exact local mutation from the canonical spec, waits for approval, and creates only a substantive design.md. It then proposes tasks.md separately, waits for approval again, and creates only a substantive checkbox-free task file with no tracker or spec_issue metadata. Cast does not invent an answer to the open product question. Even after both artifacts exist, it reports the feature as staged and not implementation-ready because the notification disposition question can change observable behavior and was neither resolved nor explicitly accepted. It performs no GitHub inspection or mutation.",
+      "files": [
+        "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/docs/product-brief.md",
+        "evals/files/staged-feature/specs/001-notification-window/spec.md"
+      ],
+      "assertions": [
+        "Cast recognizes FEAT-001 as a valid spec-only staged feature instead of allocating a new feature",
+        "Cast preserves the existing spec_issue: TBD mapping in spec.md",
+        "Cast proposes design.md from the canonical spec, waits for approval, and creates only that missing artifact",
+        "Cast separately proposes tasks.md after design.md exists, waits for approval, and creates only that missing artifact",
+        "The created design.md and tasks.md contain substantive project-specific content rather than template instructions, examples, ellipses, or TBD-only sections",
+        "The created tasks.md is checkbox-free and contains neither tracker nor spec_issue metadata",
+        "Cast does not invent whether queued notifications are sent or discarded after the notification window",
+        "Cast reports the feature as staged and not implementation-ready until the behavior-affecting open question is resolved or explicitly accepted and both artifacts are substantive",
+        "Cast does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "spec-only-github-sync-preview-contract",
+      "prompt": "/valcraft:cast — for the spec-only feature in evals/files/staged-feature/, show the exact GitHub synchronization preview and stop. This is an offline contract eval: make no local or remote mutation and run no gh or network call. Use only these captured hypothetical read-only results: the operator-selected target is github.example.test/acme/notify; visibility is private; Issues is enabled; active-host identity and permission evidence cover spec-only reads and writes; the exact spec label is missing; issue #41 is the sole open-or-closed non-PR issue whose body contains <!-- cast:feature=FEAT-001 -->; it has a stale generated title and body and lacks the spec label. Treat the preview as unapproved.",
+      "expected_output": "Cast classifies the feature as spec-only and produces an unapproved, non-executed preview bound to github.example.test/acme/notify. The preview contains only the spec-only mutation set: write the approved target declaration to AGENTS.md, create the exact spec label, update the generated title and body of uniquely marked parent issue #41 and apply the spec label, and write spec_issue: 41 to the selected spec.md. The generated body names specs/001-notification-window/spec.md, says git is canonical, and carries the FEAT-001 marker. The preview excludes task-status labels, hierarchy or dependency capability checks, task issue reconciliation, task or sub-issue reads or writes, dependency operations, task mappings, task removal, and any unrelated local change. Cast executes no operation because the preview is unapproved.",
+      "files": [
+        "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/docs/product-brief.md",
+        "evals/files/staged-feature/specs/001-notification-window/spec.md"
+      ],
+      "assertions": [
+        "Cast selects the spec-only readiness branch because spec.md exists and tasks.md does not",
+        "The preview is explicitly bound to github.example.test/acme/notify and includes writing that approved target declaration to AGENTS.md",
+        "The only label operation in the preview is creation and use of the exact spec label",
+        "The preview reuses uniquely marked parent issue #41 and names its generated FEAT-001 title and body update",
+        "The generated parent body names specs/001-notification-window/spec.md, states that git is canonical, and contains <!-- cast:feature=FEAT-001 -->",
+        "The only feature mapping change is spec_issue: TBD to spec_issue: 41 in the selected spec.md",
+        "The preview excludes in-progress and needs-clarification labels, hierarchy and dependency capability checks, tasks, sub-issues, dependencies, task mappings, and removals",
+        "Cast performs no gh or network call and makes no local or remote mutation because the preview is unapproved"
+      ]
+    }
+  ]
+}

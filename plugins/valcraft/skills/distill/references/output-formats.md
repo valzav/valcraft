@@ -5,16 +5,17 @@ Read this file when offering or acting on save options.
 ## Saving the result
 
 Nothing defaults to "next to the source": skills usually live in plugin caches and
-`.claude/` directories the user never opens. In clean mode the cleaned copy is the
-deliverable: default to option 1 for skills, or `./<name>.cleaned.md` in the current
-working directory for other artifacts. In study mode offer all options, plus "don't
-save" — the chat summary is already delivered:
+host-specific `.agents/` or `.claude/` directories the user never opens. In clean mode
+the cleaned copy is the deliverable: default to option 1 for skills, or
+`./<name>.cleaned.md` in the current working directory for other artifacts. In study
+mode offer all options, plus "don't save" — the chat summary is already delivered:
 
-1. **Cleaned skill** — copy the complete source skill directory to
-   `~/.claude/skills/<name>/`, where Claude Code auto-registers personal skills, then
-   replace only its `SKILL.md` with the cleaned version (in clean mode, preserving the
-   original frontmatter and structure; in study mode, a fresh `name` and `description`
-   over the distilled body). Preserve every bundled resource referenced by a surviving
+1. **Cleaned skill** — select the active harness's personal-skill destination:
+   `~/.agents/skills/<name>/` under Codex or `~/.claude/skills/<name>/` under Claude
+   Code. Copy the complete source skill directory there, then replace only its
+   `SKILL.md` with the cleaned version (in clean mode, preserving the original
+   frontmatter and structure; in study mode, a fresh `name` and `description` over the
+   distilled body). Preserve every bundled resource referenced by a surviving
    instruction. The result is usable in place of the original; the original stays
    untouched. If the destination already exists, ask the user for a new skill name and
    use it for both the directory and the frontmatter. In study mode, create a new skill

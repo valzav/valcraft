@@ -1,17 +1,17 @@
 ---
-name: forge
+name: cast
 description: >
-  Bootstrap a new project with Val's lean spec-driven development (SDD) scaffold —
+  Bootstrap a new project with user's lean spec-driven development (SDD) scaffold —
   README, AGENTS.md (+ CLAUDE.md symlink), product brief, ADRs, and numbered
   spec+design+tasks triplets under specs/ — then run the
-  plan → implement → review working loop. Use whenever Val starts a new project or
+  plan → implement → review working loop. Use whenever user starts a new project or
   repository, says "new project", "start building X", "scaffold this", "set up
   specs", or wants to retrofit spec-driven structure onto an existing codebase,
-  even if he doesn't mention SDD or docs explicitly. Also use when Val asks to
+  even if they don't mention SDD or docs explicitly. Also use when user asks to
   activate or synchronize GitHub Issues as a project's task tracker.
 ---
 
-# forge
+# cast
 
 Lean SDD project scaffold. Resist reintroducing heavyweight
 machinery unless the project demonstrably needs it — the goal is durable context, not
@@ -207,7 +207,7 @@ Before allocating a later feature, validate existing feature IDs and stages thro
 are staged, ask the operator which one to resume. From the canonical spec, propose the
 next missing artifact, wait for approval, and create only that artifact. Repeat this
 proposal-and-approval cycle for every remaining missing artifact. An unresolved product
-question affects the final implementation-readiness verdict; it does not stop Forge from
+question affects the final implementation-readiness verdict; it does not stop Cast from
 proposing substantive `design.md` and `tasks.md` files that preserve the question without
 inventing an answer. Preserve the spec's existing `spec_issue` mapping.
 

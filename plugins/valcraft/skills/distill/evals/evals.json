@@ -22,13 +22,14 @@
       "id": 2,
       "name": "clean-skill-copy",
       "prompt": "/valcraft:distill evals/files/report-writer/ — make me a leaner copy I'll run instead of this one. The SKILL.md buries a real workflow (gather sources, draft the report with the Summary/Progress/Blockers structure from references/format.md, save to reports/) under steps telling the model how to open files, read them carefully, double-check every word, and apologize for mistakes.",
-      "expected_output": "Clean-mode cleaned copy: the complete skill directory copied to ~/.claude/skills/report-writer/ (or the custom-name variant on collision), references/format.md preserved because a surviving step references it, and only SKILL.md replaced with the cleaned version — original frontmatter name and description kept, the Summary/Progress/Blockers output contract and the reports/ save path kept, mechanical competence steps and apology instructions dropped. The source directory is untouched. The chat report gives the word delta and the dropped groups.",
+      "expected_output": "Clean-mode cleaned copy: under Codex, the complete skill directory is copied to ~/.agents/skills/report-writer/; under Claude Code, it is copied to ~/.claude/skills/report-writer/ (or the active harness's custom-name variant on collision). references/format.md is preserved because a surviving step references it, and only SKILL.md is replaced with the cleaned version — original frontmatter name and description kept, the Summary/Progress/Blockers output contract and the reports/ save path kept, mechanical competence steps and apology instructions dropped. The source directory is untouched. The chat report gives the word delta and the dropped groups.",
       "files": [
         "evals/files/report-writer/SKILL.md",
         "evals/files/report-writer/references/format.md"
       ],
       "assertions": [
         "Source skill directory is not modified",
+        "The destination matches the active harness: ~/.agents/skills/report-writer/ under Codex or ~/.claude/skills/report-writer/ under Claude Code",
         "The complete directory is copied to the destination, then only its SKILL.md replaced — references/format.md exists at the destination unchanged",
         "Cleaned SKILL.md preserves the frontmatter name and description",
         "The Summary/Progress/Blockers contract, the references/format.md reference, and the reports/ save path survive",

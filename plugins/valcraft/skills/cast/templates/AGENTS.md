@@ -3,7 +3,7 @@
 ## Project metadata
 
 These generated declarations are the project-level authority for task tracking. Render
-the local shape or the GitHub shape when forge creates or retrofits the project.
+the local shape or the GitHub shape when cast creates or retrofits the project.
 
 Local:
 
@@ -74,16 +74,20 @@ are `TBD`, report tracker activation as pending. Do not create remote state unti
 target passes preflight and the operator approves the mutation preview.
 
 Reject `tracker` or `spec_issue` metadata in `tasks.md`. Direct a repository with either
-field, or with a missing spec-level mapping, through Forge retrofit. Do not use obsolete
+field, or with a missing spec-level mapping, through Cast retrofit. Do not use obsolete
 task metadata as a compatibility source.
 
 ## GitHub synchronization
 
 GitHub issue titles, bodies, sub-issue order, and blocked-by relationships are generated
 projections of the git-owned definitions. A spec issue carries a stable
-`<!-- forge:feature=FEAT-001 -->` marker. Each task issue carries a stable
-`<!-- forge:task=T-001 -->` marker. Generated issue bodies name the canonical source
+`<!-- cast:feature=FEAT-001 -->` marker. Each task issue carries a stable
+`<!-- cast:task=T-001 -->` marker. Generated issue bodies name the canonical source
 path and state that git is canonical.
+
+Cast does not migrate or adopt markers written by a previous skill name. If a renamed
+project has only legacy-marked issues, activation may preview new issues; reconcile or
+close the legacy remote state deliberately before approving that preview.
 
 Before creating or changing remote state:
 

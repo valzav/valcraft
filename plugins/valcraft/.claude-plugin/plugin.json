@@ -1,9 +1,9 @@
 {
   "name": "valcraft",
-  "description": "Val's Claude Code skills: forge (spec-driven project scaffold), spec (Forge feature spec generation), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+  "description": "Reusable agent skills: cast (spec-driven project scaffold), spec (Cast feature spec generation), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
-    "name": "Val",
-    "url": "https://github.com/valzav"
+    "name": "valcraft contributors",
+    "url": "https://github.com/valzav/valcraft"
   },
   "homepage": "https://github.com/valzav/valcraft",
   "repository": "https://github.com/valzav/valcraft",
