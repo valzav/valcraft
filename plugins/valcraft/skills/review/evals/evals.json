@@ -17,13 +17,14 @@
       ],
       "assertions": [
         "Review selects plan mode and reads root AGENTS.md, the cast spec-intake reference, and the cited spec.md, design.md, and tasks.md before judging the plan",
-        "A P1 finding reports that the plan's 5000-row cap violates FR-002's 500-row cap and names the concrete export size that fires it",
+        "A material finding reports that the plan's 5000-row cap violates FR-002's 500-row cap and names the concrete export size that fires it",
         "A separate finding reports the spec.md and design.md contradiction on the cap itself, rather than silently adopting either value",
         "The report states that Cast's precedence order (accepted ADRs, then specs/, then derived docs/) does not resolve a conflict between two artifacts inside specs/, and resolves it instead from the spec's canonical status and the PRD source",
         "The plan's assumption that the fixture database starts empty is routed to a live-data check demand instead of being accepted as asserted",
         "Findings are presented as a table with stable R-NNN IDs, a severity per finding, evidence, and a resolution column",
         "The verdict is material findings, and the report names the R-IDs a remediation plan must cite",
-        "No file in the fixture is edited, no fix is applied or committed, and no raw review record is written into the repository"
+        "No file in the fixture is edited, no fix is applied or committed, and no raw review record is written into the repository",
+        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level"
       ]
     },
     {
@@ -41,12 +42,13 @@
       ],
       "assertions": [
         "Review applies the implementation-readiness gate because design.md and tasks.md both exist",
-        "A P1 finding cites the spec-intake readiness contract and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
+        "A material finding cites the spec-intake readiness contract and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
         "The finding identifies the spec's open question about mentions added by editing a published comment as behavior-affecting and tied to AC-001",
         "Review does not answer the open product question, invent design content, or fill any placeholder",
         "No file is edited and no fix is committed",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
-        "The report states explicitly what was not examined"
+        "The report states explicitly what was not examined",
+        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level"
       ]
     },
     {
@@ -69,7 +71,8 @@
         "A finding reports that T-004's `blocked by T-009` names a task that does not exist in tasks.md",
         "Each finding cites the exact requirement or task line as evidence",
         "The verdict is material findings, with stable R-NNN IDs in an auditable table",
-        "No file is edited: no missing task is added, and the dangling dependency is not repaired"
+        "No file is edited: no missing task is added, and the dangling dependency is not repaired",
+        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level"
       ]
     },
     {
@@ -90,12 +93,13 @@
       ],
       "assertions": [
         "Review selects code mode and maps the diff to T-002 and FR-002 through the commit subject",
-        "A P2 finding reports that test_collapses_whitespace passes on both the pre-change and post-change code and therefore does not discriminate the fix",
+        "A material finding reports that test_collapses_whitespace passes on both the pre-change and post-change code and therefore does not discriminate the fix",
         "The vacuous-test claim is proved by actually running the test against the reverted code, and the finding's evidence cell carries that command output rather than a description of it",
         "The report identifies the whitespace-only title as the discriminating case that no test covers, leaving AC-002 unverified",
-        "A P1 finding reports the telemetry emit and src/telemetry.py as scope creep violating the spec's no-telemetry non-goal, citing that non-goal",
+        "A material finding reports the telemetry emit and src/telemetry.py as scope creep violating the spec's no-telemetry non-goal, citing that non-goal",
         "The verdict is material findings, with stable R-NNN IDs and a resolution column",
-        "No fixture file is left modified, no fix is applied, and nothing is committed"
+        "No fixture file is left modified, no fix is applied, and nothing is committed",
+        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level"
       ]
     },
     {

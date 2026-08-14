@@ -40,7 +40,7 @@ Use exactly three severity levels. "This feels risky" is not a severity level.
 - **P2** — a reproduced defect or blind spot with a firing scenario that no single clause names but the contract implies: missing combination coverage, a vacuous regression test, a silent-replacement path.
 - **P3** — informational; requires no plan or code change, so a remediation pass skips it.
 
-P1 and P2 findings are material.
+P1 and P2 findings are material. That split is the binding one: it sets the verdict and decides whether a remediation pass spends a cycle on the finding. P1 versus P2 only ranks the table for a human reader, so state the level and move on rather than arguing it.
 
 The verdict is exactly one of:
 
@@ -60,7 +60,7 @@ The verdict is exactly one of:
 - **Compare the plan's proposed work against the spec's goals and non-goals.** Work no requirement asks for is scope creep, and it hides best in a plan that is otherwise faithful.
 - **When the target is a feature spec, check its structural contract from `spec-intake.md`**: the directory number matches the frontmatter `id`, the `Sources` section holds exactly one canonical entry, and the `spec_issue` mapping matches the tracker mode.
 - **When the target is `tasks.md`, map every `FR-` and `AC-` to at least one task that verifies it**, and check each `blocked by T-XXX` names an existing task — an unverified requirement is a gap regardless of how complete the task list looks.
-- **When the target completes the spec triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a P1 citing the readiness contract.
+- **When the target completes the spec triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a material finding citing the readiness contract.
 
 ## Code mode
 
