@@ -48,6 +48,10 @@ Replace only the example IDs. Each generated issue body must say that git is can
 and name its canonical source path. Never change an established T-ID in place. A changed
 T-ID is removal plus addition.
 
+Cast does not migrate or adopt markers written by a previous skill name. If a renamed
+project has only legacy-marked issues, activation may preview new issues; reconcile or
+close the legacy remote state deliberately before approving that preview.
+
 Bind every `gh issue`, `gh label`, and `gh repo` command with
 `--repo "$GH_REPO"` or the full `"$GH_REPO"` argument. Bind every REST call with
 `--hostname "$GH_HOST"` and a `repos/$GH_OWNER/$GH_NAME/...` path. Never rely on the

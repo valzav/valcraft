@@ -43,9 +43,8 @@ and JSON.
   `/reload-plugins` after each edit.
 - Exercise the Codex packaging path: add the repository as a local marketplace with
   `codex plugin marketplace add /path/to/valcraft`, then install the cached copy with
-  `codex plugin add valcraft@valcraft`. Advance the Codex manifest version before a
-  reinstall. Use an isolated Codex profile for verification; never mutate the operator's
-  live configuration without explicit approval.
+  `codex plugin add valcraft@valcraft`. Use an isolated Codex profile for verification;
+  never mutate the operator's live configuration without explicit approval.
 - Verify the portable manifest: validate `plugins/valcraft/plugin.json` against
   `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json` with any JSON Schema
   validator.
@@ -61,13 +60,15 @@ and JSON.
 - Both marketplace manifests, both native plugin manifests, the portable plugin
   manifest, and the marketplace key in a Claude Code consumer's `plugins.toml` use the
   single name `valcraft`. A mismatch causes sync churn or failed installs.
-- The Claude Code and portable manifests carry no `version` field. Claude Code version
-  resolution falls through to the repository's commit SHA, so every push is a new
-  version. The native Codex manifest requires its own semantic version. Advance it
-  whenever published plugin content changes so Codex does not reuse a stale cache entry.
-- The native Claude Code, native Codex, and portable manifests never merge. Update their
-  shared metadata together. Keep host-specific fields in the matching native manifest.
-  Add a separate native manifest when a future harness requires one.
+- The Claude Code manifest carries no `version` field. Claude Code version resolution
+  falls through to the repository's commit SHA, so every push is a new version. The
+  portable manifest is canonical for Codex when it and the native Codex manifest both
+  exist. The native Codex manifest is its official compatibility fallback. Keep their
+  release versions synchronized; a version does not control cache refresh.
+- The native Claude Code, native Codex fallback, and portable manifests never merge.
+  Update their shared metadata together. Current Codex does not merge fallback-only
+  fields such as `skills` and `interface` when the portable manifest exists. Add a
+  separate native manifest when a future harness requires one.
 - The portable manifest allows no unknown top-level fields. Adding a Claude Code field
   or Codex field there breaks schema validation.
 - No `~/.claude/skills` symlink may ever point into this repository. A bare skills

@@ -44,8 +44,8 @@ codex plugin add valcraft@valcraft
 ```
 
 Start a new Codex session after installation. Codex reads the repository marketplace at
-`.agents/plugins/marketplace.json`, then installs the plugin described by
-`plugins/valcraft/.codex-plugin/plugin.json`.
+`.agents/plugins/marketplace.json`, then prefers `plugins/valcraft/plugin.json`. The
+native `plugins/valcraft/.codex-plugin/plugin.json` remains the compatibility fallback.
 
 ## Update
 
@@ -69,9 +69,8 @@ codex plugin add valcraft@valcraft
 ```
 
 Codex has no `plugin update` command. Re-running `add` installs the plugin from the
-refreshed marketplace snapshot when the Codex manifest version has changed. Maintainers
-must advance `plugins/valcraft/.codex-plugin/plugin.json`'s semantic version whenever
-published plugin content changes. Start a new Codex session afterward.
+refreshed marketplace snapshot. The manifest version describes a release; it does not
+control cache refresh. Start a new Codex session afterward.
 
 ## Develop
 
@@ -95,10 +94,8 @@ codex plugin marketplace add /path/to/valcraft
 codex plugin add valcraft@valcraft
 ```
 
-Advance the Codex manifest version before each reinstall, then re-run
-`codex plugin add valcraft@valcraft` and start a new Codex session. Semver build metadata
-can distinguish local iterations without changing the release number. A local marketplace
-installation is still a copy; it does not read later edits live.
+Re-run `codex plugin add valcraft@valcraft` and start a new Codex session after edits. A
+local marketplace installation is still a copy; it does not read later edits live.
 
 ## Repository structure
 
@@ -111,15 +108,18 @@ installation is still a copy; it does not read later edits live.
 
 ## Packaging
 
-The plugin ships three independent manifests over one shared `skills/` tree:
+The plugin ships three manifests over one shared `skills/` tree:
 
 - `plugins/valcraft/.claude-plugin/plugin.json` — Claude Code's plugin manifest.
 - `plugins/valcraft/.codex-plugin/plugin.json` — Codex's native plugin manifest.
 - `plugins/valcraft/plugin.json` — the portable
   [Agent Plugins](https://github.com/agentplugins/agent-plugins-spec) manifest (v1.0.0)
-  for hosts that implement that specification. Claude Code and current Codex use their
-  native manifests instead.
+  for hosts that implement that specification and the canonical Codex manifest when both
+  Codex manifest paths exist.
 
-Keep shared metadata synchronized by hand, but keep host-specific fields in the matching
-native manifest. Add future harness-specific manifests beside these rather than adding
-unsupported fields to the portable manifest.
+Keep shared metadata synchronized by hand. Keep the portable and Codex fallback versions
+synchronized, but treat the version as release metadata rather than a cachebuster. Codex
+does not merge fallback-only fields such as `skills` and `interface` when the portable
+manifest exists; it discovers this plugin's default `skills/` tree automatically. Add
+future harness-specific manifests beside these rather than adding unsupported fields to
+the portable manifest.

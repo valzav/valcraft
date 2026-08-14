@@ -85,6 +85,10 @@ projections of the git-owned definitions. A spec issue carries a stable
 `<!-- cast:task=T-001 -->` marker. Generated issue bodies name the canonical source
 path and state that git is canonical.
 
+Cast does not migrate or adopt markers written by a previous skill name. If a renamed
+project has only legacy-marked issues, activation may preview new issues; reconcile or
+close the legacy remote state deliberately before approving that preview.
+
 Before creating or changing remote state:
 
 1. If the selected feature has no `tasks.md`, use the spec-only branch. Reconcile only
