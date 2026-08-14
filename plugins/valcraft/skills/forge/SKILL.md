@@ -6,9 +6,13 @@ description: >
 
 # forge
 
-Implement one assigned unit of work. Treat Cast as the SDD authority: the spec (`FR-`/`AC-` IDs), design, `tasks.md` entry, ADRs, and the task's plan are the contract. Never invent a missing requirement — record it as an open question and surface it.
+Implement one assigned unit of work. Treat Cast as the SDD authority: the feature's `spec.md` (`FR-`/`AC-`/`NFR-`/`BR-` IDs), `design.md`, its `tasks.md` entry, accepted ADRs, and the task's plan are the Cast contract. Never invent a missing requirement — record it as an open question and surface it.
 
 forge ends when the change is verified and handed to review. It never merges, closes a task, or declares the work shipped on its own verification: in the incident corpus behind this skill, every bug that reached the main branch got there because a review gate was skipped, not because a review missed it.
+
+## Load the Cast contracts
+
+Before resolving the assignment, read the project's root `AGENTS.md` and resolve its `project_tracker` declaration, and read `../cast/references/spec-intake.md` for the feature identity, staged-lifecycle, and implementation-readiness contract. Follow those resources instead of reconstructing their rules.
 
 ## Step 1: Resolve the assignment
 
@@ -18,7 +22,12 @@ Accept exactly one unit of work:
 - **Plan path** — the plan is the contract; read the spec artifacts it cites.
 - **Free-form small feature or fix** — confirm it fits one coherent change (one PR). Route anything larger to `valcraft:spec` or `valcraft:cast` decomposition instead of absorbing it.
 
-Then state the scope before coding: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. A contradiction between authorities (spec vs design vs ADR), or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
+For a Cast task, gate the assignment before coding:
+
+- The feature is implementation-ready per `spec-intake.md`. A task from a staged or unready feature stops here — route it to Cast.
+- Every `blocked by T-XXX` on the assigned task is complete: checked in `tasks.md` in local mode, closed on GitHub in github mode.
+
+Then state the scope before coding: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
 
 ## Step 2: Plan
 
@@ -30,6 +39,8 @@ Non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md
 ## Step 3: Implement
 
 Small verifiable increments; commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`).
+
+Apply the tracker mode while implementing. In github mode, apply `in-progress` when starting and `needs-clarification` when an issue question blocks the task; in local mode, write no status during implementation. Marking the task complete — the checkbox or the issue close — happens after the review gate, never on forge's own verification.
 
 Standing rules:
 
@@ -59,6 +70,7 @@ Run the project's own gates (tests, typecheck, lint) and cite their real output.
 - Update specs, ADRs, and contracts affected by the change in the same change, not a later sweep.
 - State documentation and runbook guarantees only as strongly as the code supports.
 - Before handing off, re-read every claim this branch's own docs and comments make and verify each against the current code — narrative drifts when code changes under it. After correcting one overstated claim, re-verify the whole claim class, not just the flagged instance.
+- Confirm no secret material was added.
 
 ## Step 6: Hand off to review
 
