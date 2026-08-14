@@ -218,7 +218,10 @@ inventing an answer. Preserve the spec's existing `spec_issue` mapping.
    shared boundaries before planning.
 2. **Implement** — small verifiable tasks; commit subjects reference IDs
    (`T-029: predicate registry…`, `fix(T-030): resolve the material findings…`).
-3. **Review** — run an independent review (second model or fresh agent). Findings get IDs
+   `valcraft:forge` executes this step for one task, including its verification
+   discipline and the hand-off to review.
+3. **Review** — run an independent review (second model or fresh agent);
+   `valcraft:review` defines the review itself (plan mode and code mode). Findings get IDs
    (`R-001…`), material ones get a remediation plan in `docs/plans/`, resolution commits
    cite the IDs. **Do not commit raw review records** — findings live in the remediation
    plan and commit messages.
