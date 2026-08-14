@@ -56,9 +56,12 @@ The verdict is exactly one of:
 - **Wherever the plan frames untrusted content with a boundary marker** — a delimiter string, a fixed prefix or suffix, a path root — ask whether content from that source can reproduce the boundary itself. "We'll validate later" does not close the question; the answer is a structural encoding decision made now.
 - **Trace each new failure mode through the actual dispatcher or handler code** before accepting the plan's prose about the outcome. "This becomes a skip" may in fact mark the item durably handled and lose it permanently.
 - **Any infrastructure or library claim the plan relies on** (a config flag works, a documented workaround is safe) must be tested empirically — by the plan or by you — not cited to documentation.
+- **Compare the plan's proposed work against the spec's goals and non-goals.** Work no requirement asks for is scope creep, and it hides best in a plan that is otherwise faithful.
 - **When the target completes a feature's triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a P1 citing the readiness contract.
 
 ## Code mode
+
+Resolve the target before reviewing: verify the ref resolves (`git rev-parse`), pin the diff against the merge-base (`git diff <ref>...HEAD`), and capture the commit list (`git log <ref>..HEAD --oneline`). An unresolvable ref or an empty diff is a **blocked** verdict, not a mid-review failure. Then map the diff to its governing contract: commit subjects cite `T-`/`FR-`/`R-` IDs, and `tasks.md` maps T-IDs to the feature. A change that no task or requirement governs is itself a finding.
 
 - **Attack every user-controlled string** that reaches a prompt, path, filename, or generated identifier: construct the smallest adversarial input — an embedded delimiter, `../`, a leading `/`, a newline, an empty or whitespace-only value — and check whether the code rejects it or is corrupted by it.
 - **Revert the fix.** When a change ships with a regression test, confirm the test goes red against the pre-change code. A test green on both sides is vacuous, and vacuous regression tests recur.
@@ -66,6 +69,8 @@ The verdict is exactly one of:
 - **Hunt the silent-replacement pattern**: an operation whose no-error path can return empty, partial, or default output, then used to overwrite or stand in for real content. Happy-path tests do not catch it; read the control flow for this shape deliberately.
 - **Check combination coverage**: input dimensions tested only independently, never together, are a blind spot regardless of the suite's pass count.
 - **Re-run the verification the change leans on hardest yourself.** Local wrappers can swallow a real failure and report clean; a CI check mark is a conclusion, not evidence — read the log content for the load-bearing lines (what loaded, what ran, the counts).
+- **Hunt scope creep**: behavior in the diff that no requirement asks for, including speculative generality — abstraction, parameters, or hooks for needs no requirement states. Cite the non-goal it violates or the requirement it lacks.
+- **Check Cast's change discipline**: affected specs, ADRs, and docs move in the same change as the code; commit subjects cite the IDs they implement or resolve; generated files are not edited by hand. Cite the violated `AGENTS.md` clause.
 
 ## Report
 
