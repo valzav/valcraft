@@ -44,7 +44,7 @@ Read `references/verification-and-handoff.md` before editing code. It owns Steps
 
 ## Step 3: Implement
 
-Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`). Stage only paths inside the stated scope, and check `git diff --cached` against the scope statement before each commit — a green, ID-bearing commit can still smuggle unrelated changes.
+Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`). Write each message under the MSW deletion test: state what the change does and why it matters, then delete every sentence whose removal loses none of that — no process narration, no restated diff. Stage only paths inside the stated scope, and check `git diff --cached` against the scope statement before each commit — a green, ID-bearing commit can still smuggle unrelated changes.
 
 Apply the tracker mode while implementing. In github mode, apply `in-progress` when starting and `needs-clarification` when an issue question blocks the task; in local mode, write no status during implementation. Marking the task complete — the checkbox or the issue close — happens after the review gate, never on forge's own verification.
 

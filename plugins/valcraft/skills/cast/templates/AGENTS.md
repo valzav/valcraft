@@ -36,14 +36,14 @@ consequential technical decisions as ADRs.
 
 ## Task tracker authority
 
-| Data | Authority | Rule |
-| --- | --- | --- |
-| Project tracker and target repository | `AGENTS.md` | Keep exactly one valid `project_tracker` declaration. Resolve it before inspecting GitHub. |
-| Feature ID and spec-issue mapping | `spec.md` | Keep exactly one `spec_issue` value per feature. Use `null` in local mode and `TBD` until GitHub projection records a number. |
-| Spec text, design text, task text, task order, and hard-dependency intent | Git | Treat the committed project files as the operational instructions and canonical definitions. |
-| T-ID to issue-number mapping | `tasks.md` | Preserve stable T-IDs and validate their recorded GitHub issue references during reconciliation. |
-| Open or closed state and the `in-progress` and `needs-clarification` labels | GitHub | Do not copy this status back into git-owned task definitions. |
-| Comments and attribution | GitHub | Preserve this human history. Synchronization never overwrites comments. |
+| Data                                                                        | Authority   | Rule                                                                                                                          |
+| --------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Project tracker and target repository                                       | `AGENTS.md` | Keep exactly one valid `project_tracker` declaration. Resolve it before inspecting GitHub.                                    |
+| Feature ID and spec-issue mapping                                           | `spec.md`   | Keep exactly one `spec_issue` value per feature. Use `null` in local mode and `TBD` until GitHub projection records a number. |
+| Spec text, design text, task text, task order, and hard-dependency intent   | Git         | Treat the committed project files as the operational instructions and canonical definitions.                                  |
+| T-ID to issue-number mapping                                                | `tasks.md`  | Preserve stable T-IDs and validate their recorded GitHub issue references during reconciliation.                              |
+| Open or closed state and the `in-progress` and `needs-clarification` labels | GitHub      | Do not copy this status back into git-owned task definitions.                                                                 |
+| Comments and attribution                                                    | GitHub      | Preserve this human history. Synchronization never overwrites comments.                                                       |
 
 ## Task workflow
 
@@ -175,6 +175,9 @@ For instructions, prompts, safety rules, and error messages:
 - Product intent and the spec-issue mapping live in `spec.md`; implementation detail
   lives in `design.md`.
 - Reference requirement and task IDs (`FR-`, `AC-`, `T-`) from commits and tests.
+- Apply the MSW deletion test to commit messages and PR bodies: state only what the
+  change does and why it matters, then delete every sentence whose removal loses none
+  of that. No process narration, no restated diff, no filler.
 - Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.
 - Update affected specs, ADRs, and docs in the same change as the code.
 - Do not edit generated files by hand.

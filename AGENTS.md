@@ -81,6 +81,9 @@ and JSON.
 
 - Non-trivial work starts with a plan; working plans live in `.local/plans/`
   (gitignored), not in the repository.
+- Apply the MSW deletion test to commit messages and PR bodies: state only what the
+  change does and why it matters, then delete every sentence whose removal loses none
+  of that. No process narration, no restated diff, no filler.
 - Update affected docs in the same change as the skill edit.
 - Renaming a skill directory changes its invocation string. Update the skill's `name:`
   field, every self-reference in its description and body, and the README table together.
