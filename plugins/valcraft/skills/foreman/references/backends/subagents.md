@@ -40,6 +40,8 @@ None. CI state is read with `gh pr checks <n> --json name,state --jq …` at ste
 
 ## Eval scenario coverage
 
+The scenario × backend matrix with eval ids is `evals/scenarios.md`.
+
 | Scenario                          | Coverage                                                                                                                                              |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Silent assignment                 | `n/a` — an Agent call cannot silently not start; degradation: an agent that returns no report is treated as `idle-without-report` and respawned once. |

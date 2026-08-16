@@ -93,13 +93,18 @@ Post the summary — PR link, CI state, review summary with open and resolved R-
 
 In `attended` mode the summary always waits. A PR against `foreman_release_branch` waits in every mode.
 
-To merge: the foreman runs `gh pr merge <n> --repo <owner/repo> --squash --delete-branch` itself. Never route the merge through a worker: worker permission classifiers deny it, and a denied merge is reported with the exact command, never retried or worked around. Then close the task per the intake reference (`local`: tick the checkbox on the branch before merging; `github`: closing batch after the merge). Release all four workers per the backend. Return to step 1.
+To merge, in this order:
+
+1. `local` intake only: the worker ticks the task's checkbox in `tasks.md`, commits, and pushes on the PR branch (`references/intake-local.md`, "Close a task"). Wait for that push before merging.
+2. The foreman runs `gh pr merge <n> --repo <owner/repo> --squash --delete-branch` itself. Never route the merge through a worker: worker permission classifiers deny it, and a denied merge is reported with the exact command, never retried or worked around.
+3. `github` intake only: record and execute the closing batch (`references/intake-github.md`, "Close a task").
+4. Release all four workers per the backend. Return to step 1.
 
 When every task of the feature is closed (merged or not planned) and the human confirms the feature, close the feature per the intake reference — the closing batch quotes the human's confirming message verbatim, and without one it is not built.
 
 ## Decompose
 
-Input: a PRD issue (`github` mode) or a local PRD/plan file that `valcraft:spec` accepts as an explicitly selected source.
+Input: a PRD issue (`github` mode) or a local PRD/plan file that `valcraft:spec` accepts as an explicitly selected source. Derive the source id `<source>` used in worker names and report files: an issue → `prd<N>` (`prd225`); a file → its basename without extension, lowercased, with every character outside `[a-z0-9-]` replaced by `-` (`docs/Q3 PRD.md` → `q3-prd`). Never interpolate a raw path.
 
 1. Spawn `planner-<source>` on the second harness when the backend offers one. Send:
 
@@ -109,7 +114,7 @@ Input: a PRD issue (`github` mode) or a local PRD/plan file that `valcraft:spec`
 3. After the projection completes, apply the tracker's post-projection batch per `references/intake-github.md` (parenting, staged clarifications). `local` mode has none.
 4. Have the planner open the spec PR (feature triplet plus `tasks.md` references) against `foreman_default_branch`. Spawn a fresh `reviewer-<source>`. Send:
 
-   > Run `valcraft:review` in plan mode on the complete feature triplet in PR `<n>` of `<owner/repo>` — `spec.md`, `design.md`, `tasks.md` — against `<source>`.
+   > Run `valcraft:review` in plan mode on the feature triplet `specs/<feature>/spec.md`, `design.md`, and `tasks.md` at the head of branch `<spec PR branch>` (pull request `<n>` of `<owner/repo>` is context, not the target), against `<source>`.
 
    Material findings go back to the planner for remediation with commits citing the R-IDs; two rounds is the cap, then escalate. Only a **pass** permits merge. Post the summary, then merge the spec PR (foreman merges; the release-branch and mode rules above apply).
 

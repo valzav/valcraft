@@ -19,9 +19,10 @@ The foreman is an AO orchestrator session (a Claude Code session spawned by AO w
 
   ```sh
   S=<worker-session-id>; R="<run dir>/<role>-<F>-<T>.md"
-  B=$(date -r "$R" +%s 2>/dev/null || echo 0); seen=0
+  snap() { cksum "$R" 2>/dev/null || echo none; }
+  B=$(snap); seen=0
   while :; do
-    [ "$(date -r "$R" +%s 2>/dev/null || echo 0)" -gt "$B" ] && { echo report; break; }
+    [ "$(snap)" != "$B" ] && { echo report; break; }
     st=$(ao session ls --project <project-id> --json | jq -r --arg s "$S" '.data[]|select(.id==$s)|.status')
     [ -z "$st" ] && { echo dead; break; }
     [ "$st" = blocked ] && { echo blocked; break; }
@@ -31,7 +32,7 @@ The foreman is an AO orchestrator session (a Claude Code session spawned by AO w
   done
   ```
 
-  Use `date -r`, not `stat -f %m`: on a machine with GNU coreutils `stat -f` means something else and the mtime read silently fails. Apply the await discipline in `README.md` before arming: read the report file and `ao session ls` once.
+  The snapshot is a content checksum, not an mtime: a report appended in the same second as the baseline leaves whole-second mtime unchanged, and `stat -f %m` reads nothing on a machine with GNU coreutils. The 30 s poll interval is the owner's standing orchestrator rule (`orchestrator-template.md`, 2026-08-15 revision). Apply the await discipline in `README.md` before arming: read the report file and `ao session ls` once.
 
 - `status`: `ao session ls --project <project-id> --json` for liveness; `tmux capture-pane -p -t <id>` for the prompt text — no `-S` for a liveness check, `-S -50` when hunting a prompt, `-S -200` only when reconstructing a failure. Never write to tmux.
 
@@ -63,4 +64,4 @@ AO resolves orchestrator rules at spawn: after changing the project block or the
 
 ## Eval scenario coverage
 
-All seven scenarios in `evals/evals.json` are expressible on this backend.
+All seven drill scenarios are expressible on this backend (`evals/scenarios.md`); they run against a live AO project, not inside the eval harness.

@@ -1,6 +1,6 @@
 # Assignment envelope and report contracts
 
-The foreman speaks to workers in one shape and accepts answers in one shape. This reference defines both. The report contracts belong to the skills that produce them — this file links to them and states what the foreman requires; it never restates their rules.
+The foreman speaks to workers in one shape and accepts answers in one shape. This reference defines both. The report contracts belong to the skills that produce them — this file links to them and lists only the foreman-specific additions.
 
 ## Assignment envelope
 
@@ -16,19 +16,21 @@ State only what the skill cannot know: the run, the target, the inputs. Rules th
 
 ## Report contracts
 
-The foreman reads a report once, in full, when acting on it; afterwards it references the report by path and re-reads only what a decision needs. It never pastes a report into another assignment — it passes the path.
+The report a worker writes is the producing skill's own report, unchanged; this file links to where each contract is defined and adds only what the foreman needs on top of it. The foreman reads a report once, in full, when acting on it; afterwards it references the report by path and re-reads only what a decision needs. It never pastes a report into another assignment — it passes the path.
 
-| Producer            | Required content                                                                                                                                                                                           | Source of the contract                                                              |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| planner (step 2)    | Absolute plan path; confirmation that `valcraft:msw` ran on it; open questions.                                                                                                                            | `../../msw/SKILL.md`                                                                |
-| `valcraft:review`   | Mode; verdict (`pass`, `material findings`, `blocked`); the finding table (`R-NNN \| severity \| claim \| evidence \| resolution`); reproduction commands; checks-performed record; what was not examined. | `../../review/SKILL.md` — "Report"                                                  |
-| `valcraft:forge`    | What changed by ID; verification evidence with real command output; the scope statement; open questions and deferred findings; the pinned review target (branch or range) for step 8.                      | `../../forge/references/verification-and-handoff.md` — "Step 6: Hand off to review" |
-| worker (steps 4, 9) | Plan path or PR reference; each R-ID with its resolution; for step 9, the remediation plan path and resolution commit subjects.                                                                            | `../../review/SKILL.md` — shared rules 3, 4, 6                                      |
-| planner (decompose) | Feature ID and paths; each Cast approval point as an exact proposal; the spec PR reference.                                                                                                                | `../../cast/SKILL.md`, `../../spec/SKILL.md`                                        |
+| Producer            | Contract (authoritative)                                                                                                     | Foreman-specific additions                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| planner (step 2)    | `../../msw/SKILL.md` — the msw report for the plan file                                                                      | the plan's absolute path; open questions the plan could not settle; the `Status:` line                                                |
+| `valcraft:review`   | `../../review/SKILL.md` — "Report" (mode, verdict, finding table, reproduction commands, checks-performed, not examined)     | the `Status:` line                                                                                                                    |
+| `valcraft:forge`    | `../../forge/references/verification-and-handoff.md` — "Step 6: Hand off to review" (changes by ID, evidence, scope, target) | the handoff names the branch or range as the pinned review target for step 8; the `Status:` line                                      |
+| worker (steps 4, 9) | `../../review/SKILL.md` — shared rules 3, 4, 6 (R-IDs, remediation plan, closure by re-run)                                  | one line per R-ID with its resolution; the plan's absolute path (step 4) or the remediation plan path and resolution commits (step 9) |
+| planner (decompose) | `../../cast/SKILL.md`, `../../spec/SKILL.md` — their run reports                                                             | each Cast approval point written as an exact proposal; feature ID and paths; the spec PR reference; the `Status:` line                |
+
+Completeness means: the linked contract's report is present as that skill defines it, plus the additions in the right column. The foreman judges presence, not quality — quality is the reviewer's job.
 
 ## Rejection
 
-A report that carries a verdict, a summary, or a "done" without the required content is incomplete. The foreman does not act on it: it sends the same worker one assignment — "Your report at `<path>` is missing `<named parts>`. Append the full `<skill>` contract and stop." — and awaits again. On a one-shot backend the respawn carries the same instruction. A second incomplete report is an escalation.
+A report that carries a verdict, a summary, or a "done" without the required content is incomplete. The foreman does not act on it: it sends the same worker one assignment — "Your report at `<path>` is missing `<named parts>`. Append the full `<skill>` contract and stop." — and awaits again. On a one-shot backend the respawn carries the same instruction. A second incomplete report is an escalation (the two-attempt rule in `references/hygiene.md`).
 
 ## Status line semantics
 

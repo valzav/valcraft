@@ -14,7 +14,7 @@ The foreman's context is a working resource; the loop survives one context windo
 
 ## Naming
 
-- Workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; decompose: `planner-<source>`, `reviewer-<source>` (`planner-prd225`). Feature and task are both present because T-IDs restart per feature. Backends with a name-length limit declare it; the pattern above fits 20 characters and is never lengthened.
+- Workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; decompose: `planner-<source>`, `reviewer-<source>` (`planner-prd225`, `planner-q3-prd`), where `<source>` is the source id derived in `references/loop.md` — never a raw path. Feature and task are both present because T-IDs restart per feature. Backends with a name-length limit declare it; the pattern above fits 20 characters and is never lengthened.
 - Branches: `feat/f004-t012-<slug>` from `origin/<foreman_default_branch>`; fast-track from `origin/<foreman_release_branch>`.
 - Commits and PRs reference `T-XXX`, the covered `FR-`/`AC-` IDs, and `ADR-` where a decision applies, under the MSW deletion test.
 - Reports: `<run dir>/<role>-<F>-<T>.md`. Run directory: `templates/run-dir.md`.
@@ -29,7 +29,7 @@ The foreman's context is a working resource; the loop survives one context windo
 
 - Two rounds per review stage. The third is an escalation to the human: name the open finding, tell the worker to stop and report.
 - The foreman's cap overrides any worker-internal round budget (MSW's fuse does not grant a worker extra rounds).
-- Escalate after two failed attempts at anything — an assignment that did not start, a report that stays incomplete, a batch that fails twice — instead of looping.
+- Escalate after two failed attempts at anything — an assignment that did not start, a report that stays incomplete, a batch that fails twice — instead of looping. Authority: the owner's standing orchestrator rules (`orchestrator-template.md` Hygiene, 2026-08-15 revision: "escalate after two failed rounds of anything"); the same rule is why the backend and contract references retry exactly once before escalating.
 
 ## Human overrides
 
