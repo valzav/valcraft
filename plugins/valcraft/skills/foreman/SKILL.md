@@ -27,7 +27,7 @@ In a git checkout, confirm `.foreman/` is ignored (`git check-ignore -q .foreman
 - **The foreman's context stays small.** Hold only loop state: task, step, report paths, gate decisions. Never read a spec, plan, or diff the worker can read instead. Worker output enters the foreman as the report block or its path, never as a transcript. Rebuild state from the tracker, git, and the run directory on every command; keep no load-bearing state in memory.
 - **Reports carry the skill's contract, not a verdict.** A `valcraft:review` report carries its full finding table and checks-performed record; a `valcraft:forge` report carries its full handoff. Reject a verdict-only report and require the full block.
 - **The foreman writes tracker state and merges; workers do not.** In `github` mode, every write is first serialized as an exact batch in the summary, then executed. A partial failure stops the batch: report completed operations, reconcile, rebuild the remainder.
-- **Nothing merges or closes on a worker's own verification.** The review rounds must have passed. Two rounds per review stage (plan, PR) is the loop's cap, from the owner's standing rules; a third round is an escalation, and the foreman's cap overrides any worker-internal round budget.
+- **Nothing merges or closes on a worker's own verification.** A material finding closes only when the reviewer re-runs its reproduction (the closure check in `references/loop.md`, "After a review round"). One review round per stage (plan, PR) is the default; a second full round runs only on a listed trigger; two is the cap, from the owner's standing rules. A third round is an escalation, and the foreman's cap overrides any worker-internal round budget.
 - **Approval is an input.** `attended`, `gated`, and `delegated` are defined in `references/approval-modes.md`; never bake one in. Writes to the release branch and escalations wait for the human in every mode.
 
 ## Roles
@@ -50,11 +50,11 @@ Steps in brief; `references/loop.md` is authoritative.
 2. **Plan** — planner writes the plan under `docs/plans/`, runs `valcraft:msw` on it, reports the path.
 3. **Plan review** — reviewer-1 runs `valcraft:review` in plan mode.
 4. **Address** — worker takes the plan as plan of record and resolves findings by R-ID.
-5. **Iterate** — second review round if needed; then summary and the proceed/wait test.
+5. **Iterate** — reviewer-1 closure check on the resolved R-IDs; a second full round only on a trigger; then summary and the proceed/wait test.
 6. **Implement** — worker runs `valcraft:forge` with the plan; a question the spec cannot answer goes to held-task handling.
 7. **PR** — worker pushes and opens the PR against `foreman_default_branch`.
 8. **PR review** — reviewer-2 runs `valcraft:review` in code mode on the pinned target from the forge handoff.
-9. **Fix** — worker resolves findings by R-ID; second round if needed.
+9. **Fix** — worker resolves findings by R-ID; reviewer-2 closure check; a second full round only on a trigger.
 10. **Merge and close** — summary and the proceed/wait test; the foreman merges, closes the task per the intake reference, releases the workers, and returns to step 1.
 
 **Decompose** (`new PRD`, or a local PRD/plan): a planner runs `valcraft:spec` then `valcraft:cast`; a fresh reviewer reviews the triplet; the foreman answers Cast's approval points per the approval mode and merges the spec PR. `references/loop.md` owns it.

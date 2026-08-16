@@ -21,13 +21,13 @@ The foreman's context is a working resource; the loop survives one context windo
 
 ## Sessions and workers
 
-- One worker per role per task. Reuse `reviewer-1-*` across both plan-review rounds and `worker-*` across steps 4, 6, 7, and 9 when the backend keeps workers alive; on a one-shot backend each round is a respawn that carries the prior report path.
+- One worker per role per task. Reuse `reviewer-1-*` across the plan-review round, its closure check, and any second round, and `worker-*` across steps 4, 6, 7, and 9 when the backend keeps workers alive; on a one-shot backend each round is a respawn that carries the prior report path.
 - Release the four workers at the end of step 10 per the backend; never leave a task's workers running into the next task.
 - Cleanup of workspaces belongs to the backend reference — some backends forbid the foreman from running it.
 
 ## Rounds and escalation
 
-- Two rounds per review stage. The third is an escalation to the human: name the open finding, tell the worker to stop and report.
+- One review round per stage by default; a closure check on resolved R-IDs is not a round. A second full round runs only on a trigger listed in `references/loop.md`, "After a review round". Two rounds is the cap; the third is an escalation to the human: name the open finding, tell the worker to stop and report.
 - The foreman's cap overrides any worker-internal round budget (MSW's fuse does not grant a worker extra rounds).
 - Escalate after two failed attempts at anything — an assignment that did not start, a report that stays incomplete, a batch that fails twice — instead of looping. Authority: the owner's standing orchestrator rules (`orchestrator-template.md` Hygiene, 2026-08-15 revision: "escalate after two failed rounds of anything"); the same rule is why the backend and contract references retry exactly once before escalating.
 

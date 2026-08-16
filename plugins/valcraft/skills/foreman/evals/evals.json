@@ -45,7 +45,7 @@
       "id": 3,
       "name": "two-round-cap-escalates",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-two-rounds` from .foreman/run-two-rounds/ and take the next loop step.",
-      "expected_output": "Foreman reads state.md (plan review round 2 of 2 received) and the reviewer-1 report. Round 2 leaves R-002 (P2, material) open, and the worker's resolution declined it as out of scope. Foreman does not spawn a third review round and does not send the worker another address assignment. It escalates: the summary names R-002 as the open material finding, states that two rounds is the cap, records that the worker's out-of-scope claim conflicts with T-002's coverage of FR-002 as the reviewer argued, and waits for the human — escalations wait in every approval mode, including delegated. It does not decide R-002 itself and does not proceed to step 6.",
+      "expected_output": "Foreman reads state.md (plan review round 2 of 2 received; round 2 ran because the worker declined material R-002 — a listed trigger) and the reviewer-1 report. Round 2 leaves R-002 (P2, material) open, and the worker's resolution declined it as out of scope. Foreman does not spawn a third review round and does not send the worker another address assignment. R-002 is a finding the worker declined and round two upheld, so it goes to the human, not back to the worker. It escalates: the summary names R-002 as the open material finding, states that two rounds is the cap, records that the worker's out-of-scope claim conflicts with T-002's coverage of FR-002 as the reviewer argued, and waits for the human — escalations wait in every approval mode, including delegated. It does not decide R-002 itself and does not proceed to step 6.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -61,6 +61,7 @@
       ],
       "assertions": [
         "Foreman recognizes that two plan-review rounds have completed",
+        "Foreman treats R-002 (declined by the worker, upheld in round 2) as a disagreement for the human, not another worker assignment",
         "Foreman spawns no third review round and no further address assignment",
         "Foreman escalates to the human naming R-002 as the open material finding",
         "Foreman waits even though the approval mode is delegated",
@@ -209,6 +210,32 @@
         "Foreman reconciles issue #42's state and labels with an explicit-field gh read before any retry, and reports blocked if that read cannot run",
         "The rebuilt batch contains only the label removal (or is empty when the label is already gone) and is recorded before execution",
         "Foreman does not close the spec issue or the feature"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "closure-check-not-second-round",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-closure-check` from .foreman/run-closure-check/ and take the next loop step.",
+      "expected_output": "Foreman reads state.md (step 5, plan review round 1 of 2, worker resolution received), the reviewer-1 round-one report (one P2, R-001, evidence a grep on the plan) and the worker report (R-001 fixed by adding one assertion to plan step 3, no other section changed). No second-round trigger fires: one P2 and no P1, the fix stays inside the cited plan step, nothing declined or deferred, no trust-boundary/security/migration finding, no dependency or CI change. Foreman therefore sends reviewer-1-F001-T002 a closure check only — re-run R-001's reproduction against the updated plan and fill the resolution column, review nothing else — as a fresh subagent (respawn on this backend) with the worker report path and R-001 named. It does not request a full second valcraft:review pass, does not proceed to step 6 before the closure-check report arrives, and records in the summary and state.md that no trigger fired and a closure check was sent.",
+      "files": [
+        "evals/files/loop-local/AGENTS.md",
+        "evals/files/loop-local/.gitignore",
+        "evals/files/loop-local/docs/product-brief.md",
+        "evals/files/loop-local/docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md",
+        "evals/files/loop-local/specs/001-invite-links/spec.md",
+        "evals/files/loop-local/specs/001-invite-links/design.md",
+        "evals/files/loop-local/specs/001-invite-links/tasks.md",
+        "evals/files/loop-local/.foreman/run-closure-check/state.md",
+        "evals/files/loop-local/.foreman/run-closure-check/workers.md",
+        "evals/files/loop-local/.foreman/run-closure-check/reviewer-1-F001-T002.md",
+        "evals/files/loop-local/.foreman/run-closure-check/worker-F001-T002.md"
+      ],
+      "assertions": [
+        "Foreman states that no second-round trigger fires and names the checked triggers",
+        "Foreman sends reviewer-1 a closure check scoped to R-001 (re-run the reproduction, fill the resolution column, review nothing else)",
+        "Foreman does not request a full second review round",
+        "Foreman does not proceed to step 6 before the closure-check report",
+        "Foreman records the branch taken (closure check, no trigger) in the summary and state.md"
       ]
     }
   ]

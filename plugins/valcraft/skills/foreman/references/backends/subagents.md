@@ -50,4 +50,4 @@ The scenario × backend matrix with eval ids is `evals/scenarios.md`.
 | Blocked, needs escalation         | expressible.                                                                                                                                          |
 | Merge denied by classifier        | expressible — the foreman's own permission mode.                                                                                                      |
 | Partial mutation failure          | expressible (`github` intake).                                                                                                                        |
-| Two-round review cap              | expressible.                                                                                                                                          |
+| Two-round review cap              | expressible; the closure check and any second round are respawns of the same reviewer name.                                                           |
