@@ -8,10 +8,6 @@ scaffolds a project around specs that live in the repository (plain markdown wit
 checkbox tasks, or projected to GitHub Issues), `spec` turns PRDs into feature specs, and
 `temper` learns from what shipped.
 
-valcraft employs the loop engineering concept: rather than one long prompt, the
-discipline lives in the loop itself — its gates, the contracts each role must return, and
-a fresh context for every worker.
-
 Status: alpha.
 
 ## Problems it addresses
@@ -20,8 +16,8 @@ Status: alpha.
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | The agent forgets requirements between sessions and reinvents them. | `cast` scaffolds a lean spec structure inside the repository (`spec.md`, `design.md`, `tasks.md`) with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that commits, tests, and reviews cite. Context lives with the code. |
 | "Make X" turns into a pile of unreviewed code.                      | `cast` scaffolds and stops; `foreman` gates every task through an independent plan review and code review, and nothing merges on the implementer's own verification.                                               |
-| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk in `.foreman/`, and a run resumes from the tracker, git, and that directory.                                                |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `gated`, `delegated`) decide which decisions wait for you; irreversible acts — release-branch writes, feature close, escalations — wait in every mode.                                 |
+| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                                |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `gated`, `delegated`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                      |
 | Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                                |
 | The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
 | Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
@@ -32,29 +28,36 @@ Status: alpha.
 
 The default path for a new project or a new body of work.
 
-1. **`/valcraft:cast`** — scaffold a fresh project (or retrofit an existing one): README,
-   `AGENTS.md`, product brief, ADR index, and a populated `specs/001-mvp/` triplet.
-   Choose the tracker: `local` (checkboxes in `tasks.md`) or `github` (Issues). Cast ends
-   with a report and next steps; it never implements.
-2. **Enrich, then `/valcraft:spec`** — add the context and use cases the scaffold had to
-   mark as assumptions. `spec` turns a PRD (a local file or a GitHub issue) into the next
-   canonical feature spec; `cast` stages its `design.md` and `tasks.md`.
+1. **`/valcraft:cast`** — for a fresh project: README, `AGENTS.md`, product brief, ADR
+   index, and a populated `specs/001-mvp/` triplet. For an existing project: a retrofit
+   that adds the missing pieces and normalizes existing specs and tasks. Either way you
+   choose the tracker — `local` (checkboxes in `tasks.md`) or `github` (Issues) — and
+   Cast ends with a report and next steps; it never implements.
+2. **`/valcraft:spec`** — for each new feature, give `spec` one PRD (a local file or a
+   GitHub issue); it writes the next feature spec, and `cast` then adds that feature's
+   `design.md` and `tasks.md`. Enrich the product brief and specs with the context and
+   use cases the scaffold had to mark as assumptions before you go further.
 3. **`/valcraft:foreman`** — add the foreman block to `AGENTS.md`
    (`plugins/valcraft/skills/foreman/templates/project-block.md`) and say "start sprint".
    For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
    code review → fix → merge → close. When the feature closes, `temper` writes the
-   retrospective. Workers are Claude Code subagents from a plain session, or Agent
-   Orchestrator sessions. `foreman` can also decompose a PRD end to end ("new PRD #N").
+   retrospective. `foreman` can also decompose a PRD end to end ("new PRD #N").
+
+   `foreman` runs from a Claude Code session: as a plain session whose workers are
+   subagents, or as an Agent Orchestrator session whose workers are Claude Code and Codex
+   sessions. In Codex the skill is installed and triggers, but no Codex-native worker
+   backend exists yet.
 
 ### 2. Manual loop, one task at a time
 
 Same contracts, you drive:
 
 1. `/valcraft:cast`, then `/valcraft:spec` as above.
-2. `/valcraft:forge T-NNN` — implement one task from its plan; ends at a fixed-shape
-   handoff, never at "done".
-3. `/valcraft:review` in a fresh context — plan mode before implementation, code mode on
-   the PR or diff; resolve findings by `R-ID`, then merge yourself.
+2. `/valcraft:forge T-NNN` — plans the task when it needs a plan, implements it, and ends
+   at the review handoff, never at "done". To gate the plan first, run `/valcraft:review`
+   in plan mode on it before forge implements.
+3. `/valcraft:review` in a fresh context, code mode on the PR or diff; resolve findings
+   by `R-ID`, then merge yourself.
 4. `/valcraft:temper` over the feature directory when it ships.
 
 ## Prompt tooling
@@ -89,7 +92,7 @@ Skills also trigger from natural requests ("new project", "review this PR",
 
 | Elsewhere                                                                                    | In valcraft                                                                                                                                                                                                                                                |
 | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An executable, scripts, and a setup step.                                                    | valcraft is markdown only: nine skills in one plugin, no runtime, and nothing to install into the project beyond the files `cast` writes.                                                                                                                  |
+| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin, no runtime dependency, and nothing to install into the project beyond the files `cast` writes.                                                                                                                |
 | Specs and tasks live in the framework's own folders and formats.                             | Specs are ordinary files under `specs/`, tasks are checkboxes or GitHub Issues you already use, decisions are ADRs — readable and editable without the tool.                                                                                               |
 | SDD is a session ritual, not a project rule; work done outside it drifts from the specs.     | `cast` writes the discipline into `AGENTS.md`, so every agent session — inside the loop or not — cites IDs, updates the affected spec or ADR in the same change, and reviews against the same contract; `cast` retrofits an existing project the same way. |
 | Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | valcraft's roles are skills with contracts (`spec`, `forge`, `review`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                                                 |
