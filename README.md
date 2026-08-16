@@ -4,7 +4,8 @@ Agent skills for spec-driven delivery, packaged as one plugin for Claude Code an
 Codex. Scaffold a project around specs that live in the repository (tracked as plain
 markdown with checkbox tasks, or projected to GitHub Issues). Turn PRDs into feature
 specs. Run each task through a plan → review → implement → review → merge loop over
-fresh-context worker agents. Then learn from what shipped.
+fresh-context worker agents — inside one Claude Code session, or through an orchestrator
+over several Claude Code and Codex instances. Then learn from what shipped.
 
 Status: alpha.
 
