@@ -1,23 +1,24 @@
 # valcraft
 
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex. Scaffold a project around git-owned specs, turn PRDs into feature specs, and run
-each task through a plan → review → implement → review → merge loop over fresh-context
-worker agents — then learn from what shipped.
+Codex. Scaffold a project around specs that live in the repository — tracked in plain
+markdown with checkbox tasks, or projected to GitHub Issues — turn PRDs into feature
+specs, and run each task through a plan → review → implement → review → merge loop over
+fresh-context worker agents — then learn from what shipped.
 
 Status: alpha. Nine skills; the set grows one skill at a time.
 
 ## Problems it addresses
 
-| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                     |
-| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The agent forgets requirements between sessions and reinvents them. | `cast` scaffolds a lean, git-owned spec structure (`spec.md`, `design.md`, `tasks.md`) with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that commits, tests, and reviews cite. Context lives in the repo. |
-| "Make X" turns into a pile of unreviewed code.                      | `cast` scaffolds and stops; `foreman` gates every task through an independent plan review and code review, and nothing merges on the implementer's own verification.                                  |
-| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk in `.foreman/`, and a run resumes from the tracker, git, and that directory.                                   |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `gated`, `delegated`) decide which decisions wait for you; irreversible acts — release-branch writes, feature close, escalations — wait in every mode.                    |
-| Task tracking drifts from what the specs say.                       | Git is canonical; the tracker is a projection — `tasks.md` checkboxes (`local`) or GitHub Issues with generated bodies and blocked-by links (`github`).                                               |
-| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                               |
-| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                    |
+| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                                  |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| The agent forgets requirements between sessions and reinvents them. | `cast` scaffolds a lean spec structure inside the repository (`spec.md`, `design.md`, `tasks.md`) with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that commits, tests, and reviews cite. Context lives with the code. |
+| "Make X" turns into a pile of unreviewed code.                      | `cast` scaffolds and stops; `foreman` gates every task through an independent plan review and code review, and nothing merges on the implementer's own verification.                                               |
+| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk in `.foreman/`, and a run resumes from the tracker, git, and that directory.                                                |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `gated`, `delegated`) decide which decisions wait for you; irreversible acts — release-branch writes, feature close, escalations — wait in every mode.                                 |
+| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo (`local`); the other is GitHub Issues with generated bodies and blocked-by links (`github`). |
+| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
+| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
 
 ## Workflows
 
