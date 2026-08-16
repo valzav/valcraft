@@ -35,6 +35,10 @@ repository-level reference that keeps new skills consistent with it.
   against: the feature's `spec.md` IDs, `design.md`, accepted ADRs, and the task's
   plan. Distinct from the contract (outcome plus proof criteria) that distill, hone,
   and msw derive.
+- **change class** (review) — in code mode, the target's classification from its file
+  list: `docs` (documentation paths only), `config` (configuration, CI, dependency
+  manifests), or `code`. Stated in the report for the reader and the host loop; it
+  changes no check and no round policy.
 - **change report** — the end-of-run list of changes, each mapped to the guideline or
   rule that motivated it, plus flagged judgment calls.
 - **claim** — one atomic instruction, requirement, constraint, example, or rationale.

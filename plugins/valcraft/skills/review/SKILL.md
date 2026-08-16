@@ -8,6 +8,8 @@ description: >
 
 One skill, two modes. The target picks the mode: a plan, spec, design, or tasks document → **plan mode**; a diff, PR, branch, or commit range → **code mode**. When the target is ambiguous, ask when attended; otherwise review the artifact that gates the next pipeline stage.
 
+In code mode, classify the change from its file list before reviewing and state the class in the report: **docs** — only documentation paths (`.md`, `docs/`, `specs/`), no executable, test, or configuration file; **config** — configuration, CI, or dependency manifests, no source or test; **code** — anything else. The class describes the target for the reader and the host loop; it changes no check and no round policy — the host loop owns rounds.
+
 The contract is Cast's git-owned authority chain: the feature's `spec.md` (`FR-`/`AC-`/`NFR-`/`BR-` IDs), `design.md`, accepted ADRs, and the task's plan. When these authorities conflict, accepted ADRs prevail, then `specs/`, then derived `docs/`.
 
 The two modes catch disjoint defect classes — architecture, decomposition, and cross-document contradictions are only visible before code exists; adversarial input handling, library quirks, and test blind spots only in the concrete code — so never treat one passed stage as covering the other.
@@ -58,7 +60,7 @@ Read `references/code-mode.md` before reviewing. It owns target pinning, contrac
 
 ## Report
 
-End with: the mode used, the verdict, the finding table, the reproduction commands behind each evidence cell, and — for material findings — the R-IDs a remediation plan must cite. Always include a checks-performed record — which of the mode's checks ran, with the commands behind them — so a pass with an empty table still carries its evidence. State explicitly what was not examined.
+End with: the mode used and, in code mode, the change class, the verdict, the finding table, the reproduction commands behind each evidence cell, and — for material findings — the R-IDs a remediation plan must cite. Always include a checks-performed record — which of the mode's checks ran, with the commands behind them — so a pass with an empty table still carries its evidence. State explicitly what was not examined.
 
 ## Trust boundary
 
