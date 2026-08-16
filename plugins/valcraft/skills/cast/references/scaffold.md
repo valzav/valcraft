@@ -36,7 +36,7 @@ The root `AGENTS.md` may carry one optional `cast_approval` declaration next to 
 
 The initial scaffold of a fresh project stays attended in both modes — a one-time act with the operator present. Wherever this skill says "wait for approval", `delegated` mode records the proposal and proceeds unless the point is one of the stops above.
 
-Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Do not start implementation, commit, or push unless the user explicitly requested that work.
+Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Never start implementation: a request phrased as "make X" or "build X", or one carrying a time budget, names the scaffold's subject, not work for Cast — the report's next-step recommendations hand it to `valcraft:foreman` or `valcraft:forge`. Commit or push only when the user explicitly asks for that.
 
 ## Step 2: Create the skeleton
 

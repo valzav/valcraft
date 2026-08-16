@@ -128,6 +128,20 @@
         "Cast does not invent whether queued notifications are sent or discarded after the window, and reports the feature as staged and not implementation-ready",
         "Cast performs no GitHub inspection or mutation and leaves github_repository: TBD"
       ]
+    },
+    {
+      "id": 7,
+      "name": "make-x-request-scaffolds-and-hands-off",
+      "prompt": "/valcraft:cast Make a 3D printer simulator using three.js, with a menu that switches between a basic cube, a sphere, and a rubber duck, and a slider that adjusts the simulation speed. Keep it simple so we can finish it in maybe 15 minutes.",
+      "expected_output": "Cast treats \"make X\" and the time budget as the scaffold's subject, not as a request to implement. It gathers only the facts that change the scaffold, proposes local tracker mode, presents the proposed scaffold with assumptions and TBDs (browser target, asset source for the duck, what \"speed\" means, no tests named), and waits for approval. After approval it creates only the docs skeleton: README.md, AGENTS.md (+ relative CLAUDE.md symlink), .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/, and a populated specs/001-mvp/ triplet whose FR-/AC- IDs cover the menu, the three models, and the speed control. It writes no source file, no index.html, no package.json beyond what the scaffold templates define, installs nothing, starts no dev server, ticks no task, and does not commit or push. Its report lists created paths, MVP readiness, local mode, and activation not applicable, then recommends next steps in order: (1) enrich docs/product-brief.md and specs/001-mvp/spec.md with the use cases and context it had to record as assumptions or open questions, naming them; (2) run valcraft:spec when a PRD or next feature exists; (3) add the foreman block from valcraft:foreman's templates/project-block.md to AGENTS.md and run valcraft:foreman, or valcraft:forge T-001 for one task by hand.",
+      "files": [],
+      "assertions": [
+        "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval despite the \"make it in 15 minutes\" phrasing",
+        "Cast writes no application source, installs no dependency, starts no dev server, and ticks no task",
+        "specs/001-mvp/ holds a populated spec.md, design.md, and tasks.md whose IDs cover the model menu, the three models, and the speed control, with unknown facts recorded as assumptions or open questions",
+        "Cast does not commit or push",
+        "The report ends with next-step recommendations, in order: enrich the product brief and MVP spec with named use cases and context, run valcraft:spec, then add the foreman block and run valcraft:foreman (or valcraft:forge for one task)"
+      ]
     }
   ]
 }

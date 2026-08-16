@@ -203,9 +203,10 @@ repository-level reference that keeps new skills consistent with it.
 - **worker role** (foreman) — one of `planner`, `reviewer-1`, `worker`, `reviewer-2`, `temper`
   (plus `planner-<source>` and `reviewer-<source>` for decompose), each a fresh worker
   named `<role>-<F>-<T>` and started cold.
-- **working loop** (cast) — the per-feature cycle: plan (in `docs/plans/`),
-  implement with ID-referencing commits, review with ID'd findings, update affected
-  docs in the same change.
+- **working loop** (cast) — the per-feature cycle Cast declares in `AGENTS.md` and
+  never runs itself: plan (in `docs/plans/`), implement with ID-referencing commits,
+  review with ID'd findings, update affected docs in the same change. `foreman` runs
+  it; `forge` and `review` own its steps.
 - **YAML distillate** (distill) — the distillate in stable-key YAML form (`name`,
   `goal`, `use_when`, `do_not_use_when`, `inputs`, `steps`, `constraints`,
   `testable_behaviors`, `dropped`); the handoff format between subagents and tooling.

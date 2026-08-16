@@ -1,7 +1,7 @@
 ---
 name: cast
 description: >
-  Bootstrap a new project with user's lean spec-driven development (SDD) scaffold — README, AGENTS.md (+ CLAUDE.md symlink), product brief, ADRs, and numbered spec+design+tasks triplets under specs/ — then run the plan → implement → review working loop. Use whenever user starts a new project or repository, says "new project", "start building X", "scaffold this", "set up specs", or wants to retrofit spec-driven structure onto an existing codebase, even if they don't mention SDD or docs explicitly. Also use when user asks to activate or synchronize GitHub Issues as a project's task tracker.
+  Bootstrap a new project with user's lean spec-driven development (SDD) scaffold — README, AGENTS.md (+ CLAUDE.md symlink), product brief, ADRs, and numbered spec+design+tasks triplets under specs/ — and hand off to spec, foreman, or forge; cast never implements. Use whenever user starts a new project or repository, says "new project", "start building X", "scaffold this", "set up specs", or wants to retrofit spec-driven structure onto an existing codebase, even if they don't mention SDD or docs explicitly. Also use when user asks to activate or synchronize GitHub Issues as a project's task tracker.
 ---
 
 # cast
@@ -11,6 +11,7 @@ Lean SDD project scaffold. Resist reintroducing heavyweight machinery unless the
 ## Principles
 
 - **Docs before code.** The first commit is a documentation baseline. Code arrives after the stack and boundaries are settled in ADRs.
+- **Cast scaffolds; it does not build.** A request phrased as "make X", "build X", or with a time budget still ends at the report below. Implementation belongs to `valcraft:foreman` (the loop) or `valcraft:forge` (one task); Cast writes no source, ticks no task, and starts no dev server.
 - **Stable IDs are the working currency.** `FR-001`, `AC-003`, `T-012`, `ADR-0009` get referenced from commit subjects, reviews, tests, and follow-up plans. IDs + links give you traceability for free; matrices are theater.
 - **Never invent missing requirements.** Record assumptions and open questions in the spec instead. Populate documents from evidence in priority order: facts the user gave → existing repo/code → established conventions → clearly-marked assumptions.
 - **Scale docs to the project.** Every file below is opt-in past the skeleton. Small projects stop at the skeleton; add optional documents only when their stated trigger exists.
@@ -34,23 +35,23 @@ Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, t
 - Identify consequential technical decisions. Write each as an ADR (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or explicitly open. ADRs are cheap to write and expensive to reconstruct. Small implementation choices don't need ADRs.
 - Keep the initial `001-mvp` feature as a full populated triplet. Apply the staged readiness gate in `references/spec-intake.md` before calling any later feature ready to implement.
 
-## Step 4: The working loop (per feature/task)
+## Step 4: The working loop Cast sets up
 
-Apply the selected tracker mode throughout the loop:
+Cast declares this loop in `AGENTS.md` and runs none of its steps. Apply the selected tracker mode throughout:
 
 - In `local` mode, keep task definitions and status as checkboxes in `tasks.md`. Require no GitHub CLI, remote, or authentication.
-- In `github` mode, keep the spec, design, checkbox-free task definitions, phase order, and explicit `blocked by T-XXX` intent authoritative in git. Keep stable T-IDs and their issue-number references in `tasks.md`. Reconcile generated issue titles, bodies, sub-issue order, and dependency relationships from those definitions without overwriting comments or hand-maintained status. Once activation is complete, apply `in-progress` while implementing, apply `needs-clarification` when an issue question blocks the task, and close the issue only after the task is verified. GitHub open/closed state and those labels are authoritative for status; never copy that status back into git. When activation is pending, keep working definitions in git and make no remote status claim.
+- In `github` mode, git owns the spec, design, checkbox-free task definitions, order, and `blocked by T-XXX` intent, plus stable T-IDs with their issue numbers in `tasks.md`; GitHub owns open/closed state and the `in-progress` / `needs-clarification` labels — never copy status back into git. Reconcile generated titles, bodies, sub-issue order, and dependencies from git without overwriting comments. While activation is pending, make no remote status claim.
 
-Before allocating a later feature, validate existing feature IDs and stages through `references/spec-intake.md`. Resume a staged feature when selected. If several features are staged, ask the operator which one to resume. From the canonical spec, propose the next missing artifact, wait for approval — under `cast_approval: delegated` record the proposal and proceed — and create only that artifact. Repeat for each remaining missing artifact. An unresolved product question affects the final implementation-readiness verdict; it does not stop Cast from proposing substantive `design.md` and `tasks.md` files that preserve the question without inventing an answer. Preserve the spec's existing `spec_issue` mapping.
+Before allocating a later feature, validate existing feature IDs and stages through `references/spec-intake.md`. Resume a staged feature when selected; if several are staged, ask which. From the canonical spec, propose the next missing artifact, wait for approval — under `cast_approval: delegated` record the proposal and proceed — and create only that artifact. Repeat for each remaining missing artifact. An unresolved product question affects the final implementation-readiness verdict; it does not stop Cast from proposing substantive `design.md` and `tasks.md` files that preserve the question without inventing an answer. Preserve the spec's existing `spec_issue` mapping.
 
-1. **Plan** — non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md` (e.g. `2026-08-02-001-feat-t-030-predicate-compiler-plan.md`). Plans referenced from tasks.md are tracked in git — never gitignored. For features past 001, check the new spec against existing specs for conflicts and shared boundaries before planning.
-2. **Implement** — small verifiable tasks; commit subjects reference IDs (`T-029: predicate registry…`, `fix(T-030): resolve the material findings…`). `valcraft:forge` executes this step for one task, including its verification discipline and the hand-off to review.
-3. **Review** — run an independent review (second model or fresh agent); `valcraft:review` defines the review itself (plan mode and code mode). Findings get IDs (`R-001…`), material ones get a remediation plan in `docs/plans/`, resolution commits cite the IDs. **Do not commit raw review records** — findings live in the remediation plan and commit messages.
-4. **Update docs in the same change** — specs, ADRs, and contracts affected by the code change move with it, not in a later sweep.
+1. **Plan** — non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`, tracked in git. For features past 001, check the new spec against existing specs for conflicts and shared boundaries first.
+2. **Implement** — small verifiable tasks; commit subjects reference IDs (`T-029: predicate registry…`). `valcraft:forge` owns this step for one task, with its verification and hand-off.
+3. **Review** — independent (second model or fresh agent); `valcraft:review` owns it. Findings get `R-` IDs, material ones a remediation plan in `docs/plans/`; resolution commits cite the IDs. Never commit raw review records.
+4. **Update docs in the same change** — specs, ADRs, and contracts move with the code.
 
 `valcraft:foreman` runs this loop over worker agents from the project's `AGENTS.md` foreman block; it consumes Cast's tracker projection and never reprojects it.
 
-After a feature ships — or another milestone closes a body of work — optionally run `valcraft:temper` over it: the retrospective report lands in `docs/retro/`, and lessons that pass its promotion gate are proposed as standing rules for `AGENTS.md`.
+After a feature ships, `valcraft:temper` (foreman's step 11, or by hand) writes the retrospective to `docs/retro/` and proposes promoted lessons as standing rules for `AGENTS.md`.
 
 ### Trust boundary
 
@@ -62,6 +63,8 @@ Apply the scaffold and tracker stop conditions in `references/scaffold.md` and `
 
 ## Report
 
-End the scaffold run with a report: the paths created, merged, skipped, and blocked; whether the MVP is ready to plan or code; the selected tracker mode; and GitHub tracker activation status. For `github`, name the target when known and the exact activation blocker while pending. For `local`, state that activation is not applicable.
+End the scaffold run with a report and stop: the paths created, merged, skipped, and blocked; whether the MVP is ready to plan or code; the selected tracker mode; and GitHub tracker activation status. For `github`, name the target when known and the exact activation blocker while pending. For `local`, state that activation is not applicable.
+
+Then recommend the next steps, in this order: (1) enrich `docs/product-brief.md` and `specs/001-mvp/spec.md` with the context and use cases the run had to mark as assumptions or open questions — name them; (2) run `valcraft:spec` when a PRD or a next feature exists; (3) add the foreman block from `valcraft:foreman`'s `templates/project-block.md` to `AGENTS.md` and run `valcraft:foreman` to deliver, or `valcraft:forge <T-ID>` for one task by hand.
 
 Retrofits follow the additional source, merge, normalization, and optional-cleanup rules in `references/scaffold.md`.
