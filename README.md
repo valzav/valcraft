@@ -1,12 +1,12 @@
 # valcraft
 
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex. Scaffold a project around specs that live in the repository — tracked in plain
-markdown with checkbox tasks, or projected to GitHub Issues — turn PRDs into feature
-specs, and run each task through a plan → review → implement → review → merge loop over
-fresh-context worker agents — then learn from what shipped.
+Codex. Scaffold a project around specs that live in the repository (tracked as plain
+markdown with checkbox tasks, or projected to GitHub Issues). Turn PRDs into feature
+specs. Run each task through a plan → review → implement → review → merge loop over
+fresh-context worker agents. Then learn from what shipped.
 
-Status: alpha. Nine skills; the set grows one skill at a time.
+Status: alpha.
 
 ## Problems it addresses
 
@@ -38,8 +38,7 @@ The default path for a new project or a new body of work.
    For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
    code review → fix → merge → close. When the feature closes, `temper` writes the
    retrospective. Workers are Claude Code subagents from a plain session, or Agent
-   Orchestrator sessions; each starts with an empty context. `foreman` can also decompose
-   a PRD end to end ("new PRD #N").
+   Orchestrator sessions. `foreman` can also decompose a PRD end to end ("new PRD #N").
 
 ### 2. Manual loop, one task at a time
 
@@ -52,10 +51,8 @@ Same contracts, you drive:
    the PR or diff; resolve findings by `R-ID`, then merge yourself.
 4. `/valcraft:temper` over the feature directory when it ships.
 
-### 3. Single skills
-
-- `/valcraft:review` any plan, spec, PR, or diff against its Cast contract.
-- `/valcraft:temper` over a PR range or date window for a retrospective without the loop.
+`review` and `temper` also run alone: review any plan, spec, PR, or diff against its Cast
+contract; retrospect over a PR range or date window.
 
 ## Prompt tooling
 
