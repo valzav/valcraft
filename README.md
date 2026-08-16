@@ -1,11 +1,15 @@
 # valcraft
 
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex. Scaffold a project around specs that live in the repository (tracked as plain
-markdown with checkbox tasks, or projected to GitHub Issues). Turn PRDs into feature
-specs. Run each task through a plan → review → implement → review → merge loop over
-fresh-context worker agents — inside one Claude Code session, or through an orchestrator
-over several Claude Code and Codex instances. Then learn from what shipped.
+Codex. At the center is an agentic **delivery loop** — plan → review → implement →
+review → merge — run over fresh-context worker agents, inside one Claude Code session or
+through an orchestrator over several Claude Code and Codex instances. Around it: `cast`
+scaffolds a project around specs that live in the repository (plain markdown with
+checkbox tasks, or projected to GitHub Issues), `spec` turns PRDs into feature specs, and
+`temper` learns from what shipped.
+
+This is loop engineering rather than prompt engineering: the discipline lives in the
+loop's gates, contracts, and fresh contexts, not in one long prompt.
 
 Status: alpha.
 
