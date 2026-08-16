@@ -121,3 +121,7 @@ codex plugin add valcraft@valcraft
 - [docs/development.md](docs/development.md) — live editing, repository layout,
   packaging, evals.
 - [docs/glossary.md](docs/glossary.md) — the terms the skills share.
+
+## License
+
+[MIT](LICENSE).
