@@ -20,6 +20,8 @@ Read `references/spec-intake.md` before validating a scaffold, creating a featur
 
 Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the exact approval boundary, opt-in artifacts, and retrofit behavior.
 
+**Progress list.** With a harness task tool (Claude Code `TaskCreate`/`TaskUpdate`, Codex `update_plan`), mirror the scaffold run: one item each for gather facts, tracker declaration, scaffold proposal, write approval, skeleton write, populate and MVP, tracker activation, report — one `in_progress` at a time, `completed` when the step's approval or artifact exists. Display only — the written files and the operator's approvals stay authoritative; skip without such a tool.
+
 ## Steps 1–2: Gather facts and create the skeleton
 
 Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, tracker declaration, scaffold proposal, and write approval are resolved.
@@ -46,7 +48,7 @@ Before allocating a later feature, validate existing feature IDs and stages thro
 3. **Review** — run an independent review (second model or fresh agent); `valcraft:review` defines the review itself (plan mode and code mode). Findings get IDs (`R-001…`), material ones get a remediation plan in `docs/plans/`, resolution commits cite the IDs. **Do not commit raw review records** — findings live in the remediation plan and commit messages.
 4. **Update docs in the same change** — specs, ADRs, and contracts affected by the code change move with it, not in a later sweep.
 
-`valcraft:foreman` runs this loop over worker agents — pick, plan, review, implement, PR, review, merge, close — from the project's `AGENTS.md` foreman block; it consumes Cast's tracker projection and never reprojects it.
+`valcraft:foreman` runs this loop over worker agents from the project's `AGENTS.md` foreman block; it consumes Cast's tracker projection and never reprojects it.
 
 After a feature ships — or another milestone closes a body of work — optionally run `valcraft:temper` over it: the retrospective report lands in `docs/retro/`, and lessons that pass its promotion gate are proposed as standing rules for `AGENTS.md`.
 

@@ -1,18 +1,18 @@
 ---
 name: forge
 description: >
-  Implement exactly one unit of work — a Cast task (T-XXX), a plan document, or a small fully-specified feature or fix — from its git-owned definition: plan, code, verify with discriminating evidence, and hand the change to review. Use when the user or an orchestrator assigns implementation of a specific task, T-ID, plan, bug fix, or small feature. Do not use for project scaffolding (valcraft:cast), spec creation (valcraft:spec), or reviewing (valcraft:review) — forge implements Cast's working-loop Plan and Implement steps and always ends at the review gate, never past it.
+  Implement one unit of work — a Cast task (T-XXX), a plan document, or a small fully-specified feature or fix — from its git-owned definition: plan, code, verify with discriminating evidence, and hand the change to review. Use when the user or an orchestrator assigns implementation of a task, T-ID, plan, bug fix, or small feature. Do not use for project scaffolding (valcraft:cast), spec creation (valcraft:spec), or reviewing (valcraft:review) — forge implements Cast's Plan and Implement steps and always ends at the review gate.
 ---
 
 # forge
 
 Implement one assigned unit of work. Treat Cast as the SDD authority: the feature's `spec.md` (`FR-`/`AC-`/`NFR-`/`BR-` IDs), `design.md`, its `tasks.md` entry, accepted ADRs, and the task's plan are the Cast contract. Never invent a missing requirement — record it as an open question and surface it.
 
-forge ends when the change is verified and handed to review. It never merges, closes a task, or declares the work shipped on its own verification: in the incident corpus behind this skill, every bug that reached the main branch got there because a review gate was skipped, not because a review missed it.
+forge ends when the change is verified and handed to review. It never merges, closes a task, or declares the work shipped on its own verification: every bug in this skill's incident corpus reached the main branch through a skipped review gate, not a missed review.
 
 ## Load the Cast contracts
 
-Before resolving the assignment, read the project's root `AGENTS.md` and resolve its `project_tracker` declaration, and read `../cast/references/spec-intake.md` for the feature identity, staged-lifecycle, and implementation-readiness contract. Follow those resources instead of reconstructing their rules.
+Before resolving the assignment, read the project's root `AGENTS.md` and resolve its `project_tracker` declaration, and read `../cast/references/spec-intake.md` for the feature identity, staged-lifecycle, and implementation-readiness contract. Follow those resources; do not reconstruct their rules.
 
 ## Step 1: Resolve the assignment
 
@@ -27,7 +27,7 @@ For any assignment that resolves to a Cast task — given as a T-ID or through a
 - The feature is implementation-ready per `spec-intake.md`. A task from a staged or unready feature stops here — route it to Cast.
 - Every `blocked by T-XXX` on the assigned task is complete: checked in `tasks.md` in local mode, closed on GitHub in github mode.
 
-Then state the scope: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not. Do not resolve it by choosing silently.
+Then state the scope: which files and tasks this change will touch, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs prevail, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, report the blocker when not.
 
 Establish the workspace. First detect prior work for the assigned unit — branch, commits, tracker state, working tree — and continue from that evidence instead of reimplementing. Only when no resumable workspace exists: on the default branch, create a feature branch unless the operator explicitly authorizes direct default-branch work; on an existing feature branch, continue there. Unrelated uncommitted changes are not part of the task: surface them, and never let a branch switch or commit absorb them.
 
@@ -40,11 +40,13 @@ Non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md
 
 The plan is a decision artifact, not execution state. Never edit it to record progress — status lives in the tracker per Cast's authority table, and completion derives from the working tree, commits, and verification.
 
-Read `references/verification-and-handoff.md` before editing code. It owns Steps 4–6 and the trust boundary, and must shape the implementation and its tests rather than load only after the change is complete.
+Read `references/verification-and-handoff.md` before editing code. It owns Steps 4–6 and the trust boundary and must shape the implementation and its tests, not load after the change is complete.
+
+**Progress list.** With a harness task tool (Claude Code `TaskCreate`/`TaskUpdate`, Codex `update_plan`), mirror Steps 1–6: one item per step, `<unit> — <step name>`, one `in_progress` at a time, `completed` when the step's evidence exists. Display only — working tree, commits, and tracker stay authoritative; skip without such a tool.
 
 ## Step 3: Implement
 
-Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`). Write each message under the MSW deletion test: state what the change does and why it matters, then delete every sentence whose removal loses none of that — no process narration, no restated diff. Stage only paths inside the stated scope, and check `git diff --cached` against the scope statement before each commit — a green, ID-bearing commit can still smuggle unrelated changes.
+Small verifiable increments; each commit leaves the tree green — no WIP commits. Commit subjects reference the IDs (`T-029: predicate registry…`, `fix(T-030): …`). Write each message under the MSW deletion test: state what the change does and why it matters, then delete every sentence whose removal loses none of that — no process narration, no restated diff. Stage only paths inside the stated scope, and check `git diff --cached` against the scope statement before each commit.
 
 Apply the tracker mode while implementing. In github mode, apply `in-progress` when starting and `needs-clarification` when an issue question blocks the task; in local mode, write no status during implementation. Marking the task complete — the checkbox or the issue close — happens after the review gate, never on forge's own verification.
 
@@ -60,4 +62,4 @@ Standing rules:
 
 ## Steps 4–6: Verify, document, and hand off
 
-Follow `references/verification-and-handoff.md`. Forge does not end until its discriminating verification, documentation checks, scope report, and independent review handoff are complete or explicitly blocked.
+Follow `references/verification-and-handoff.md`; forge does not end until its verification, documentation checks, scope report, and independent review handoff are complete or explicitly blocked.
