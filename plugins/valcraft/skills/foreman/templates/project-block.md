@@ -22,6 +22,6 @@ foreman_clarification_assignees: # github intake only — who receives a needs-c
 Rules:
 
 - One block per project. A missing block stops a foreman run.
-- Pair `cast_approval` with `foreman_approval_mode`: `attended` ↔ `attended`; `gated` or `delegated` ↔ `delegated`. Cast reads its own declaration when the planner runs it during decompose; with `delegated`, only Cast's residual stops (product-intent change, invented requirement, task removal, `TBD` GitHub target, stop conditions) reach the foreman as approval points. Missing means `attended`.
+- Pair `cast_approval` with `foreman_approval_mode`: `attended` ↔ `attended`; `gated` or `delegated` ↔ `delegated` — in `gated`, Cast's projection is a recorded mutation preview executed from its record, the same standing as the foreman's own tracker batches (`references/approval-modes.md`, "Tracker write batch"); a `TBD` target activation and task removal wait in every mode. Cast reads its own declaration when the planner runs it during decompose; with `delegated`, only Cast's residual stops (product-intent change, invented requirement, task removal, `TBD` GitHub target, stop conditions) reach the foreman as approval points. Missing means `attended`.
 - The backend reference may require its own environment (`ao`: an AO project id and `set-config`; see the reference). That wiring lives in the operator's configuration, never in the block.
 - `.foreman/` must be gitignored; `valcraft:cast` adds it at scaffold time.

@@ -27,12 +27,12 @@ Follow those resources instead of reconstructing their rules. Review does not re
 ## Shared rules (both modes)
 
 1. **Reproduce before reporting.** For any claim about behavior — a library's round trip, which branch an exception takes, whether a check gates a side effect — run the smallest script, grep, or test that proves it, and cite the exact output in the finding. Never restate a plan's or docstring's description of behavior as fact.
-2. **Read the call site, not the description of it.** When a document says a check happens "at X" or "before Y", find where the code performs it and confirm against that. Inherited prose survives multiple reviews precisely because each reviewer trusts the previous reader.
+2. **Read the call site, not the description of it.** When a document says a check happens "at X" or "before Y", find where the code performs it and confirm against that. Inherited prose survives reviews because each reviewer trusts the previous reader.
 3. **Findings are an auditable table**, one row per finding: `R-NNN | severity | claim | evidence (reproduced output or file:line) | resolution`. IDs are stable across review rounds; the resolution column is filled as rounds close findings, which makes closure verifiable instead of narrated. The remediation plan in `docs/plans/` and resolution commit subjects are the durable cross-round record: a later round recovers prior R-IDs from them and allocates new IDs after the highest recorded.
-4. **Report-only.** Deliver the table and verdict; never edit the target, commit fixes, or commit the raw review record. Per Cast's working loop, material findings get a remediation plan in `docs/plans/` (written by the implementer), and resolution commits cite the R-IDs. Review also requires a context independent of the implementer: if this context produced the change under review, return **blocked** and hand off to a fresh reviewer.
+4. **Report-only.** Deliver the table and verdict; never edit the target, commit fixes, or commit the raw record. Per Cast's working loop, material findings get a remediation plan in `docs/plans/` (written by the implementer), and resolution commits cite the R-IDs. Review also requires a context independent of the implementer: if this context produced the change under review, return **blocked** and hand off to a fresh reviewer.
 5. **Do not re-litigate a finding a prior round resolved and recorded** (including a plan's own rejected-claims section) unless you hold new evidence — then say what the new evidence is.
 6. **Close a finding only by re-running its reproduction.** A resolution commit citing an R-ID is a claim, not closure. Re-run the evidence check from the finding's row against the remediated artifact and record the new output in the resolution column.
-7. **No finding quotas.** An empty review that reaches a **pass** verdict is a valid result. Do not pad, and do not stop early because "enough" was found — no count in either direction is a target.
+7. **No finding quotas.** An empty review that reaches a **pass** verdict is a valid result. Do not pad, and do not stop early because "enough" was found — no count is a target.
 
 ## Severity and verdict
 
@@ -60,7 +60,7 @@ Read `references/code-mode.md` before reviewing. It owns target pinning, contrac
 
 ## Report
 
-End with this block, headings verbatim and in this order, as the last output. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A report missing a heading is incomplete, and a host loop may reject it without reading further.
+End with this block, headings verbatim and in this order; nothing follows it except a status line the host loop's report instruction requires. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A report missing a heading is incomplete, and a host loop may reject it without reading further.
 
 ```markdown
 ## Review report
@@ -83,11 +83,11 @@ End with this block, headings verbatim and in this order, as the last output. Co
 
 ### Checks performed
 
-<!-- which of the mode's checks ran, with the commands behind them — a pass with an empty table still carries its evidence -->
+<!-- which of the mode's checks ran, with their commands — a pass with an empty table still carries evidence -->
 
 ### Not examined
 
-<!-- what the review did not cover -->
+<!-- what was not covered -->
 ```
 
 ## Trust boundary

@@ -83,7 +83,8 @@ Resolve `project_tracker` before starting task work.
 
 If `project_tracker` is `github` while `github_repository` or GitHub issue references
 are `TBD`, report tracker activation as pending. Do not create remote state until the
-target passes preflight and the operator approves the mutation preview.
+target passes preflight and the operator approves the mutation preview (activation waits
+in every `cast_approval` mode).
 
 Reject `tracker` or `spec_issue` metadata in `tasks.md`. Direct a repository with either
 field, or with a missing spec-level mapping, through Cast retrofit. Do not use obsolete
@@ -117,9 +118,10 @@ Before creating or changing remote state:
 5. Compute a mutation preview. Name the exact host, repository, visibility, and planned
    local and remote changes, including an approved target declaration that replaces
    `github_repository: TBD`.
-6. Wait for operator approval before applying the preview. After approval, write each
-   adopted or created issue number as soon as that operation succeeds so a retry can
-   recover from a partial run. Discard the approval and present a new preview if the
+6. Wait for operator approval before applying the preview — under `cast_approval:
+   delegated`, record the preview and proceed, except that activating a `TBD` target or
+   removing a task still waits. After approval, write each adopted or created issue
+   number as soon as that operation succeeds so a retry can recover from a partial run. Discard the approval and present a new preview if the
    target or mutation set changes.
 
 Synchronization may replace generated titles and bodies, sub-issue order, and

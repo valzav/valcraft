@@ -11,9 +11,11 @@ repository-level reference that keeps new skills consistent with it.
   one corpus of completed work into a graded lesson report; synthesize merges two or
   more analyze reports into re-graded themes with tensions and routing.
 - **approval mode** (foreman) — the project-block input that decides which loop
-  decisions wait for the human: `attended` (every gate), `gated` (irreversible or
-  outward acts), or `delegated` (product-intent changes, release-branch writes, and
-  escalations only).
+  decisions wait for the human: `attended` (every gate), `gated` (irreversible acts —
+  feature/PRD close, not-planned close, fast-track, release-branch writes; recorded
+  tracker batches and Cast projection execute from their record), or `delegated`
+  (product-intent changes, release-branch writes, and escalations only). Full table:
+  foreman `references/approval-modes.md`.
 - **approval mode** (cast) — the optional `cast_approval` declaration in root `AGENTS.md`:
   `attended` (missing; wait at every proposal and mutation preview) or `delegated`
   (record each proposal and preview, proceed; still stop for a product-intent change, an

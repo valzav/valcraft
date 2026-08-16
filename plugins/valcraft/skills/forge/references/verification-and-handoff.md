@@ -26,7 +26,7 @@ Run the project's own gates (tests, typecheck, lint) and cite their real output.
 
 ## Step 6: Hand off to review
 
-End the run with this block, headings verbatim and in this order, as the last output. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A handoff missing a heading is incomplete, and a host loop may reject it without reading further.
+End the run with this block, headings verbatim and in this order; nothing follows it except a status line the host loop's report instruction requires. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A handoff missing a heading is incomplete, and a host loop may reject it without reading further.
 
 ```markdown
 ## Forge handoff
