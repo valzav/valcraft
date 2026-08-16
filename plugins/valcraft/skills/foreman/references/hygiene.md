@@ -10,6 +10,7 @@ The foreman's context is a working resource; the loop survives one context windo
 - Pipe long command output through `tail`/`rg` for the lines the decision needs; never cat a whole log or diff into the conversation when a summary line answers the question.
 - Backend inspection (`status`) uses the smallest window the backend reference allows.
 - Pass paths, not content, in assignments — the review report path, the handoff path, the plan path.
+- Let the progress list (`SKILL.md`) carry "which step are we on": update its items instead of narrating the whole loop as prose in each summary. The summary states the current step's decision; the list shows the rest.
 
 ## Naming
 
