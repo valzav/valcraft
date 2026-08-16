@@ -149,7 +149,9 @@ gh issue view --help | rg -q -- 'blocking'
 
 Use the native path only when the required flags and JSON fields are exposed. Otherwise
 use the REST fallback below. A run may use REST for ordering even when native relationship
-flags exist because the CLI has no direct priority flag.
+flags exist because the CLI has no direct priority flag. A JSON field existing does not
+tell its shape: `blockedBy`, `blocking`, and `subIssues` are GraphQL connection objects,
+not arrays — read them through the `--jq` extractions shown with each command.
 
 ## Build the mutation preview
 
@@ -372,8 +374,14 @@ gh issue edit "$DEPENDENT_NUMBER" --repo "$GH_REPO" \
 gh issue edit "$DEPENDENT_NUMBER" --repo "$GH_REPO" \
   --remove-blocked-by "$BLOCKER_NUMBER"
 
-gh issue view "$DEPENDENT_NUMBER" --repo "$GH_REPO" --json blockedBy,blocking
+gh issue view "$DEPENDENT_NUMBER" --repo "$GH_REPO" --json blockedBy,blocking \
+  --jq '{blockedBy: [.blockedBy.nodes[].number], blocking: [.blocking.nodes[].number]}'
 ```
+
+`blockedBy` and `blocking` come back as connection objects
+(`{"nodes": [...], "totalCount": N}`, verified on `gh` 2.97.0), never as arrays; the
+`--jq` above is the extraction to verify against. Reading them as arrays raises a type
+error after the mutation batch has already applied.
 
 REST fallback: list current blockers, add the blocker database ID, or remove it through
 the path:
