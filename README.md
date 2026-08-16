@@ -16,6 +16,7 @@ a time.
 | `spec`    | `/valcraft:spec`    | `$valcraft:spec`    | Turn one local PRD/plan or explicit GitHub issue into the next canonical Cast feature spec.       |
 | `forge`   | `/valcraft:forge`   | `$valcraft:forge`   | Implement one unit of work from its git-owned definition and hand the change to review.           |
 | `review`  | `/valcraft:review`  | `$valcraft:review`  | Review a plan or code change against its Cast contract; report an auditable finding table.        |
+| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` | Run the delivery loop over worker agents (subagents or AO): pick, plan, review, implement, merge. |
 | `temper`  | `/valcraft:temper`  | `$valcraft:temper`  | Retrospect over completed work; report graded, incident-cited lessons and propose standing rules. |
 | `hone`    | `/valcraft:hone`    | `$valcraft:hone`    | Refine an existing prompt, skill, or agent instruction file against model guides.                 |
 | `distill` | `/valcraft:distill` | `$valcraft:distill` | Reduce a prompt or skill to its goal-directed essence: goal, steps, constraints.                  |

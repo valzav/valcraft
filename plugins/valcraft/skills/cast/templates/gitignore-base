@@ -2,6 +2,7 @@
 .codebase-memory/
 .claude/settings.local.json
 .claude/*.lock
+.foreman/
 
 # Secrets — references only, never values
 .env

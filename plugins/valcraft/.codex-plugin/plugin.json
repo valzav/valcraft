@@ -1,7 +1,7 @@
 {
   "name": "valcraft",
   "version": "0.1.0",
-  "description": "Reusable agent skills: cast (spec-driven project scaffold), spec (Cast feature spec generation), forge (task implementation), review (plan and code review), temper (evidence-based retrospectives), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+  "description": "Reusable agent skills: cast (spec-driven project scaffold), spec (Cast feature spec generation), forge (task implementation), review (plan and code review), foreman (delivery loop over worker agents), temper (evidence-based retrospectives), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
     "name": "valcraft contributors",
     "url": "https://github.com/valzav/valcraft"
@@ -13,7 +13,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Valcraft",
-    "shortDescription": "Reusable skills for project scaffolding, feature specs, implementation, review, prompt work, and document judgment.",
+    "shortDescription": "Reusable skills for project scaffolding, feature specs, implementation, review, delivery-loop coordination, prompt work, and document judgment.",
     "longDescription": "Valcraft provides Cast project scaffolding, Cast feature specification generation, Forge task implementation, plan and code Review, Temper retrospectives over completed work, prompt refinement and distillation, and MSW Kernel document judgment.",
     "developerName": "valcraft contributors",
     "category": "Coding",

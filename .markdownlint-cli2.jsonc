@@ -1,8 +1,9 @@
 {
   // Lint every tracked markdown file; directories below are untracked
-  // agent/worktree artifacts that only exist locally.
+  // agent/worktree artifacts that only exist locally, plus foreman run
+  // directories (worker reports in eval fixtures are wire format, not docs).
   "globs": ["**/*.md"],
-  "ignores": [".local/**", ".worktrees/**", "node_modules/**"],
+  "ignores": [".local/**", ".worktrees/**", "node_modules/**", "**/.foreman/**"],
   "config": {
     "default": true,
     // Skill descriptions and one-line rules are intentionally long single

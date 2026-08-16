@@ -1,0 +1,4 @@
+interface:
+  display_name: "Foreman"
+  short_description: "Run the spec-driven delivery loop over worker agents"
+  default_prompt: "Use $valcraft:foreman to run the delivery loop for this project's next eligible task: pick, plan, review, implement, PR, review, merge, close — coordinating workers per the project's foreman block."

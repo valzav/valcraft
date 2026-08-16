@@ -91,7 +91,7 @@ Stop and surface the evidence instead of mutating local or remote state when:
 Use the same steps with different sources:
 
 - Step 1: derive answers from the repo (code, configs, git history) first; ask only what the repo cannot answer.
-- Step 2: merge into existing files instead of overwriting — README keeps its content and gains the documentation links; an existing agent-instruction file absorbs the AGENTS.md sections it lacks.
+- Step 2: merge into existing files instead of overwriting — README keeps its content and gains the documentation links; an existing agent-instruction file absorbs the AGENTS.md sections it lacks; an existing `.gitignore` gains the `templates/gitignore-base` entries it lacks (including `.foreman/`, the `valcraft:foreman` run directory).
 - During the approved merge, remove task-level `tracker` and `spec_issue` fields. Add one mode-appropriate `spec_issue` mapping to each spec. Do not preserve or parse the obsolete fields for compatibility.
 - Step 3: record the as-built state in `overview.md` and retroactive ADRs (accepted, dated today, context from git history). The first spec describes the next planned change, not the system already built — never retro-spec existing behavior until a change touches it.
 

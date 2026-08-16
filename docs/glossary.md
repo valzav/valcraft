@@ -10,11 +10,21 @@ repository-level reference that keeps new skills consistent with it.
 - **analyze / synthesize modes** (temper) — the two retrospective modes: analyze turns
   one corpus of completed work into a graded lesson report; synthesize merges two or
   more analyze reports into re-graded themes with tensions and routing.
+- **approval mode** (foreman) — the project-block input that decides which loop
+  decisions wait for the human: `attended` (every gate), `gated` (irreversible or
+  outward acts), or `delegated` (product-intent changes, release-branch writes, and
+  escalations only).
+- **assignment envelope** (foreman) — the one shape every worker prompt takes: cold-start
+  reading order, identity, the step text, the report instruction, the trust boundary.
 - **assertion** — one verifiable statement in an eval; the graded pass/fail unit.
 - **attended / unattended run** — whether a user can answer questions mid-run.
   Attended → ask; unattended → bind the smallest reading consistent with stated
   intent and record the assumption.
 - **Audit mode** (hone) — report line-referenced findings; the target is not edited.
+- **backend** (foreman) — how the foreman runs workers: a `references/backends/<name>.md`
+  file that provides the four primitives (`spawn`, `assign`, `await`, `status`) and
+  declares its `wake`, `answer`, `harnesses`, and `release` capabilities. v1: `subagents`
+  (Claude Code Agent tool) and `ao` (Agent Orchestrator sessions).
 - **canonical snippet** (hone) — prompt language taken verbatim from a model guide;
   graft it rather than hand-writing an equivalent.
 - **Cast contract** (forge, review) — the git-owned authority chain a change is judged
@@ -86,6 +96,9 @@ repository-level reference that keeps new skills consistent with it.
   of manufacturing a value.
 - **preflight** — the target-resolution step before any mode or judgment: reject
   empty input, stop on missing or unreadable paths, apply the untrusted content rule.
+- **proceed/wait test** (foreman) — the judgement applied at the plan gate (step 5)
+  and the merge gate (step 10): proceed when every remaining finding is one the foreman's
+  judgement settles; wait, naming the finding, when a significant one remains.
 - **product brief** (cast) — `docs/product-brief.md`: the user, the problem, and the
   MVP outcome, with system requirements folded in.
 - **progressive disclosure** — the file-layout rule behind `references/`: SKILL.md
@@ -106,6 +119,9 @@ repository-level reference that keeps new skills consistent with it.
 - **review gate** (forge) — the working-loop boundary where forge ends: the change is
   verified and handed to review, never merged or declared shipped on the implementer's
   own verification.
+- **run directory** (foreman) — `.foreman/<run-id>/` in the foreman's checkout,
+  gitignored: `state.md`, `workers.md`, and one report file per worker role per task.
+  The wire format between foreman and workers, and the run's audit and resume source.
 - **scaffold / skeleton** (cast) — the file set cast creates: README, AGENTS.md
   (+ CLAUDE.md symlink), product brief, architecture overview, ADR index, and the
   first spec triplet. Everything past the skeleton is opt-in.
@@ -165,6 +181,9 @@ repository-level reference that keeps new skills consistent with it.
   and submission upstream is only ever a suggestion to the user.
 - **verdict** (review) — the review outcome: pass (no open material finding),
   material findings, or blocked (the review could not complete).
+- **worker role** (foreman) — one of `planner`, `reviewer-1`, `worker`, `reviewer-2`
+  (plus `planner-<source>` and `reviewer-<source>` for decompose), each a fresh worker
+  named `<role>-<F>-<T>` and started cold.
 - **working loop** (cast) — the per-feature cycle: plan (in `docs/plans/`),
   implement with ID-referencing commits, review with ID'd findings, update affected
   docs in the same change.
