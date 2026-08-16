@@ -8,8 +8,9 @@ scaffolds a project around specs that live in the repository (plain markdown wit
 checkbox tasks, or projected to GitHub Issues), `spec` turns PRDs into feature specs, and
 `temper` learns from what shipped.
 
-This is loop engineering rather than prompt engineering: the discipline lives in the
-loop's gates, contracts, and fresh contexts, not in one long prompt.
+valcraft employs the loop engineering concept: rather than one long prompt, the
+discipline lives in the loop itself — its gates, the contracts each role must return, and
+a fresh context for every worker.
 
 Status: alpha.
 
