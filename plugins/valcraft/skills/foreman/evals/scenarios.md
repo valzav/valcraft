@@ -16,6 +16,7 @@ and by real runs, not by `evals.json`.
 | Partial mutation failure                   | eval 9 `partial-batch-failure-reconciles-before-retry` (`github` intake)                                                     | expressible; same intake rule                                                                                              |
 | Two-round review cap                       | eval 3 `two-round-cap-escalates`                                                                                             | expressible; same loop rule                                                                                                |
 
-Evals 1, 2, 6, 7, and 10 cover foreman rules outside the drill list: missing project
+Evals 1, 2, 6, 7, 10, and 11 cover foreman rules outside the drill list: missing project
 block, verdict-only report rejection, release-branch merge waiting in `delegated` mode,
-the cold-start planner dispatch, and the closure check without a second review round.
+the cold-start planner dispatch, the closure check without a second review round, and the
+temper dispatch at feature close.

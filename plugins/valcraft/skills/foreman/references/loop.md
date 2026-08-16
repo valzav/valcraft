@@ -15,7 +15,7 @@ Rebuild state first: the tracker's view of the feature (per `references/intake-<
 
 ### 0. Resume or ready
 
-- If a task is in progress (tracker label in `github` mode; an unmerged task branch or open task PR in `local` mode), resume it at the step its evidence shows: a plan without a review report → step 3; a review report without a forge handoff → step 4 or 6; a forge handoff without a PR → step 7; an open PR → step 8 or 9. Never restart from step 2 when a plan of record exists.
+- If a task is in progress (tracker label in `github` mode; an unmerged task branch or open task PR in `local` mode), resume it at the step its evidence shows: a plan without a review report → step 3; a review report without a forge handoff → step 4 or 6; a forge handoff without a PR → step 7; an open PR → step 8 or 9; a feature closed in this run without a `temper-<F>` report → step 11. Never restart from step 2 when a plan of record exists.
 - Otherwise apply Cast's implementation-readiness gate (`../../cast/references/spec-intake.md`): substantive `design.md` and `tasks.md`, and no open product question that can change observable behavior or an acceptance criterion — unless the human has explicitly accepted that uncertainty for the affected scope in the committed feature artifacts. An unready feature stops the run: report the blocking question or artifact.
 - Never interleave tasks from a different feature inside one deliver run.
 
@@ -100,7 +100,15 @@ To merge, in this order:
 3. `github` intake only: record and execute the closing batch (`references/intake-github.md`, "Close a task").
 4. Release all four workers per the backend. Return to step 1.
 
-When every task of the feature is closed (merged or not planned) and the human confirms the feature, close the feature per the intake reference — the closing batch quotes the human's confirming message verbatim, and without one it is not built.
+When every task of the feature is closed (merged or not planned) and the human confirms the feature, close the feature per the intake reference — the closing batch quotes the human's confirming message verbatim, and without one it is not built. Then run step 11.
+
+### 11. Temper
+
+Once per feature, after the feature closes — never per task (`valcraft:temper` runs at milestones). Spawn `temper-<F>`. Send:
+
+> Run `valcraft:temper` in analyze mode on the feature directory `specs/<feature>/` (tracker refs `<n…>` when they exist). Then commit the report it created under `docs/retro/` on branch `retro/<f>-<slug>` from `origin/<foreman_default_branch>` and open a pull request against `<foreman_default_branch>` with `gh pr create`; title `Retro: <feature>`; body: the report path and one line per routed proposal (tier, `L-NNN`, rule statement). Do not apply any proposal. Report the report path, the PR URL, and the proposal lines.
+
+Await. The report must be the temper report contract (`references/contracts.md`). Post the summary — report path, PR link, proposals by tier — and merge the report PR when CI is green (the foreman merges; `attended` waits; `references/approval-modes.md`, step 11 row). The report's proposals are for the human: the foreman never edits `AGENTS.md`, a user artifact, or a plugin from them. Release the temper worker. Then report the run's end (`SKILL.md`, "Report").
 
 ## After a review round
 

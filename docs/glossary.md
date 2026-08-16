@@ -185,7 +185,7 @@ repository-level reference that keeps new skills consistent with it.
   and submission upstream is only ever a suggestion to the user.
 - **verdict** (review) — the review outcome: pass (no open material finding),
   material findings, or blocked (the review could not complete).
-- **worker role** (foreman) — one of `planner`, `reviewer-1`, `worker`, `reviewer-2`
+- **worker role** (foreman) — one of `planner`, `reviewer-1`, `worker`, `reviewer-2`, `temper`
   (plus `planner-<source>` and `reviewer-<source>` for decompose), each a fresh worker
   named `<role>-<F>-<T>` and started cold.
 - **working loop** (cast) — the per-feature cycle: plan (in `docs/plans/`),

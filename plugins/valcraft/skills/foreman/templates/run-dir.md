@@ -10,6 +10,7 @@ One directory per foreman run, inside the foreman's checkout, gitignored:
 ├── reviewer-1-F004-T012.md
 ├── worker-F004-T012.md
 ├── reviewer-2-F004-T012.md
+├── temper-F004.md               # step 11, once per feature
 └── planner-prd225.md            # decompose reports use the source as the task part
 ```
 

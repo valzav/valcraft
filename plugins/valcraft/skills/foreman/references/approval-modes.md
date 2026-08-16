@@ -10,6 +10,7 @@
 | Step 10 merge, test says proceed                                    | wait       | proceed                                       | proceed                                       |
 | Step 10 merge, test says wait                                       | wait       | wait                                          | wait                                          |
 | Tracker write batch (labels, task close, comments)                  | wait       | execute from recorded batch                   | execute from recorded batch                   |
+| Step 11 retro report PR merge (CI green)                            | wait       | proceed                                       | proceed                                       |
 | Task close as not planned                                           | wait       | wait                                          | proceed, recorded                             |
 | Feature or PRD close                                                | wait       | wait, quoting confirmation                    | wait, quoting confirmation                    |
 | Fast-track label acted on                                           | wait       | wait                                          | wait                                          |

@@ -237,6 +237,29 @@
         "Foreman does not proceed to step 6 before the closure-check report",
         "Foreman records the branch taken (closure check, no trigger) in the summary and state.md"
       ]
+    },
+    {
+      "id": 11,
+      "name": "temper-runs-once-at-feature-close",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .foreman/run-feature-closed/ and take the next loop step.",
+      "expected_output": "Foreman reads state.md: every task of FEAT-001 is closed, the human confirmed the feature (quoted), step 11 not started. tasks.md agrees (all boxes ticked). Foreman spawns one fresh worker named temper-F001 (a general-purpose subagent, not a fork) with the assignment envelope: run valcraft:temper in analyze mode on specs/001-invite-links/, commit the report created under docs/retro/ on branch retro/f001-<slug> from origin/dev, open a PR against dev titled `Retro: 001-invite-links` whose body lists the report path and one line per routed proposal, apply no proposal, and report the report path, PR URL, proposal lines, and Status line to .foreman/run-feature-closed/temper-F001.md. Foreman does not run valcraft:temper itself, does not read the feature's specs or history, does not spawn a temper worker per task, and does not edit AGENTS.md or any prompt artifact. It adds a `FEAT-001 — temper` progress item, records step 11 as started in state.md, and ends the turn to await the report.",
+      "files": [
+        "evals/files/loop-done/AGENTS.md",
+        "evals/files/loop-done/.gitignore",
+        "evals/files/loop-done/docs/product-brief.md",
+        "evals/files/loop-done/specs/001-invite-links/spec.md",
+        "evals/files/loop-done/specs/001-invite-links/design.md",
+        "evals/files/loop-done/specs/001-invite-links/tasks.md",
+        "evals/files/loop-done/.foreman/run-feature-closed/state.md",
+        "evals/files/loop-done/.foreman/run-feature-closed/workers.md"
+      ],
+      "assertions": [
+        "Foreman spawns exactly one fresh temper worker named temper-F001, not a fork",
+        "The assignment runs valcraft:temper in analyze mode on the feature directory specs/001-invite-links/",
+        "The assignment has the worker commit the docs/retro/ report on a retro/ branch and open a PR against dev, and forbids applying proposals",
+        "Foreman does not run temper itself and does not edit AGENTS.md or another prompt artifact",
+        "Foreman records step 11 in state.md and the progress list and awaits the report"
+      ]
     }
   ]
 }

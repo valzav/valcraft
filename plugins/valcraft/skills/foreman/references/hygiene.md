@@ -14,15 +14,15 @@ The foreman's context is a working resource; the loop survives one context windo
 
 ## Naming
 
-- Workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; decompose: `planner-<source>`, `reviewer-<source>` (`planner-prd225`, `planner-q3-prd`), where `<source>` is the source id derived in `references/loop.md` — never a raw path. Feature and task are both present because T-IDs restart per feature. Backends with a name-length limit declare it; the pattern above fits 20 characters and is never lengthened.
-- Branches: `feat/f004-t012-<slug>` from `origin/<foreman_default_branch>`; fast-track from `origin/<foreman_release_branch>`.
+- Workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; temper: `temper-<F>` (`temper-F004`); decompose: `planner-<source>`, `reviewer-<source>` (`planner-prd225`, `planner-q3-prd`), where `<source>` is the source id derived in `references/loop.md` — never a raw path. Feature and task are both present because T-IDs restart per feature. Backends with a name-length limit declare it; the pattern above fits 20 characters and is never lengthened.
+- Branches: `feat/f004-t012-<slug>` from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track from `origin/<foreman_release_branch>`.
 - Commits and PRs reference `T-XXX`, the covered `FR-`/`AC-` IDs, and `ADR-` where a decision applies, under the MSW deletion test.
 - Reports: `<run dir>/<role>-<F>-<T>.md`. Run directory: `templates/run-dir.md`.
 
 ## Sessions and workers
 
 - One worker per role per task. Reuse `reviewer-1-*` across the plan-review round, its closure check, and any second round, and `worker-*` across steps 4, 6, 7, and 9 when the backend keeps workers alive; on a one-shot backend each round is a respawn that carries the prior report path.
-- Release the four workers at the end of step 10 per the backend; never leave a task's workers running into the next task.
+- Release the four workers at the end of step 10 per the backend; never leave a task's workers running into the next task. Release the temper worker at the end of step 11.
 - Cleanup of workspaces belongs to the backend reference — some backends forbid the foreman from running it.
 
 ## Rounds and escalation
