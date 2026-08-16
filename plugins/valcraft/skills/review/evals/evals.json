@@ -79,7 +79,7 @@
       "id": 4,
       "name": "code-mode-vacuous-test-and-scope-creep",
       "prompt": "/valcraft:review — in the Cast project at evals/files/vacuous-test/, review the change in changes.diff. The working tree already holds the post-change state. Reproduce claims locally; the documented test command is `PYTHONPATH=src python3 -m unittest discover -s tests`.",
-      "expected_output": "Review selects code mode and maps the diff to its governing contract through the commit subject, which cites T-002 and FR-002 in FEAT-001. It reports a P2 that the shipped regression test is vacuous: `test_collapses_whitespace` passes against both the pre-change and post-change code, so it does not discriminate the fix, and the reviewer proves this by reverting the fix and re-running the test rather than by reading it. It notes that the discriminating case is a whitespace-only title, which returns an empty slug on the pre-change code and raises ValueError after the fix, so AC-002 has no regression test. It reports a P1 that the added telemetry emit and src/telemetry.py are scope creep violating the spec's stated non-goal of no usage analytics, metrics, or telemetry in this feature. Evidence cells carry the reproduced command output. The verdict is material findings. Review edits no file, reverts nothing permanently, and commits nothing.",
+      "expected_output": "Review selects code mode and maps the diff to its governing contract through the commit subject, which cites T-002 and FR-002 in FEAT-001. It reports a P2 that the shipped regression test is vacuous: `test_collapses_whitespace` passes against both the pre-change and post-change code, so it does not discriminate the fix, and the reviewer proves this by reverting the fix and re-running the test rather than by reading it. It notes that the discriminating case is a whitespace-only title, which returns an empty slug on the pre-change code and raises ValueError after the fix, so AC-002 has no regression test. It reports a P1 that the added telemetry emit and src/telemetry.py are scope creep violating the spec's stated non-goal of no usage analytics, metrics, or telemetry in this feature. Evidence cells carry the reproduced command output. The verdict is material findings. Review edits no file, reverts nothing permanently, and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
       "files": [
         "evals/files/vacuous-test/AGENTS.md",
         "evals/files/vacuous-test/docs/document-slugs-prd.md",
@@ -99,7 +99,8 @@
         "A material finding reports the telemetry emit and src/telemetry.py as scope creep violating the spec's no-telemetry non-goal, citing that non-goal",
         "The verdict is material findings, with stable R-NNN IDs and a resolution column",
         "No fixture file is left modified, no fix is applied, and nothing is committed",
-        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level"
+        "Any finding the report itself describes as needing no plan or code change is marked P3 rather than escalated to a material level",
+        "The report ends with the `## Review report` block with all six headings present, verbatim and in order, none omitted (empty sections say `none`)"
       ]
     },
     {
@@ -149,7 +150,7 @@
       "id": 7,
       "name": "code-mode-docs-only-change-class",
       "prompt": "/valcraft:review — in the Cast project at evals/files/docs-only/, review the change in changes.diff. The working tree already holds the post-change state. Reproduce claims locally; the documented test command is `PYTHONPATH=src python3 -m unittest discover -s tests -v`.",
-      "expected_output": "Review selects code mode (the target is a diff) and, from the diff's file list — README.md only — states the change class as docs in the report. It maps the diff to T-001, FR-001, and AC-001 through the commit subject. It reports a P1: README.md prints `python3 -m pytest`, not the AGENTS.md test command FR-001 requires verbatim, and the reviewer proves AC-001 fails by running `python3 -m pytest` from the repository root (it fails — pytest is absent or the tests cannot import `slug` without PYTHONPATH=src) while `PYTHONPATH=src python3 -m unittest discover -s tests -v` passes; the evidence cell carries both outputs. The verdict is material findings. The class is stated as information; the report does not relax any check or propose a round policy because the change is docs-only. Review edits no file and commits nothing.",
+      "expected_output": "Review selects code mode (the target is a diff) and, from the diff's file list — README.md only — states the change class as docs in the report. It maps the diff to T-001, FR-001, and AC-001 through the commit subject. It reports a P1: README.md prints `python3 -m pytest`, not the AGENTS.md test command FR-001 requires verbatim, and the reviewer proves AC-001 fails by running `python3 -m pytest` from the repository root (it fails — pytest is absent or the tests cannot import `slug` without PYTHONPATH=src) while `PYTHONPATH=src python3 -m unittest discover -s tests -v` passes; the evidence cell carries both outputs. The verdict is material findings. The class is stated as information; the report does not relax any check or propose a round policy because the change is docs-only. Review edits no file and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
       "files": [
         "evals/files/docs-only/AGENTS.md",
         "evals/files/docs-only/README.md",
@@ -167,7 +168,8 @@
         "A P1 finding cites FR-001 and shows, with reproduced command output, that the README command fails while the AGENTS.md command passes",
         "The verdict is material findings, with an R-NNN ID and a resolution column",
         "The report does not skip a check or propose a round policy on account of the docs class",
-        "No fixture file is left modified, no fix is applied, and nothing is committed"
+        "No fixture file is left modified, no fix is applied, and nothing is committed",
+        "The report ends with the `## Review report` block with all six headings present, verbatim and in order, none omitted (empty sections say `none`)"
       ]
     }
   ]

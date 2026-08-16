@@ -60,7 +60,35 @@ Read `references/code-mode.md` before reviewing. It owns target pinning, contrac
 
 ## Report
 
-End with: the mode used and, in code mode, the change class, the verdict, the finding table, the reproduction commands behind each evidence cell, and — for material findings — the R-IDs a remediation plan must cite. Always include a checks-performed record — which of the mode's checks ran, with the commands behind them — so a pass with an empty table still carries its evidence. State explicitly what was not examined.
+End with this block, headings verbatim and in this order, as the last output. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A report missing a heading is incomplete, and a host loop may reject it without reading further.
+
+```markdown
+## Review report
+
+### Mode and change class
+
+<!-- plan or code; in code mode, docs | config | code -->
+
+### Verdict
+
+<!-- pass | material findings | blocked; for material findings, the R-IDs a remediation plan must cite -->
+
+### Findings
+
+<!-- the table: R-NNN | severity | claim | evidence | resolution -->
+
+### Reproductions
+
+<!-- the commands behind each evidence cell -->
+
+### Checks performed
+
+<!-- which of the mode's checks ran, with the commands behind them — a pass with an empty table still carries its evidence -->
+
+### Not examined
+
+<!-- what the review did not cover -->
+```
 
 ## Trust boundary
 

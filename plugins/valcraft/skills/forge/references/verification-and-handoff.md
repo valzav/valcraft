@@ -26,12 +26,31 @@ Run the project's own gates (tests, typecheck, lint) and cite their real output.
 
 ## Step 6: Hand off to review
 
-Deliver:
+End the run with this block, headings verbatim and in this order, as the last output. Content under each heading is free-form; a section with nothing to report says `none` — never omit the heading. A handoff missing a heading is incomplete, and a host loop may reject it without reading further.
 
-1. What changed, referenced by IDs.
-2. Verification evidence — the real command outputs, the mutation checks performed, and what each test would fail to catch.
-3. The scope statement from Step 1 (touched vs deliberately untouched).
-4. Open questions and deferred out-of-scope findings, each with the trigger that should reopen it, recorded where the repo's convention keeps them.
+```markdown
+## Forge handoff
+
+### Changed (IDs)
+
+<!-- what changed, referenced by T-/FR-/AC-/ADR- IDs -->
+
+### Verification evidence
+
+<!-- the real command outputs, the mutation checks performed, and what each test would fail to catch -->
+
+### Scope: touched / untouched
+
+<!-- the scope statement from Step 1: touched vs deliberately untouched -->
+
+### Open questions and deferred findings
+
+<!-- each with the trigger that should reopen it, and where the repo's convention records it -->
+
+### Review target
+
+<!-- the pinned target for the reviewer: branch, PR, or commit range -->
+```
 
 Route the change to `valcraft:review` or the host loop's reviewer, in a fresh context — a second model or a fresh agent, never the context that implemented the change — carrying the scope statement, the branch or diff target, and the verification evidence. When the host cannot provide an independent reviewer, report the handoff as blocked instead of self-reviewing. Findings come back with IDs (`R-NNN`); material ones get a remediation plan in `docs/plans/`, and resolution commits cite the IDs. Do not commit raw review records.
 

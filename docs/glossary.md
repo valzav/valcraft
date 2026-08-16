@@ -67,6 +67,12 @@ repository-level reference that keeps new skills consistent with it.
 - **finding table** (review) — the auditable report unit: one row per finding,
   `R-NNN | severity | claim | evidence | resolution`, with IDs stable across review
   rounds.
+- **fixed-shape block** (forge, review) — the skill's last output: `## Forge handoff`
+  (Changed, Verification evidence, Scope, Open questions and deferred findings, Review
+  target) or `## Review report` (Mode and change class, Verdict, Findings, Reproductions,
+  Checks performed, Not examined). Headings verbatim and in order, `none` for an empty
+  section; a missing heading makes the output incomplete, and a host loop such as foreman
+  may reject it without reading further.
 - **fixture** — an input file a skill's eval runs against, stored under `evals/files/`
   and listed in the eval's `files`.
 - **fuses** (msw) — the kernel's outer stops: at most 3 judgment rounds, and a claim
