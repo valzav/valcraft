@@ -166,7 +166,9 @@ name:
   and removals, and `tasks.md` issue references to write;
 - in either branch, the selected `spec.md` mapping to write.
 
-Reads do not authorize writes. Wait for operator approval of this exact preview. If the
+Reads do not authorize writes. Wait for operator approval of this exact preview; under
+`cast_approval: delegated` (`scaffold.md`, "Approval mode") record the preview and proceed,
+except that a preview which activates a `TBD` target or removes a task still waits. If the
 target or any planned mutation changes, discard the approval, recompute the preview, and
 ask again. After approval, replace `github_repository: TBD` with the canonical
 `GH_HOST/GH_OWNER/GH_NAME` target before remote mutations. Record this as a completed local
@@ -404,7 +406,8 @@ annotations. Never derive a command or T-ID from issue text.
 
 ## Remove tasks
 
-Task removal exists only in the full-task branch and is an approved status mutation.
+Task removal exists only in the full-task branch and is an approved status mutation; it
+waits for the operator in every `cast_approval` mode.
 Keep the issue as a closed sub-issue for history. Write a local comment body from the
 canonical source path and operator-provided removal reason, then run:
 

@@ -85,7 +85,8 @@
         "The created tasks.md is checkbox-free and contains neither tracker nor spec_issue metadata",
         "Cast does not invent whether queued notifications are sent or discarded after the notification window",
         "Cast reports the feature as staged and not implementation-ready until the behavior-affecting open question is resolved or explicitly accepted and both artifacts are substantive",
-        "Cast does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation"
+        "Cast does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
+        "With no cast_approval declaration in AGENTS.md, Cast treats the run as attended and waits for approval before each artifact"
       ]
     },
     {
@@ -107,6 +108,25 @@
         "The only feature mapping change is spec_issue: TBD to spec_issue: 41 in the selected spec.md",
         "The preview excludes in-progress and needs-clarification labels, hierarchy and dependency capability checks, tasks, sub-issues, dependencies, task mappings, and removals",
         "Cast performs no gh or network call and makes no local or remote mutation because the preview is unapproved"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "resume-staged-spec-delegated-approval",
+      "prompt": "/valcraft:cast — resume the staged feature in evals/files/staged-feature-delegated/. This run is unattended: no operator answer will arrive. Do not inspect or activate GitHub.",
+      "expected_output": "Cast reads cast_approval: delegated from root AGENTS.md next to project_tracker: github. It validates the spec-only FEAT-001 stage and preserves spec_issue: TBD. It records the exact proposal for design.md and creates a substantive design.md without waiting for approval, then records the exact proposal for tasks.md and creates a substantive checkbox-free tasks.md without waiting; both proposals appear in its output as the audit trail. It does not invent an answer to the notification-disposition open question — that would change product intent, which stops in every mode — and it reports the feature as staged and not implementation-ready because the question is unresolved. It performs no GitHub inspection or mutation and does not activate the TBD target.",
+      "files": [
+        "evals/files/staged-feature-delegated/AGENTS.md",
+        "evals/files/staged-feature-delegated/docs/product-brief.md",
+        "evals/files/staged-feature-delegated/specs/001-notification-window/spec.md"
+      ],
+      "assertions": [
+        "Cast reads cast_approval: delegated from AGENTS.md and names the mode in its output",
+        "Cast records the exact design.md proposal and creates design.md without waiting for approval",
+        "Cast records the exact tasks.md proposal and creates tasks.md without waiting for approval",
+        "The created design.md and tasks.md contain substantive project-specific content; tasks.md is checkbox-free with no tracker or spec_issue metadata",
+        "Cast does not invent whether queued notifications are sent or discarded after the window, and reports the feature as staged and not implementation-ready",
+        "Cast performs no GitHub inspection or mutation and leaves github_repository: TBD"
       ]
     }
   ]

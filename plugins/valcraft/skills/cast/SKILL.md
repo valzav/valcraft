@@ -18,13 +18,13 @@ Lean SDD project scaffold. Resist reintroducing heavyweight machinery unless the
 
 Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged feature. It is the shared authority for scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation.
 
-Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the exact approval boundary, opt-in artifacts, and retrofit behavior.
+Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the approval boundary and `cast_approval` mode, opt-in artifacts, and retrofit behavior.
 
 **Progress list.** With a harness task tool (Claude Code `TaskCreate`/`TaskUpdate`, Codex `update_plan`), mirror the scaffold run: one item each for gather facts, tracker declaration, scaffold proposal, write approval, skeleton write, populate and MVP, tracker activation, report — one `in_progress` at a time, `completed` when the step's approval or artifact exists. Display only — the written files and the operator's approvals stay authoritative; skip without such a tool.
 
 ## Steps 1–2: Gather facts and create the skeleton
 
-Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, tracker declaration, scaffold proposal, and write approval are resolved.
+Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, tracker declaration, scaffold proposal, and write approval resolve.
 
 ## Step 3: Populate and define the MVP
 
@@ -41,7 +41,7 @@ Apply the selected tracker mode throughout the loop:
 - In `local` mode, keep task definitions and status as checkboxes in `tasks.md`. Require no GitHub CLI, remote, or authentication.
 - In `github` mode, keep the spec, design, checkbox-free task definitions, phase order, and explicit `blocked by T-XXX` intent authoritative in git. Keep stable T-IDs and their issue-number references in `tasks.md`. Reconcile generated issue titles, bodies, sub-issue order, and dependency relationships from those definitions without overwriting comments or hand-maintained status. Once activation is complete, apply `in-progress` while implementing, apply `needs-clarification` when an issue question blocks the task, and close the issue only after the task is verified. GitHub open/closed state and those labels are authoritative for status; never copy that status back into git. When activation is pending, keep working definitions in git and make no remote status claim.
 
-Before allocating a later feature, validate existing feature IDs and stages through `references/spec-intake.md`. Resume a staged feature when selected. If several features are staged, ask the operator which one to resume. From the canonical spec, propose the next missing artifact, wait for approval, and create only that artifact. Repeat this proposal-and-approval cycle for every remaining missing artifact. An unresolved product question affects the final implementation-readiness verdict; it does not stop Cast from proposing substantive `design.md` and `tasks.md` files that preserve the question without inventing an answer. Preserve the spec's existing `spec_issue` mapping.
+Before allocating a later feature, validate existing feature IDs and stages through `references/spec-intake.md`. Resume a staged feature when selected. If several features are staged, ask the operator which one to resume. From the canonical spec, propose the next missing artifact, wait for approval — under `cast_approval: delegated` record the proposal and proceed — and create only that artifact. Repeat for each remaining missing artifact. An unresolved product question affects the final implementation-readiness verdict; it does not stop Cast from proposing substantive `design.md` and `tasks.md` files that preserve the question without inventing an answer. Preserve the spec's existing `spec_issue` mapping.
 
 1. **Plan** — non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md` (e.g. `2026-08-02-001-feat-t-030-predicate-compiler-plan.md`). Plans referenced from tasks.md are tracked in git — never gitignored. For features past 001, check the new spec against existing specs for conflicts and shared boundaries before planning.
 2. **Implement** — small verifiable tasks; commit subjects reference IDs (`T-029: predicate registry…`, `fix(T-030): resolve the material findings…`). `valcraft:forge` executes this step for one task, including its verification discipline and the hand-off to review.

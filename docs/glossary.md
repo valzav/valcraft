@@ -14,6 +14,11 @@ repository-level reference that keeps new skills consistent with it.
   decisions wait for the human: `attended` (every gate), `gated` (irreversible or
   outward acts), or `delegated` (product-intent changes, release-branch writes, and
   escalations only).
+- **approval mode** (cast) — the optional `cast_approval` declaration in root `AGENTS.md`:
+  `attended` (missing; wait at every proposal and mutation preview) or `delegated`
+  (record each proposal and preview, proceed; still stop for a product-intent change, an
+  invented requirement, task removal, a `TBD` GitHub target, and every stop condition).
+  Paired with foreman's mode: `attended` ↔ `attended`; `gated`/`delegated` ↔ `delegated`.
 - **assignment envelope** (foreman) — the one shape every worker prompt takes: cold-start
   reading order, identity, the step text, the report instruction, the trust boundary.
 - **assertion** — one verifiable statement in an eval; the graded pass/fail unit.

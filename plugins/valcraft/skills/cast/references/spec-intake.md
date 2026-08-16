@@ -111,7 +111,8 @@ offer to resume it. If several are staged, ask the operator to select one. Do no
 by recency or directory number.
 
 Use the canonical `spec.md` to propose the missing next artifact. Present the exact local
-mutation and wait for approval before creating `design.md` or `tasks.md`. Create only the
+mutation and wait for approval before creating `design.md` or `tasks.md` (`cast_approval:
+delegated` records the proposal and proceeds — `scaffold.md`, "Approval mode"). Create only the
 approved missing file. Then repeat for the next missing artifact until the triplet is
 complete or the operator withholds approval. Never regenerate or overwrite an existing
 artifact.

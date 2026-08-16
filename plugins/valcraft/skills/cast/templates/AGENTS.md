@@ -22,6 +22,18 @@ In GitHub mode, `github_repository` remains `TBD` until the GitHub target passes
 preflight and the operator approves it. Do not infer a different target from the current
 directory after activation. Omit `github_repository` entirely in local mode.
 
+Optional, in either shape:
+
+```yaml
+cast_approval: attended | delegated
+```
+
+Missing means `attended`: Cast waits for operator approval at every proposal and mutation
+preview. `delegated`: Cast records each proposal and exact mutation preview and proceeds,
+still stopping for a product-intent change, an invented requirement, task removal, a `TBD`
+GitHub target, and every stop condition. Render the line only when the operator chose
+`delegated`.
+
 ## Orientation
 
 - `docs/` — product brief, working plans, architecture docs, ADRs.

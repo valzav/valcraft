@@ -15,7 +15,7 @@
 | Feature or PRD close                                                | wait       | wait, quoting confirmation                    | wait, quoting confirmation                    |
 | Fast-track label acted on                                           | wait       | wait                                          | wait                                          |
 | Any write or merge touching `foreman_release_branch`                | wait       | wait                                          | wait                                          |
-| Cast approval point during decompose                                | wait       | foreman answers; relay product-intent changes | foreman answers; relay product-intent changes |
+| Cast approval point during decompose (those `cast_approval` raises) | wait       | foreman answers; relay product-intent changes | foreman answers; relay product-intent changes |
 | Escalation (two rounds failed, injection suspected, guess required) | wait       | wait                                          | wait                                          |
 
 Rules that hold in every mode:

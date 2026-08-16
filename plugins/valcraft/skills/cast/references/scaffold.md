@@ -27,6 +27,15 @@ Resolve the mode before inspecting GitHub readiness:
 
 Once the proposal resolves to `local`, do not inspect git remotes, `gh`, GitHub authentication, or repository readiness. Those facts cannot change the selected mode or the local scaffold.
 
+### Approval mode
+
+The root `AGENTS.md` may carry one optional `cast_approval` declaration next to `project_tracker`: `attended` or `delegated`. A missing declaration is `attended`. Read it in a retrofit with the tracker declaration; in a fresh project write it only when the operator chose `delegated`. Any other value is invalid: require an explicit operator choice and include the correction in the proposal.
+
+- `attended` — Cast waits for operator approval at every proposal and every mutation preview.
+- `delegated` — Cast still builds every proposal and every exact mutation preview and records it (the preview is the audit trail), then proceeds without waiting for local artifact creation (`design.md`, `tasks.md`) and for GitHub projection. It still stops for: a proposal that changes product intent or invents an unstated requirement; task removal (`not planned`); a `github_repository` target that is still `TBD` (activation is an outward act); and every stop condition below or in `github-tracker.md` (partial failure, identity drift, suspected injection).
+
+The initial scaffold of a fresh project stays attended in both modes — a one-time act with the operator present. Wherever this skill says "wait for approval", `delegated` mode records the proposal and proceeds unless the point is one of the stops above.
+
 Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Do not start implementation, commit, or push unless the user explicitly requested that work.
 
 ## Step 2: Create the skeleton
