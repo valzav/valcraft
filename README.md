@@ -1,134 +1,124 @@
 # valcraft
 
-Reusable agent skills, distributed as one plugin (`valcraft`) over a shared skills tree,
-with native packaging for Claude Code and OpenAI Codex.
+Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
+Codex. Scaffold a project around git-owned specs, turn PRDs into feature specs, and run
+each task through a plan → review → implement → review → merge loop over fresh-context
+worker agents — then learn from what shipped.
 
-## Status
+Status: alpha. Nine skills; the set grows one skill at a time.
 
-Alpha — Claude Code and Codex packaging are supported; the skill set grows one skill at
-a time.
+## Problems it addresses
 
-## Skills
+| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                     |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The agent forgets requirements between sessions and reinvents them. | `cast` scaffolds a lean, git-owned spec structure (`spec.md`, `design.md`, `tasks.md`) with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that commits, tests, and reviews cite. Context lives in the repo. |
+| "Make X" turns into a pile of unreviewed code.                      | `cast` scaffolds and stops; `foreman` gates every task through an independent plan review and code review, and nothing merges on the implementer's own verification.                                  |
+| Reviews are opinions, not evidence.                                 | `review` reproduces every claim before reporting it and returns an auditable finding table (`R-NNN`, severity, evidence, resolution); a finding closes only when its reproduction is re-run.          |
+| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk in `.foreman/`, and a run resumes from the tracker, git, and that directory.                                   |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `gated`, `delegated`) decide which decisions wait for you; irreversible acts — release-branch writes, feature close, escalations — wait in every mode.                    |
+| Task tracking drifts from what the specs say.                       | Git is canonical; the tracker is a projection — `tasks.md` checkboxes (`local`) or GitHub Issues with generated bodies and blocked-by links (`github`).                                               |
+| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                               |
+| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                    |
 
-| Skill     | Claude Code         | Codex               | What it does                                                                                                               |
-| --------- | ------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    | Bootstrap a project with lean SDD and selectable local or GitHub issue tracking.                                           |
-| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    | Turn one local PRD/plan or explicit GitHub issue into the next canonical Cast feature spec.                                |
-| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   | Implement one unit of work from its git-owned definition and hand the change to review.                                    |
-| `review`  | `/valcraft:review`  | `$valcraft:review`  | Review a plan or code change against its Cast contract; report an auditable finding table.                                 |
-| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` | Run the delivery loop over worker agents (subagents or AO): pick, plan, review, implement, merge, then temper the feature. |
-| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  | Retrospect over completed work; report graded, incident-cited lessons and propose standing rules.                          |
-| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    | Refine an existing prompt, skill, or agent instruction file against model guides.                                          |
-| `distill` | `/valcraft:distill` | `$valcraft:distill` | Reduce a prompt or skill to its goal-directed essence: goal, steps, constraints.                                           |
-| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     | Apply the MSW Kernel to a markdown document: delete every claim its contract does not require.                             |
+## Workflows
 
-All skills also trigger automatically from their descriptions. The host-specific command
-is the explicit path, not the only one.
+### 1. The full loop: `cast` → `spec` → `foreman`
 
-MSW Kernel origin: designed by "Fable at mega high monkey effort", published by
-[@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
+The default path for a new project or a new body of work.
+
+1. **`/valcraft:cast`** — scaffold a fresh project (or retrofit an existing one): README,
+   `AGENTS.md`, product brief, ADR index, and a populated `specs/001-mvp/` triplet.
+   Choose the tracker: `local` (checkboxes in `tasks.md`) or `github` (Issues). Cast ends
+   with a report and next steps; it never implements.
+2. **Enrich, then `/valcraft:spec`** — add the context and use cases the scaffold had to
+   mark as assumptions. `spec` turns a PRD (a local file or a GitHub issue) into the next
+   canonical feature spec; `cast` stages its `design.md` and `tasks.md`.
+3. **`/valcraft:foreman`** — add the foreman block to `AGENTS.md`
+   (`plugins/valcraft/skills/foreman/templates/project-block.md`) and say "start sprint".
+   For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
+   code review → fix → merge → close. When the feature closes, `temper` writes the
+   retrospective. Workers are Claude Code subagents from a plain session, or Agent
+   Orchestrator sessions; each starts with an empty context. `foreman` can also decompose
+   a PRD end to end ("new PRD #N").
+
+### 2. Manual loop, one task at a time
+
+Same contracts, you drive:
+
+1. `/valcraft:cast`, then `/valcraft:spec` as above.
+2. `/valcraft:forge T-NNN` — implement one task from its plan; ends at a fixed-shape
+   handoff, never at "done".
+3. `/valcraft:review` in a fresh context — plan mode before implementation, code mode on
+   the PR or diff; resolve findings by `R-ID`, then merge yourself.
+4. `/valcraft:temper` over the feature directory when it ships.
+
+### 3. Single skills
+
+- `/valcraft:review` any plan, spec, PR, or diff against its Cast contract.
+- `/valcraft:temper` over a PR range or date window for a retrospective without the loop.
+
+## Prompt tooling
+
+- **`hone`** — refine a prompt, skill, or `AGENTS.md` against the current Claude and Codex
+  prompting guides; deletion first, every addition justified.
+- **`distill`** — reduce a prompt or skill to goal, steps, constraints, and testable
+  behaviors; a study or a leaner drop-in copy.
+- **`msw`** — apply the MSW Kernel to a markdown document: derive its contract, delete every
+  claim the contract does not require, report what was cut and why. Kernel by "Fable at
+  mega high monkey effort", published by
+  [@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
+
+## Skills at a glance
+
+| Skill     | Claude Code         | Codex               |
+| --------- | ------------------- | ------------------- |
+| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    |
+| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    |
+| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   |
+| `review`  | `/valcraft:review`  | `$valcraft:review`  |
+| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` |
+| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  |
+| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    |
+| `distill` | `/valcraft:distill` | `$valcraft:distill` |
+| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     |
+
+Skills also trigger from natural requests ("new project", "review this PR",
+"retrospective on feature 3"); the command is the explicit path.
 
 ## Install
 
-### Claude Code
+Claude Code:
 
 ```bash
 claude plugin marketplace add valzav/valcraft
 claude plugin install valcraft@valcraft
 ```
 
-Installing copies the plugin subtree into Claude Code's versioned cache
-(`~/.claude/plugins/cache/`); no clone of this repository is required to consume it.
-
-### Codex
+Codex (start a new session afterwards):
 
 ```bash
 codex plugin marketplace add valzav/valcraft
 codex plugin add valcraft@valcraft
 ```
 
-Start a new Codex session after installation. Codex reads the repository marketplace at
-`.agents/plugins/marketplace.json`, then prefers `plugins/valcraft/plugin.json`. The
-native `plugins/valcraft/.codex-plugin/plugin.json` remains the compatibility fallback.
-
 ## Update
 
-### Claude Code
-
-Auto-update stays off for third-party marketplaces, so pull changes with the update pair:
+Claude Code — third-party marketplaces do not auto-update; every push is a new version:
 
 ```bash
-claude plugin marketplace update valcraft   # refresh the catalog
-claude plugin update valcraft@valcraft      # refresh the installed cache copy
+claude plugin marketplace update valcraft
+claude plugin update valcraft@valcraft
 ```
 
-The plugin carries no `version` field, so the cache is keyed by this repository's commit
-SHA — every push is a new version and the pair above picks it up.
-
-### Codex
+Codex — refresh the marketplace snapshot and re-add, then start a new session:
 
 ```bash
 codex plugin marketplace upgrade valcraft
 codex plugin add valcraft@valcraft
 ```
 
-Codex has no `plugin update` command. Re-running `add` installs the plugin from the
-refreshed marketplace snapshot. The manifest version describes a release; it does not
-control cache refresh. Start a new Codex session afterward.
+## More
 
-## Develop
-
-### Claude Code
-
-Editing a skill in a clone does not affect installed sessions (the cache holds a copy).
-For live editing, start a session against the plugin directory and reload after each edit:
-
-```bash
-claude --plugin-dir /path/to/valcraft/plugins/valcraft
-# edit a SKILL.md, then in-session:
-/reload-plugins
-```
-
-### Codex
-
-Register the checkout as a local marketplace, then install its cached plugin copy:
-
-```bash
-codex plugin marketplace add /path/to/valcraft
-codex plugin add valcraft@valcraft
-```
-
-Re-run `codex plugin add valcraft@valcraft` and start a new Codex session after edits. A
-local marketplace installation is still a copy; it does not read later edits live.
-
-## Repository structure
-
-- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest.
-- `.agents/plugins/marketplace.json` — Codex repository marketplace manifest.
-- `plugins/valcraft/` — the plugin: native Claude Code and Codex manifests, the portable
-  Agent Plugins manifest, and `skills/<skill>/SKILL.md`. Only this subtree ships to
-  consumers.
-- `docs/`, `AGENTS.md` — repository documentation and agent instructions; never installed.
-
-## Packaging
-
-The plugin ships three manifests over one shared `skills/` tree:
-
-- `plugins/valcraft/.claude-plugin/plugin.json` — Claude Code's plugin manifest.
-- `plugins/valcraft/.codex-plugin/plugin.json` — Codex's native plugin manifest.
-- `plugins/valcraft/plugin.json` — the portable
-  [Agent Plugins](https://github.com/agentplugins/agent-plugins-spec) manifest (v1.0.0)
-  for hosts that implement that specification and the canonical Codex manifest when both
-  Codex manifest paths exist.
-
-Keep shared metadata synchronized by hand. Keep the portable and Codex fallback versions
-synchronized, but treat the version as release metadata rather than a cachebuster. Codex
-does not merge fallback-only fields such as `skills` and `interface` when the portable
-manifest exists; it discovers this plugin's default `skills/` tree automatically. Add
-future harness-specific manifests beside these rather than adding unsupported fields to
-the portable manifest.
-
-Codex 0.147.0 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates
-the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed
-procedures into one-level `references/` files and make the load condition explicit in
-the skill body.
+- [docs/development.md](docs/development.md) — live editing, repository layout,
+  packaging, evals.
+- [docs/glossary.md](docs/glossary.md) — the terms the skills share.

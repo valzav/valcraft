@@ -52,7 +52,7 @@ After step 7: `ao session claim-pr <worker-session-id> <pr-url>` so AO tracks CI
 
 ## Merges
 
-The worker's permission classifier denies `gh pr merge` (observed live, 2026-08-15); the foreman merges from its own session (`references/loop.md`, step 10). After a human merge, the human tells the foreman to verify and continue.
+The worker's permission classifier denies `gh pr merge`; the foreman merges from its own session (`references/loop.md`, step 10). After a human merge, the human tells the foreman to verify and continue.
 
 ## Never run `ao session cleanup`
 
