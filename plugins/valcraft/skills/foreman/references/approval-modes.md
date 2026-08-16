@@ -21,7 +21,7 @@
 Rules that hold in every mode:
 
 - A wait names what it is stopping on. A proceed records the decision and its test result in the summary.
-- The human's "no gates" for a run removes only the step 1 wait in `attended`; it never removes a row marked wait in all three columns.
+- The human's "no gates" for a run removes only the step 1 wait in `attended`; "confirm picks" makes step 1 wait in any mode. Neither touches a row marked wait in all three columns.
 - Changing the mode mid-run is the human's call; the foreman applies the new mode from the next decision on and records the change.
 - A `github` tracker batch is always serialized before execution regardless of mode — the summary is the audit trail.
 

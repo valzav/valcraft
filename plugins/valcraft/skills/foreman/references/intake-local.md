@@ -26,4 +26,4 @@ When every task is checked or removed and the human confirms, the feature is clo
 
 ## Fast-track
 
-Not applicable: local mode has no label channel. A change that must reach `foreman_release_branch` directly is a human instruction to the foreman, and the release-branch row of `references/approval-modes.md` applies.
+Not applicable: local mode has no label channel. A change that must reach `foreman_release_branch` directly is a human instruction to the foreman (release-branch row of the approval-modes table).

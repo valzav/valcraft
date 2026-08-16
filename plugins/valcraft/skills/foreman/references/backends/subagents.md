@@ -32,7 +32,7 @@ Foreman and workers share one checkout. Consequences:
 
 ## Merges
 
-The foreman runs `gh pr merge` itself. If this session's permission mode denies it, report the exact command and wait for the human.
+The foreman merges (`references/loop.md`, step 10); the classifier that can deny it here is this session's own permission mode.
 
 ## PR-tracking hook
 

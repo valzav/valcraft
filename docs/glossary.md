@@ -37,7 +37,7 @@ repository-level reference that keeps new skills consistent with it.
 - **closure check** (foreman) — the reviewer's scoped re-run of the reproductions behind
   the R-IDs a worker claims resolved, filling the resolution column and opening no new
   findings. Not a review round; it follows every material-findings round. A second full
-  round runs only on a listed trigger (`references/loop.md`, "After a review round").
+  round runs only on a listed trigger (foreman `references/review-round.md`).
 - **Cast contract** (forge, review) — the git-owned authority chain a change is judged
   against: the feature's `spec.md` IDs, `design.md`, accepted ADRs, and the task's
   plan. Distinct from the contract (outcome plus proof criteria) that distill, hone,
