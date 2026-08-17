@@ -1,12 +1,12 @@
 # valcraft
 
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex. At the center is an agentic **delivery loop** — plan → review → implement →
-review → merge — run over fresh-context worker agents, inside one Claude Code session or
-through an orchestrator over several Claude Code and Codex instances. Around it: `cast`
-scaffolds a project around specs that live in the repository (plain markdown with
-checkbox tasks, or projected to GitHub Issues), `spec` turns PRDs into feature specs, and
-`temper` learns from what shipped.
+Codex, and as a skills source for OpenCode. At the center is an agentic **delivery
+loop** — plan → review → implement → review → merge — run over fresh-context worker
+agents, inside one Claude Code session or through an orchestrator over several Claude
+Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
+the repository (plain markdown with checkbox tasks, or projected to GitHub Issues), `spec`
+turns PRDs into feature specs, and `temper` learns from what shipped.
 
 Status: alpha.
 
@@ -73,20 +73,22 @@ Same contracts, you drive:
 
 ## Skills at a glance
 
-| Skill     | Claude Code         | Codex               |
-| --------- | ------------------- | ------------------- |
-| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    |
-| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    |
-| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   |
-| `review`  | `/valcraft:review`  | `$valcraft:review`  |
-| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` |
-| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  |
-| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    |
-| `distill` | `/valcraft:distill` | `$valcraft:distill` |
-| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     |
+| Skill     | Claude Code         | Codex               | OpenCode  |
+| --------- | ------------------- | ------------------- | --------- |
+| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
+| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
+| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
+| `review`  | `/valcraft:review`  | `$valcraft:review`  | `review`  |
+| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
+| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
+| `distill` | `/valcraft:distill` | `$valcraft:distill` | `distill` |
+| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
 
 Skills also trigger from natural requests ("new project", "review this PR",
-"retrospective on feature 3"); the command is the explicit path.
+"retrospective on feature 3"); the command is the explicit path. OpenCode has no plugin
+namespace: its `skill` tool loads them by bare name, and a skill that says "run
+`valcraft:review`" means the `review` skill there.
 
 ## Compared with other SDD frameworks
 
@@ -115,6 +117,25 @@ codex plugin marketplace add valzav/valcraft
 codex plugin add valcraft@valcraft
 ```
 
+OpenCode — add the skills source to `opencode.json` (project or global) and allow the
+`skill` tool; OpenCode fetches `index.json` and caches every skill file, refreshing a
+skill when its content changes:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "urls": ["https://raw.githubusercontent.com/valzav/valcraft/main/plugins/valcraft/skills/"]
+  },
+  "permission": { "skill": "allow" }
+}
+```
+
+The URL form needs the repository to be public (raw GitHub answers anonymous requests
+only for public repositories). From a clone, use `"skills": { "paths":
+["/path/to/valcraft/plugins/valcraft/skills"] }` instead. `foreman` has no OpenCode
+worker backend yet; the other skills run as they do elsewhere.
+
 ## Update
 
 Claude Code — third-party marketplaces do not auto-update; every push is a new version:
@@ -130,6 +151,9 @@ Codex — refresh the marketplace snapshot and re-add, then start a new session:
 codex plugin marketplace upgrade valcraft
 codex plugin add valcraft@valcraft
 ```
+
+OpenCode — nothing to run: the source is re-read at startup, and a skill whose
+`version` in `index.json` changed is re-downloaded (raw GitHub caches for a few minutes).
 
 ## More
 
