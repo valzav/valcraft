@@ -1,7 +1,7 @@
 {
   "name": "valcraft",
   "metadata": {
-    "description": "Reusable agent skills, distributed as a plugin marketplace."
+    "description": "Agent skills for spec-driven delivery — one plugin for Claude Code and OpenAI Codex, a skills source for OpenCode. At the center: an agentic delivery loop (plan → review → implement → review → merge) over fresh-context worker agents; around it, cast scaffolds specs in the repo, spec turns PRDs into feature specs, temper learns from what shipped."
   },
   "owner": {
     "name": "valcraft contributors",
