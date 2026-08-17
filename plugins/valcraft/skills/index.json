@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "514a8afa413ae969",
+      "version": "75398f018c7d19ff",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -54,7 +54,7 @@
     },
     {
       "name": "forge",
-      "version": "77a0d0b09e5b11e5",
+      "version": "066715ce9b4172d7",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -82,7 +82,7 @@
     },
     {
       "name": "review",
-      "version": "b77bcff1be8ff12c",
+      "version": "86d90eda9337e49a",
       "files": [
         "SKILL.md",
         "references/code-mode.md",

@@ -145,6 +145,30 @@
         "Any commit subject references Q-001 T-001",
         "The run's last output is the `## Forge handoff` block with all five headings present, verbatim and in order"
       ]
+    },
+    {
+      "id": 7,
+      "name": "bare-q-id-picks-next-eligible-task-in-github-mode",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/quick-multi/, implement Q-001. This run is unattended.",
+      "expected_output": "Forge resolves the bare Q-001 through the cast quick reference: specs/quick/001-validation-hardening.md holds two tasks; T-001 is checked, so the next eligible task is T-002, whose `blocked by T-001` is satisfied by T-001's checkbox in the same file — the project's `project_tracker: github` does not send forge to GitHub for a quick task's dependency, and no gh command runs. It applies quick.md's readiness rule, states scope (src/validation.py and tests/test_validation.py), and implements T-002 as the Approach says: `None` is treated as empty before the strip check, the signature widens to Optional[str], the empty-string message is reused, and ` a ` still returns unchanged. It adds tests for AC-002 and re-checks AC-003 in the existing unittest style, runs the documented test command, cites the real output, and stops at the review handoff: no checkbox ticked, no label applied, no merge, commits citing Q-001 T-002, and the `## Forge handoff` block last.",
+      "files": [
+        "evals/files/quick-multi/AGENTS.md",
+        "evals/files/quick-multi/docs/product-brief.md",
+        "evals/files/quick-multi/specs/quick/001-validation-hardening.md",
+        "evals/files/quick-multi/src/validation.py",
+        "evals/files/quick-multi/tests/test_validation.py"
+      ],
+      "assertions": [
+        "Forge resolves bare Q-001 to T-002 — the first unchecked task whose dependency is checked — and does not re-implement the checked T-001",
+        "Forge treats T-002's `blocked by T-001` as satisfied by the checkbox in the quick file and does not require or query a GitHub issue",
+        "No gh command, GitHub label, or remote inspection is performed for the quick task",
+        "require_non_empty(None, 'name') raises ValueError naming the field with the same message as the empty string, and ' a ' returns unchanged",
+        "New tests follow the existing unittest style and cover AC-002 and AC-003",
+        "Forge runs the documented test command and cites its real output",
+        "T-002's checkbox remains unchecked; the run ends at the review handoff without merging",
+        "Any commit subject references Q-001 T-002",
+        "The run's last output is the `## Forge handoff` block with all five headings, verbatim and in order"
+      ]
     }
   ]
 }

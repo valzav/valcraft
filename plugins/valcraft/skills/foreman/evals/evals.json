@@ -260,6 +260,50 @@
         "Foreman does not run temper itself and does not edit AGENTS.md or another prompt artifact",
         "Foreman records step 11 in state.md and the progress list and awaits the report"
       ]
+    },
+    {
+      "id": 12,
+      "name": "deliver-quick-picks-across-files-without-github",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-quick/, deliver quick and stop as soon as the first worker assignment has been dispatched.",
+      "expected_output": "Foreman loads the project block (github tracker on github.example.test/acme/ledger, subagents, delegated, dev/main) and the cast quick reference for the quick run, creates a run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1 to the quick pool: it reads specs/quick/*.md in number order — Q-001's only task is checked, Q-002 T-001 is unchecked with no dependency — applies quick.md's readiness rule to 002-login-redirect-query.md (passes), and picks Q-002 T-001. Because quick tasks track locally in every tracker mode, it makes no gh call, applies no in-progress label, and records no batch; delegated mode needs no pick confirmation. It dispatches step 2 by spawning a fresh general-purpose agent named planner-Q002-T001 — never a fork — whose envelope carries the cold-start reading order, the identity, the step 2 planning text with the absolute path of specs/quick/002-login-redirect-query.md in place of spec.md, design.md, and tasks.md, the report path .foreman/<run>/planner-Q002-T001.md with the Status line instruction, and the trust-boundary paragraph. Foreman does not read the quick file's Requirements or Approach to plan the task itself. It stops after dispatch as the prompt asked.",
+      "files": [
+        "evals/files/loop-quick/AGENTS.md",
+        "evals/files/loop-quick/.gitignore",
+        "evals/files/loop-quick/docs/product-brief.md",
+        "evals/files/loop-quick/specs/quick/001-export-filename-date.md",
+        "evals/files/loop-quick/specs/quick/002-login-redirect-query.md"
+      ],
+      "assertions": [
+        "Foreman picks Q-002 T-001 by walking quick files in number order and skipping the fully checked Q-001",
+        "Foreman applies quick.md's readiness rule to the quick file before picking",
+        "Foreman performs no gh command, label, or tracker batch for the quick task despite project_tracker: github",
+        "Foreman creates a run directory with state.md and workers.md before dispatching",
+        "The planner is spawned as a fresh general-purpose agent named planner-Q002-T001, not a fork",
+        "The planner's assignment names the quick file's absolute path in place of spec.md, design.md, and tasks.md, plus the report path, Status line, and trust-boundary paragraph",
+        "Foreman does not plan the task itself and stops after dispatch"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "quick-file-closes-without-confirmation-or-temper",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-quick-done/, resume run `run-quick-close` from .foreman/run-quick-close/ and take the next loop step.",
+      "expected_output": "Foreman reads state.md: the run is a quick run; Q-002 T-001's PR merged after the closure check and the worker ticked the box before the merge. It confirms in specs/quick/002-login-redirect-query.md that every task is now checked, so the quick file is done — per quick.md and loop.md it asks the human for no feature-close confirmation, builds no closing batch, and spawns no temper worker (temper runs once per feature, never per quick file; quick work is retrospected on demand over specs/quick/). It releases nothing further (the workers are already released) and returns to step 1 over the pool: Q-001 and Q-002 have no unchecked task, so no eligible task remains and the run ends. The run-end summary opens with the outcome — Q-002 done, no quick task left — lists the report paths and decisions, and states that nothing waits on the human. It does not spawn temper-Q002, does not edit any quick file, and does not treat the pool's exhaustion as a feature close needing confirmation.",
+      "files": [
+        "evals/files/loop-quick-done/AGENTS.md",
+        "evals/files/loop-quick-done/.gitignore",
+        "evals/files/loop-quick-done/docs/product-brief.md",
+        "evals/files/loop-quick-done/specs/quick/001-export-filename-date.md",
+        "evals/files/loop-quick-done/specs/quick/002-login-redirect-query.md",
+        "evals/files/loop-quick-done/.foreman/run-quick-close/state.md",
+        "evals/files/loop-quick-done/.foreman/run-quick-close/workers.md"
+      ],
+      "assertions": [
+        "Foreman treats the fully ticked quick file as done without asking the human to confirm a close",
+        "Foreman spawns no temper worker and runs no retrospective for the quick file",
+        "Foreman returns to the pick step, finds no eligible quick task, and ends the run",
+        "The run-end summary opens with the outcome in plain sentences and states that nothing waits on the human",
+        "Foreman edits no quick file and builds no closing batch"
+      ]
     }
   ]
 }
