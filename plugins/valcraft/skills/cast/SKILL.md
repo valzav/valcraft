@@ -6,18 +6,20 @@ description: >
 
 # cast
 
-Lean SDD project scaffold. Resist reintroducing heavyweight machinery unless the project demonstrably needs it — the goal is durable context, not documentation theater.
+Lean SDD project scaffold. Resist heavyweight machinery unless the project demonstrably needs it — the goal is durable context, not documentation theater.
+
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
 
 ## Principles
 
 - **Docs before code.** The first commit is a documentation baseline. Code arrives after the stack and boundaries are settled in ADRs.
 - **Cast scaffolds; it does not build.** A request phrased as "make X", "build X", or with a time budget still ends at the report below. Implementation belongs to `valcraft:foreman` (the loop) or `valcraft:forge` (one task); Cast writes no source, ticks no task, and starts no dev server.
 - **Stable IDs are the working currency.** `FR-001`, `AC-003`, `T-012`, `ADR-0009` get referenced from commit subjects, reviews, tests, and plans. IDs + links give traceability for free; matrices are theater.
-- **Never invent missing requirements.** Record assumptions and open questions in the spec instead. Populate documents from evidence in priority order: facts the user gave → existing repo/code → established conventions → clearly-marked assumptions.
-- **Scale docs to the project.** Every file below is opt-in past the skeleton. Small projects stop at the skeleton; add optional documents only when their stated trigger exists.
+- **Never invent missing requirements.** Record assumptions and open questions in the spec instead. Populate documents from evidence in priority order: facts the user gave → existing repo/code → established conventions → marked assumptions.
+- **Scale docs to the project.** Every file past the skeleton is opt-in; add one only when its stated trigger exists.
 - **Specs stay reviewable.** A spec is too large when a reviewer would skim it and trust the agent. Slice oversized features into independently valuable `specs/NNN-` entries; trim generated verbosity.
 
-Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged feature. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation.
+Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged one. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation.
 
 Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the approval boundary and `cast_approval` mode, opt-in artifacts, and retrofit behavior.
 
@@ -31,9 +33,9 @@ Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, t
 
 - Fill the skeleton from evidence, in the priority order above.
 - `specs/001-mvp/` describes one coherent end-to-end outcome: scenarios, functional requirements (`FR-`), acceptance criteria (`AC-`), non-goals, edge cases.
-- Record `docs/product-brief.md` as the canonical repository-relative entry in the MVP spec's required `Sources` section.
+- Record `docs/product-brief.md` as the canonical entry in the MVP spec's required `Sources` section.
 - Identify consequential technical decisions. Write each as an ADR (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or explicitly open. ADRs are cheap to write and expensive to reconstruct; small implementation choices need none.
-- Keep the initial `001-mvp` feature as a full populated triplet. Apply the staged readiness gate in `references/spec-intake.md` before calling any later feature ready to implement.
+- Keep `001-mvp` a full populated triplet. Apply the staged readiness gate in `references/spec-intake.md` before calling any later feature ready to implement.
 
 ## Step 4: The working loop Cast sets up
 

@@ -8,11 +8,13 @@ description: >
 
 Implement one assigned unit of work. Treat Cast as the SDD authority: the feature's `spec.md` (`FR-`/`AC-`/`NFR-`/`BR-` IDs), `design.md`, its `tasks.md` entry, accepted ADRs, and the task's plan are the Cast contract. Never invent a missing requirement — record it as an open question and surface it.
 
-forge ends when the change is verified and handed to review. It never merges, closes a task, or declares the work shipped on its own verification: every bug in this skill's incident corpus reached the main branch through a skipped review gate, not a missed review.
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+
+forge ends when the change is verified and handed to review. It never merges, closes a task, or declares the work shipped on its own verification: every bug in this skill's incident corpus reached main through a skipped review gate.
 
 ## Load the Cast contracts
 
-Before resolving the assignment, read the project's root `AGENTS.md` and resolve its `project_tracker` declaration, and read `../cast/references/spec-intake.md` for the feature identity, staged-lifecycle, and implementation-readiness contract. Follow those resources; do not reconstruct their rules.
+Before resolving the assignment, read the project's root `AGENTS.md` and resolve its `project_tracker` declaration, and read `../cast/references/spec-intake.md` for the feature identity, staged-lifecycle, and implementation-readiness contract.
 
 ## Step 1: Resolve the assignment
 
@@ -20,7 +22,7 @@ Accept exactly one unit of work:
 
 - **T-XXX** — task IDs number per feature, so a bare `T-XXX` does not identify one unit. Resolve it to a single feature: use the feature qualifier or `tasks.md` path given with the assignment, or enumerate matches across `specs/*/tasks.md` and continue only when exactly one exists — on zero or several, ask when attended, report the blocker when not. Then read every artifact of that feature's Cast contract, including the task's plan in `docs/plans/` if one exists.
 - **Plan path** — the path must resolve inside the repository to a git-tracked file; accept an untracked plan only when the operator explicitly supplies it as the assignment. The plan is the contract; read the spec artifacts it cites. When the plan implements a Cast task, resolve that feature and task — the gates below apply to it.
-- **Free-form small feature or fix** — confirm it fits one coherent change. Route anything larger to `valcraft:spec` or `valcraft:cast` decomposition instead of absorbing it.
+- **Free-form small feature or fix** — confirm it fits one coherent change; route anything larger to `valcraft:spec` or `valcraft:cast` decomposition.
 
 For any assignment that resolves to a Cast task — given as a T-ID or through a plan — gate it before coding:
 
@@ -38,7 +40,7 @@ Non-trivial work gets a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md
 - **Containment.** Any string that crosses a trust boundary into a filesystem path, a namespace key, an identifier, or an LLM prompt gets an explicit containment/escaping argument. "It comes from our own config" is an assumption, not an argument.
 - **Measured behavior.** Any plan step that relies on a library's parsing, serialization, round-trip, or "preserving" behavior names how that behavior was or will be measured against non-canonical input. Documentation and type signatures are not evidence.
 
-The plan is a decision artifact, not execution state. Never edit it to record progress — status lives in the tracker per Cast's authority table, and completion derives from the working tree, commits, and verification.
+The plan is a decision artifact, not execution state. Never edit it to record progress — status lives in the tracker, and completion derives from the working tree, commits, and verification.
 
 Read `references/verification-and-handoff.md` before editing code. It owns Steps 4–6 and the trust boundary and must shape the implementation and its tests, not load after the change is complete.
 

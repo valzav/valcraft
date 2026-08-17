@@ -8,9 +8,11 @@ description: >
 
 Run the delivery loop over workers. The foreman coordinates only: it picks work, dispatches roles, requires their reports, decides at each gate, merges, and closes. Independence at the review gates — every plan, implementation, and review produced in a fresh context — is why the loop catches what a single session cannot.
 
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+
 ## Load the project block and the backend
 
-Read the project's root `AGENTS.md`. It must declare `project_tracker` (Cast's) and the foreman block from `templates/project-block.md` — `foreman_backend`, `foreman_approval_mode`, `foreman_default_branch`, `foreman_release_branch`. A missing block stops the run: propose one when attended, report the blocker when not. Read:
+Read the project's root `AGENTS.md`. It must declare `project_tracker` (Cast's) and the foreman block from `templates/project-block.md`. A missing block stops the run: propose one when attended, report the blocker when not. Read:
 
 - `references/backends/README.md` and `references/backends/<foreman_backend>.md` — the four primitives and the backend's capabilities;
 - `references/approval-modes.md` — what waits for the human in the declared mode;
@@ -42,7 +44,7 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 | `reviewer-2` | 8          | fresh; not the worker; second harness |
 | `temper`     | 11         | fresh; once per feature               |
 
-Use a second harness for `planner` and `reviewer-2` when the backend offers one; a one-harness backend gives independence by fresh context alone. Name each worker `<role>-<feature>-<task>` per `references/hygiene.md` — T-IDs restart per feature.
+Use a second harness for `planner` and `reviewer-2` when the backend offers one; one harness gives independence by fresh context alone. Name workers `<role>-<feature>-<task>` per `references/hygiene.md`.
 
 ## The loop
 

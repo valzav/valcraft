@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "0c37cc5099dfd386",
+      "version": "619bfa28cad33948",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -22,7 +22,7 @@
     },
     {
       "name": "distill",
-      "version": "e739d17f75fb0144",
+      "version": "b87dea65ae70d77e",
       "files": [
         "SKILL.md",
         "references/compare.md",
@@ -31,7 +31,7 @@
     },
     {
       "name": "foreman",
-      "version": "6c072c23a2427296",
+      "version": "50fcdc7de5b813f0",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -52,7 +52,7 @@
     },
     {
       "name": "forge",
-      "version": "3c0657eda40c47b7",
+      "version": "340a51c84908b325",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -61,7 +61,7 @@
     },
     {
       "name": "hone",
-      "version": "90417ce0385a5242",
+      "version": "2c2d22792886d63a",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -72,7 +72,7 @@
     },
     {
       "name": "msw",
-      "version": "adaaeaec05cb5b2d",
+      "version": "9ac2c42763515413",
       "files": [
         "SKILL.md",
         "references/kernel.md"
@@ -80,7 +80,7 @@
     },
     {
       "name": "review",
-      "version": "1a515393aeaee854",
+      "version": "554fc703e4f160b8",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -98,7 +98,7 @@
     },
     {
       "name": "temper",
-      "version": "2d72a834409bf512",
+      "version": "6cac57b1cba4dd57",
       "files": [
         "SKILL.md",
         "references/process.md",

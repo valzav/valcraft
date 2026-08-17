@@ -7,6 +7,8 @@ description: Refine an existing prompt artifact — inline prompt text, markdown
 
 Refine the prompt artifact for its target model family. Deletion is the primary tool; justify every added line against the artifact's contract.
 
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+
 Vocabulary, shared with `valcraft:distill` and `valcraft:msw`: a **prompt artifact** is the source being analyzed; its **contract** is its requested outcome plus the smallest criteria that prove it; a **claim** is one atomic instruction, requirement, constraint, example, or rationale.
 
 Sources: [Prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5) · [GPT-5.6 model guidance](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.6#prompting-best-practices)

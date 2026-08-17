@@ -8,6 +8,8 @@ description: >
 
 Compound lessons from finished work. Where `valcraft:review` judges one change against its contract before merge, temper judges the process across many completed changes after the fact: which defects escaped, which gate should have caught each one, and which lesson is worth turning into a standing rule.
 
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+
 Two modes, chosen by target: a corpus of completed work — a feature directory, a PR or commit range, a date window — → **analyze mode**; two or more temper analyze reports → **synthesize mode**. When the target is ambiguous, ask when attended; otherwise bind the smallest corpus consistent with the stated intent and record the assumption in the report.
 
 temper runs at milestones — after a feature ships, after a batch of tasks closes — never per-task inside the working loop.

@@ -7,6 +7,8 @@ description: Apply the MSW Kernel to a markdown document — a plan, spec, skill
 
 Apply the MSW Kernel to one markdown document. The document's claims face the kernel's deletion test against the document's own contract; the result is reported in the kernel's report format. MSW deletes failed claims and makes only the minimal structural repairs those deletions force. It does not add substantive content or rewrite surviving claims.
 
+Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+
 The kernel is defined in `references/kernel.md`. Read it before judging; apply it as written — its contract definition, deletion test, limits rule, and fuses govern this skill and are not restated here. Never paraphrase the kernel or substitute your own necessity criteria.
 
 Vocabulary, shared with `valcraft:distill` and `valcraft:hone`: a **prompt artifact** is the source being analyzed; its **contract** is its requested outcome plus the smallest criteria that prove it; a **claim** is one atomic instruction, requirement, constraint, example, or rationale.
