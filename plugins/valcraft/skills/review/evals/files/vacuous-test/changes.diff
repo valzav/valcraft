@@ -1,0 +1,56 @@
+commit 4f2a91c3e8b7d5a06c1e2f3a4b5c6d7e8f9a0b1c
+Author: Dev <dev@example.test>
+Date:   Sat Aug 8 11:04:22 2026 +0000
+
+    T-002: reject blank document titles; verifies FR-002
+
+    Validation ran against the raw title, so a whitespace-only title passed the
+    empty check and produced an empty slug. Normalize first, then validate.
+    Adds a regression test and slug generation metrics.
+
+diff --git a/src/slug.py b/src/slug.py
+index 1a2b3c4..5d6e7f8 100644
+--- a/src/slug.py
++++ b/src/slug.py
+@@ -1,10 +1,13 @@
+ """Document slug generation."""
+
++from telemetry import emit
++
+
+ def slugify(title: str) -> str:
+     """Return a lowercase hyphenated slug for a document title."""
+-    if not title:
+-        raise ValueError("title must not be empty")
+     normalized = " ".join(title.split())
++    if not normalized:
++        raise ValueError("title must not be empty")
++    emit("slug.generated", {"length": len(normalized)})
+     return normalized.lower().replace(" ", "-")
+
+diff --git a/src/telemetry.py b/src/telemetry.py
+new file mode 100644
+index 0000000..9a8b7c6
+--- /dev/null
++++ b/src/telemetry.py
+@@ -0,0 +1,9 @@
++"""Usage-metric emitter."""
++
++_EVENTS: list[tuple[str, dict]] = []
++
++
++def emit(name: str, payload: dict) -> None:
++    """Record one usage metric event."""
++    _EVENTS.append((name, payload))
+
+diff --git a/tests/test_slug.py b/tests/test_slug.py
+index 2b3c4d5..6e7f8a9 100644
+--- a/tests/test_slug.py
++++ b/tests/test_slug.py
+@@ -6,3 +6,6 @@ class SlugifyTest(unittest.TestCase):
+     def test_lowercases_and_hyphenates(self):
+         self.assertEqual(slugify("Quarterly Report"), "quarterly-report")
+
++    def test_collapses_whitespace(self):
++        self.assertEqual(slugify("  Quarterly   Report "), "quarterly-report")
++

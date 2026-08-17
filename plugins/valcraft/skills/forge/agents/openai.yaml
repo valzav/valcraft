@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge"
+  short_description: "Implement one Cast task or small feature and hand it to review"
+  default_prompt: "Use $valcraft:forge to implement this task, plan, or small feature from its git-owned definition, verify with discriminating evidence, and hand the change to review."

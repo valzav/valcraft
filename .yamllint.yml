@@ -1,0 +1,14 @@
+extends: default
+
+ignore:
+  - .local/
+  - .worktrees/
+
+rules:
+  # Skill and workflow prose carries long single lines by design.
+  line-length: disable
+  # GitHub workflow files use the bare `on:` trigger key.
+  truthy:
+    check-keys: false
+  # Single-document config files; a `---` marker adds nothing.
+  document-start: disable

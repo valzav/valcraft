@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "valcraft",
+  "version": "0.2.0",
+  "description": "Reusable agent skills: cast (spec-driven project scaffold), spec (Cast feature spec generation), forge (task implementation), review (plan and code review), foreman (delivery loop over worker agents), temper (evidence-based retrospectives), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+  "author": {
+    "name": "valcraft contributors",
+    "url": "https://github.com/valzav/valcraft"
+  },
+  "homepage": "https://github.com/valzav/valcraft",
+  "repository": "https://github.com/valzav/valcraft",
+  "license": "MIT",
+  "keywords": ["skills", "sdd", "scaffold", "prompt-engineering"]
+}

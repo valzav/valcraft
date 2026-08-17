@@ -1,0 +1,33 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Lint markdown
+        run: npx --yes markdownlint-cli2@0.18.1
+
+      - name: Install YAML and schema linters
+        run: pip install yamllint==1.35.1 check-jsonschema==0.33.0
+
+      - name: Lint YAML
+        run: git ls-files '*.yaml' '*.yml' | xargs yamllint -c .yamllint.yml --strict
+
+      - name: Check the OpenCode skills index is current
+        run: python3 scripts/build-skills-index.py --check
+
+      - name: Parse JSON
+        run: git ls-files '*.json' | xargs -I{} jq empty {}
+
+      - name: Validate portable plugin manifest
+        run: >-
+          check-jsonschema
+          --schemafile https://agent-plugins.org/schemas/1.0.0/plugin.schema.json
+          plugins/valcraft/plugin.json

@@ -1,0 +1,52 @@
+{
+  "skill_name": "msw",
+  "evals": [
+    {
+      "id": 1,
+      "name": "plan-deletion-test",
+      "prompt": "/valcraft:msw evals/files/csv-export-plan/plan.md — strip this CSV-export plan down to what its contract actually requires.",
+      "expected_output": "The plan edited in place, deletions only: the contract stated first (CSV export of orders, proven by the round-trip integration test), the streaming requirement kept once (it appears in three sections of the fixture), the motivational 'why this matters' paragraphs and the double-check exhortation deleted, surviving text not rewritten. The report follows the kernel format: outcome against the contract, grouped proof for surviving sections, rejected claims one line each, flagged claims.",
+      "files": ["evals/files/csv-export-plan/plan.md"],
+      "assertions": [
+        "Contract stated before any judgment",
+        "Target file edited in place; deletions and forced repairs only, no added content, no rewriting of surviving text",
+        "Streaming requirement survives exactly once (the fixture states it in three places)",
+        "Motivational 'why this matters' paragraphs and the future-analytics aside deleted",
+        "'Double-check your work' deleted as default model behavior",
+        "The endpoint, streaming, and integration-test steps all survive",
+        "Report contains all four kernel sections: outcome, proof, rejected claims, flagged claims",
+        "No rejected claim is softened into a TODO or deferred follow-up"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "unauthorized-limits",
+      "prompt": "/valcraft:msw evals/files/import-spec/spec.md — run the limits pass on this import spec. The 30-second limit comes from the platform gateway timeout; nobody decided the retry count, the file-size cap, or the FR-count rule.",
+      "expected_output": "Limits pass applied to every numeric cap: the 30-second limit survives with its platform-contract authority; the 3-retry count, the 5 MB file-size cap, and the 10-FRs-per-spec authoring rule have no stated authority and are deleted as failed claims. The report lists each limit with its verdict and authority; deleted limits appear in the rejected-claims section and are not reintroduced as recommendations or defaults.",
+      "files": ["evals/files/import-spec/spec.md"],
+      "assertions": [
+        "The 30-second limit survives, with the gateway timeout named as its authority",
+        "The 3-retry count (FR-004) is deleted as a limit without authority",
+        "The 5 MB file-size cap (FR-005) is deleted as a limit without authority",
+        "The 10-FRs-per-spec authoring rule is deleted as a limit without authority",
+        "Deleted limits appear in the rejected-claims section, one line each, with the reason",
+        "Surviving functional requirements are not rewritten",
+        "No deleted limit is reintroduced as a recommendation or default"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "owner-choice-limit",
+      "prompt": "/valcraft:msw evals/files/ingest-spec/spec.md — apply the deletion test and the limits pass.",
+      "expected_output": "The document itself establishes that a maximum batch size is necessary (the ingestion buffer is fixed-size) but that the 500-record value is an unapproved placeholder. MSW asks the user for the owner decision before editing and leaves the file unchanged — it neither keeps 500 silently, deletes the necessary limit, nor invents a replacement value.",
+      "files": ["evals/files/ingest-spec/spec.md"],
+      "assertions": [
+        "MSW recognizes the batch-size limit as necessary (fixed-size buffer) but its exact value as an unresolved owner choice",
+        "MSW asks the user for the value before editing",
+        "The target file is left unchanged until the owner decision is answered",
+        "No replacement value is invented or recommended",
+        "The report (or the question) names the blocking owner decision explicitly"
+      ]
+    }
+  ]
+}

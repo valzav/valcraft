@@ -1,0 +1,4 @@
+interface:
+  display_name: "Temper"
+  short_description: "Retrospective over completed work: graded, incident-cited lessons"
+  default_prompt: "Use $valcraft:temper to analyze this completed body of work and produce a graded, incident-cited lesson report routed to the project's standing rules."
