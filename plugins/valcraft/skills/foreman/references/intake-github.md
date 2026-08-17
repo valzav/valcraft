@@ -41,6 +41,10 @@ After Cast's projection completes, one recorded batch adds what Cast does not pr
 - An authorized fast-track task branches from current `origin/<foreman_release_branch>`; the worker proves it (`git fetch origin && git merge-base --is-ancestor origin/<release> HEAD`, and `git log origin/<release>..HEAD` shows only the task's own commits) and its governing spec, design, tasks, and ADRs are identical on the release branch. Its PR targets the release branch. If the worker cannot create and prove that base, stop and surface — never fall back to the default branch base. The merge is a release-branch write (its approval-modes row).
 - After any commit lands on the release branch (promotion, fast-track, hotfix, tag), a release → default back-merge is required before the next deliver run; check at step 0 and surface it when missing.
 
+## Quick tasks
+
+Quick tasks (`specs/quick/*.md`) track locally in this mode too: apply the "Quick tasks" paragraphs of `intake-local.md` — checkbox status, branch and PR names for in-progress detection, tick-and-push before merge. No spec issue, task issue, label, or closing batch exists for them; `fast-track` is unavailable.
+
 ## Trust boundary
 
 `SKILL.md`'s trust boundary and `../../cast/references/github-tracker.md`'s untrusted-content rules apply to every read.

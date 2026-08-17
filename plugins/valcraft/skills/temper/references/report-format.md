@@ -70,8 +70,8 @@ Stage attribution records the responsible gate's execution as one of:
 
 ## Analyze report sections, in order
 
-1. **Header** — the pinned corpus (exact commit range, PR list, or feature directory
-   and task IDs), date window, evidence sources available, evidence sources absent or
+1. **Header** — the pinned corpus (exact commit range, PR list, feature directory
+   and task IDs, or quick pool and `Q-`/`T-` IDs), date window, evidence sources available, evidence sources absent or
    unavailable.
 2. **Inventory** — one row per unit of work: ID or PR, what it was, review history
    (rounds, finding IDs, or clean pass), examination depth. The four depths:

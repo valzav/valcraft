@@ -24,6 +24,15 @@ At step 10, before the merge: the worker ticks the task's box in `specs/<feature
 
 When every task is checked or removed and the human confirms, the feature is closed by the human's confirmation recorded in the summary. No file changes.
 
+## Quick tasks
+
+The quick pool is `specs/quick/*.md` (`../../cast/references/quick.md`); each file is its own contract with its own `## Tasks` checkboxes.
+
+- **Rebuild state**: read every quick file in number order; detect in-progress work by branches and open PRs named `q<NNN>-t<XXX>`.
+- **Pick**: the first unchecked task, walking files in number order and tasks in file order, whose `blocked by T-XXX` annotations name checked tasks of the same file, and which is not held. Propose it as `Q-<NNN> T-<XXX>` with the file path and a one-line summary.
+- **Hold**: as above; `state.md` records `held: Q-<NNN> T-<XXX> — <question>`. An answer that contradicts the file's `Requirements` amends the file in its own reviewed change before work resumes.
+- **Close a task**: the worker ticks the box in the quick file, commits on the PR branch citing `Q-<NNN> T-<XXX>`, and pushes; then the foreman merges. A file whose every task is ticked is done — no confirmation, no retrospective.
+
 ## Fast-track
 
 Not applicable: local mode has no label channel. A change that must reach `foreman_release_branch` directly is a human instruction to the foreman (release-branch row of the approval-modes table).

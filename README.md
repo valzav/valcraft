@@ -1,10 +1,9 @@
 # valcraft
 
-Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex, and as a skills source for OpenCode. At the center is an agentic **delivery
-loop** — plan → review → implement → review → merge — run over fresh-context worker
-agents, inside one Claude Code session or through an orchestrator over several Claude
-Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
+Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI
+Codex, and OpenCode. At the center is an agentic **delivery loop** — plan → review →
+implement → review → merge — run over fresh-context worker agents, inside one Claude Code
+session or through an orchestrator over several Claude Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
 the repository (plain markdown with checkbox tasks, or projected to GitHub Issues), `spec`
 turns PRDs into feature specs, and `temper` learns from what shipped.
 
@@ -35,13 +34,17 @@ The default path for a new project or a new body of work.
    Cast ends with a report and next steps; it never implements.
 2. **`/valcraft:spec`** — for each new feature, give `spec` one PRD (a local file or a
    GitHub issue); it writes the next feature spec, and `cast` then adds that feature's
-   `design.md` and `tasks.md`. Enrich the product brief and specs with the context and
-   use cases the scaffold had to mark as assumptions before you go further.
+   `design.md` and `tasks.md`. For a change too small for a triplet, `spec` proposes a
+   **quick task** instead — one file `specs/quick/NNN-<slug>.md` (`Q-NNN`) with
+   requirements, approach, and checkbox tasks; you choose. Enrich the product brief and
+   specs with the context and use cases the scaffold had to mark as assumptions before
+   you go further.
 3. **`/valcraft:foreman`** — add the foreman block to `AGENTS.md`
    (`plugins/valcraft/skills/foreman/templates/project-block.md`) and say "start sprint".
    For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
    code review → fix → merge → close. When the feature closes, `temper` writes the
-   retrospective. `foreman` can also decompose a PRD end to end ("new PRD #N").
+   retrospective. "deliver quick" runs the same loop over `specs/quick/`; `foreman` can
+   also decompose a PRD end to end ("new PRD #N").
 
    `foreman` runs from a Claude Code session: as a plain session whose workers are
    subagents, or as an Agent Orchestrator session whose workers are Claude Code and Codex
@@ -53,9 +56,9 @@ The default path for a new project or a new body of work.
 Same contracts, you drive:
 
 1. `/valcraft:cast`, then `/valcraft:spec` as above.
-2. `/valcraft:forge T-NNN` — plans the task when it needs a plan, implements it, and ends
-   at the review handoff, never at "done". To gate the plan first, run `/valcraft:review`
-   in plan mode on it before forge implements.
+2. `/valcraft:forge T-NNN` (or `Q-NNN`) — plans the task when it needs a plan,
+   implements it, and ends at the review handoff, never at "done". To gate the plan
+   first, run `/valcraft:review` in plan mode on it before forge implements.
 3. `/valcraft:review` in a fresh context, code mode on the PR or diff; resolve findings
    by `R-ID`, then merge yourself.
 4. `/valcraft:temper` over the feature directory when it ships.
@@ -73,17 +76,17 @@ Same contracts, you drive:
 
 ## Skills at a glance
 
-| Skill     | Claude Code         | Codex               | OpenCode  |
-| --------- | ------------------- | ------------------- | --------- |
-| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
-| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
-| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
-| `review`  | `/valcraft:review`  | `$valcraft:review`  | `review`  |
-| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
-| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
-| `distill` | `/valcraft:distill` | `$valcraft:distill` | `distill` |
-| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
+| Skill                                              | Claude Code         | Codex               | OpenCode  |
+| -------------------------------------------------- | ------------------- | ------------------- | --------- |
+| `cast` — scaffold or retrofit a project            | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
+| `spec` — PRD or brief → feature spec or quick task | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
+| `forge` — implement one task                       | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
+| `review` — review a plan or a change               | `/valcraft:review`  | `$valcraft:review`  | `review`  |
+| `foreman` — run the delivery loop                  | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
+| `temper` — retrospective over shipped work         | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `hone` — refine a prompt artifact                  | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
+| `distill` — reduce a prompt to its essence         | `/valcraft:distill` | `$valcraft:distill` | `distill` |
+| `msw` — MSW Kernel over a document                 | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
 
 Skills also trigger from natural requests ("new project", "review this PR",
 "retrospective on feature 3"); the command is the explicit path. OpenCode has no plugin

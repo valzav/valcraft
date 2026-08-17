@@ -2,10 +2,11 @@
   "skills": [
     {
       "name": "cast",
-      "version": "619bfa28cad33948",
+      "version": "75398f018c7d19ff",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
+        "references/quick.md",
         "references/scaffold.md",
         "references/spec-intake.md",
         "templates/AGENTS.md",
@@ -16,6 +17,7 @@
         "templates/gitignore-base",
         "templates/overview.md",
         "templates/product-brief.md",
+        "templates/quick.md",
         "templates/spec.md",
         "templates/tasks.md"
       ]
@@ -31,7 +33,7 @@
     },
     {
       "name": "foreman",
-      "version": "50fcdc7de5b813f0",
+      "version": "ddab08e6a5328a6f",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -52,7 +54,7 @@
     },
     {
       "name": "forge",
-      "version": "340a51c84908b325",
+      "version": "066715ce9b4172d7",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -80,7 +82,7 @@
     },
     {
       "name": "review",
-      "version": "554fc703e4f160b8",
+      "version": "86d90eda9337e49a",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -90,7 +92,7 @@
     },
     {
       "name": "spec",
-      "version": "ba605cc194366c6c",
+      "version": "a4aaba2014aa5225",
       "files": [
         "SKILL.md",
         "agents/openai.yaml"
@@ -98,7 +100,7 @@
     },
     {
       "name": "temper",
-      "version": "6cac57b1cba4dd57",
+      "version": "dda32bcb5a652574",
       "files": [
         "SKILL.md",
         "references/process.md",

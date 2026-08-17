@@ -148,6 +148,27 @@
         "No design.md, tasks.md, implementation code, GitHub inspection, or remote mutation is produced",
         "The report directs staged-feature continuation to Cast"
       ]
+    },
+    {
+      "id": 8,
+      "name": "quick-task-from-inline-brief",
+      "prompt": "/valcraft:spec — in the Cast project at evals/files/quick-brief/, create the next spec for this request: \"When an admin opens an export download link while signed out, the login redirect drops the link's query string, so after signing in they land on the bare exports page instead of the requested download. Keep the query string across the redirect.\" This run is unattended.",
+      "expected_output": "Spec loads the Cast spec-intake and quick contracts, validates the local scaffold, and judges the shape by quick.md's routing rule: one coherent change with a few-line approach, no phases, no design document, no issue hierarchy — a quick task. Unattended, it binds that shape and records the assumption in the report. It allocates the next quick number after the existing 001 and creates only specs/quick/002-<slug>.md from the quick template: frontmatter id: Q-002 and created; Sources with exactly one item, `operator request, <today's date>`; Requirements with FR- and at least one observable AC- that states the query string survives the sign-in redirect; a few-line Approach; a Tasks section with checkbox T- items. It writes no spec_issue, no feature directory, no design.md or tasks.md, invents no behavior beyond the request, performs no GitHub inspection, and reports the shape and its reason, the created path, the source, the recorded assumption, and readiness by quick.md's rule.",
+      "files": [
+        "evals/files/quick-brief/AGENTS.md",
+        "evals/files/quick-brief/docs/product-brief.md",
+        "evals/files/quick-brief/specs/quick/001-export-filename-date.md"
+      ],
+      "assertions": [
+        "Spec creates exactly one new file, specs/quick/002-<slug>.md, and no feature directory, spec.md, design.md, or tasks.md",
+        "The new file's frontmatter contains id: Q-002 matching the filename prefix and contains no spec_issue field",
+        "The Sources section contains exactly one item of the form `operator request, <YYYY-MM-DD>`",
+        "Requirements names at least one FR- and one AC- whose observable condition is that the query string survives the sign-in redirect; no unrequested behavior is added",
+        "The file has an Approach section of a few lines and a Tasks section with at least one checkbox `- [ ] T-001` item",
+        "The report states the chosen shape (quick task) with its reason and records the shape choice as an assumption because the run was unattended",
+        "Local mode performs no output tracker discovery, gh check, authentication check, or GitHub mutation",
+        "The report gives readiness by quick.md's rule and names the blocker if the file is not ready"
+      ]
     }
   ]
 }

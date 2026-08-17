@@ -38,7 +38,9 @@ GitHub target, and every stop condition. Render the line only when the operator 
 
 - `docs/` — product brief, working plans, architecture docs, ADRs.
 - `specs/` — feature behavior (`spec.md`), technical design (`design.md`), ordered
-  implementation tasks (`tasks.md`).
+  implementation tasks (`tasks.md`). `specs/quick/` — quick tasks: one file each
+  (`NNN-<slug>.md`, `Q-NNN`) holding requirements, approach, and checkbox tasks for a
+  change too small for a feature.
 - `<source dir>` — application code. `<test dir>` — automated tests.
 
 Read the docs relevant to your change before modifying code or specifications. On
@@ -64,6 +66,8 @@ Resolve `project_tracker` before starting task work.
 ### Local mode
 
 - Use the checkboxes in `tasks.md` as task status.
+- Quick tasks (`specs/quick/*.md`) track the same way in every tracker mode: the
+  checkbox in the file's `## Tasks` section is the status.
 - Work from the git-owned task text, order, and explicit `blocked by T-XXX`
   annotations.
 - Mark a task complete in `tasks.md` only after its required verification passes.

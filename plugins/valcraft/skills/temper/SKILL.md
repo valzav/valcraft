@@ -1,7 +1,7 @@
 ---
 name: temper
 description: >
-  Run an evidence-based retrospective over a completed body of work — a feature directory, a PR or commit range, a date window — and produce a report of graded, incident-cited lesson candidates routed to the project's AGENTS.md, the user's own prompt artifacts, or an upstream-candidates section; or synthesize several temper analyze reports into merged themes. Use when the user or an orchestrator asks for a retrospective, post-mortem, lessons learned, a process-improvement analysis of finished work, or a synthesis of prior retrospective reports. temper creates one new report per run under docs/retro/ and proposes every other change. To review a single change before merge use valcraft:review; to apply prompt refinements use valcraft:hone.
+  Run an evidence-based retrospective over a completed body of work — a feature directory, the quick-task pool, a PR or commit range, a date window — and produce a report of graded, incident-cited lesson candidates routed to the project's AGENTS.md, the user's own prompt artifacts, or an upstream-candidates section; or synthesize several temper analyze reports into merged themes. Use when the user or an orchestrator asks for a retrospective, post-mortem, lessons learned, a process-improvement analysis of finished work, or a synthesis of prior retrospective reports. temper creates one new report per run under docs/retro/ and proposes every other change. To review a single change before merge use valcraft:review; to apply prompt refinements use valcraft:hone.
 ---
 
 # temper
@@ -10,7 +10,7 @@ Compound lessons from finished work. Where `valcraft:review` judges one change a
 
 Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
 
-Two modes, chosen by target: a corpus of completed work — a feature directory, a PR or commit range, a date window — → **analyze mode**; two or more temper analyze reports → **synthesize mode**. When the target is ambiguous, ask when attended; otherwise bind the smallest corpus consistent with the stated intent and record the assumption in the report.
+Two modes, chosen by target: a corpus of completed work — a feature directory, the quick pool `specs/quick/`, a PR or commit range, a date window — → **analyze mode**; two or more temper analyze reports → **synthesize mode**. When the target is ambiguous, ask when attended; otherwise bind the smallest corpus consistent with the stated intent and record the assumption in the report.
 
 temper runs at milestones — after a feature ships, after a batch of tasks closes — never per-task inside the working loop.
 
@@ -22,11 +22,12 @@ Each run creates exactly one new file: its report, under `docs/retro/`, named pe
 
 ## Corpus preflight
 
-Resolve and pin every explicit target before analysis: a feature path, PR list, ref, commit range, date window, or analyze-report path. An invalid or empty explicit corpus blocks the run — report what failed to resolve and stop. An optional evidence source that turns out to be unavailable is recorded as unavailable; it never expands or redirects the corpus.
+Resolve and pin every explicit target before analysis: a feature path, quick pool or file, PR list, ref, commit range, date window, or analyze-report path. An invalid or empty explicit corpus blocks the run — report what failed to resolve and stop. An optional evidence source that turns out to be unavailable is recorded as unavailable; it never expands or redirects the corpus.
 
 Inventory units follow the corpus type:
 
 - **Feature directory** — each declared task, with its linked commits.
+- **Quick pool** (`specs/quick/`, or one quick file) — each `Q-NNN T-XXX` task across the files, with its linked commits.
 - **PR run** — each PR is one unit; examine its commits within it.
 - **Commit range or date window** — group commits that share one stable task ID; each commit without one is its own unit. Never infer semantic work clusters without a git-owned identifier.
 
