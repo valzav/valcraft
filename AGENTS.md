@@ -52,11 +52,16 @@ and JSON.
   skill-creator skill with "run the evals for plugins/valcraft/skills/<skill>". Direct
   its workspace to `.local/` (gitignored) — never to the default sibling location inside
   `plugins/valcraft/`.
+- Regenerate the OpenCode skills index after any change under `plugins/valcraft/skills/`
+  outside `evals/`: `python3 scripts/build-skills-index.py` (CI runs it with `--check`).
+  OpenCode consumes the skills through that index over raw GitHub; there is no OpenCode
+  manifest.
 
 ## Architecture constraints
 
 - The plugin subtree ships; the repository root does not. Never place development-only
-  material under `plugins/valcraft/`.
+  material under `plugins/valcraft/`. `plugins/valcraft/skills/index.json` is a consumer
+  artifact (OpenCode's remote skills index), generated — never hand-edited.
 - Both marketplace manifests, both native plugin manifests, the portable plugin
   manifest, and the marketplace key in a Claude Code consumer's `plugins.toml` use the
   single name `valcraft`. A mismatch causes sync churn or failed installs.
@@ -101,5 +106,6 @@ Before marking work complete:
    plugin validator for `plugins/valcraft`. Validate `plugins/valcraft/plugin.json`
    against the published portable schema if it changed.
 3. Parse every changed JSON or YAML file and confirm all skill-relative paths resolve.
+   Run `python3 scripts/build-skills-index.py --check` when a shipped skill file changed.
 4. Update affected docs.
 5. Confirm no secret material was added.

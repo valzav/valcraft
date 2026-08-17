@@ -1,0 +1,110 @@
+{
+  "skills": [
+    {
+      "name": "cast",
+      "version": "0c37cc5099dfd386",
+      "files": [
+        "SKILL.md",
+        "references/github-tracker.md",
+        "references/scaffold.md",
+        "references/spec-intake.md",
+        "templates/AGENTS.md",
+        "templates/README.md",
+        "templates/adr-index.md",
+        "templates/adr.md",
+        "templates/design.md",
+        "templates/gitignore-base",
+        "templates/overview.md",
+        "templates/product-brief.md",
+        "templates/spec.md",
+        "templates/tasks.md"
+      ]
+    },
+    {
+      "name": "distill",
+      "version": "e739d17f75fb0144",
+      "files": [
+        "SKILL.md",
+        "references/compare.md",
+        "references/output-formats.md"
+      ]
+    },
+    {
+      "name": "foreman",
+      "version": "6c072c23a2427296",
+      "files": [
+        "SKILL.md",
+        "references/approval-modes.md",
+        "references/backends/README.md",
+        "references/backends/ao.md",
+        "references/backends/subagents.md",
+        "references/contracts.md",
+        "references/decompose.md",
+        "references/hygiene.md",
+        "references/intake-github.md",
+        "references/intake-local.md",
+        "references/loop.md",
+        "references/review-round.md",
+        "templates/project-block.md",
+        "templates/run-dir.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "forge",
+      "version": "3c0657eda40c47b7",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "hone",
+      "version": "90417ce0385a5242",
+      "files": [
+        "SKILL.md",
+        "references/claude.md",
+        "references/codex.md",
+        "references/divergence.md",
+        "references/shared-checklist.md"
+      ]
+    },
+    {
+      "name": "msw",
+      "version": "adaaeaec05cb5b2d",
+      "files": [
+        "SKILL.md",
+        "references/kernel.md"
+      ]
+    },
+    {
+      "name": "review",
+      "version": "1a515393aeaee854",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md",
+        "references/plan-mode.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "spec",
+      "version": "ba605cc194366c6c",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "temper",
+      "version": "2d72a834409bf512",
+      "files": [
+        "SKILL.md",
+        "references/process.md",
+        "references/report-format.md",
+        "agents/openai.yaml"
+      ]
+    }
+  ]
+}

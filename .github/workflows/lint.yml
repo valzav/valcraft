@@ -20,6 +20,9 @@ jobs:
       - name: Lint YAML
         run: git ls-files '*.yaml' '*.yml' | xargs yamllint -c .yamllint.yml --strict
 
+      - name: Check the OpenCode skills index is current
+        run: python3 scripts/build-skills-index.py --check
+
       - name: Parse JSON
         run: git ls-files '*.json' | xargs -I{} jq empty {}
 
