@@ -1,10 +1,9 @@
 # valcraft
 
-Agent skills for spec-driven delivery, packaged as one plugin for Claude Code and OpenAI
-Codex, and as a skills source for OpenCode. At the center is an agentic **delivery
-loop** — plan → review → implement → review → merge — run over fresh-context worker
-agents, inside one Claude Code session or through an orchestrator over several Claude
-Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
+Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI
+Codex, and OpenCode. At the center is an agentic **delivery loop** — plan → review →
+implement → review → merge — run over fresh-context worker agents, inside one Claude Code
+session or through an orchestrator over several Claude Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
 the repository (plain markdown with checkbox tasks, or projected to GitHub Issues), `spec`
 turns PRDs into feature specs, and `temper` learns from what shipped.
 
@@ -77,17 +76,17 @@ Same contracts, you drive:
 
 ## Skills at a glance
 
-| Skill     | Claude Code         | Codex               | OpenCode  |
-| --------- | ------------------- | ------------------- | --------- |
-| `cast`    | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
-| `spec`    | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
-| `forge`   | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
-| `review`  | `/valcraft:review`  | `$valcraft:review`  | `review`  |
-| `foreman` | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper`  | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
-| `hone`    | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
-| `distill` | `/valcraft:distill` | `$valcraft:distill` | `distill` |
-| `msw`     | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
+| Skill                                              | Claude Code         | Codex               | OpenCode  |
+| -------------------------------------------------- | ------------------- | ------------------- | --------- |
+| `cast` — scaffold or retrofit a project            | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
+| `spec` — PRD or brief → feature spec or quick task | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
+| `forge` — implement one task                       | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
+| `review` — review a plan or a change               | `/valcraft:review`  | `$valcraft:review`  | `review`  |
+| `foreman` — run the delivery loop                  | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
+| `temper` — retrospective over shipped work         | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `hone` — refine a prompt artifact                  | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
+| `distill` — reduce a prompt to its essence         | `/valcraft:distill` | `$valcraft:distill` | `distill` |
+| `msw` — MSW Kernel over a document                 | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
 
 Skills also trigger from natural requests ("new project", "review this PR",
 "retrospective on feature 3"); the command is the explicit path. OpenCode has no plugin

@@ -176,7 +176,7 @@
       "id": 8,
       "name": "plan-mode-quick-file-identity-and-coverage",
       "prompt": "/valcraft:review — in the Cast project at evals/files/quick-file/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts including the cast quick reference because the target is a quick task file, and reports material findings. It reports a P1 that the file violates quick.md's identity rule: the filename prefix is 003 while the frontmatter says id: Q-002. It reports that AC-002 (retry starts a new run with the failed run's parameters) is verified by no task — T-001 covers AC-001 only — as a coverage gap in the Tasks section, mapping every AC to a task the way it does for tasks.md, and does not describe that gap as a failure of quick.md's readiness rule, which the file otherwise passes (an AC is present, the Approach is substantive, a task exists, no open question). Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column; the verdict is material findings. No file is edited and nothing is committed.",
+      "expected_output": "Review selects plan mode, loads the Cast contracts including the cast quick reference because the target is a quick task file, and reports material findings. It reports a P1 that the file violates quick.md's identity rule: the filename prefix is 003 while the frontmatter says id: Q-002. It reports that AC-002 (retry starts a new run with the failed run's parameters) is verified by no task — T-001 covers AC-001 only — as a coverage gap in the Tasks section, mapping every AC to a task the way it does for tasks.md, and does not describe that gap as a failure of quick.md's readiness rule; readiness is judged separately, on quick.md's own terms. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column; the verdict is material findings. No file is edited and nothing is committed.",
       "files": [
         "evals/files/quick-file/AGENTS.md",
         "evals/files/quick-file/docs/product-brief.md",
@@ -186,7 +186,7 @@
         "Review loads the cast quick reference and applies its identity rule to the file",
         "A material finding cites quick.md's identity rule: filename prefix 003 does not match id: Q-002",
         "A finding reports AC-002 as unverified by any task, as a coverage gap in the Tasks section",
-        "The coverage gap is not attributed to quick.md's readiness rule; readiness is reported as passing on its own terms",
+        "The coverage gap is not attributed to quick.md's readiness rule; readiness is judged separately on quick.md's own terms",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
         "No file is edited and no fix is committed"
       ]
