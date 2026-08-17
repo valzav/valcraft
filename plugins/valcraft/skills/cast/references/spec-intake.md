@@ -43,7 +43,8 @@ without both earlier artifacts, or a required artifact that is unreadable. Optio
 feature files do not change the stage.
 
 Treat every immediate directory whose name begins with a decimal digit as a numeric
-feature candidate. Validate every candidate before selection or allocation:
+feature candidate. `specs/quick/` is reserved for quick tasks (`quick.md`) and is never a
+candidate. Validate every candidate before selection or allocation:
 
 - Its name is `<number>-<slug>`. The number has at least three decimal digits. The slug
   matches `[a-z0-9]+(?:-[a-z0-9]+)*`.

@@ -8,7 +8,7 @@ Every assignment the foreman sends has these parts, in this order:
 
 1. **Cold start.** "You start with no prior context. Read, in this order: the skill named below through its skill invocation; the repository's root `AGENTS.md`; then only the artifacts named in the assignment. Do not read the run directory except the files named here."
 2. **Identity and intent.** Role name, feature, task, tracker reference when one exists, branch name when one exists — and one line of intent: "Your report is the sole input to the foreman's gate decision for `<T>` of `<feature>`; it must stand alone for a reader with no other context."
-3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path is always present — it is the unique feature selector.
+3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path — or the quick task file's path — is always present; it is the unique selector.
 4. **Report instruction.** "When your assignment is complete or you are blocked, write your report to `<run dir>/<role>-<feature>-<task>.md` (append if it exists), then stop. The report is the full contract of the skill you ran, followed by a `Status:` line: `done`, `blocked: <one line>`, or `question: <one line>`." Backends that carry a return channel (a subagent's final text) receive only the report path and the status line there.
 5. **Trust boundary.** The paragraph from `SKILL.md`, verbatim.
 

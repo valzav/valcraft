@@ -121,6 +121,30 @@
         "The implementation still preserves the workspace timezone so AC-002 remains satisfiable",
         "T-001's checkbox remains unchecked and the run ends at the review gate"
       ]
+    },
+    {
+      "id": 6,
+      "name": "quick-task-resolves-and-stops-at-review-gate",
+      "prompt": "/valcraft:forge — in the Cast project at evals/files/quick-task/, implement Q-001. This run is unattended.",
+      "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md through the cast quick reference, treats that one file as the Cast contract, and applies quick.md's readiness rule (an AC- present, a substantive Approach, a task, no behavior-changing open question) before coding. It states its scope — src/validation.py and tests/test_validation.py touched, nothing else — and changes `require_non_empty` to reject whitespace-only values while returning a non-blank value unchanged, exactly as the Approach says. It adds the two cases from AC-001 and AC-002 to tests/test_validation.py in the existing unittest style, runs the documented test command, and cites the real output. It hands the change to review and stops: T-001's checkbox in the quick file stays unchecked, nothing is declared done or merged, and any commit references Q-001 T-001. Its last output is the `## Forge handoff` block with all five headings verbatim and in order.",
+      "files": [
+        "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/docs/product-brief.md",
+        "evals/files/quick-task/specs/quick/001-trim-before-validate.md",
+        "evals/files/quick-task/src/validation.py",
+        "evals/files/quick-task/tests/test_validation.py"
+      ],
+      "assertions": [
+        "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and names that file as the Cast contract",
+        "Forge applies the quick readiness rule from the cast quick reference before writing code",
+        "Forge states the scope — src/validation.py and tests/test_validation.py — before implementing",
+        "require_non_empty raises ValueError naming the field for a whitespace-only value and returns ` a ` unchanged",
+        "New tests follow the existing unittest style and cover AC-001 and AC-002",
+        "Forge runs the documented test command and cites its real output as evidence",
+        "T-001's checkbox in the quick file remains unchecked; the run ends at the review handoff without declaring the task shipped or merging",
+        "Any commit subject references Q-001 T-001",
+        "The run's last output is the `## Forge handoff` block with all five headings present, verbatim and in order"
+      ]
     }
   ]
 }

@@ -4,10 +4,20 @@ This reference owns the loop steps in full. `SKILL.md` summarizes them; when the
 
 Two commands enter the loop:
 
-- **deliver** — "start sprint", "run the delivery loop", "work through feature NNN": steps 0–10 below, one task at a time, serially.
+- **deliver** — "start sprint", "run the delivery loop", "work through feature NNN": steps 0–10 below, one task at a time, serially. "deliver quick" / "work through the quick tasks" runs the same steps over the quick pool `specs/quick/` (below).
 - **decompose** — "new PRD #N", "decompose docs/prd.md": `references/decompose.md`, which produces the feature triplet the deliver command consumes.
 
 Start only on the human's explicit command. Never auto-start on a new issue, a cleared label, or a merged PR.
+
+## Quick tasks
+
+A quick task (`../../cast/references/quick.md`) is one file `specs/quick/<NNN>-<slug>.md` that is its own Cast contract. A quick run walks the quick files in number order, one task at a time, and applies every step below with these substitutions:
+
+- `<F>` is `Q<NNN>` and `<feature>` is `q<NNN>` in worker names, branches, and report files (`worker-Q007-T001`, `feat/q007-t001-<slug>`).
+- Where a step names `specs/<feature>/spec.md` and `design.md`, or `specs/<feature>/tasks.md`, send the quick file's absolute path instead — it is the spec, the design, and the task list.
+- Step 0 readiness is `quick.md`'s readiness rule, applied to the file about to be picked; an unready file stops the run.
+- Pick, hold, and close follow the intake reference's quick paragraphs; quick tasks track locally in every tracker mode.
+- A quick file whose last task closes is done — no confirmation, no step 11. The run continues with the next quick file and ends when none has an eligible task.
 
 ## Deliver
 
@@ -17,7 +27,7 @@ Rebuild state first: the tracker's view of the feature (per `references/intake-<
 
 - If a task is in progress (tracker label in `github` mode; an unmerged task branch or open task PR in `local` mode), resume it at the step its evidence shows: a plan without a review report → step 3; a review report without a forge handoff → step 4 or 6; a forge handoff without a PR → step 7; an open PR → step 8 or 9; a feature closed in this run without a `temper-<F>` report → step 11. Never restart from step 2 when a plan of record exists.
 - Otherwise apply Cast's implementation-readiness gate (`../../cast/references/spec-intake.md`): substantive `design.md` and `tasks.md`, and no open product question that can change observable behavior or an acceptance criterion — unless the human has explicitly accepted that uncertainty for the affected scope in the committed feature artifacts. An unready feature stops the run: report the blocking question or artifact.
-- Never interleave tasks from a different feature inside one deliver run.
+- Never interleave tasks from a different feature inside one deliver run; a quick run takes only quick files, a feature run only its feature.
 
 ### 1. Pick
 
@@ -100,11 +110,11 @@ To merge, in this order:
 3. `github` intake only: record and execute the closing batch (`references/intake-github.md`, "Close a task").
 4. Release the task's workers per the backend. Return to step 1.
 
-When every task of the feature is closed (merged or not planned) and the human confirms the feature, close the feature per the intake reference — the closing batch quotes the human's confirming message verbatim, and without one it is not built. Then run step 11.
+When every task of the feature is closed (merged or not planned) and the human confirms the feature, close the feature per the intake reference — the closing batch quotes the human's confirming message verbatim, and without one it is not built. Then run step 11. A quick file needs neither: its last tick closes it, and the run moves to the next quick file.
 
 ### 11. Temper
 
-Once per feature, after the feature closes — never per task (`valcraft:temper` runs at milestones). Spawn `temper-<F>`. Send:
+Once per feature, after the feature closes — never per task, never per quick file (`valcraft:temper` runs at milestones; quick work is retrospected on demand over `specs/quick/`). Spawn `temper-<F>`. Send:
 
 > Run `valcraft:temper` in analyze mode on the feature directory `specs/<feature>/` (tracker refs `<n…>` when they exist). Then commit the report it created under `docs/retro/` on branch `retro/<f>-<slug>` from `origin/<foreman_default_branch>` and open a pull request against `<foreman_default_branch>` with `gh pr create`; title `Retro: <feature>`; body: the report path and one line per routed proposal (tier, `L-NNN`, rule statement). Do not apply any proposal. Report the report path, the PR URL, and the proposal lines.
 

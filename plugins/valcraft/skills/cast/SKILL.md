@@ -19,7 +19,7 @@ Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host withou
 - **Scale docs to the project.** Every file past the skeleton is opt-in; add one only when its stated trigger exists.
 - **Specs stay reviewable.** A spec is too large when a reviewer would skim it and trust the agent. Slice oversized features into independently valuable `specs/NNN-` entries; trim generated verbosity.
 
-Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged one. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation.
+Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged one. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation. `references/quick.md` owns quick tasks — one file under `specs/quick/` for a small change.
 
 Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the approval boundary and `cast_approval` mode, opt-in artifacts, and retrofit behavior.
 
@@ -34,12 +34,12 @@ Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, t
 - Fill the skeleton from evidence, in the priority order above.
 - `specs/001-mvp/` describes one coherent end-to-end outcome: scenarios, functional requirements (`FR-`), acceptance criteria (`AC-`), non-goals, edge cases.
 - Record `docs/product-brief.md` as the canonical entry in the MVP spec's required `Sources` section.
-- Identify consequential technical decisions. Write each as an ADR (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or explicitly open. ADRs are cheap to write and expensive to reconstruct; small implementation choices need none.
+- Identify consequential technical decisions. Write each as an ADR (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or explicitly open; small implementation choices need none.
 - Keep `001-mvp` a full populated triplet. Apply the staged readiness gate in `references/spec-intake.md` before calling any later feature ready to implement.
 
 ## Step 4: The working loop Cast sets up
 
-Cast declares this loop in `AGENTS.md` and runs none of its steps. Apply the selected tracker mode throughout:
+Cast declares this loop in `AGENTS.md` and runs none of its steps. Apply the tracker mode throughout:
 
 - In `local` mode, keep task definitions and status as checkboxes in `tasks.md`. Require no GitHub CLI, remote, or authentication.
 - In `github` mode, git owns the spec, design, checkbox-free task definitions, order, and `blocked by T-XXX` intent, plus stable T-IDs with their issue numbers in `tasks.md`; GitHub owns open/closed state and the `in-progress` / `needs-clarification` labels — never copy status back into git. Reconcile generated titles, bodies, sub-issue order, and dependencies from git without overwriting comments. While activation is pending, make no remote status claim.
@@ -67,6 +67,6 @@ Apply the scaffold and tracker stop conditions in `references/scaffold.md` and `
 
 End the scaffold run with a report and stop: the paths created, merged, skipped, and blocked; every proposal recorded and proceeded under `cast_approval: delegated`; whether the MVP is ready to plan or code; the selected tracker mode; and GitHub tracker activation status. For `github`, name the target when known and the exact activation blocker while pending. For `local`, state that activation is not applicable.
 
-Then recommend the next steps, in this order: (1) enrich `docs/product-brief.md` and `specs/001-mvp/spec.md` with the context and use cases the run had to mark as assumptions or open questions — name them; (2) run `valcraft:spec` when a PRD or a next feature exists; (3) add the foreman block from `valcraft:foreman`'s `templates/project-block.md` to `AGENTS.md` and run `valcraft:foreman` to deliver, or `valcraft:forge <T-ID>` for one task by hand.
+Then recommend the next steps, in this order: (1) enrich `docs/product-brief.md` and `specs/001-mvp/spec.md` with the context and use cases the run had to mark as assumptions or open questions — name them; (2) run `valcraft:spec` for a PRD, a next feature, or a quick task; (3) add the foreman block from `valcraft:foreman`'s `templates/project-block.md` to `AGENTS.md` and run `valcraft:foreman` to deliver, or `valcraft:forge <T-ID>` for one task by hand.
 
-Retrofits follow the source, merge, normalization, and optional-cleanup rules in `references/scaffold.md`.
+Retrofits follow the rules in `references/scaffold.md`.

@@ -131,6 +131,11 @@ repository-level reference that keeps new skills consistent with it.
 - **prompt artifact** — the source being analyzed: inline prompt text, a markdown
   prompt file (system prompt, agent instructions, slash command), a skill directory,
   or a workflow.
+- **quick task** (cast) — one file `specs/quick/<NNN>-<slug>.md` (`id: Q-<NNN>`) that is a
+  small change's whole Cast contract: `Sources`, `Requirements` (`FR-`/`AC-`), `Approach`,
+  and checkbox `Tasks`. Tracks locally in every tracker mode; delivered by foreman's
+  "deliver quick" through the unchanged loop; never a feature candidate. Rules:
+  `cast/references/quick.md`.
 - **Refine mode** (hone) — edit the target in place, or return revised inline text.
 - **remediation plan** (cast) — a `docs/plans/` entry that resolves material review
   findings; resolution commits cite the finding IDs.
