@@ -45,4 +45,4 @@ Rules that hold in every mode:
 - Changing the mode mid-run is the human's call; the foreman applies the new mode from the next decision on and records the change.
 - A `github` tracker batch is always serialized before execution regardless of mode — the summary is the audit trail.
 
-The two names are the plugin's own attended/unattended vocabulary (`valcraft:msw`, `valcraft:spec`, `valcraft:forge`, `valcraft:review`, `valcraft:temper` use the same pair). `unattended` replaced the SelectiveCRM factory's `gated` and `delegated` on 2026-08-18; they differed only in whether a not-planned close waited. The release-branch row is wait in both modes because it is irreversible and outward.
+The two names are the plugin's own attended/unattended vocabulary (`valcraft:msw`, `valcraft:spec`, `valcraft:forge`, `valcraft:review`, `valcraft:temper` use the same pair). `unattended` replaced the delivery loop's `gated` and `delegated` modes on 2026-08-18; they differed only in whether a not-planned close waited. The release-branch row is wait in both modes because it is irreversible and outward.
