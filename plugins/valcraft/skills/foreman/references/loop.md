@@ -56,7 +56,7 @@ Await; report check.
 
 Spawn `worker-<F>-<T>`. Send:
 
-> Take the plan document at `<absolute plan path>` as the plan of record. If your workspace is a separate worktree, copy it to the same repository-relative path in your worktree first. Address each finding by R-ID in the review report at `<review report path>`, update the plan, and report the plan's absolute path and each R-ID's resolution.
+> Establish or resume task branch `<branch name>` from `origin/<foreman_default_branch>` before editing. Take the plan document at `<absolute plan path>` as the plan of record. If your workspace is a separate worktree, copy it to the same repository-relative path in your worktree first. Address each finding by R-ID in the review report at `<review report path>`, update the plan, and commit the resolution changes on the task branch. Report the plan's absolute path and one line per R-ID: resolving commit, repository-relative file-and-line locator, and concise claim. Do not copy a hunk or before-and-after text.
 
 The planner has no further work; release it per the backend (or leave it idle until step 10 cleanup when release is not immediate).
 
@@ -73,7 +73,7 @@ The approval-modes table says whether a "proceed" executes without the human.
 
 Send `worker-<F>-<T>`:
 
-> Run `valcraft:forge` for task `<task identity>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists) with the plan at `<plan path>`. Branch `<branch name>` from `origin/<foreman_default_branch>`. Reference `<task identity>` and the covered `FR-`/`AC-` IDs in commit subjects.
+> Run `valcraft:forge` for task `<task identity>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists) with the plan at `<plan path>`. Resume the existing task branch `<branch name>` and its plan-resolution commit; do not create a second branch or reimplement the remediation. Reference `<task identity>` and the covered `FR-`/`AC-` IDs in commit subjects.
 
 Await; report check. If forge stops on a question the spec and design cannot answer, go to held-task handling in the intake reference; a worker blocked on a prompt follows the blocked-worker rule in `references/backends/README.md`.
 
@@ -95,7 +95,7 @@ Await; report check.
 
 ### 9. Fix
 
-Send the worker the review report path and require resolution by R-ID (a remediation plan in `docs/plans/` for material findings, resolution commits citing the R-IDs). Then apply `references/review-round.md`: a closure check by `reviewer-2-<F>-<T>` on the resolved R-IDs, and a full second round only when a trigger fires. CI failures on the PR go to the worker with the failing check name; intervene only when the worker stalls.
+Send the worker the review report path and require resolution by R-ID (a remediation plan in `docs/plans/` for material findings, resolution commits citing the R-IDs). Each resolution line names the R-ID, resolving commit, repository-relative file-and-line locator, and concise claim; it contains no copied hunk or before-and-after text. Then apply `references/review-round.md`: a closure check by `reviewer-2-<F>-<T>` on the resolved R-IDs, and a full second round only when a trigger fires. CI failures on the PR go to the worker with the failing check name; intervene only when the worker stalls.
 
 ### 10. Merge and close
 

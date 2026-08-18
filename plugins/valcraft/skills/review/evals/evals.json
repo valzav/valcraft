@@ -248,6 +248,68 @@
         "Review does not require, add, or recommend a quick plan type or slug token",
         "The plan resolves canonical Q-002 QT-001 and its checked Q-001 QT-001 dependency"
       ]
+    },
+    {
+      "id": 12,
+      "name": "plan-mode-governed-value-conflict",
+      "prompt": "/valcraft:review — explain the plan-mode verdict for a necessary queue concurrency value when the plan configures `4`, an accepted ADR requires `2`, and the spec requires concurrent processing without setting a number. Treat this as a static contract check; do not edit files.",
+      "expected_output": "Review evaluates necessity and authority separately. Some concurrency value is necessary to implement the spec, but the configured value 4 conflicts with the applicable accepted ADR requiring 2. It reports a material authority finding despite the value being necessary, cites the ADR conflict, and does not let necessity override permission.",
+      "files": [
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Review separately evaluates whether a concurrency value is necessary and whether the selected value is permitted",
+        "The configured value 4 produces a material finding because it conflicts with the applicable accepted ADR requiring 2",
+        "Necessity does not override or erase a conflict with governing authority",
+        "The spec's silence on the number does not make the ADR inapplicable"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "plan-mode-ungoverned-value-is-discretion",
+      "prompt": "/valcraft:review — explain the plan-mode verdict for a necessary internal batch-size value when every applicable ADR, spec, repository instruction, and operator instruction is silent on the number. The plan selects a value and includes a test for the required behavior. Treat this as a static contract check; do not edit files.",
+      "expected_output": "Review evaluates necessity and authority separately. A batch size is necessary to implement the work, while no applicable authority governs the exact value. Review records the selected number as implementation discretion and evaluates whether its behavior and evidence satisfy the contract. It does not invent a missing-authority defect or demand a new ADR merely because the exact number is unspecified.",
+      "files": [
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Review checks every applicable authority before classifying the value as ungoverned",
+        "The necessary but ungoverned batch size is implementation discretion",
+        "Review evaluates the selected value's behavior and evidence against the contract",
+        "Review reports no missing-authority defect and does not demand a new ADR solely for the number"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "code-mode-pinned-action-source-controls",
+      "prompt": "/valcraft:review — a workflow pins an action to an immutable revision. The current documentation says an omitted input defaults to `safe`, but the pinned revision's source and input metadata default it to `legacy`. State what code-mode review inspects and which behavior controls. Do not edit files.",
+      "expected_output": "Review inspects the action source and declared defaults at the exact pinned revision, not only the current mutable documentation. The pinned implementation's `legacy` default controls the reviewed workflow. Review reproduces the consequence of the omitted input and reports any contract violation from that behavior; mutable documentation cannot override the pinned source.",
+      "files": [
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Review inspects both the action source and its declared defaults at the exact pinned revision",
+        "The pinned implementation's legacy default controls the review",
+        "Current mutable documentation does not override contradictory pinned source",
+        "Review reproduces the consequence of the omitted input before reporting a behavior finding"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "code-mode-exercises-every-named-failure-mode",
+      "prompt": "/valcraft:review — closure-check a finding whose claim names timeout, cancellation, and malformed-response exits as losing queued work. The remediation report says all three are fixed, but evidence exercises only timeout. State the closure result. Do not edit files.",
+      "expected_output": "Review keeps the finding open. It must exercise timeout, cancellation, and malformed-response exits separately because the finding's claim names all three failure modes. A passing timeout reproduction proves only timeout. The reviewer uses the existing disposable-worktree and Rule 6 contracts for the checks and closes the finding only when every named mode no longer reproduces the loss.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Timeout, cancellation, and malformed-response exits are each exercised",
+        "Passing evidence for timeout alone leaves the finding open",
+        "Closure still follows shared Rule 6 rather than a new closure rule",
+        "The existing disposable-worktree contract is used without duplicating or replacing it",
+        "The finding closes only after every failure mode named by its claim stops reproducing"
+      ]
     }
   ]
 }

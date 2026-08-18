@@ -259,6 +259,35 @@
         "Quick plans retain semantic type and slug with no added quick token",
         "Cast owns only the static grammar and performs no runtime validation of existing quick files"
       ]
+    },
+    {
+      "id": 15,
+      "name": "mechanism-adr-requires-reproduced-verification",
+      "prompt": "/valcraft:cast — compare two ADR drafts that depend on a concrete command-line mechanism. Draft A reproduces the behavior with the exact tool version, command, and observed output. Draft B cites only mutable documentation. Explain which ADR may be accepted and how to record the other. Do not write files.",
+      "expected_output": "Cast permits Draft A to become accepted because its optional Verification section records the reproduced tool version, command, and observed output that proves the mechanism. Draft B cannot become accepted: mutable documentation is not reproduced mechanism evidence, so the ADR remains proposed or explicitly provisional until the behavior is reproduced. Cast does not treat an acceptance date, confident prose, or a documentation link as verification.",
+      "files": [
+        "templates/adr.md"
+      ],
+      "assertions": [
+        "A mechanism-dependent ADR may become accepted only when reproduced evidence records the tool version, command, and observed output",
+        "The reproduced evidence appears in the optional Verification section",
+        "An ADR supported only by mutable documentation remains proposed or explicitly provisional",
+        "Acceptance status, confident prose, and documentation citations do not substitute for reproduced mechanism evidence"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "conceptual-adr-omits-verification-section",
+      "prompt": "/valcraft:cast — draft an ADR that assigns ownership of domain records to one module. The decision is conceptual and does not depend on a tool, library, action, or runtime mechanism. Show only the relevant ADR structure. Do not write files.",
+      "expected_output": "Cast uses the ADR template but omits the optional Verification section because the ownership boundary is conceptual and has no concrete mechanism claim to reproduce. The ADR retains Context, Decision, Alternatives, and Consequences and may be accepted from the governing architectural decision without an empty verification heading or placeholder.",
+      "files": [
+        "templates/adr.md"
+      ],
+      "assertions": [
+        "The conceptual ADR contains no empty Verification heading or placeholder",
+        "Context, Decision, Alternatives, and Consequences remain present",
+        "A conceptual architectural decision does not need tool or version evidence merely to satisfy the template"
+      ]
     }
   ]
 }

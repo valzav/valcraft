@@ -21,5 +21,7 @@ change governed by no task or requirement is a finding.
 - **Hunt the silent-replacement pattern**: an operation whose no-error path can return empty, partial, or default output, then used to overwrite or stand in for real content. Happy-path tests do not catch it; read the control flow for this shape deliberately.
 - **Check combination coverage**: input dimensions tested only independently, never together, are a blind spot regardless of the suite's pass count.
 - **Re-run the verification the change leans on hardest yourself.** Local wrappers can swallow a real failure and report clean; a CI check mark is a conclusion, not evidence — read the log content for the load-bearing lines (what loaded, what ran, the counts).
+- **For every action pinned to an immutable revision, inspect its source and declared defaults at that revision.** Current mutable documentation is context, not authority over the pinned implementation.
+- **Exercise every failure mode a finding names.** Evidence for one named mode does not close its siblings.
 - **Hunt scope creep**: behavior in the diff that no requirement asks for, including speculative generality — abstraction, parameters, or hooks for needs no requirement states. Cite the non-goal it violates or the requirement it lacks.
 - **Check Cast's change discipline**: affected specs, ADRs, and docs move in the same change as the code; commit subjects cite the IDs they implement or resolve; generated files are not edited by hand. Cite the violated `AGENTS.md` clause.

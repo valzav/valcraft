@@ -615,6 +615,40 @@
         "The later artifact independently uses its 2031-04-09 creation date",
         "No run-wide frozen date or retrospective date rewrite is introduced"
       ]
+    },
+    {
+      "id": 32,
+      "name": "resolution-report-requires-commit-and-locator",
+      "prompt": "$valcraft:foreman — validate two worker resolution reports at step 4. The first says `R-004 fixed: clarified the plan`. The second says `R-004 | 0123456789abcdef0123456789abcdef01234567 | docs/plans/2031-04-08-001-fix-retry-plan.md:42 | retry state now follows ADR-0002`. Describe the report gate and branch state. Do not call tools.",
+      "expected_output": "Foreman first requires the task branch to exist or resume before step-4 remediation and requires the worker to commit the plan change on that branch. It rejects the first report as incomplete because it lacks the resolving commit and repository-relative file-and-line locator. It accepts the second line mechanically because it names the R-ID, resolving commit, repository-relative locator, and concise claim. It requests no copied hunk or before-and-after text. Forge later resumes the same task branch.",
+      "files": [
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The task branch is established or resumed before step-4 plan remediation, and the resolution change is committed there",
+        "The first R-004 line is rejected as incomplete because it lacks both a resolving commit and repository-relative file-and-line locator",
+        "The complete line names the R-ID, resolving commit, repository-relative locator, and concise claim",
+        "No copied hunk or before-and-after text is requested as resolution evidence",
+        "Forge resumes the existing task branch rather than creating a second branch"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "closure-check-follows-resolving-diff",
+      "prompt": "$valcraft:foreman — a step-9 report says `R-006 | fedcba9876543210fedcba9876543210fedcba98 | src/retry.py:61 | all retry exits preserve the queued item`. Inspection of that commit shows the timeout exit still deletes the item, and the original R-006 reproduction still fails. Describe the closure result. Do not call tools.",
+      "expected_output": "Foreman sends the same reviewer the resolving commit and report path. The closure reviewer inspects the named commit and its diff before rerunning the original R-006 reproduction. The actual diff controls over the worker's concise claim, and the failed reproduction confirms the discrepancy. R-006 remains open; the report claim, commit subject, or locator alone cannot close it under Rule 6.",
+      "files": [
+        "references/contracts.md",
+        "references/review-round.md"
+      ],
+      "assertions": [
+        "The closure reviewer inspects the named resolving commit and diff before rerunning the original reproduction",
+        "The actual commit and diff control when the worker's concise claim contradicts them",
+        "The original R-006 reproduction is rerun against the remediated artifact",
+        "R-006 remains open because both the diff and rerun contradict the claimed resolution",
+        "Rule 6 remains the closure gate"
+      ]
     }
   ]
 }

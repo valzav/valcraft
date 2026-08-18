@@ -34,7 +34,7 @@ Follow `references/scaffold.md`. Do not begin Step 3 until its fact gathering, t
 - Fill the skeleton from evidence, in the priority order above.
 - `specs/001-mvp/` describes one coherent end-to-end outcome: scenarios, functional requirements (`FR-`), acceptance criteria (`AC-`), non-goals, edge cases.
 - Record `docs/product-brief.md` as the canonical entry in the MVP spec's required `Sources` section.
-- Identify consequential technical decisions. Write each as an ADR (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`) — accepted or explicitly open; small implementation choices need none.
+- Write consequential decisions as ADRs (`docs/architecture/adr/NNNN-kebab-title.md`, from `templates/adr.md`). Accept a mechanism-dependent ADR only after its optional Verification section records reproduced tool version, command, and result; otherwise keep it proposed or provisional. Omit the section for conceptual ADRs; small implementation choices need none.
 - Keep `001-mvp` a full populated triplet. Apply the staged readiness gate in `references/spec-intake.md` before calling any later feature ready to implement.
 
 ## Step 4: The working loop Cast sets up
