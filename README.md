@@ -36,7 +36,9 @@ The default path for a new project or a new body of work.
    GitHub issue); it writes the next feature spec, and `cast` then adds that feature's
    `design.md` and `tasks.md`. For a change too small for a triplet, `spec` proposes a
    **quick task** instead — one file `specs/quick/NNN-<slug>.md` (`Q-NNN`) with
-   requirements, approach, and checkbox tasks; you choose. Enrich the product brief and
+   requirements, approach, and `QT-XXX` checkbox tasks; you choose. Quick dependencies
+   are `blocked by QT-XXX` within one file or `blocked by Q-NNN QT-XXX` across files.
+   Enrich the product brief and
    specs with the context and use cases the scaffold had to mark as assumptions before
    you go further.
 3. **`/valcraft:foreman`** — explicitly select Foreman delivery during Cast; Cast adds the
@@ -59,7 +61,8 @@ The default path for a new project or a new body of work.
 Same contracts, you drive:
 
 1. `/valcraft:cast`, then `/valcraft:spec` as above.
-2. `/valcraft:forge T-NNN` (or `Q-NNN`) — plans the task when it needs a plan,
+2. `/valcraft:forge T-XXX` (or `Q-NNN QT-XXX`; bare `Q-NNN` selects its next eligible
+   task) — plans the task when it needs a plan,
    implements it, and ends at the review handoff, never at "done". To gate the plan
    first, run `/valcraft:review` in plan mode on it before forge implements.
 3. `/valcraft:review` in a fresh context, code mode on the PR or diff; resolve findings

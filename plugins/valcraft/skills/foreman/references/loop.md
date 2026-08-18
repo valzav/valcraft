@@ -13,7 +13,10 @@ Start only on the human's explicit command. Never auto-start on a new issue, a c
 
 A quick task (`../../cast/references/quick.md`) is one file `specs/quick/<NNN>-<slug>.md` that is its own Cast contract. A quick run walks the quick files in number order, one task at a time, and applies every step below with these substitutions:
 
-- `<F>` is `Q<NNN>` and `<feature>` is `q<NNN>` in worker names, branches, and report files (`worker-Q007-T001`, `feat/q007-t001-<slug>`).
+- The canonical identity is `Q-NNN QT-XXX`. Derive branches as
+  `feat/qNNN-qtNNN-<slug>` and logical worker/report names with
+  `QNNN-QTNNN` (`worker-Q007-QT001`). Backend physical handles are mapped
+  separately by the backend contract.
 - Where a step names `specs/<feature>/spec.md` and `design.md`, or `specs/<feature>/tasks.md`, send the quick file's absolute path instead — it is the spec, the design, and the task list.
 - Step 0 readiness is `quick.md`'s readiness rule, applied to the file about to be picked; an unready file stops the run.
 - Pick, hold, and close follow the intake reference's quick paragraphs; quick tasks track locally in every tracker mode.
@@ -37,7 +40,7 @@ Take the first eligible task per the intake reference — `tasks.md` order, depe
 
 Spawn `planner-<F>-<T>` on the second harness when the backend offers one. Send:
 
-> Write an implementation plan for task `<T>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists), against `specs/<feature>/spec.md` and `design.md`. Planning only — do not implement and do not edit source. Write the plan as a tracked document in `docs/plans/` per the repository convention. Then run `valcraft:msw` on that plan file. Report the plan's absolute path.
+> Write an implementation plan for task `<task identity>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists), against `specs/<feature>/spec.md` and `design.md`. Planning only — do not implement and do not edit source. Write the plan as a tracked document in `docs/plans/` per the repository convention. Preserve the semantic plan type and slug; never add `quick` solely for a quick task. Then run `valcraft:msw` on that plan file. Report the plan's absolute path.
 
 Await; report check. The report names the plan path.
 
@@ -45,7 +48,7 @@ Await; report check. The report names the plan path.
 
 Spawn `reviewer-1-<F>-<T>`. Send:
 
-> Run `valcraft:review` in plan mode on the implementation plan at `<absolute plan path>` for task `<T>` of `specs/<feature>/tasks.md`, against `specs/<feature>/spec.md` and `design.md`.
+> Run `valcraft:review` in plan mode on the implementation plan at `<absolute plan path>` for task `<task identity>` of `specs/<feature>/tasks.md`, against `specs/<feature>/spec.md` and `design.md`.
 
 Await; report check.
 
@@ -70,7 +73,7 @@ The approval-modes table says whether a "proceed" executes without the human.
 
 Send `worker-<F>-<T>`:
 
-> Run `valcraft:forge` for task `<T>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists) with the plan at `<plan path>`. Branch `<branch name>` from `origin/<foreman_default_branch>`. Reference `<T>` and the covered `FR-`/`AC-` IDs in commit subjects.
+> Run `valcraft:forge` for task `<task identity>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists) with the plan at `<plan path>`. Branch `<branch name>` from `origin/<foreman_default_branch>`. Reference `<task identity>` and the covered `FR-`/`AC-` IDs in commit subjects.
 
 Await; report check. If forge stops on a question the spec and design cannot answer, go to held-task handling in the intake reference; a worker blocked on a prompt follows the blocked-worker rule in `references/backends/README.md`.
 
@@ -78,7 +81,7 @@ Await; report check. If forge stops on a question the spec and design cannot ans
 
 When the forge handoff is complete and its verification evidence is present, send the worker:
 
-> Push your branch and open a pull request against `<foreman_default_branch>` with `gh pr create`. Title: `<T>: <summary>`. Body: the `FR-`/`AC-` IDs covered and the plan path, written under the MSW deletion test. Report the PR URL.
+> Push your branch and open a pull request against `<foreman_default_branch>` with `gh pr create`. Title: `<task identity>: <summary>`. Body: the `FR-`/`AC-` IDs covered and the plan path, written under the MSW deletion test. Report the PR URL.
 
 Then perform the backend's PR-tracking hook if it declares one.
 
@@ -86,7 +89,7 @@ Then perform the backend's PR-tracking hook if it declares one.
 
 Spawn `reviewer-2-<F>-<T>` on the second harness when the backend offers one. Send:
 
-> Run `valcraft:review` in code mode on PR `<n>` of `<owner/repo>` for task `<T>` of `specs/<feature>/tasks.md` — the pinned review target named in the forge handoff at `<handoff path>`.
+> Run `valcraft:review` in code mode on PR `<n>` of `<owner/repo>` for task `<task identity>` of `specs/<feature>/tasks.md` — the pinned review target named in the forge handoff at `<handoff path>`.
 
 Await; report check.
 

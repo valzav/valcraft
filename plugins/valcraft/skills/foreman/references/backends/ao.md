@@ -13,12 +13,12 @@ The foreman is an AO orchestrator session (a Claude Code session spawned by AO w
 
 ## Primitives
 
-- `spawn`: `ao session new --project <project-id> --agent <harness> --name <role>-<F>-<T>` with no initial prompt. Session names are 20 characters or fewer; `reviewer-1-F004-T012` is exactly 20.
+- `spawn`: AO session names are at most 20 characters. Keep the canonical logical name in the assignment and `workers.md`; never truncate it or cap its numeric width. Derive a physical alias independently as `<role-token>-<digest-prefix>`, where the role token is `p`, `r1`, `w`, or `r2` and the lowercase hexadecimal digest is over the canonical logical identity. Use as many digest characters as fit the 20-character contract. Before `ao session new`, compare the alias with current project sessions and `workers.md`. If another canonical identity owns it, derive a new digest from the canonical identity plus a collision discriminator and check again; never reuse a colliding alias. Then run `ao session new --project <project-id> --agent <harness> --name <physical-alias>` with no initial prompt. This maps `Q-1000 QT-001` without truncation; a forced first-alias collision yields another alias.
 - `assign`: `ao send --session <id> --message "<envelope>"`. Then confirm the worker visibly started: `tmux capture-pane -p -t <id>` (no `-S`) shows the composer processing. An idle empty composer plus no report file means the send silently failed (the same trap as slash commands) — re-send.
 - `await`: run this as a background Bash command (`run_in_background: true`) and end the turn; its exit re-invokes the foreman with the outcome. `R` is the worker's report path in the run directory.
 
   ```sh
-  S=<worker-session-id>; R="<run dir>/<role>-<F>-<T>.md"
+  S=<worker-session-id>; R="<run dir>/<logical report name>.md"
   snap() { cksum "$R" 2>/dev/null || echo none; }
   B=$(snap); seen=0
   while :; do

@@ -239,6 +239,26 @@
         "The quick task does not treat docs/status.md as an acceptance criterion, tracker, or authority",
         "The snapshot's mutable observations are not duplicated into Requirements, Approach, or Tasks"
       ]
+    },
+    {
+      "id": 14,
+      "name": "quick-task-static-grammar-contract",
+      "prompt": "/valcraft:cast — explain the canonical quick-file task and dependency grammar from the shipped quick reference and template. This is a static contract check; do not inspect a project or validate existing quick files.",
+      "expected_output": "Cast identifies quick.md as the static grammar owner. Quick checkboxes use QT-XXX; Q-NNN QT-XXX is canonical. Local dependencies are `blocked by QT-XXX`; cross-file quick dependencies are `blocked by Q-NNN QT-XXX`. Bare Q-NNN retains next-eligible selection. T-XXX remains feature-only. Legacy, mixed, malformed, wrong-prefix, and missing-reference forms are invalid with no compatibility mapping. Branch and logical-name derivations preserve numeric width, while semantic plan type and slug remain unchanged. Cast does not add a runtime existing-file validator.",
+      "files": [
+        "references/quick.md",
+        "templates/quick.md",
+        "templates/tasks.md"
+      ],
+      "assertions": [
+        "Quick checkboxes are QT-XXX and canonical durable identity is Q-NNN QT-XXX, while feature templates retain T-XXX",
+        "Local dependencies use blocked by QT-XXX and cross-file dependencies use blocked by Q-NNN QT-XXX",
+        "Bare Q-NNN selects that file's next eligible QT task and a bare T-XXX searches features only",
+        "Legacy Q-NNN T-XXX, mixed or malformed prefixes, wrong-prefix dependencies, missing references, and QT-XXX in feature tasks are invalid without migration or fallback",
+        "Quick branches use qNNN-qtNNN and logical worker/report names use QNNN-QTNNN without capping numeric width",
+        "Quick plans retain semantic type and slug with no added quick token",
+        "Cast owns only the static grammar and performs no runtime validation of existing quick files"
+      ]
     }
   ]
 }

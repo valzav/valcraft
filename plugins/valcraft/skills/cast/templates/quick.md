@@ -32,10 +32,11 @@ created: <YYYY-MM-DD>
 
 ## Tasks
 
-<!-- Checkbox status is the task's status in every tracker mode. Cite as `Q-001 T-001`.
-     `blocked by T-XXX` is the only dependency form. -->
+<!-- Checkbox status is the task's status in every tracker mode. Cite as
+     `Q-001 QT-001`. Use `blocked by QT-XXX` locally or
+     `blocked by Q-NNN QT-XXX` across quick files. -->
 
-- [ ] T-001 <Task>; verifies AC-001.
+- [ ] QT-001 <Task>; verifies AC-001.
 
 ## Open questions
 

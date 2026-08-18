@@ -24,4 +24,4 @@ stored parameters. No new endpoint; the export job itself is untouched.
 
 ## Tasks
 
-- [ ] T-001 Render the "Retry" button for failed runs; verifies AC-001.
+- [ ] QT-001 Render the "Retry" button for failed runs; verifies AC-001.

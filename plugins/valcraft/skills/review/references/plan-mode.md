@@ -13,4 +13,12 @@ Read this reference for a plan, spec, design, or tasks review. Apply every check
 - **When the target is a feature spec, check its structural contract from `spec-intake.md`**: the directory number matches the frontmatter `id`, the `Sources` section holds exactly one canonical entry, and the `spec_issue` mapping matches the tracker mode.
 - **When the target is `tasks.md`, map every `FR-` and `AC-` — and every `NFR-` and `BR-` the spec declares — to at least one task that verifies it**, and check each `blocked by T-XXX` names an existing task — an unverified requirement is a gap regardless of how complete the task list looks.
 - **When the target completes the spec triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a material finding citing the readiness contract.
-- **When the target is a quick task file** (`specs/quick/NNN-*.md`), check `quick.md`'s identity rules (filename number equals `id: Q-NNN`, one `Sources` entry) and its readiness rule as written there, and report a failed rule as a material finding citing `quick.md`. Separately, as for `tasks.md`, map every `AC-` the file declares to at least one task that verifies it — an unverified criterion is a coverage gap, not a readiness failure.
+- **When the target is a quick task file** (`specs/quick/NNN-*.md`), check
+  `quick.md`'s full grammar: filename number equals `id: Q-NNN`, one `Sources` entry,
+  every task is `QT-XXX`, and dependencies are local `blocked by QT-XXX` or qualified
+  `blocked by Q-NNN QT-XXX`. Resolve every dependency and report a missing file or task,
+  legacy `T-XXX`, mixed or malformed prefix, wrong-prefix dependency, or feature
+  `tasks.md` containing `QT-XXX` as a material finding before eligibility. Apply the
+  readiness rule separately. Map every `AC-` to at least one task; an unverified
+  criterion is a coverage gap, not a readiness failure. Quick-task plans keep semantic
+  types and slugs; `quick` added solely for task shape is a finding.

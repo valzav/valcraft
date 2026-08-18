@@ -4,7 +4,14 @@ Read this reference for a diff, PR, branch, commit range, or working-tree review
 
 ## Pin the target
 
-Normalize the target to a pinned base and head before diffing: a PR → its recorded base and head; a commit range `A..B` → A and B; a branch under review → its merge-base with the default branch, and the branch tip; a bare base ref → its merge-base with `HEAD`, and `HEAD`. Verify both resolve (`git rev-parse <base> <head>`), pin the diff (`git diff <base>...<head>`), and capture the commit list (`git log <base>..<head> --oneline`). When the target is the current working tree, diff the base against the tree itself (`git diff <base>`) and disclose untracked paths (`git status --porcelain`). An unresolvable target or an empty diff is a **blocked** verdict, not a mid-review failure. Then map the diff to its governing contract: commit subjects cite `T-`/`FR-`/`R-` IDs, and `tasks.md` maps T-IDs to the feature. A change that no task or requirement governs is itself a finding.
+Normalize the target to a pinned base and head before diffing: a PR → its recorded base and head; a commit range `A..B` → A and B; a branch under review → its merge-base with the default branch, and the branch tip; a bare base ref → its merge-base with `HEAD`, and `HEAD`. Verify both resolve (`git rev-parse <base> <head>`), pin the diff (`git diff <base>...<head>`), and capture the commit list (`git log <base>..<head> --oneline`). When the target is the current working tree, diff the base against the tree itself (`git diff <base>`) and disclose untracked paths (`git status --porcelain`). An unresolvable target or an empty diff is a **blocked** verdict, not a mid-review failure.
+
+Map the diff to its governing contract. Feature commits cite `T-`/`FR-`/`R-` IDs and
+feature `tasks.md` maps T-IDs. Quick commits cite `Q-NNN QT-XXX`; resolve that exact pair
+to `specs/quick/NNN-*.md`, validate the file and dependencies through `quick.md`, and
+never interpret historical `Q-NNN T-XXX` as current work. A missing Q file or QT-ID,
+legacy or mixed prefix, malformed identity, wrong prefix, `QT-XXX` in feature tasks, or
+change governed by no task or requirement is a finding.
 
 ## Review the change
 

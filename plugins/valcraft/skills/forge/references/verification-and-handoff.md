@@ -33,7 +33,8 @@ End the run with this block, headings verbatim and in this order; nothing follow
 
 ### Changed (IDs)
 
-<!-- what changed, referenced by T-/FR-/AC-/ADR- IDs -->
+<!-- what changed, referenced by feature T-XXX or quick Q-NNN QT-XXX identities and
+FR-/AC-/ADR- IDs -->
 
 ### Verification evidence
 

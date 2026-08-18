@@ -1,0 +1,41 @@
+{
+  "skill_name": "temper",
+  "evals": [
+    {
+      "id": 1,
+      "name": "quick-pool-uses-qualified-identities",
+      "prompt": "/valcraft:temper — in evals/files/quick-pool/, analyze the quick pool using the captured commit list in commit-log.txt as offline history. Stop after inventory; do not write a report.",
+      "expected_output": "Temper validates the pool, inventories Q-001 QT-001 and Q-002 QT-001 as distinct units despite repeated QT-001, links each current qualified commit to its file, and ignores historical Q-001 T-001 as a current unit. The checked Q-001 QT-001 satisfies Q-002's cross-file dependency.",
+      "files": [
+        "evals/files/quick-pool/AGENTS.md",
+        "evals/files/quick-pool/docs/product-brief.md",
+        "evals/files/quick-pool/specs/quick/001-foundation.md",
+        "evals/files/quick-pool/specs/quick/002-dependent.md",
+        "evals/files/quick-pool/commit-log.txt"
+      ],
+      "assertions": [
+        "Inventory has separate Q-001 QT-001 and Q-002 QT-001 rows",
+        "Repeated QT-001 values are never grouped without their Q qualifier",
+        "Qualified commits map to the corresponding quick files",
+        "Historical Q-001 T-001 is not interpreted as current work",
+        "The checked cross-file Q-001 QT-001 dependency validates"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "invalid-quick-pool-stops-before-inventory",
+      "prompt": "/valcraft:temper — in evals/files/quick-pool/invalid-project/, analyze the quick pool. This run is unattended.",
+      "expected_output": "Temper stops before retrospective inventory because Q-009 mixes QT-001 with legacy T-002, contains malformed QT-03, uses wrong-prefix Q-404 T-001, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It creates no report and performs no legacy mapping.",
+      "files": [
+        "evals/files/quick-pool/invalid-project/AGENTS.md",
+        "evals/files/quick-pool/invalid-project/docs/product-brief.md",
+        "evals/files/quick-pool/invalid-project/specs/quick/009-invalid.md"
+      ],
+      "assertions": [
+        "Temper reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Temper stops before inventory, incident extraction, grading, routing, or report creation",
+        "No compatibility parser, fallback, migration, or historical mapping is used"
+      ]
+    }
+  ]
+}

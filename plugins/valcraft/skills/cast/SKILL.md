@@ -19,7 +19,7 @@ Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host withou
 - **Scale docs to the project.** Every file past the skeleton is opt-in; add one only when its stated trigger exists.
 - **Specs stay reviewable.** A spec is too large when a reviewer would skim it and trust the agent. Slice oversized features into independently valuable `specs/NNN-` entries; trim generated verbosity.
 
-Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged one. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation. `references/quick.md` owns quick tasks — one file under `specs/quick/` for a small change.
+Read `references/spec-intake.md` before validating a scaffold, creating a feature, or resuming a staged one. It owns scaffold preflight, source trust, staged readiness, metadata ownership, provenance, and feature allocation. `references/quick.md` owns the static quick-file grammar, including `QT-XXX` tasks and qualified dependencies; Cast does not validate existing quick files at runtime.
 
 Read `references/scaffold.md` before gathering facts, proposing paths, writing a scaffold, activating a tracker, or retrofitting a project. It owns Steps 1 and 2, tracker-mode resolution, the approval boundary and `cast_approval` mode, opt-in artifacts, and retrofit behavior.
 

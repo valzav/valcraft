@@ -13,7 +13,7 @@ The foreman is a plain Claude Code session; workers are subagents started with t
 
 ## Primitives
 
-- `spawn` + `assign` are one Agent call: `subagent_type` a general-purpose agent (never `fork` — a fork inherits the foreman's context and breaks the cold-start invariant), `name` = `<role>-<F>-<T>`, `prompt` = the assignment envelope, run in the background. Do not pass a `model` override unless the project block names one.
+- `spawn` + `assign` are one native subagent call with a fresh general-purpose worker, never a fork. The assignment carries the canonical logical identity and report path. On Claude Code, use the logical worker name. On Codex, derive `task_name` independently in lowercase underscore form (for example `worker_q007_qt001`) without truncating identity digits. Record the host's physical handle and its canonical logical identity in `workers.md`. Do not pass a model override unless the project block names one.
 - `await`: the task-completion notification. Arm nothing; end the turn after the Agent call. Because the notification carries the agent's final text, the envelope's report instruction limits that text to the report path and the `Status:` line — the report itself is on disk in the run directory.
 - `status`: `none`. There is no mid-run inspection. A subagent that needs a permission or an answer returns with `Status: blocked: …` or `Status: question: …` and its report so far.
 

@@ -15,5 +15,5 @@ github_repository: github.example.test/acme/ledger
 
 ## Change discipline
 
-- Reference requirement and task IDs (`FR-`, `AC-`, `Q-`, `T-`) from commits and tests.
+- Reference requirement and task IDs (`FR-`, `AC-`, `Q-NNN QT-XXX`) from commits and tests.
 - Update affected specs, ADRs, and docs in the same change as the code.

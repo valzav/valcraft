@@ -24,5 +24,5 @@ return value untouched. Add the two cases to `tests/test_validation.py` in the e
 
 ## Tasks
 
-- [ ] T-001 Reject whitespace-only values in `require_non_empty`; verifies AC-001 and
+- [ ] QT-001 Reject whitespace-only values in `require_non_empty`; verifies AC-001 and
       AC-002.

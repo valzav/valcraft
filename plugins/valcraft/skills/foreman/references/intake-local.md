@@ -28,10 +28,10 @@ When every task is checked or removed and the human confirms, the feature is clo
 
 The quick pool is `specs/quick/*.md` (`../../cast/references/quick.md`); each file is its own contract with its own `## Tasks` checkboxes.
 
-- **Rebuild state**: read every quick file in number order; detect in-progress work by branches and open PRs named `q<NNN>-t<XXX>`.
-- **Pick**: the first unchecked task, walking files in number order and tasks in file order, whose `blocked by T-XXX` annotations name checked tasks of the same file, and which is not held. Propose it as `Q-<NNN> T-<XXX>` with the file path and a one-line summary.
-- **Hold**: as above; `state.md` records `held: Q-<NNN> T-<XXX> — <question>`. An answer that contradicts the file's `Requirements` amends the file in its own reviewed change before work resumes.
-- **Close a task**: the worker ticks the box in the quick file, commits on the PR branch citing `Q-<NNN> T-<XXX>`, and pushes; then the foreman merges. A file whose every task is ticked is done — no confirmation, no retrospective.
+- **Rebuild state**: validate every quick file against `quick.md` before eligibility. Stop on a legacy or mixed prefix, malformed ID, wrong-prefix dependency, missing referenced Q file or QT-ID, or `QT-XXX` in feature `tasks.md`. Read valid quick files in number order; detect in-progress work by branches and open PRs named `qNNN-qtNNN`.
+- **Pick**: walk files and tasks in order. Pick the first unchecked `QT-XXX` whose local `blocked by QT-XXX` and cross-file `blocked by Q-NNN QT-XXX` targets are checked and which is not held. In every tracker mode, read status only from quick-file checkboxes and perform no quick-task issue lookup. Propose the canonical `Q-NNN QT-XXX` identity, file path, and summary. A bare `Q-NNN` selects that file's next eligible task.
+- **Hold**: as above; `state.md` records `held: Q-NNN QT-XXX — <question>`. An answer that contradicts the file's `Requirements` amends the file in its own reviewed change before work resumes.
+- **Close a task**: the worker ticks the box in the quick file, commits on the PR branch citing `Q-NNN QT-XXX`, and pushes; then the foreman merges. A file whose every task is ticked is done — no confirmation, no retrospective.
 
 ## Fast-track
 

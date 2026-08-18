@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "44e20bf79bb55cb6",
+      "version": "c5867e573c756389",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -19,6 +19,7 @@
         "templates/product-brief.md",
         "templates/quick.md",
         "templates/spec.md",
+        "templates/status.md",
         "templates/tasks.md"
       ]
     },
@@ -33,7 +34,7 @@
     },
     {
       "name": "foreman",
-      "version": "481acbc8c588f1e5",
+      "version": "22f7461c64c4de0f",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -54,7 +55,7 @@
     },
     {
       "name": "forge",
-      "version": "066715ce9b4172d7",
+      "version": "bb9214d80a3eb51e",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -82,7 +83,7 @@
     },
     {
       "name": "review",
-      "version": "86d90eda9337e49a",
+      "version": "e24b39b998fb0550",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -92,7 +93,7 @@
     },
     {
       "name": "spec",
-      "version": "a4aaba2014aa5225",
+      "version": "58082bfae736f75f",
       "files": [
         "SKILL.md",
         "agents/openai.yaml"
@@ -100,7 +101,7 @@
     },
     {
       "name": "temper",
-      "version": "dda32bcb5a652574",
+      "version": "da8843895dc8682b",
       "files": [
         "SKILL.md",
         "references/process.md",

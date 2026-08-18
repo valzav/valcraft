@@ -176,7 +176,7 @@
       "id": 8,
       "name": "plan-mode-quick-file-identity-and-coverage",
       "prompt": "/valcraft:review — in the Cast project at evals/files/quick-file/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts including the cast quick reference because the target is a quick task file, and reports material findings. It reports a P1 that the file violates quick.md's identity rule: the filename prefix is 003 while the frontmatter says id: Q-002. It reports that AC-002 (retry starts a new run with the failed run's parameters) is verified by no task — T-001 covers AC-001 only — as a coverage gap in the Tasks section, mapping every AC to a task the way it does for tasks.md, and does not describe that gap as a failure of quick.md's readiness rule; readiness is judged separately, on quick.md's own terms. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column; the verdict is material findings. No file is edited and nothing is committed.",
+      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; this is a coverage gap separate from readiness. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
       "files": [
         "evals/files/quick-file/AGENTS.md",
         "evals/files/quick-file/docs/product-brief.md",
@@ -185,10 +185,68 @@
       "assertions": [
         "Review loads the cast quick reference and applies its identity rule to the file",
         "A material finding cites quick.md's identity rule: filename prefix 003 does not match id: Q-002",
-        "A finding reports AC-002 as unverified by any task, as a coverage gap in the Tasks section",
+        "A finding reports AC-002 as unverified by any task because QT-001 covers only AC-001, as a coverage gap in the Tasks section",
         "The coverage gap is not attributed to quick.md's readiness rule; readiness is judged separately on quick.md's own terms",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
         "No file is edited and no fix is committed"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "code-mode-maps-qualified-quick-commit",
+      "prompt": "/valcraft:review — in evals/files/quick-file/code-project/, perform an offline code-mode contract review of changes.diff using the captured commit list in commit-log.txt.",
+      "expected_output": "Review maps current commit Q-002 QT-001 to specs/quick/002-dependent.md, distinguishes it from repeated QT-001 in Q-001, validates the checked cross-file dependency, and does not interpret historical Q-001 T-001 as current work. The report uses Q-002 QT-001 throughout.",
+      "files": [
+        "evals/files/quick-file/code-project/AGENTS.md",
+        "evals/files/quick-file/code-project/docs/product-brief.md",
+        "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
+        "evals/files/quick-file/code-project/specs/quick/002-dependent.md",
+        "evals/files/quick-file/code-project/commit-log.txt",
+        "evals/files/quick-file/code-project/changes.diff"
+      ],
+      "assertions": [
+        "Review maps Q-002 QT-001 to the Q-002 file, not the repeated QT-001 in Q-001",
+        "Review resolves checked dependency Q-001 QT-001 from quick-file checkbox state",
+        "Historical Q-001 T-001 is not interpreted as current quick work",
+        "The report preserves canonical Q-002 QT-001 identity"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "plan-mode-rejects-invalid-quick-and-feature-prefixes",
+      "prompt": "/valcraft:review — in evals/files/quick-file/invalid-project/, review specs/quick/009-invalid.md and its stored dependency contract before implementation.",
+      "expected_output": "Review reports material grammar findings before readiness: mixed QT/T tasks, legacy T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing QT-999 in Q-009, missing Q-404, and QT-001 in feature tasks.md. It performs no legacy mapping and does not edit files.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/docs/product-brief.md",
+        "evals/files/quick-file/invalid-project/specs/quick/009-invalid.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+      ],
+      "assertions": [
+        "Review reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Review reports QT-001 in feature tasks.md as a wrong-prefix feature task",
+        "The verdict is material findings before readiness or implementation",
+        "No compatibility mapping or edit occurs"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "quick-plan-keeps-semantic-name",
+      "prompt": "/valcraft:review — in evals/files/quick-file/code-project/, review docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md for Q-002 QT-001.",
+      "expected_output": "Review resolves the qualified quick task and checked dependency, accepts semantic type `fix` and slug `dependent-behavior`, and does not require or propose a quick type or slug component. The plan's task identity remains Q-002 QT-001.",
+      "files": [
+        "evals/files/quick-file/code-project/AGENTS.md",
+        "evals/files/quick-file/code-project/docs/product-brief.md",
+        "evals/files/quick-file/code-project/docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md",
+        "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
+        "evals/files/quick-file/code-project/specs/quick/002-dependent.md"
+      ],
+      "assertions": [
+        "Review preserves semantic type fix and slug dependent-behavior",
+        "Review does not require, add, or recommend a quick plan type or slug token",
+        "The plan resolves canonical Q-002 QT-001 and its checked Q-001 QT-001 dependency"
       ]
     }
   ]

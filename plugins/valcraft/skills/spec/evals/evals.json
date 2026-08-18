@@ -153,7 +153,7 @@
       "id": 8,
       "name": "quick-task-from-inline-brief",
       "prompt": "/valcraft:spec — in the Cast project at evals/files/quick-brief/, create the next spec for this request: \"When an admin opens an export download link while signed out, the login redirect drops the link's query string, so after signing in they land on the bare exports page instead of the requested download. Keep the query string across the redirect.\" This run is unattended.",
-      "expected_output": "Spec loads the Cast spec-intake and quick contracts, validates the local scaffold, and judges the shape by quick.md's routing rule: one coherent change with a few-line approach, no phases, no design document, no issue hierarchy — a quick task. Unattended, it binds that shape and records the assumption in the report. It allocates the next quick number after the existing 001 and creates only specs/quick/002-<slug>.md from the quick template: frontmatter id: Q-002 and created; Sources with exactly one item, `operator request, <today's date>`; Requirements with FR- and at least one observable AC- that states the query string survives the sign-in redirect; a few-line Approach; a Tasks section with checkbox T- items. It writes no spec_issue, no feature directory, no design.md or tasks.md, invents no behavior beyond the request, performs no GitHub inspection, and reports the shape and its reason, the created path, the source, the recorded assumption, and readiness by quick.md's rule.",
+      "expected_output": "Spec loads the Cast spec-intake and quick contracts, validates the local scaffold, and judges the shape by quick.md's routing rule: one coherent change with a few-line approach, no phases, no design document, no issue hierarchy — a quick task. Unattended, it binds that shape and records the assumption in the report. It allocates the next quick number after the existing 001 and creates only specs/quick/002-<slug>.md from the quick template: frontmatter id: Q-002 and created; Sources with exactly one item, `operator request, <today's date>`; Requirements with FR- and at least one observable AC- that states the query string survives the sign-in redirect; a few-line Approach; a Tasks section with checkbox QT- items. It writes no spec_issue, no feature directory, no design.md or tasks.md, invents no behavior beyond the request, performs no GitHub inspection, and reports the shape and its reason, the created path, the source, the recorded assumption, and readiness by quick.md's rule.",
       "files": [
         "evals/files/quick-brief/AGENTS.md",
         "evals/files/quick-brief/docs/product-brief.md",
@@ -164,10 +164,43 @@
         "The new file's frontmatter contains id: Q-002 matching the filename prefix and contains no spec_issue field",
         "The Sources section contains exactly one item of the form `operator request, <YYYY-MM-DD>`",
         "Requirements names at least one FR- and one AC- whose observable condition is that the query string survives the sign-in redirect; no unrequested behavior is added",
-        "The file has an Approach section of a few lines and a Tasks section with at least one checkbox `- [ ] T-001` item",
+        "The file has an Approach section of a few lines and a Tasks section with at least one checkbox `- [ ] QT-001` item and no T- task",
         "The report states the chosen shape (quick task) with its reason and records the shape choice as an assumption because the run was unattended",
         "Local mode performs no output tracker discovery, gh check, authentication check, or GitHub mutation",
         "The report gives readiness by quick.md's rule and names the blocker if the file is not ready"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "quick-cross-file-dependency-output",
+      "prompt": "/valcraft:spec — in the Cast project at evals/files/quick-brief/, create a quick task from this inline brief: Add three small redirect checks. The third task must depend on completed Q-001 QT-001. Keep plan naming semantic. This run is unattended.",
+      "expected_output": "Spec validates existing Q-001 QT-001, allocates Q-002, and emits QT-001 through QT-003. QT-003 uses exactly `blocked by Q-001 QT-001`; the checked target makes the dependency valid. Output contains no quick-file T-ID, compatibility mapping, feature artifact, or quick token in a plan type or slug.",
+      "files": [
+        "evals/files/quick-brief/AGENTS.md",
+        "evals/files/quick-brief/docs/product-brief.md",
+        "evals/files/quick-brief/specs/quick/001-export-filename-date.md"
+      ],
+      "assertions": [
+        "Spec resolves the existing checked Q-001 QT-001 target before writing",
+        "The new Q-002 file uses QT-001, QT-002, and QT-003 with no T-prefixed quick task",
+        "QT-003 uses exactly blocked by Q-001 QT-001",
+        "The created file remains the only artifact and no plan type or slug gains quick"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "invalid-existing-quick-prefixes-stop-production",
+      "prompt": "/valcraft:spec — in the Cast project at evals/files/quick-brief/invalid-project/, create a quick task from this inline brief: Reject blank labels. This run is unattended.",
+      "expected_output": "Spec stops before allocation because Q-009 is invalid: it mixes QT-001 with legacy T-002, contains malformed QT-03, uses wrong-prefix `Q-404 T-001`, references missing QT-999 in existing Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as empty or complete, map legacy syntax, create Q-010, or modify any file.",
+      "files": [
+        "evals/files/quick-brief/invalid-project/AGENTS.md",
+        "evals/files/quick-brief/invalid-project/docs/product-brief.md",
+        "evals/files/quick-brief/invalid-project/specs/quick/009-invalid-prefixes.md"
+      ],
+      "assertions": [
+        "Spec reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Spec stops before eligibility, allocation, or writing and does not create Q-010",
+        "Spec performs no legacy mapping, fallback, migration, or GitHub lookup"
       ]
     }
   ]
