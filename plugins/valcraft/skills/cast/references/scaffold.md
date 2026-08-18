@@ -16,6 +16,9 @@ Ask only what changes the scaffold; `TBD` is an acceptable answer for the rest.
 6. Domain-heavy vocabulary? (→ add `docs/glossary.md`)
 7. Issue tracker mode: `local` or `github`
 8. Delivery: manual `valcraft:forge` or `valcraft:foreman`, only when the operator explicitly selects Foreman or asks to choose delivery
+9. External mutable state? (deployments or managed infrastructure whose useful
+   non-secret observations are unavailable from git and not directly queryable from the
+   authoritative platform → add one `docs/status.md` snapshot)
 
 Manual Forge delivery is the default. Do not ask a separate delivery question when the operator has not requested coordinated delivery and the answer would not change the mutation set.
 
@@ -82,9 +85,17 @@ Opt-in additions — create only when the trigger is real:
 | `docs/glossary.md`                         | Domain terms that must not be reworded exist                   |
 | `docs/system-requirements.md`              | Cross-cutting requirements outgrow the brief section           |
 | `docs/use-cases/uc-NNN-*.md`               | Product steering needs narrative scenarios (interview output)  |
+| `docs/status.md`                            | Useful non-secret external observations are unavailable from git and not directly queryable from the authoritative platform |
 | `contracts/` + README                      | Real machine boundaries: public API, events, multiple services |
 | `specs/NNN-*/research.md`, `data-model.md` | A feature is complex enough to need them                       |
 | `docs/retro/`                              | Created by the first `valcraft:temper` retrospective report    |
+
+When `docs/status.md` is triggered, create exactly that one snapshot from
+`templates/status.md`. Render the conditional snapshot pointers in the generated
+`README.md` and `AGENTS.md`. When the trigger is absent, omit the file and both pointers
+so the lean scaffold remains unchanged. The snapshot records dated, non-secret external
+observations and their source locator. It is never authority; current repository and
+live platform state win on conflict.
 
 ### GitHub tracker activation
 

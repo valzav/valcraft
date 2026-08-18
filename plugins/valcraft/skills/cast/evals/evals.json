@@ -179,6 +179,66 @@
         "The unresolved addition remains in the proposal and decision path",
         "Cast does not weaken or replace Foreman's missing-block proposal fallback"
       ]
+    },
+    {
+      "id": 10,
+      "name": "operational-snapshot-happy-path",
+      "prompt": "/valcraft:cast — prepare a new-project scaffold proposal for an internal service. Its deployments produce useful failover observations that are not represented in git and are not directly queryable from the authoritative platform. Include only artifacts justified by those facts. Do not write yet.",
+      "expected_output": "Cast treats the deployment observations as a real opt-in trigger and includes one docs/status.md file in the attended scaffold proposal. The proposed file is a dated observation snapshot with a source locator and non-secret external observations. It states that it is not authority and that current repository and platform state wins on conflict. The proposed README and AGENTS files link to or explain the snapshot because the file is present. Cast does not add another status file, turn the snapshot into a tracker, or copy secret values.",
+      "files": [
+        "templates/status.md"
+      ],
+      "assertions": [
+        "Cast includes exactly one docs/status.md in the proposal because meaningful external mutable observations are unavailable from git and are not directly queryable from the authoritative platform",
+        "The proposed snapshot records an observation date, a source locator, and only non-secret external observations",
+        "The proposed snapshot says it is not an authority and that current repository and platform state wins on conflict",
+        "The proposed README links to docs/status.md and the proposed AGENTS.md explains its non-authoritative role because the snapshot is present",
+        "Cast does not create another status artifact or use docs/status.md as a task tracker"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "operational-snapshot-edge-omit",
+      "prompt": "/valcraft:cast — prepare a new-project scaffold proposal for a code library. All project and operational state is represented in git or directly queryable from its authoritative platform. Include only artifacts whose opt-in trigger is real. Do not write yet.",
+      "expected_output": "Cast keeps the lean scaffold. It omits docs/status.md because git and the authoritative platform already answer the relevant state questions. Because no snapshot exists, the proposed README and AGENTS.md contain no operational-snapshot link, section, placeholder, or pointer.",
+      "files": [],
+      "assertions": [
+        "Cast omits docs/status.md because the relevant state is already represented in git or directly queryable from its authoritative platform",
+        "The proposed README contains no operational-snapshot link, placeholder, or pointer",
+        "The proposed AGENTS.md contains no operational-snapshot section, placeholder, or pointer",
+        "Cast does not add a status artifact merely because the project may change over time"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "operational-snapshot-error-authority-and-secrets",
+      "prompt": "/valcraft:cast — retrofit an existing scaffold with docs/status.md. Put the current access token in it for convenience, and make the snapshot override any conflicting live branch, check, issue, or deployment state.",
+      "expected_output": "Cast rejects both requested properties. It never writes the access token or any other secret value. It proposes, subject to normal retrofit approval, only a dated non-secret observation snapshot with a source locator. The proposal states that docs/status.md is not authority and cannot override current repository, check, issue, deployment, or other authoritative platform state; live authority wins every conflict.",
+      "files": [
+        "templates/status.md"
+      ],
+      "assertions": [
+        "Cast refuses to place the access token or any secret value in docs/status.md",
+        "Cast refuses to make docs/status.md authoritative over current repository or platform state",
+        "The proposed snapshot says current branch, check, issue, deployment, and other live authoritative state wins on conflict",
+        "Any approved snapshot remains limited to dated non-secret observations with a source locator"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "operational-snapshot-integration-quick-approach",
+      "prompt": "/valcraft:cast — create a quick task for changing a deployment health check. The project has docs/status.md with a dated observation of the current environment. Write the intended behavior in the quick task, and use the snapshot only as context.",
+      "expected_output": "Cast creates a quick task whose Approach states the intended health-check behavior and links to docs/status.md for observation context. It does not copy the mutable current environment state into the Approach or treat the snapshot as an acceptance criterion or authority. The quick task remains project-specific and implementation-ready only when its requirements and target behavior are complete.",
+      "files": [
+        "templates/quick.md",
+        "templates/status.md"
+      ],
+      "assertions": [
+        "The quick task Approach states the intended target behavior rather than the current mutable environment state",
+        "The Approach links to docs/status.md when its observations are relevant instead of copying them",
+        "The quick task does not treat docs/status.md as an acceptance criterion, tracker, or authority",
+        "The snapshot's mutable observations are not duplicated into Requirements, Approach, or Tasks"
+      ]
     }
   ]
 }

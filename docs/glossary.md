@@ -109,6 +109,10 @@ repository-level reference that keeps new skills consistent with it.
   describes; not an infrastructure chore list.
 - **noise** — a claim that fails the deletion test. Reported by group: repetition,
   default behavior, old-model babysitting, ceremony, dead references.
+- **operational snapshot** (cast) — the optional `docs/status.md` record of dated,
+  non-secret deployment or managed-infrastructure observations that are unavailable
+  from git and not directly queryable from the authoritative platform. It provides
+  context only; current repository and live platform state win on conflict.
 - **output contract** — the artifact's own required output shape: sections, keys,
   fixed lines, formats. A contract term, never a deletion candidate — distinct from
   the contract, which is the outcome plus its proof criteria.

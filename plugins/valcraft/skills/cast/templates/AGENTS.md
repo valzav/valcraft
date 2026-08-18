@@ -43,6 +43,17 @@ target, and every stop condition. Render the line only when the operator chose
   change too small for a feature.
 - `<source dir>` — application code. `<test dir>` — automated tests.
 
+<!-- When docs/status.md exists, render the section below and remove these comment
+markers. Omit the whole section when the snapshot is absent.
+
+## Operational snapshot
+
+`docs/status.md` contains dated, non-secret observations about external mutable state.
+Use it as context only. Current branch, check, issue, deployment, and other live
+repository or platform state win on conflict. Never copy credentials, tokens, secret
+values, or a source locator that contains a secret into it.
+-->
+
 Read the docs relevant to your change before modifying code or specifications. On
 conflict, accepted ADRs prevail, then `specs/`, then derived `docs/`. Do not invent
 missing requirements — record assumptions and open questions in the relevant spec, and
