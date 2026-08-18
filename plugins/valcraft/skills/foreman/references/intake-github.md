@@ -21,7 +21,7 @@ Within the ready feature, take the first task in git `tasks.md` order whose proj
 - A question raised mid-task: record and apply `needs-clarification` with a question comment on the task issue, or `on-hold` when the block is not a question. When the project block declares `foreman_clarification_assignees`, set the structured assignee field to the one login the question's category maps to (`default` when no category matches); never name assignees in free text. Notification and relayed answers are the tracker side's concern (a bridge, a human); the label is cleared by whoever answers, per the project's convention.
 - After a hold, proceed to another task only if the feature still passes the readiness gate — no open behavior-changing question — or the human's explicit acceptance is committed in the feature artifacts. Otherwise stop and report.
 - An answer or finding that contradicts the committed spec pauses the task; the spec amendment is committed and referenced from the issue before work resumes, and only then does the foreman record and clear `on-hold`.
-- A task the human rejects, or an answer makes unnecessary, closes as `not planned` per the approval mode, through a batch whose comment names the reason and the deciding answer; if the rejection contradicts the committed spec, the amendment lands first.
+- A task the human rejects, or an answer makes unnecessary, closes as `not planned` through an ordinary tracker write batch — the same standing as closing a done task — whose comment names the reason and the deciding answer; if the rejection contradicts the committed spec, the amendment lands first.
 
 ## Close a task
 

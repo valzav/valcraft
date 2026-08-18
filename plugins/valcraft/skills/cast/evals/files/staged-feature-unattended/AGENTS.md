@@ -2,7 +2,7 @@
 
 project_tracker: github
 github_repository: TBD
-cast_approval: delegated
+cast_approval: unattended
 
 ## Commands
 

@@ -25,14 +25,14 @@ directory after activation. Omit `github_repository` entirely in local mode.
 Optional, in either shape:
 
 ```yaml
-cast_approval: attended | delegated
+cast_approval: attended | unattended
 ```
 
 Missing means `attended`: Cast waits for operator approval at every proposal and mutation
-preview. `delegated`: Cast records each proposal and exact mutation preview and proceeds,
-still stopping for a product-intent change, an invented requirement, task removal, a `TBD`
-GitHub target, and every stop condition. Render the line only when the operator chose
-`delegated`.
+preview. `unattended`: Cast records each proposal and exact mutation preview and proceeds,
+still stopping for a product-intent change, an invented requirement, a `TBD` GitHub
+target, and every stop condition. Render the line only when the operator chose
+`unattended`.
 
 ## Orientation
 
@@ -123,15 +123,17 @@ Before creating or changing remote state:
    local and remote changes, including an approved target declaration that replaces
    `github_repository: TBD`.
 6. Wait for operator approval before applying the preview — under `cast_approval:
-   delegated`, record the preview and proceed, except that activating a `TBD` target or
-   removing a task still waits. After approval, write each adopted or created issue
+   unattended`, record the preview and proceed, except that activating a `TBD` target
+   still waits. After approval, write each adopted or created issue
    number as soon as that operation succeeds so a retry can recover from a partial run. Discard the approval and present a new preview if the
    target or mutation set changes.
 
 Synchronization may replace generated titles and bodies, sub-issue order, and
 blocked-by relationships. It must preserve open or closed state, status labels, and
 comments unless the approved mutation removes a task. Removing a task closes its issue
-as not planned and records the canonical source path and removal reason in a comment.
+as not planned and records the canonical source path and removal reason in a comment —
+the operator's reason when attended; unattended, the commit or pull request that removed
+the task from `tasks.md`.
 Changing a T-ID after issue creation is removal plus addition, not a rename.
 
 Stop after any partial mutation failure. Report completed local and remote operations

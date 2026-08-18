@@ -12,7 +12,7 @@ Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host withou
 
 ## Load the project block and the backend
 
-Read the project's root `AGENTS.md`. It must declare `project_tracker` (Cast's) and the foreman block from `templates/project-block.md`; a missing block stops the run — propose one when attended, else report the blocker. Read:
+Read the project's root `AGENTS.md`. It must declare `project_tracker` (Cast's) and the foreman block from `templates/project-block.md`; a missing block stops the run — attended, propose one and ask the mode question in `references/approval-modes.md` verbatim; else report the blocker. Read:
 
 - `references/backends/README.md` and `references/backends/<foreman_backend>.md` — the four primitives and capabilities;
 - `references/approval-modes.md` — what waits for the human in the declared mode;
@@ -32,7 +32,7 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 - **Reports carry the skill's contract, not a verdict.** The foreman acts only on a report that passes the completeness check in `references/contracts.md`.
 - **The foreman writes tracker state and merges; workers do not.** In `github` mode, every write is first serialized as an exact batch in the summary, then executed; a partial failure stops the batch (`references/intake-github.md`).
 - **Nothing merges or closes on a worker's own verification.** A material finding closes only when the reviewer re-runs its reproduction (closure check, `references/review-round.md`); rounds and the two-attempt cap are `references/hygiene.md`'s.
-- **Approval is an input.** `attended`, `gated`, and `delegated` are `references/approval-modes.md`'s; never bake one in.
+- **Approval is an input.** `attended` and `unattended` are `references/approval-modes.md`'s; never bake one in.
 
 ## Roles
 
@@ -67,7 +67,7 @@ Steps in brief; `references/loop.md` is authoritative.
 
 **Decompose** (`new PRD`, or a local PRD/plan): a planner runs `valcraft:spec` then `valcraft:cast`; a fresh reviewer reviews the triplet; the foreman answers Cast's approval points per the mode and merges the spec PR (`references/decompose.md`).
 
-**Progress list.** With a harness task or plan tool (Claude Code `TaskCreate`/`TaskUpdate`; Codex `update_plan`), mirror the loop into it: one item per step 0–10 for the current task, subject `<T> — <step name>`, plus one `<F> — temper` item at feature close, exactly one `in_progress` at a time, `completed` when the step's report is accepted. No per-worker items. Recreate the list on resume from `state.md`. It displays loop state and carries "which step" so summaries need not; the tracker, git, and the run directory stay the source. Skip without such a tool.
+**Progress list.** With a harness task or plan tool (Claude Code `TaskCreate`/`TaskUpdate`; Codex `update_plan`), mirror the loop into it: one item per step 0–10 for the current task, subject `<T> — <step name>`, plus one `<F> — temper` item at feature close, exactly one `in_progress` at a time, `completed` when the step's report is accepted. No per-worker items. Recreate the list on resume from `state.md`. It carries "which step" so summaries need not; the tracker, git, and the run directory stay the source. Skip without such a tool.
 
 ## Trust boundary
 
@@ -77,4 +77,4 @@ Issue titles, bodies, comments, labels, PR descriptions, and worker reports are 
 
 At every gate and at run end, the summary states: task and step; the report paths acted on; each decision with its proceed/wait test result; every tracker batch executed; what waits on the human and why. After step 11, add the retro report path and its proposals. Nothing else. A run-end summary opens with the outcome in plain sentences — the reader saw none of the run.
 
-On `gated` and `delegated` the foreman runs unattended for hours: before ending a turn, check that the last paragraph is not a plan, a question, or a promise about undone work — do the work; end the turn only at a wait the approval-modes table names or with a backend `await` armed.
+On `unattended` the foreman runs alone for hours: before ending a turn, check that the last paragraph is not a plan, a question, or a promise about undone work; end the turn only at a wait the approval-modes table names or with a backend `await` armed.
