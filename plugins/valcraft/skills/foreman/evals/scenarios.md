@@ -77,3 +77,20 @@ flow, and retrospective PRs.
 | Older-head result | A passing result on an older SHA cannot authorize the final SHA. | 41 `older-head-check-result-cannot-authorize-final-head` |
 | No applicable checks | After every source is queried and none applies, record `none-applicable` and use the normal merge-approval row. | 42 `none-applicable-uses-normal-merge-approval-row` |
 | Applicability source unavailable | An unavailable repository-rule, external-required-check, or workflow source stops before classification. | 43 `unavailable-applicability-source-stops-classification` |
+
+## External completion and causal finding routing
+
+These eight scenarios cover Foreman's narrow record-and-close path and the routing of
+findings whose causal owner is another task. Record and close does not replay normal
+planning or a full review cycle; causal routing does not waive existing review gates.
+
+| Scenario | Expected distinction | Eval |
+| --- | --- | --- |
+| Local external completion | Store attributed evidence per criterion beside the feature task; merge the evidence-and-tick PR only after fresh sufficiency review and the shared final-head gate. | 44 `local-external-completion-records-criterion-evidence` |
+| Quick external completion | Store evidence beside the canonical `Q-NNN QT-XXX` task in its quick file and use the same local close gates. | 45 `quick-external-completion-keeps-evidence-in-quick-file` |
+| GitHub external completion | Write attributed evidence and close through serialized task-issue batches without inventing a git target. | 46 `github-external-completion-uses-attributed-serialized-close` |
+| Incomplete criterion | A weak or missing criterion makes the overall verdict insufficient and leaves the task open. | 47 `insufficient-external-completion-evidence-keeps-task-open` |
+| Operator attestation | Preserve attribution and record whether the fresh reviewer independently verified the claim. | 48 `operator-attestation-retains-attribution-and-verification-decision` |
+| Current-diff causation | A cross-task inconsistency caused by the current diff lands now under ordinary review gates. | 49 `current-diff-caused-cross-task-finding-lands-now` |
+| Blocking versus unrelated owner | A blocking owner lands now; an unrelated finding gets a durable owner locator that reaches a future planner after restart. | 50 `blocking-owner-lands-now-unrelated-owner-survives-restart` |
+| No review-round exemption | Small, adjacent, cross-task, and record-and-close remediation retains every existing second-round trigger. | 51 `cross-task-remediation-has-no-blanket-round-two-exemption` |

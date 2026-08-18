@@ -6,9 +6,9 @@ The foreman speaks to workers in one shape and accepts answers in one shape. Thi
 
 Every assignment the foreman sends has these parts, in this order:
 
-1. **Cold start.** "You start with no prior context. Read, in this order: the skill named below through its skill invocation; the repository's root `AGENTS.md`; then only the artifacts named in the assignment. Do not read the run directory except the files named here."
+1. **Cold start.** "You start with no prior context. Read, in this order: the skill named below through its skill invocation (for a Foreman-owned recorder or evidence reviewer, read `references/record-and-close.md` instead); the repository's root `AGENTS.md`; then only the artifacts named in the assignment. Do not read the run directory except the files named here."
 2. **Identity and intent.** Role name, feature, task, tracker reference when one exists, branch name when one exists — and one line of intent: "Your report is the sole input to the foreman's gate decision for `<T>` of `<feature>`; it must stand alone for a reader with no other context."
-3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path — or the quick task file's path — is always present; it is the unique selector.
+3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `record-and-close.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path — or the quick task file's path — is always present; it is the unique selector. A planner assignment also names every verified durable finding locator recorded against the selected task; the planner reads those tracker records as part of the task contract.
 4. **Attributed context (optional).** Include only context the worker needs that the named artifacts cannot supply. Label each entry as exactly one of:
    - `Operator instruction/decision` — quote the instruction and its scope. It authorizes only the named choice or action. It does not establish an empirical claim or authorize another action.
    - `Operator attestation` — state the claim and its source locator. It remains attributed evidence for the worker to assess under the invoked skill; it is never accepted as a fact or a substitute for required verification.
@@ -41,10 +41,43 @@ The report a worker writes is the producing skill's own report, unchanged; this 
 | reviewer (closure check)    | `../../review/SKILL.md` — shared rule 6 (close only by re-run); the `## Review report` block re-emitted with the resolution column updated for the listed R-IDs | the re-run command and its output per listed R-ID; no new findings; the `Status:` line                                                                                        |
 | `valcraft:forge`            | `../../forge/references/verification-and-handoff.md` — "Step 6": the `## Forge handoff` block                                                                   | `### Review target` names the branch or range the step 8 reviewer pins; the `Status:` line                                                                                    |
 | worker (steps 4, 9)         | `../../review/SKILL.md` — shared rules 3, 4, 6 (R-IDs, remediation plan, closure by re-run)                                                                     | one line per R-ID: resolving commit, repository-relative file-and-line locator, concise claim; no copied hunks; the plan's absolute path (step 4) or remediation plan path (step 9) |
+| recorder (record and close) | `references/record-and-close.md` — criterion evidence and tracker-owned durable record                                                                         | the `## Completion-evidence report` block below; the `Status:` line                                                                                                            |
+| evidence reviewer           | `references/record-and-close.md` — fresh criterion-by-criterion sufficiency review                                                                              | the `## Evidence-sufficiency report` block below; the `Status:` line                                                                                                           |
 | `valcraft:temper` (step 11) | `../../temper/references/report-format.md` — the report file, sections, incident records, routing table                                                         | the report's absolute path; the PR URL; one line per routed proposal (tier, `L-NNN`, rule statement); the `Status:` line                                                      |
 | planner (decompose)         | `../../cast/SKILL.md`, `../../spec/SKILL.md` — their run reports                                                                                                | every Cast proposal and mutation preview as an exact record, each marked `recorded — proceeded` or `waiting`; feature ID and paths; the spec PR reference; the `Status:` line |
 
-Completeness means: the linked contract's report is present as that skill defines it, plus the additions in the right column. For the forge and review blocks the test is mechanical: every heading present, in order, none empty (`none` is a value). For steps 4 and 9, a line missing its R-ID, resolvable commit, repository-relative file-and-line locator, or concise claim is incomplete; copied text or a hunk satisfies none of those fields. A report file appended across rounds holds several blocks; the check applies to the last block in the file, followed by its `Status:` line — an earlier complete block never satisfies a later append. The foreman judges presence, not quality — quality is the reviewer's job.
+The recorder's final block is:
+
+```markdown
+## Completion-evidence report
+### Target
+### Durable evidence
+### Git target
+### Open gaps
+```
+
+`Durable evidence` has one row per acceptance criterion:
+`criterion | claim | source class and locator | durable evidence locator`. `Git target`
+names the real branch, PR, commit, and exact head when any exists, or records that the
+authoritative probes found none. `Open gaps` names missing evidence or says `none`.
+
+The evidence reviewer's final block is:
+
+```markdown
+## Evidence-sufficiency report
+### Target and sources
+### Criterion verdicts
+### Overall verdict
+### Not independently verified
+```
+
+`Criterion verdicts` has one row for every acceptance criterion:
+`criterion | durable evidence locator | source attribution | independent verification
+and locator | sufficient/insufficient | reason`. `Overall verdict` is exactly
+`sufficient` or `insufficient`. The final section lists every unverified row or says
+`none`.
+
+Completeness means: the linked contract's report is present as that skill defines it, plus the additions in the right column. For the forge, review, recorder, and evidence-sufficiency blocks the test is mechanical: every heading present, in order, none empty (`none` is a value). A recorder or evidence-review report that omits a contract criterion is incomplete. For steps 4 and 9, a line missing its R-ID, resolvable commit, repository-relative file-and-line locator, or concise claim is incomplete; copied text or a hunk satisfies none of those fields. A report file appended across rounds holds several blocks; the check applies to the last block in the file, followed by its `Status:` line — an earlier complete block never satisfies a later append. The foreman judges presence, not quality — evidence quality belongs to the fresh sufficiency reviewer and change quality to `valcraft:review`.
 
 ## Rejection
 

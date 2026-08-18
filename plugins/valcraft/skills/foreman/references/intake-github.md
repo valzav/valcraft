@@ -27,6 +27,22 @@ Within the ready feature, take the first task in git `tasks.md` order whose proj
 
 There is no checkbox: issue state is completion. After the merge at step 10, record and execute the closing batch — close the issue with a comment naming the merged PR, and remove `in-progress`.
 
+For work completed outside the loop, use `record-and-close.md`. First serialize and
+execute the attributed, criterion-keyed evidence comment as its own batch. After the
+fresh reviewer reports every criterion sufficient and applicable checks pass against
+their real targets, serialize the closing batch: a comment naming the evidence-comment
+URL and sufficient verdict, close the issue, and remove `in-progress`. Do not
+invent a branch, commit, PR, SHA, or git review target. A partial failure uses the
+ordinary reconcile-before-retry rule.
+
+## Deferred cross-task findings
+
+For a finding that `loop.md` routes to a future owner, serialize one comment batch for
+the owning task issue. The comment records the finding ID, owner identity, claim, and
+source locator. After execution, record the resulting comment URL in `state.md`. Do not
+alter the owner issue's status or labels. A future pick verifies that URL from the issue
+and passes it to the planner.
+
 ## Close a feature
 
 When every child of the spec issue is closed (merged or not planned) and the human confirms, build the feature-close batch (close the spec issue; close the PRD issue when one exists). The batch quotes the human's confirming message verbatim; without one it is not built. It waits per the approval mode.

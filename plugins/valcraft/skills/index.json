@@ -34,7 +34,7 @@
     },
     {
       "name": "foreman",
-      "version": "ea8d93b9fecf0d3f",
+      "version": "d746b7c5c5e964f4",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -47,6 +47,7 @@
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
+        "references/record-and-close.md",
         "references/review-round.md",
         "templates/project-block.md",
         "templates/run-dir.md",

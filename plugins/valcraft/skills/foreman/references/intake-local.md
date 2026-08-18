@@ -26,6 +26,12 @@ of this write. Only that exact transition may bypass another scoped review. Adja
 text or any other delta follows `loop.md`'s exact-final-head gate. Then the foreman
 merges.
 
+For work completed outside the loop, use `record-and-close.md`. The recorder stores
+the criterion-keyed `Completion evidence` block directly beneath the selected task,
+then the fresh evidence reviewer returns a sufficient verdict before the recorder may
+tick it. The evidence write is part of the task PR and receives the shared scoped-review,
+exact-final-head, and applicable-check gates.
+
 ## Close a feature
 
 When every task is checked or removed and the human confirms, the feature is closed by the human's confirmation recorded in the summary. No file changes.
@@ -42,6 +48,20 @@ The quick pool is `specs/quick/*.md` (`../../cast/references/quick.md`); each fi
   exact transition may bypass another scoped review; the final-head check classifier
   still applies. Then the foreman merges. A file whose every task is ticked is done —
   no confirmation, no retrospective.
+- **Record and close**: store the `Completion evidence` block directly beneath the
+  selected `QT-XXX` item in the quick file. Use no feature task or GitHub issue. The
+  fresh sufficiency review, exact tick, final-head gate, and applicable checks are the
+  same as for a local feature task.
+
+## Deferred cross-task findings
+
+For a finding that `loop.md` routes to a future owner, record one durable entry directly
+beneath that owner's task: finding ID, owner identity, claim, and source locator. The
+current worker commits this tracker-only record; because it is not the selected task's
+exact checkbox transition, the final-head gate reviews its delta. Record its resulting
+repository-relative file-and-line locator in `state.md`. Never tick or otherwise change
+the owner task. A future pick verifies the entry in the authoritative task artifact and
+passes its locator to the planner.
 
 ## Fast-track
 

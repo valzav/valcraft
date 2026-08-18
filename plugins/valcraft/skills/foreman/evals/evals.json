@@ -824,6 +824,147 @@
         "An unavailable applicable-workflow source stops before classification",
         "Foreman records the exact SHA and failed source probe and does not guess from other visible sources"
       ]
+    },
+    {
+      "id": 44,
+      "name": "local-external-completion-records-criterion-evidence",
+      "prompt": "$valcraft:foreman — an operator says feature task T-004 was completed outside the loop. The local tracker task covers AC-006 and AC-007, and verifiable evidence exists for both. Describe record and close. Do not call tools.",
+      "expected_output": "Foreman selects the narrow record-and-close path instead of planning or replaying implementation. A fresh recorder writes attributed evidence for AC-006 and AC-007 beside T-004 in tasks.md and reports each criterion's durable locator. A separate fresh evidence-sufficiency reviewer assesses every criterion and records its independent-verification decision. The evidence write and task tick use a task PR, so the exact-final-head review and applicable-check classifier must pass on its final SHA before Foreman merges; only then is T-004 closed. No planner or full code/plan review cycle is created for the already-completed work.",
+      "files": [
+        "references/record-and-close.md",
+        "references/intake-local.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "Externally completed local work uses record and close without a planner or the normal full review cycle",
+        "The recorder stores attributed evidence for every acceptance criterion beside the target task in tasks.md",
+        "A separate fresh reviewer reports evidence sufficiency and independent-verification status per criterion",
+        "The local evidence-and-tick PR passes the exact-final-head and applicable-check gates before merge and close"
+      ]
+    },
+    {
+      "id": 45,
+      "name": "quick-external-completion-keeps-evidence-in-quick-file",
+      "prompt": "$valcraft:foreman — Q-009 QT-002 was completed outside the loop and its acceptance criteria have evidence. Describe the tracker artifact and close gates. Do not call tools.",
+      "expected_output": "Foreman uses record and close for canonical task Q-009 QT-002. The fresh recorder places criterion-keyed, attributed evidence beside QT-002 in specs/quick/009-<slug>.md; it creates no feature tasks.md entry or GitHub task issue. A separate fresh sufficiency reviewer assesses every criterion and records whether each source was independently verified. The quick-file evidence and exact checkbox transition land through a task PR whose exact final head receives required scoped review and applicable checks. Foreman merges and treats the quick file as done only after every criterion is sufficient and all gates pass.",
+      "files": [
+        "references/record-and-close.md",
+        "references/intake-local.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "The canonical quick identity is Q-009 QT-002",
+        "Criterion evidence is stored beside QT-002 in its quick file, never in a feature task artifact or task issue",
+        "A fresh independent sufficiency review covers every criterion",
+        "The evidence-and-tick PR must pass final-head review and applicable checks before the quick task closes"
+      ]
+    },
+    {
+      "id": 46,
+      "name": "github-external-completion-uses-attributed-serialized-close",
+      "prompt": "$valcraft:foreman — GitHub-tracked T-006 was completed by an external operation with evidence for every acceptance criterion and no branch, commit, or PR. Describe record and close. Do not call tools.",
+      "expected_output": "Foreman does not invent a git review target. It serializes the recorder's attributed, criterion-keyed evidence as an exact comment batch for T-006's task issue, executes it under the approval mode, and records the resulting comment locator. A separate fresh reviewer reads the committed task contract and durable issue evidence, independently verifies what can be verified, and returns sufficient for every criterion. Foreman queries every applicable check source against the real authoritative targets; any check requiring an unavailable git head remains unsatisfied rather than receiving a fabricated SHA. After sufficient evidence and satisfied applicable checks, Foreman serializes and executes the ordinary close batch, cites the evidence comment and sufficient verdict, and removes in-progress. Partial batch failure still reconciles before retry.",
+      "files": [
+        "references/record-and-close.md",
+        "references/intake-github.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "GitHub evidence is an attributed task-issue comment written through an exact serialized batch",
+        "A fresh reviewer judges every criterion from the durable issue evidence",
+        "Foreman does not invent a branch, commit, PR, SHA, or git review target",
+        "Applicable checks use their real authoritative targets and a check requiring an unavailable head cannot pass",
+        "The closing batch follows only after evidence and check gates pass and preserves partial-failure reconciliation"
+      ]
+    },
+    {
+      "id": 47,
+      "name": "insufficient-external-completion-evidence-keeps-task-open",
+      "prompt": "$valcraft:foreman — an external-completion recorder supports AC-001 strongly, gives only an unverifiable conclusion for AC-002, and omits AC-003. The task is open. What does the sufficiency gate do? Do not call tools.",
+      "expected_output": "The fresh evidence-sufficiency reviewer emits one row for each of AC-001, AC-002, and AC-003. AC-001 may be sufficient; AC-002 is insufficient with its weak source and verification decision named; AC-003 is insufficient because no evidence locator exists. The overall verdict is insufficient. Foreman records the report and missing or weak criteria in state.md, leaves the task open and unticked, runs no close batch, and does not convert the operator's completion claim into proof.",
+      "files": [
+        "references/record-and-close.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The reviewer accounts for every criterion rather than judging only supplied evidence",
+        "Weak AC-002 evidence and missing AC-003 evidence are each explicitly insufficient",
+        "The overall verdict is insufficient and the task remains open and unticked",
+        "No task-close batch or merge occurs"
+      ]
+    },
+    {
+      "id": 48,
+      "name": "operator-attestation-retains-attribution-and-verification-decision",
+      "prompt": "$valcraft:foreman — the only evidence for AC-004 is the operator statement `the recovery drill succeeded`, sourced to the current conversation. Can record and close use it? Do not call tools.",
+      "expected_output": "The recorder labels the statement Operator attestation, records the conversation source locator and criterion AC-004, and never restates it as a Foreman fact. The fresh sufficiency reviewer records whether it independently verified the claimed state and how. The attestation may support AC-004 when that criterion can be satisfied by attributed testimony, but it does not automatically become sufficient and cannot replace verification the criterion or an applicable check requires. Foreman closes only if the per-criterion verdict is sufficient and all other gates pass.",
+      "files": [
+        "references/record-and-close.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The statement remains labeled Operator attestation with its source locator",
+        "The reviewer records whether and how it independently verified the claim",
+        "Attestation can support a criterion but is not automatically sufficient",
+        "Attestation cannot replace criterion-required verification or an applicable check"
+      ]
+    },
+    {
+      "id": 49,
+      "name": "current-diff-caused-cross-task-finding-lands-now",
+      "prompt": "$valcraft:foreman — review of T-005 finds that its current diff made T-002's already-delivered contract inconsistent. The fix touches T-002-owned text. Route the finding. Do not call tools.",
+      "expected_output": "Foreman records T-002 as the causal owner and remediates the finding in T-005's current work because the current diff caused the inconsistency. The owner boundary does not defer a defect introduced by the current change. The remediation follows the ordinary R-ID resolution, closure check, exact-final-head, and applicable-check gates. Any existing second-full-round trigger still applies; adjacency or a small edit grants no exemption.",
+      "files": [
+        "references/loop.md",
+        "references/review-round.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The finding records T-002 as owner but lands in T-005 now because T-005's current diff caused it",
+        "Current remediation follows normal R-ID resolution and closure review",
+        "Exact-final-head and applicable-check gates still apply",
+        "Small size or adjacency creates no review-round exemption"
+      ]
+    },
+    {
+      "id": 50,
+      "name": "blocking-owner-lands-now-unrelated-owner-survives-restart",
+      "prompt": "$valcraft:foreman — while delivering T-007, classify two findings: (a) T-003's contract prevents T-007 from satisfying AC-009; (b) an unrelated defect belongs to future T-011 and neither arose from T-007's diff nor blocks T-007. Then resume a later run that selects T-011. Do not call tools.",
+      "expected_output": "Foreman records each finding's causal owner. It remediates T-003's blocking contract now because T-007 cannot meet AC-009 otherwise, and sends that remediation through the normal review and final-head gates. It does not fix the unrelated T-011 finding now. Instead it records the finding, T-011 ownership, and one durable locator in T-011's tracker-owned task artifact or task issue and records the same locator in state.md. On the later run, Foreman verifies the locator from the authoritative tracker artifact rather than trusting the old checkpoint and includes it in T-011's planner assignment envelope, so restart does not lose the finding.",
+      "files": [
+        "references/loop.md",
+        "references/contracts.md",
+        "references/intake-local.md",
+        "references/intake-github.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The T-003-owned finding lands now because its contract blocks T-007's acceptance criterion",
+        "The unrelated T-011 finding is not remediated during T-007",
+        "The unrelated finding records its owner and durable locator in the owner tracker artifact or issue and state.md",
+        "After restart Foreman verifies the authoritative locator and includes it in T-011's planner envelope"
+      ]
+    },
+    {
+      "id": 51,
+      "name": "cross-task-remediation-has-no-blanket-round-two-exemption",
+      "prompt": "$valcraft:foreman — a current-task fix also makes a small adjacent edit in another task's owned contract. The edit is required by the current causal routing test. Does it bypass a second review round? Do not call tools.",
+      "expected_output": "No blanket exemption exists. Foreman first routes the edit now only because current-diff causation or current-contract blocking requires it. It then applies review-round.md unchanged: a closure check always follows material-finding remediation, and a second full round runs whenever an existing trigger fires, including resolution beyond the evidence-cited scope or an approach change. Small size, adjacency, cross-task ownership, or record-and-close origin is not an exemption. If no listed trigger fires, Foreman records that result and uses the closure check as the round's final state.",
+      "files": [
+        "references/loop.md",
+        "references/review-round.md",
+        "references/record-and-close.md"
+      ],
+      "assertions": [
+        "Causal routing determines whether the cross-task edit lands now",
+        "Every material-finding remediation receives a closure check",
+        "Existing second-full-round triggers apply unchanged",
+        "Small size, adjacency, cross-task ownership, and record-and-close origin provide no blanket exemption"
+      ]
     }
   ]
 }

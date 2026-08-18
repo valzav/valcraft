@@ -11,6 +11,8 @@ One directory per foreman run, inside the foreman's checkout, gitignored:
 ├── worker-F004-T012.md
 ├── reviewer-2-F004-T012.md
 ├── worker-Q007-QT001.md         # quick-task logical report name
+├── recorder-F004-T012.md        # external-completion evidence report
+├── evidence-reviewer-F004-T012.md # fresh criterion-sufficiency report
 ├── temper-F004.md               # step 11, once per feature
 └── planner-prd225.md            # decompose reports use the source as the task part
 ```
@@ -23,7 +25,7 @@ One directory per foreman run, inside the foreman's checkout, gitignored:
   Record terminal evidence before marking a row done; absence from a live-only status
   result is not evidence. Workers write only their own logical report file, by the
   absolute path the envelope names.
-- `state.md` is a run checkpoint, not a durable authority. Record the selected task and current step; pointers to the governing task, plan, reports, tracker or change request, and deferred decisions; the local and remote default-branch SHAs, their four-way synchronization classification, any explicit local-ahead push authority, and the reconciled SHA; the reviewer-covered SHA, each later PR head and exact delta disposition, every check-applicability source and probe, the final check classification, and the exact final SHA; attributed-context source and probe locators; recovery-inventory dispositions; and the resolved date plus authority for each dated artifact. Tie every synchronization, review, check, approval, and merge decision to its exact SHA. Preserve earlier checkpoints so a resume can identify the exact state that produced a decision.
+- `state.md` is a run checkpoint, not a durable authority. Record the selected task and current step; pointers to the governing task, plan, reports, tracker or change request, and deferred decisions; external-completion recorder and sufficiency reports, durable evidence locators, per-criterion verdicts, and the real git target or its observed absence; every cross-task finding's owner, causal-routing result, and durable owner-artifact locator; the local and remote default-branch SHAs, their four-way synchronization classification, any explicit local-ahead push authority, and the reconciled SHA; the reviewer-covered SHA, each later PR head and exact delta disposition, every check-applicability source and probe, the final check classification, and the exact final SHA when one exists; attributed-context source and probe locators; recovery-inventory dispositions; and the resolved date plus authority for each dated artifact. Tie every synchronization, review, check, approval, merge, and close decision to its real target. Preserve earlier checkpoints so a resume can identify the exact state that produced a decision.
 - On resume, re-read every referenced git or tracker fact from its authoritative source. A `state.md` pointer or SHA identifies what to verify; it never overrides current git, the tracker, or a git-owned task contract. Record and reconcile any mismatch before advancing.
 - The directory is the run's audit trail and the resume source: step 0 reads it before the tracker.
 - Nothing here is committed. A report is never pasted into a commit, PR body, or issue; the durable record is Cast's — remediation plans in `docs/plans/` and resolution commits citing R-IDs.

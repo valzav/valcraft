@@ -1,14 +1,15 @@
 ---
 name: foreman
 description: >
-  Run the spec-driven delivery loop over worker agents — pick a task, plan (valcraft:msw), plan review (valcraft:review), implement (valcraft:forge), PR, code review, merge, close — as a coordinator that never plans, implements, or reviews itself. Backend-agnostic: workers are Claude Code subagents or Agent Orchestrator sessions. Use when the user or an orchestrator says "run the delivery loop", "start sprint", "work through the tasks", "deliver quick", "run foreman", or "new PRD" for decomposition. Do not use to implement one task (valcraft:forge), review one change (valcraft:review), or scaffold (valcraft:cast).
+  Run the spec-driven delivery loop over worker agents — pick, plan, review, implement, PR, merge, close — as a coordinator that never plans, implements, or reviews itself. Backend-agnostic: workers are Claude Code subagents or Agent Orchestrator sessions. Use for "run the delivery loop", "start sprint", "work through the tasks", "deliver quick", "record and close", "run foreman", or "new PRD" decomposition. Do not use to implement one task (valcraft:forge), review one change (valcraft:review), or scaffold (valcraft:cast).
 ---
 
 # foreman
 
-Run the delivery loop over workers. The foreman coordinates only: it picks work, dispatches roles, requires their reports, decides at each gate, merges, closes. Independence at the review gates — every plan, implementation, and review from a fresh context — is why the loop catches what one session cannot.
+Coordinate the delivery loop: pick work, dispatch roles, require reports, decide gates,
+merge, close. Every plan, implementation, and review starts fresh.
 
-Skill names: `valcraft:<name>` means this plugin's `<name>` skill; a host without the namespace (OpenCode) loads it as `<name>`.
+Skill names use `valcraft:<name>`; a host without namespaces loads `<name>`.
 
 ## Load the project block and the backend
 
@@ -21,7 +22,9 @@ Read the project's root `AGENTS.md`. It must declare `project_tracker` (Cast's) 
 - `references/loop.md` — the steps in full, with their proceed/wait tests;
 - `references/hygiene.md` — context, naming, rounds, cleanup rules.
 
-On demand: `references/review-round.md` when a review returns material findings (steps 5, 9); `references/decompose.md` for decompose; `../cast/references/quick.md` for deliver quick.
+On demand: `references/review-round.md` after material findings;
+`references/record-and-close.md` for external completion; `references/decompose.md` for
+decompose; `../cast/references/quick.md` for deliver quick.
 
 Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop and report — `valcraft:cast` adds it at scaffold time. Create the run directory per `templates/run-dir.md`; every assignment carries its absolute path.
 
@@ -30,7 +33,7 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 - **Every worker starts cold.** Spawn a fresh worker per role per task, never a fork or a reused context. The envelope names what to read — its skill, `AGENTS.md`, the artifacts; the worker reads them itself.
 - **The foreman's context stays small.** Hold only loop state: task, step, report paths, gate decisions; rebuild the rest from the tracker, git, and the run directory on every command. Worker output enters as the report block or its path, never a transcript (`references/hygiene.md`).
 - **Reports carry the skill's contract, not a verdict.** The foreman acts only on a report that passes the completeness check in `references/contracts.md`.
-- **The foreman writes tracker state and merges; workers do not.** In `github` mode, every write is first serialized as an exact batch in the summary, then executed; a partial failure stops the batch (`references/intake-github.md`).
+- **The foreman owns tracker decisions and merges.** GitHub writes are serialized as exact batches before execution; local task-artifact writes follow `references/intake-local.md`.
 - **Nothing merges or closes on a worker's own verification.** A material finding closes only when the reviewer re-runs its reproduction (closure check, `references/review-round.md`); rounds and the two-attempt cap are `references/hygiene.md`'s.
 - **Approval is an input.** `attended` and `unattended` are `references/approval-modes.md`'s; never bake one in.
 - **Turn ending overrides approval mode.** End only at run completion or a named human gate. An `event` backend may end after establishing its completion event. A `foreground` backend keeps the parent active while its worker is active, await is nonterminal, or work is promised; consume completion and continue in the same turn. Never ask for status or to continue.
@@ -43,6 +46,7 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 | `reviewer-1` | 3, 5       | fresh; not the planner or worker      |
 | `worker`     | 4, 6, 7, 9 | fresh; owns the plan from step 4      |
 | `reviewer-2` | 8          | fresh; not the worker; second harness |
+| `recorder` / `evidence reviewer` | record/close | fresh; distinct |
 | `temper`     | 11         | fresh; once per feature               |
 
 Use a second harness for `planner` and `reviewer-2` when the backend offers one; one harness gives independence by fresh context alone. Names: `references/hygiene.md`.
@@ -65,6 +69,9 @@ Steps in brief; `references/loop.md` is authoritative.
 11. **Temper** — once per feature, never per quick file: a `temper` worker runs `valcraft:temper` on the feature directory and opens the retro PR; the foreman merges it and relays the proposals unapplied.
 
 **Deliver quick** walks `specs/quick/*.md` — one file per quick task, its own contract — through the same steps.
+
+**Record and close** uses fresh recorder and evidence-reviewer workers for one externally
+completed task; its reference owns the narrow gates.
 
 **Decompose** (`new PRD`, or a local PRD/plan): a planner runs `valcraft:spec` then `valcraft:cast`; a fresh reviewer reviews the triplet; the foreman answers Cast's approval points per the mode and merges the spec PR (`references/decompose.md`).
 

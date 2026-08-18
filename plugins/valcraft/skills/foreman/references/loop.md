@@ -6,6 +6,8 @@ Two commands enter the loop:
 
 - **deliver** — "start sprint", "run the delivery loop", "work through feature NNN": steps 0–10 below, one task at a time, serially. "deliver quick" / "work through the quick tasks" runs the same steps over the quick pool `specs/quick/` (below).
 - **decompose** — "new PRD #N", "decompose docs/prd.md": `references/decompose.md`, which produces the feature triplet the deliver command consumes.
+- **record and close** — an explicit report that one open task was completed outside
+  the loop: use `references/record-and-close.md`, then return to step 0.
 
 Start only on the human's explicit command. Never auto-start on a new issue, a cleared label, or a merged PR.
 
@@ -63,6 +65,12 @@ Take the first eligible task per the intake reference — `tasks.md` order, depe
 Spawn `planner-<F>-<T>` on the second harness when the backend offers one. Send:
 
 > Write an implementation plan for task `<task identity>` of `specs/<feature>/tasks.md` (tracker ref `<n>` when one exists), against `specs/<feature>/spec.md` and `design.md`. Planning only — do not implement and do not edit source. Write the plan as a tracked document in `docs/plans/` per the repository convention. Preserve the semantic plan type and slug; never add `quick` solely for a quick task. Then run `valcraft:msw` on that plan file. Report the plan's absolute path.
+
+When the selected task owns deferred finding locators, append their verified tracker
+locations to this envelope as named task-contract artifacts. The planner must address
+each finding or state why the current committed contract settles it. Never pass only a
+`state.md` pointer; verify the durable record from `tasks.md`, the quick file, or the
+task issue after every restart.
 
 Await; report check. The report names the plan path.
 
@@ -123,6 +131,28 @@ later heads remain uncovered until step 10 applies the exact-final-head gate.
 
 Send the worker the review report path and require resolution by R-ID (a remediation plan in `docs/plans/` for material findings, resolution commits citing the R-IDs). Each resolution line names the R-ID, resolving commit, repository-relative file-and-line locator, and concise claim; it contains no copied hunk or before-and-after text. Then apply `references/review-round.md`: a closure check by `reviewer-2-<F>-<T>` on the resolved R-IDs, and a full second round only when a trigger fires. Failures from applicable PR checks go to the worker with the failing check name; intervene only when the worker stalls.
 
+## Cross-task finding routing
+
+At any review or evidence gate, identify the task whose contract owns each finding. A
+finding against another task lands in the current work only when either causal test is
+true:
+
+1. the current diff caused the inconsistency; or
+2. the owning contract blocks the current task from satisfying its own contract.
+
+Record the owner and the passing test in `state.md`. Remediation that lands now follows
+the ordinary R-ID resolution, closure check, second-full-round triggers, exact-final-head,
+and applicable-check gates. Cross-task ownership, adjacency, or a small edit changes no
+gate.
+
+When neither test passes, do not remediate the finding now. Record its ID, owner, claim,
+and source locator in the owner task's tracker-owned artifact according to the intake
+reference, then record that durable locator in `state.md`. The current local worker
+commits a local or quick tracker entry; the foreman uses a serialized issue-comment
+batch in GitHub mode. On a later pick, verify the tracker record from its authority and
+include its locator in the planner envelope as required in step 2. This rule survives a
+run restart; the checkpoint alone is never the durable record.
+
 ### 10. Merge and close
 
 For `local` intake, first have the worker perform its close-task write from
@@ -170,9 +200,13 @@ approval path. Do not invent a universal CI gate. Advance the reviewer-covered S
 the exact final head only after the scoped review passes, or the exact local checkbox
 exception applies, and the final head's check state is `passing` or `none-applicable`.
 
-This classifier is the shared merge gate for normal task PRs, the record-and-close flow
-when that flow is defined, and step 11 retrospective PRs. It does not define the
-record-and-close behavior itself.
+This classifier is the shared merge gate for normal task PRs, record-and-close, and
+step 11 retrospective PRs. In a tracker-only record-and-close path with no real git
+target, record the authoritative probes that established its absence and do not invent
+a head; the evidence-sufficiency gate replaces code review, while every applicable
+check still runs against its real target. The no-git branch passes only when those
+probes establish absence and no applicable check requires a git target.
+`record-and-close.md` owns that behavior.
 
 Post the summary — PR link, exact final SHA, check state and sources, review summary
 with open and resolved R-IDs, reviewer-covered SHA, and residual risks — and apply the

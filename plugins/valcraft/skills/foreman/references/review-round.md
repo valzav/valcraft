@@ -16,4 +16,9 @@ A round-one verdict of **pass** needs nothing more: proceed. **blocked** is not 
 
 3. **Otherwise** the closure check's table is the round's final state: proceed to the step's summary and proceed/wait test.
 
+These branches apply unchanged to remediation selected by cross-task causal routing or
+record and close. Small size, adjacency, another task's ownership, or the exceptional
+completion path is never a blanket exemption from a closure check or a listed
+second-full-round trigger.
+
 Record which branch applied and why in the summary and in `state.md`.

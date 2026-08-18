@@ -41,6 +41,10 @@ repository-level reference that keeps new skills consistent with it.
   active host) and `ao` (Agent Orchestrator sessions).
 - **canonical snippet** (hone) — prompt language taken verbatim from a model guide;
   graft it rather than hand-writing an equivalent.
+- **causal owner** (foreman) — the task whose contract owns a cross-task finding. The
+  finding lands in current work only when the current diff caused the inconsistency or
+  the owner's contract blocks the current contract; otherwise its durable locator stays
+  with the owner for a future planner.
 - **closure check** (foreman) — the reviewer's scoped re-run of the reproductions behind
   the R-IDs a worker claims resolved, filling the resolution column and opening no new
   findings. Not a review round; it follows every material-findings round. A second full
@@ -82,6 +86,9 @@ repository-level reference that keeps new skills consistent with it.
   two independent root incidents (distinct real-world events with non-derivative causal
   chains); B — one verified root incident; C — weak or unverified, guidance only, never
   promoted.
+- **evidence-sufficiency review** (foreman) — a fresh worker's narrow, criterion-by-
+  criterion decision on an external-completion record. It preserves source attribution,
+  records independent-verification status, and is not a plan or implementation review.
 - **finding table** (review) — the auditable report unit: one row per finding,
   `R-NNN | severity | claim | evidence | resolution`, with IDs stable across review
   rounds.
@@ -173,6 +180,10 @@ repository-level reference that keeps new skills consistent with it.
   a worker dies: recoverable git, tracker, report, working-tree, and accessible-workspace
   state. A replacement verifies or discards every observation before resuming existing
   work; unsafe inaccessible or unreconciled state escalates.
+- **record and close** (foreman) — the exceptional path for one task completed outside
+  the delivery loop: record attributed evidence for every acceptance criterion in the
+  tracker-owned artifact, obtain a fresh evidence-sufficiency review, apply real-target
+  checks and final-head gates, then close without replaying planning or implementation.
 - **remediation plan** (cast) — a `docs/plans/` entry that resolves material review
   findings; resolution commits cite the finding IDs.
 - **retrofit** (cast) — applying the scaffold to an existing codebase: derive facts
