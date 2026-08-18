@@ -112,16 +112,16 @@
     },
     {
       "id": 6,
-      "name": "resume-staged-spec-delegated-approval",
-      "prompt": "/valcraft:cast — resume the staged feature in evals/files/staged-feature-delegated/. This run is unattended: no operator answer will arrive. Do not inspect or activate GitHub.",
-      "expected_output": "Cast reads cast_approval: delegated from root AGENTS.md next to project_tracker: github. It validates the spec-only FEAT-001 stage and preserves spec_issue: TBD. It records the exact proposal for design.md and creates a substantive design.md without waiting for approval, then records the exact proposal for tasks.md and creates a substantive checkbox-free tasks.md without waiting; both proposals appear in its output as the audit trail. It does not invent an answer to the notification-disposition open question — that would change product intent, which stops in every mode — and it reports the feature as staged and not implementation-ready because the question is unresolved. It performs no GitHub inspection or mutation and does not activate the TBD target.",
+      "name": "resume-staged-spec-unattended-approval",
+      "prompt": "/valcraft:cast — resume the staged feature in evals/files/staged-feature-unattended/. This run is unattended: no operator answer will arrive. Do not inspect or activate GitHub.",
+      "expected_output": "Cast reads cast_approval: unattended from root AGENTS.md next to project_tracker: github. It validates the spec-only FEAT-001 stage and preserves spec_issue: TBD. It records the exact proposal for design.md and creates a substantive design.md without waiting for approval, then records the exact proposal for tasks.md and creates a substantive checkbox-free tasks.md without waiting; both proposals appear in its output as the audit trail. It does not invent an answer to the notification-disposition open question — that would change product intent, which stops in every mode — and it reports the feature as staged and not implementation-ready because the question is unresolved. It performs no GitHub inspection or mutation and does not activate the TBD target.",
       "files": [
-        "evals/files/staged-feature-delegated/AGENTS.md",
-        "evals/files/staged-feature-delegated/docs/product-brief.md",
-        "evals/files/staged-feature-delegated/specs/001-notification-window/spec.md"
+        "evals/files/staged-feature-unattended/AGENTS.md",
+        "evals/files/staged-feature-unattended/docs/product-brief.md",
+        "evals/files/staged-feature-unattended/specs/001-notification-window/spec.md"
       ],
       "assertions": [
-        "Cast reads cast_approval: delegated from AGENTS.md and names the mode in its output",
+        "Cast reads cast_approval: unattended from AGENTS.md and names the mode in its output",
         "Cast records the exact design.md proposal and creates design.md without waiting for approval",
         "Cast records the exact tasks.md proposal and creates tasks.md without waiting for approval",
         "The created design.md and tasks.md contain substantive project-specific content; tasks.md is checkbox-free with no tracker or spec_issue metadata",

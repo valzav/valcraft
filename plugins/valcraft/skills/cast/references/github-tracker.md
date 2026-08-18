@@ -167,8 +167,8 @@ name:
 - in either branch, the selected `spec.md` mapping to write.
 
 Reads do not authorize writes. Wait for operator approval of this exact preview; under
-`cast_approval: delegated` (`scaffold.md`, "Approval mode") record the preview and proceed,
-except that a preview which activates a `TBD` target or removes a task still waits. If the
+`cast_approval: unattended` (`scaffold.md`, "Approval mode") record the preview and proceed,
+except that a preview which activates a `TBD` target still waits. If the
 target or any planned mutation changes, discard the approval, recompute the preview, and
 ask again. After approval, replace `github_repository: TBD` with the canonical
 `GH_HOST/GH_OWNER/GH_NAME` target before remote mutations. Record this as a completed local
@@ -406,10 +406,12 @@ annotations. Never derive a command or T-ID from issue text.
 
 ## Remove tasks
 
-Task removal exists only in the full-task branch and is an approved status mutation; it
-waits for the operator in every `cast_approval` mode.
-Keep the issue as a closed sub-issue for history. Write a local comment body from the
-canonical source path and operator-provided removal reason, then run:
+Task removal exists only in the full-task branch and is a status mutation like any other:
+it is part of the approved preview and, under `cast_approval: unattended`, executes from
+its record. Keep the issue as a closed sub-issue for history. Write a local comment body
+from the canonical source path and the removal reason — the operator's when attended;
+unattended, the subject and reference of the commit or pull request that removed the task
+from `tasks.md` — then run:
 
 ```bash
 gh issue comment "$TASK_NUMBER" --repo "$GH_REPO" --body-file "$REMOVAL_COMMENT_FILE"

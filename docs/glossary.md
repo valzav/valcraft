@@ -11,16 +11,16 @@ repository-level reference that keeps new skills consistent with it.
   one corpus of completed work into a graded lesson report; synthesize merges two or
   more analyze reports into re-graded themes with tensions and routing.
 - **approval mode** (foreman) — the project-block input that decides which loop
-  decisions wait for the human: `attended` (every gate), `gated` (irreversible acts —
-  feature/PRD close, not-planned close, fast-track, release-branch writes; recorded
-  tracker batches and Cast projection execute from their record), or `delegated`
-  (product-intent changes, release-branch writes, and escalations only). Full table:
-  foreman `references/approval-modes.md`.
+  decisions wait for the human: `attended` (every routine decision — pick, summaries,
+  merges, tracker writes) or `unattended` (only feature/PRD close, fast-track,
+  release-branch writes, and escalations; recorded tracker batches and Cast projection
+  execute from their record). Full table and the verbatim
+  question the foreman asks: foreman `references/approval-modes.md`.
 - **approval mode** (cast) — the optional `cast_approval` declaration in root `AGENTS.md`:
-  `attended` (missing; wait at every proposal and mutation preview) or `delegated`
+  `attended` (missing; wait at every proposal and mutation preview) or `unattended`
   (record each proposal and preview, proceed; still stop for a product-intent change, an
-  invented requirement, task removal, a `TBD` GitHub target, and every stop condition).
-  Paired with foreman's mode: `attended` ↔ `attended`; `gated`/`delegated` ↔ `delegated`.
+  invented requirement, a `TBD` GitHub target, and every stop condition).
+  Takes the same word as the foreman's mode.
 - **assignment envelope** (foreman) — the one shape every worker prompt takes: cold-start
   reading order, identity, the step text, the report instruction, the trust boundary.
 - **assertion** — one verifiable statement in an eval; the graded pass/fail unit.

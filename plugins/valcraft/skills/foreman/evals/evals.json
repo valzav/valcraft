@@ -5,7 +5,7 @@
       "id": 1,
       "name": "missing-project-block-stops",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/no-block/, start the delivery loop for the next task.",
-      "expected_output": "Foreman reads the root AGENTS.md, finds project_tracker: local but no foreman block (foreman_backend, foreman_approval_mode, foreman_default_branch, foreman_release_branch), and stops before touching any tracker, spawning any worker, or creating a run directory. Because the run is attended, it proposes a project block from templates/project-block.md, states which values it needs from the user (backend, approval mode, branches), and waits. It does not assume subagents or gated as defaults and does not begin picking a task.",
+      "expected_output": "Foreman reads the root AGENTS.md, finds project_tracker: local but no foreman block (foreman_backend, foreman_approval_mode, foreman_default_branch, foreman_release_branch), and stops before touching any tracker, spawning any worker, or creating a run directory. Because the run is attended, it proposes a project block from templates/project-block.md, states which values it needs from the user (backend, approval mode, branches) — asking the approval-mode question from references/approval-modes.md, \"Choosing a mode\", with its two answers attended and unattended verbatim — and waits. It does not assume subagents or unattended as defaults and does not begin picking a task.",
       "files": [
         "evals/files/no-block/AGENTS.md"
       ],
@@ -13,6 +13,7 @@
         "Foreman reads AGENTS.md before any other action",
         "Foreman reports the missing foreman block as the reason it stops",
         "Foreman proposes a project block and asks the user for its values instead of assuming them",
+        "Foreman asks the approval-mode question with the two answers attended and unattended, in the wording of references/approval-modes.md, and offers no third mode",
         "Foreman spawns no worker and creates no run directory"
       ]
     },
@@ -20,7 +21,7 @@
       "id": 2,
       "name": "verdict-only-report-rejected",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-verdict-only` from its run directory .foreman/run-verdict-only/ and take the next loop step.",
-      "expected_output": "Foreman loads the project block (subagents backend, delegated mode, local tracker), reads .foreman/run-verdict-only/state.md and the reviewer-1 report, and recognizes the report as verdict-only: it lacks the review finding table, the checks-performed record, and the reproduction commands that references/contracts.md requires. It does not proceed to step 4 on the bare 'pass'. It sends one rejection assignment — a fresh reviewer-1 agent on the subagents backend, since the prior agent has returned — naming the missing parts and requiring the full valcraft:review contract appended to the same report path, then ends its turn to await. It does not review the plan itself and does not read the spec or design to form its own verdict.",
+      "expected_output": "Foreman loads the project block (subagents backend, unattended mode, local tracker), reads .foreman/run-verdict-only/state.md and the reviewer-1 report, and recognizes the report as verdict-only: it lacks the review finding table, the checks-performed record, and the reproduction commands that references/contracts.md requires. It does not proceed to step 4 on the bare 'pass'. It sends one rejection assignment — a fresh reviewer-1 agent on the subagents backend, since the prior agent has returned — naming the missing parts and requiring the full valcraft:review contract appended to the same report path, then ends its turn to await. It does not review the plan itself and does not read the spec or design to form its own verdict.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -45,7 +46,7 @@
       "id": 3,
       "name": "two-round-cap-escalates",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-two-rounds` from .foreman/run-two-rounds/ and take the next loop step.",
-      "expected_output": "Foreman reads state.md (plan review round 2 of 2 received; round 2 ran because the worker declined material R-002 — a listed trigger) and the reviewer-1 report. Round 2 leaves R-002 (P2, material) open, and the worker's resolution declined it as out of scope. Foreman does not spawn a third review round and does not send the worker another address assignment. R-002 is a finding the worker declined and round two upheld, so it goes to the human, not back to the worker. It escalates: the summary names R-002 as the open material finding, states that two rounds is the cap, records that the worker's out-of-scope claim conflicts with T-002's coverage of FR-002 as the reviewer argued, and waits for the human — escalations wait in every approval mode, including delegated. It does not decide R-002 itself and does not proceed to step 6.",
+      "expected_output": "Foreman reads state.md (plan review round 2 of 2 received; round 2 ran because the worker declined material R-002 — a listed trigger) and the reviewer-1 report. Round 2 leaves R-002 (P2, material) open, and the worker's resolution declined it as out of scope. Foreman does not spawn a third review round and does not send the worker another address assignment. R-002 is a finding the worker declined and round two upheld, so it goes to the human, not back to the worker. It escalates: the summary names R-002 as the open material finding, states that two rounds is the cap, records that the worker's out-of-scope claim conflicts with T-002's coverage of FR-002 as the reviewer argued, and waits for the human — escalations wait in every approval mode, including unattended. It does not decide R-002 itself and does not proceed to step 6.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -64,7 +65,7 @@
         "Foreman treats R-002 (declined by the worker, upheld in round 2) as a disagreement for the human, not another worker assignment",
         "Foreman spawns no third review round and no further address assignment",
         "Foreman escalates to the human naming R-002 as the open material finding",
-        "Foreman waits even though the approval mode is delegated",
+        "Foreman waits even though the approval mode is unattended",
         "Foreman does not proceed to step 6"
       ]
     },
@@ -118,9 +119,9 @@
     },
     {
       "id": 6,
-      "name": "release-branch-merge-waits-in-delegated-mode",
+      "name": "release-branch-merge-waits-in-unattended-mode",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-release` from .foreman/run-release/ and take the next loop step.",
-      "expected_output": "Foreman reads state.md (step 10, reviewer-2 pass) and the forge handoff, which reports PR #14 opened against main. The project block sets foreman_default_branch: dev and foreman_release_branch: main, so this PR is a release-branch write. Even though the mode is delegated and the proceed/wait test would otherwise say proceed (CI claimed green, review pass, scope clean), foreman does not merge: any write or merge touching the release branch waits in every mode. It posts the step 10 summary — PR link, review verdict, the fact that the PR targets main instead of dev, and that this needs the human's decision (merge to main, or retarget to dev) — and waits. It does not tick T-002's checkbox and does not run gh pr merge.",
+      "expected_output": "Foreman reads state.md (step 10, reviewer-2 pass) and the forge handoff, which reports PR #14 opened against main. The project block sets foreman_default_branch: dev and foreman_release_branch: main, so this PR is a release-branch write. Even though the mode is unattended and the proceed/wait test would otherwise say proceed (CI claimed green, review pass, scope clean), foreman does not merge: any write or merge touching the release branch waits in every mode. It posts the step 10 summary — PR link, review verdict, the fact that the PR targets main instead of dev, and that this needs the human's decision (merge to main, or retarget to dev) — and waits. It does not tick T-002's checkbox and does not run gh pr merge.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -137,7 +138,7 @@
       "assertions": [
         "Foreman notices the PR targets main, the declared release branch, not dev",
         "Foreman does not merge and does not tick the T-002 checkbox",
-        "Foreman waits for the human despite delegated mode, citing the release-branch rule",
+        "Foreman waits for the human despite unattended mode, citing the release-branch rule",
         "Foreman's summary names the PR, the review verdict, and the branch mismatch"
       ]
     },
@@ -145,7 +146,7 @@
       "id": 7,
       "name": "cold-start-planner-and-small-context",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, start a new delivery run for feature 001-invite-links and stop as soon as the first worker assignment has been dispatched.",
-      "expected_output": "Foreman loads the project block (subagents, delegated, local tracker, dev/main), reads the backend, approval, intake-local, contracts, loop, and hygiene references, creates a new run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1: T-001 is checked, T-002 is unchecked with its dependency satisfied, so T-002 is the pick; delegated mode needs no pick confirmation, and local mode marks nothing. It then dispatches step 2 by spawning a fresh general-purpose agent named planner-F001-T002 — never a fork — whose prompt is the assignment envelope: cold-start reading order (the msw skill, AGENTS.md, then only the named artifacts), identity, the step 2 planning text with the tasks.md path and absolute plan-directory conventions, the report instruction naming the absolute run-directory report path and the Status line, and the trust-boundary paragraph. Foreman itself does not read spec.md, design.md, or the plan directory to plan the task; its own context holds only loop state. It stops after dispatch as the prompt asked.",
+      "expected_output": "Foreman loads the project block (subagents, unattended, local tracker, dev/main), reads the backend, approval, intake-local, contracts, loop, and hygiene references, creates a new run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1: T-001 is checked, T-002 is unchecked with its dependency satisfied, so T-002 is the pick; unattended mode needs no pick confirmation, and local mode marks nothing. It then dispatches step 2 by spawning a fresh general-purpose agent named planner-F001-T002 — never a fork — whose prompt is the assignment envelope: cold-start reading order (the msw skill, AGENTS.md, then only the named artifacts), identity, the step 2 planning text with the tasks.md path and absolute plan-directory conventions, the report instruction naming the absolute run-directory report path and the Status line, and the trust-boundary paragraph. Foreman itself does not read spec.md, design.md, or the plan directory to plan the task; its own context holds only loop state. It stops after dispatch as the prompt asked.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -191,7 +192,7 @@
       "id": 9,
       "name": "partial-batch-failure-reconciles-before-retry",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-github/, resume run `run-partial-batch` from .foreman/run-partial-batch/ and take the next loop step.",
-      "expected_output": "Foreman loads the project block (github tracker on github.com/example/loop-github, gated mode) and reads state.md: PR #15 merged; the recorded closing batch for issue #42 has operation 1 (close with comment) executed and operation 2 (remove in-progress) failed with HTTP 502, and the batch stopped. Per the intake-github batch rule it reports completed and failed operations separately, does not re-execute operation 1 (that would duplicate the close comment), and reconciles before retrying: it reads issue #42's current state and labels with explicit fields (`gh issue view 42 --repo github.com/example/loop-github --json state,labels --jq …`). If that read cannot run — the repository is not reachable from the eval environment — it reports the reconciliation as blocked and stops, rather than assuming the label state. When reconciliation succeeds, it rebuilds the remainder as a fresh recorded batch containing only the label removal (or nothing, if the label is already gone), records it in the summary, and executes it (gated mode executes recorded tracker batches). It does not close the spec issue #40 or the feature, since T-003 is still open.",
+      "expected_output": "Foreman loads the project block (github tracker on github.com/example/loop-github, unattended mode) and reads state.md: PR #15 merged; the recorded closing batch for issue #42 has operation 1 (close with comment) executed and operation 2 (remove in-progress) failed with HTTP 502, and the batch stopped. Per the intake-github batch rule it reports completed and failed operations separately, does not re-execute operation 1 (that would duplicate the close comment), and reconciles before retrying: it reads issue #42's current state and labels with explicit fields (`gh issue view 42 --repo github.com/example/loop-github --json state,labels --jq …`). If that read cannot run — the repository is not reachable from the eval environment — it reports the reconciliation as blocked and stops, rather than assuming the label state. When reconciliation succeeds, it rebuilds the remainder as a fresh recorded batch containing only the label removal (or nothing, if the label is already gone), records it in the summary, and executes it (unattended mode executes recorded tracker batches). It does not close the spec issue #40 or the feature, since T-003 is still open.",
       "files": [
         "evals/files/loop-github/AGENTS.md",
         "evals/files/loop-github/.gitignore",
@@ -265,7 +266,7 @@
       "id": 12,
       "name": "deliver-quick-picks-across-files-without-github",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-quick/, deliver quick and stop as soon as the first worker assignment has been dispatched.",
-      "expected_output": "Foreman loads the project block (github tracker on github.example.test/acme/ledger, subagents, delegated, dev/main) and the cast quick reference for the quick run, creates a run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1 to the quick pool: it reads specs/quick/*.md in number order — Q-001's only task is checked, Q-002 T-001 is unchecked with no dependency — applies quick.md's readiness rule to 002-login-redirect-query.md (passes), and picks Q-002 T-001. Because quick tasks track locally in every tracker mode, it makes no gh call, applies no in-progress label, and records no batch; delegated mode needs no pick confirmation. It dispatches step 2 by spawning a fresh general-purpose agent named planner-Q002-T001 — never a fork — whose envelope carries the cold-start reading order, the identity, the step 2 planning text with the absolute path of specs/quick/002-login-redirect-query.md in place of spec.md, design.md, and tasks.md, the report path .foreman/<run>/planner-Q002-T001.md with the Status line instruction, and the trust-boundary paragraph. Foreman does not read the quick file's Requirements or Approach to plan the task itself. It stops after dispatch as the prompt asked.",
+      "expected_output": "Foreman loads the project block (github tracker on github.example.test/acme/ledger, subagents, unattended, dev/main) and the cast quick reference for the quick run, creates a run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1 to the quick pool: it reads specs/quick/*.md in number order — Q-001's only task is checked, Q-002 T-001 is unchecked with no dependency — applies quick.md's readiness rule to 002-login-redirect-query.md (passes), and picks Q-002 T-001. Because quick tasks track locally in every tracker mode, it makes no gh call, applies no in-progress label, and records no batch; unattended mode needs no pick confirmation. It dispatches step 2 by spawning a fresh general-purpose agent named planner-Q002-T001 — never a fork — whose envelope carries the cold-start reading order, the identity, the step 2 planning text with the absolute path of specs/quick/002-login-redirect-query.md in place of spec.md, design.md, and tasks.md, the report path .foreman/<run>/planner-Q002-T001.md with the Status line instruction, and the trust-boundary paragraph. Foreman does not read the quick file's Requirements or Approach to plan the task itself. It stops after dispatch as the prompt asked.",
       "files": [
         "evals/files/loop-quick/AGENTS.md",
         "evals/files/loop-quick/.gitignore",
