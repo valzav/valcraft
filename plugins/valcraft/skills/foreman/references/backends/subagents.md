@@ -1,25 +1,42 @@
-# Backend: `subagents` — Claude Code Agent tool
+# Backend: `subagents` — native host subagents
 
-The foreman is a plain Claude Code session; workers are subagents started with the Agent tool. Zero infrastructure: this is how `valcraft:foreman` runs when the user invokes it directly.
+The foreman and workers run through the active host's native subagent tools. This remains one portable backend: the active host selects the primitive mapping; project configuration does not.
 
 ## Flags
 
 | Flag        | Value                                                                                                                                                                         |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `wake`      | `event` — the subagent's completion notification re-invokes the foreman                                                                                                       |
+| `wake`      | Claude Code: `event`; Codex: `foreground`                                                                                                                                     |
 | `answer`    | `respawn` — a subagent is one-shot; a block or question ends it                                                                                                               |
 | `harnesses` | one (the session's model). Independence comes from fresh context: each role is a new agent with no inherited context, and the second-harness rule is satisfied by that alone. |
 | `release`   | none needed — a subagent ends when it returns; never leave one waiting on a message                                                                                           |
 
 ## Primitives
 
-- `spawn` + `assign` are one native subagent call with a fresh general-purpose worker, never a fork. The assignment carries the canonical logical identity and report path. On Claude Code, use the logical worker name. On Codex, derive `task_name` independently in lowercase underscore form (for example `worker_q007_qt001`) without truncating identity digits. Record the host's physical handle and its canonical logical identity in `workers.md`. Do not pass a model override unless the project block names one.
-- `await`: the task-completion notification. Arm nothing; end the turn after the Agent call. Because the notification carries the agent's final text, the envelope's report instruction limits that text to the report path and the `Status:` line — the report itself is on disk in the run directory.
-- `status`: `none`. There is no mid-run inspection. A subagent that needs a permission or an answer returns with `Status: blocked: …` or `Status: question: …` and its report so far.
+- `spawn` + `assign` are one native subagent call with a fresh general-purpose worker. The assignment carries the canonical logical identity and report path. Do not pass a model override unless the project block names one.
+  - Claude Code: use the Agent tool with the logical worker name and no fork. Record that name as the physical handle.
+  - Codex: use `spawn_agent` with `fork_turns: "none"`. Derive a unique lowercase_underscore `task_name` from the complete logical worker identity: `planner-F001-T002` → `planner_f001_t002`; `worker-Q1000-QT001` → `worker_q1000_qt001`. Preserve every identity digit. When that name already belongs to a dispatch in the current agent tree or `workers.md`, append the next unused lowercase_underscore dispatch discriminator. Record both returned agent id and `task_name` as the physical handle. Every respawn is another fresh `spawn_agent`, never `followup_task` on the returned agent.
+- `await` follows the active host mapping below. On Codex, use native `wait_agent`; resolve its return for the assigned agent before another action. The worker's final text carries only the report path and `Status:` line; the report remains on disk.
+- `status`: Claude Code has none between dispatch and its event. On Codex, use `list_agents` plus available completion messages for the assigned agent; never infer a terminal outcome from its absence in a live-only listing.
 
 ## Await discipline on this backend
 
-Steps 1–2 of `README.md`'s await discipline collapse: an Agent call either starts or errors, and the notification arrives whether or not the report file was written. Step 4 applies unchanged: on `report`, check completeness; on `blocked`/`question`, respawn a new agent of the same role with the decision in the envelope and the prior report path attached; on an agent that returns nothing usable, respawn once with the same envelope, then escalate.
+### Claude Code — event
+
+The Agent dispatch establishes a completion notification before the foreman ends the parent turn. The host re-invokes the foreman when the notification arrives. Consume its status, validate a `done` report, and continue the loop. On `blocked` or `question`, follow the existing rule and respawn with the decision and prior report path. On no usable terminal return, apply the two-attempt rule. Do not foreground-wait or schedule polling.
+
+### Codex — foreground
+
+Keep the parent turn active after `spawn_agent` and await the assigned agent in the foreground. Before the first wait, consume any status or completion message already delivered; this covers completion between dispatch and await without report-file polling.
+
+Resolve every wait return through the assigned agent's state:
+
+- A timeout while the assigned agent remains active is nonterminal. Re-arm foreground await in the same turn. Do not send a final response, a working-status message, or a continue prompt.
+- A completion delivered with `trigger_turn: false` is expected because the parent turn is already active. Consume it, read and validate the report, record the terminal state, and continue the loop.
+- `blocked` and `question` follow the existing resolution or escalation rules. A respawn is a fresh agent with the decision and prior report path.
+- `dead` and dispatch errors follow the two-attempt rule. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop.
+
+Do not add an external orchestrator, scheduled or periodic polling, report-file polling, a wait interval, a retry cap, or a user-visible working-status requirement.
 
 ## Workspace and the run directory
 
@@ -40,14 +57,4 @@ None. CI state is read with `gh pr checks <n> --json name,state --jq …` at ste
 
 ## Eval scenario coverage
 
-The scenario × backend matrix with eval ids is `evals/scenarios.md`.
-
-| Scenario                          | Coverage                                                                                                                                              |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Silent assignment                 | `n/a` — an Agent call cannot silently not start; degradation: an agent that returns no report is treated as `idle-without-report` and respawned once. |
-| Early finish before await         | `n/a` — the notification is delivered regardless of timing.                                                                                           |
-| Blocked, resolvable from the task | expressible — respawn with the decision.                                                                                                              |
-| Blocked, needs escalation         | expressible.                                                                                                                                          |
-| Merge denied by classifier        | expressible — the foreman's own permission mode.                                                                                                      |
-| Partial mutation failure          | expressible (`github` intake).                                                                                                                        |
-| Two-round review cap              | expressible; the closure check and any second round are respawns of the same reviewer name.                                                           |
+The host-specific native-subagent scenarios and the existing backend drills are mapped to eval ids in `evals/scenarios.md`. Codex expresses foreground timeout and early-completion cases. Claude Code's event delivers completion regardless of timing. Both hosts express blocked, escalation, merge-denial, partial-mutation, and review-round cases through the shared loop rules.

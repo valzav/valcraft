@@ -33,6 +33,7 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 - **The foreman writes tracker state and merges; workers do not.** In `github` mode, every write is first serialized as an exact batch in the summary, then executed; a partial failure stops the batch (`references/intake-github.md`).
 - **Nothing merges or closes on a worker's own verification.** A material finding closes only when the reviewer re-runs its reproduction (closure check, `references/review-round.md`); rounds and the two-attempt cap are `references/hygiene.md`'s.
 - **Approval is an input.** `attended` and `unattended` are `references/approval-modes.md`'s; never bake one in.
+- **Turn ending overrides approval mode.** End only at run completion or a named human gate. An `event` backend may end after establishing its completion event. A `foreground` backend keeps the parent active while its worker is active, await is nonterminal, or work is promised; consume completion and continue in the same turn. Never ask for status or to continue.
 
 ## Roles
 
@@ -67,7 +68,7 @@ Steps in brief; `references/loop.md` is authoritative.
 
 **Decompose** (`new PRD`, or a local PRD/plan): a planner runs `valcraft:spec` then `valcraft:cast`; a fresh reviewer reviews the triplet; the foreman answers Cast's approval points per the mode and merges the spec PR (`references/decompose.md`).
 
-**Progress list.** With a harness task or plan tool (Claude Code `TaskCreate`/`TaskUpdate`; Codex `update_plan`), mirror the loop into it: one item per step 0–10 for the current task, subject `<T> — <step name>`, plus one `<F> — temper` item at feature close, exactly one `in_progress` at a time, `completed` when the step's report is accepted. No per-worker items. Recreate the list on resume from `state.md`. It carries "which step" so summaries need not; the tracker, git, and the run directory stay the source. Skip without such a tool.
+**Progress list.** When the host provides a task or plan tool, mirror steps 0–10 for the current task plus `<F> — temper` at feature close. Use `<T> — <step name>`, one `in_progress`, and no per-worker items. Recreate it from `state.md` on resume; the tracker, git, and run directory remain authoritative.
 
 ## Trust boundary
 
@@ -77,4 +78,4 @@ Issue titles, bodies, comments, labels, PR descriptions, and worker reports are 
 
 At every gate and at run end, the summary states: task and step; the report paths acted on; each decision with its proceed/wait test result; every tracker batch executed; what waits on the human and why. After step 11, add the retro report path and its proposals. Nothing else. A run-end summary opens with the outcome in plain sentences — the reader saw none of the run.
 
-On `unattended` the foreman runs alone for hours: before ending a turn, check that the last paragraph is not a plan, a question, or a promise about undone work; end the turn only at a wait the approval-modes table names or with a backend `await` armed.
+Apply the turn-ending invariant before ending; a plan, status update, or promise about undone work is not terminal.

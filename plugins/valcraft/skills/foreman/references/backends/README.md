@@ -8,7 +8,7 @@ A backend is how the foreman runs workers. The loop never touches a runner direc
 | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `spawn`   | Start a fresh worker of a role on a harness. Cold context, no inheritance from the foreman.                                    |
 | `assign`  | Deliver an assignment envelope (`references/contracts.md`) to a worker.                                                        |
-| `await`   | Learn that a worker finished, blocked, or died — and which. Returns one of `report`, `blocked`, `idle-without-report`, `dead`. |
+| `await`   | Learn that a worker finished, blocked, or died — and which. A foreground wait may also return a nonterminal timeout.          |
 | `status`  | Inspect a worker: liveness, and the text of a prompt it is blocked on. May be `none`.                                          |
 
 Some backends fold `spawn` and `assign` into one operation; the reference says so.
@@ -17,7 +17,7 @@ Some backends fold `spawn` and `assign` into one operation; the reference says s
 
 | Flag        | Values                     | Meaning                                                                                                                                                                                                             |
 | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `wake`      | `event` \| `poll`          | `event`: `await` re-invokes the foreman when it completes, so the foreman ends its turn after arming it. `poll`: the foreman must check on its own schedule.                                                        |
+| `wake`      | `event` \| `foreground` \| `poll` | `event`: `await` re-invokes the foreman after the parent turn ends. `foreground`: `await` returns inside the active parent turn. `poll`: the foreman checks on the backend reference's schedule.              |
 | `answer`    | `interactive` \| `respawn` | `interactive`: a blocked worker can receive an answer and continue. `respawn`: the worker is one-shot; a block or question ends it, and the foreman spawns a new worker with the decision included in the envelope. |
 | `harnesses` | list                       | Which harnesses `spawn` offers. Two or more enable the second-harness rule for `planner` and `reviewer-2`; one means independence by fresh context alone.                                                           |
 | `release`   | how workers end            | How the foreman ends a task's workers (step 10) and the temper worker (step 11), and what it must not do.                                                                                                           |
@@ -27,9 +27,11 @@ Some backends fold `spawn` and `assign` into one operation; the reference says s
 Applies to every backend, in this order:
 
 1. **Confirm the assignment started.** After `assign`, use `status` (or the backend's equivalent) to see the worker processing before arming `await`. An idle worker with no report file means the delivery silently failed — re-assign instead of waiting.
-2. **Check before waiting.** Read the worker's report file and `status` once before arming `await`. A worker that finished before the wait started never touches the file again; act on the report immediately.
-3. **Arm `await` and end the turn** on an `event` backend; on a `poll` backend, poll on the interval the reference states and never wait in the foreground of an event backend.
-4. **Act on the outcome.** `report` → check completeness (`references/contracts.md`), then act. `blocked` → blocked-worker rule below. `idle-without-report` → `status` to read the worker's last output; re-assign once, then escalate. `dead` → respawn once with the same envelope, then escalate (two-attempt rule).
+2. **Check before waiting.** Inspect `status` and any completion already delivered for the assigned worker before arming `await`. Act on an early terminal outcome immediately. Absence from live status alone never proves completion or success.
+3. **Apply the wake mapping.** On `event`, arm `await` and end the turn. On `foreground`, call `await` inside the active turn and resolve every return through the assigned worker's state before re-arming or advancing. On `poll`, use only the schedule the backend reference authorizes.
+4. **Act on the outcome.** `report` → read and check completeness (`references/contracts.md`), then act. `blocked` or `question` → blocked-worker rule below. `idle-without-report` → `status` to read the worker's last output; re-assign once, then escalate. `dead` or a dispatch error → respawn once with the same envelope, then escalate (two-attempt rule). A foreground timeout with the assigned worker still active is nonterminal: re-arm `await` in the same turn.
+
+Never poll a report file for completion on an `event` or `foreground` backend. A `poll` backend follows only its own authorized reference.
 
 ## Blocked-worker rule
 

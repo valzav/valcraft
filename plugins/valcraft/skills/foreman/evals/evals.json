@@ -21,7 +21,7 @@
       "id": 2,
       "name": "verdict-only-report-rejected",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-verdict-only` from its run directory .foreman/run-verdict-only/ and take the next loop step.",
-      "expected_output": "Foreman loads the project block (subagents backend, unattended mode, local tracker), reads .foreman/run-verdict-only/state.md and the reviewer-1 report, and recognizes the report as verdict-only: it lacks the review finding table, the checks-performed record, and the reproduction commands that references/contracts.md requires. It does not proceed to step 4 on the bare 'pass'. It sends one rejection assignment — a fresh reviewer-1 agent on the subagents backend, since the prior agent has returned — naming the missing parts and requiring the full valcraft:review contract appended to the same report path, then ends its turn to await. It does not review the plan itself and does not read the spec or design to form its own verdict.",
+      "expected_output": "Foreman loads the project block (subagents backend, unattended mode, local tracker), reads .foreman/run-verdict-only/state.md and the reviewer-1 report, and recognizes the report as verdict-only: it lacks the review finding table, the checks-performed record, and the reproduction commands that references/contracts.md requires. It does not proceed to step 4 on the bare 'pass'. It sends one rejection assignment — a fresh reviewer-1 agent on the subagents backend, since the prior agent has returned — naming the missing parts and requiring the full valcraft:review contract appended to the same report path. On Codex it keeps the parent turn active and awaits the fresh worker in the foreground; on Claude Code the dispatch establishes the completion notification before the parent turn ends. It does not review the plan itself and does not read the spec or design to form its own verdict.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -73,7 +73,7 @@
       "id": 4,
       "name": "worker-question-settled-by-spec",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-question` from .foreman/run-question/ and take the next loop step.",
-      "expected_output": "Foreman reads the worker report: Status question about the now == expires_at boundary. The design (use_link rejects now >= expires_at) and the plan of record (step 3: now == expires_at is expired) settle it, so foreman answers on its own judgement instead of escalating. On the subagents backend answer is respawn: it spawns a fresh worker-F001-T002 agent (never a fork) whose envelope carries the same forge assignment, the decision ('now == expires_at is expired, per design.md and plan step 3'), and the prior report path, then ends its turn. It records the decision in the summary. It does not implement anything itself.",
+      "expected_output": "Foreman reads the worker report: Status question about the now == expires_at boundary. The design (use_link rejects now >= expires_at) and the plan of record (step 3: now == expires_at is expired) settle it, so foreman answers on its own judgement instead of escalating. On the subagents backend answer is respawn: it spawns a fresh worker-F001-T002 agent (never a fork) whose envelope carries the same forge assignment, the decision ('now == expires_at is expired, per design.md and plan step 3'), and the prior report path. On Codex it awaits the replacement in the active parent turn; on Claude Code it ends only after the replacement's completion notification is established. It records the decision in the summary. It does not implement anything itself.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -145,8 +145,8 @@
     {
       "id": 7,
       "name": "cold-start-planner-and-small-context",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, start a new delivery run for feature 001-invite-links and stop as soon as the first worker assignment has been dispatched.",
-      "expected_output": "Foreman loads the project block (subagents, unattended, local tracker, dev/main), reads the backend, approval, intake-local, contracts, loop, and hygiene references, creates a new run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1: T-001 is checked, T-002 is unchecked with its dependency satisfied, so T-002 is the pick; unattended mode needs no pick confirmation, and local mode marks nothing. It then dispatches step 2 by spawning a fresh general-purpose agent named planner-F001-T002 — never a fork — whose prompt is the assignment envelope: cold-start reading order (the msw skill, AGENTS.md, then only the named artifacts), identity, the step 2 planning text with the tasks.md path and absolute plan-directory conventions, the report instruction naming the absolute run-directory report path and the Status line, and the trust-boundary paragraph. Foreman itself does not read spec.md, design.md, or the plan directory to plan the task; its own context holds only loop state. It stops after dispatch as the prompt asked.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
+      "expected_output": "Foreman loads the project block (subagents, unattended, local tracker, dev/main), reads the backend, approval, intake-local, contracts, loop, and hygiene references, creates a new run directory under .foreman/ with state.md and workers.md, and applies step 0 and step 1: T-001 is checked, T-002 is unchecked with its dependency satisfied, so T-002 is the pick; unattended mode needs no pick confirmation, and local mode marks nothing. It then dispatches step 2 as a fresh general-purpose worker, never a fork, whose prompt is the assignment envelope: cold-start reading order (the msw skill, AGENTS.md, then only the named artifacts), canonical planner-F001-T002 identity, the step 2 planning text with the tasks.md path and absolute plan-directory conventions, the report instruction naming the absolute run-directory report path and the Status line, and the trust-boundary paragraph. On Codex it uses fork_turns: none, records the physical handle, and awaits in the active parent turn until a terminal worker outcome advances the loop. On Claude Code it uses the logical worker name and ends only after dispatch establishes the completion notification. Foreman itself does not read spec.md, design.md, or the plan directory to plan the task; its own context holds only loop state.",
       "files": [
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.gitignore",
@@ -158,8 +158,9 @@
       "assertions": [
         "Foreman picks T-002 from tasks.md order and dependency state",
         "Foreman creates a run directory with state.md and workers.md before dispatching",
-        "The planner is spawned as a fresh general-purpose agent, not a fork, named planner-F001-T002",
+        "The planner is a fresh general-purpose worker, not a fork, with canonical logical identity planner-F001-T002",
         "The planner's prompt contains the cold-start reading order, the report path in the run directory, the Status line instruction, and the trust-boundary paragraph",
+        "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending",
         "Foreman does not read spec.md or design.md itself"
       ]
     },
@@ -243,7 +244,7 @@
       "id": 11,
       "name": "temper-runs-once-at-feature-close",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .foreman/run-feature-closed/ and take the next loop step.",
-      "expected_output": "Foreman reads state.md: every task of FEAT-001 is closed, the human confirmed the feature (quoted), step 11 not started. tasks.md agrees (all boxes ticked). Foreman spawns one fresh worker named temper-F001 (a general-purpose subagent, not a fork) with the assignment envelope: run valcraft:temper in analyze mode on specs/001-invite-links/, commit the report created under docs/retro/ on branch retro/f001-<slug> from origin/dev, open a PR against dev titled `Retro: 001-invite-links` whose body lists the report path and one line per routed proposal, apply no proposal, and report the report path, PR URL, proposal lines, and Status line to .foreman/run-feature-closed/temper-F001.md. Foreman does not run valcraft:temper itself, does not read the feature's specs or history, does not spawn a temper worker per task, and does not edit AGENTS.md or any prompt artifact. It adds a `FEAT-001 — temper` progress item, records step 11 as started in state.md, and ends the turn to await the report.",
+      "expected_output": "Foreman reads state.md: every task of FEAT-001 is closed, the human confirmed the feature (quoted), step 11 not started. tasks.md agrees (all boxes ticked). Foreman spawns one fresh worker with canonical identity temper-F001 (a general-purpose subagent, not a fork) with the assignment envelope: run valcraft:temper in analyze mode on specs/001-invite-links/, commit the report created under docs/retro/ on branch retro/f001-<slug> from origin/dev, open a PR against dev titled `Retro: 001-invite-links` whose body lists the report path and one line per routed proposal, apply no proposal, and report the report path, PR URL, proposal lines, and Status line to .foreman/run-feature-closed/temper-F001.md. Foreman does not run valcraft:temper itself, does not read the feature's specs or history, does not spawn a temper worker per task, and does not edit AGENTS.md or any prompt artifact. It adds a `FEAT-001 — temper` progress item and records step 11 as started in state.md. On Codex it awaits the worker in the active parent turn; on Claude Code it ends only after dispatch establishes the completion notification.",
       "files": [
         "evals/files/loop-done/AGENTS.md",
         "evals/files/loop-done/.gitignore",
@@ -259,14 +260,14 @@
         "The assignment runs valcraft:temper in analyze mode on the feature directory specs/001-invite-links/",
         "The assignment has the worker commit the docs/retro/ report on a retro/ branch and open a PR against dev, and forbids applying proposals",
         "Foreman does not run temper itself and does not edit AGENTS.md or another prompt artifact",
-        "Foreman records step 11 in state.md and the progress list and awaits the report"
+        "Foreman records step 11 in state.md and the progress list; Codex awaits in the active turn and Claude Code relies on the established completion notification"
       ]
     },
     {
       "id": 12,
       "name": "deliver-quick-picks-across-files-without-github",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-quick/, deliver quick and stop as soon as the first worker assignment has been dispatched.",
-      "expected_output": "Foreman loads the project block (github tracker on github.example.test/acme/ledger, subagents, unattended, dev/main) and the cast quick reference, validates the quick pool, and creates state.md and workers.md. Q-001 QT-001 is checked; Q-002 QT-001 is unchecked and its cross-file `blocked by Q-001 QT-001` target is checked, so Foreman picks canonical Q-002 QT-001 without any GitHub lookup. It derives branch feat/q002-qt001-<slug>, logical planner/report name planner-Q002-QT001, and a separate physical handle recorded in workers.md; on Codex the handle is lowercase underscore. The planner assignment uses the quick file's absolute path, keeps a semantic plan type and slug without adding quick, and carries the report path, Status line, and trust boundary. Foreman does not plan the task itself and stops after dispatch.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-quick/, deliver quick and continue according to the active native-subagent host.",
+      "expected_output": "Foreman loads the project block (github tracker on github.example.test/acme/ledger, subagents, unattended, dev/main) and the cast quick reference, validates the quick pool, and creates state.md and workers.md. Q-001 QT-001 is checked; Q-002 QT-001 is unchecked and its cross-file `blocked by Q-001 QT-001` target is checked, so Foreman picks canonical Q-002 QT-001 without any GitHub lookup. It derives branch feat/q002-qt001-<slug>, logical planner/report name planner-Q002-QT001, and a separate physical handle recorded in workers.md; on Codex the unique task_name is lowercase underscore and preserves the qualified quick identity. The planner assignment uses the quick file's absolute path, keeps a semantic plan type and slug without adding quick, and carries the report path, Status line, and trust boundary. On Codex Foreman awaits in the active parent turn; on Claude Code it ends only after dispatch establishes the completion notification. Foreman does not plan the task itself.",
       "files": [
         "evals/files/loop-quick/AGENTS.md",
         "evals/files/loop-quick/.gitignore",
@@ -281,7 +282,8 @@
         "Foreman creates a run directory with state.md and workers.md before dispatching",
         "The canonical identity is Q-002 QT-001; branch feat/q002-qt001-<slug> and logical planner-Q002-QT001 preserve it, while workers.md records a separate physical handle",
         "The planner's assignment names the quick file's absolute path in place of spec.md, design.md, and tasks.md, plus the report path, Status line, and trust-boundary paragraph",
-        "Foreman does not plan the task itself and stops after dispatch"
+        "Codex awaits in the active parent turn; Claude Code ends only after dispatch establishes the completion notification",
+        "Foreman does not plan the task itself"
       ]
     },
     {
@@ -358,6 +360,159 @@
         "The forced AO collision is detected before spawn and produces a distinct checked alias",
         "Codex independently uses lowercase_underscore worker_q1000_qt001",
         "workers.md maps each physical handle to canonical identity without a numeric-width cap"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "codex-foreground-await-keeps-parent-active",
+      "prompt": "$valcraft:foreman — describe the native-subagent continuation after dispatching planner-F001-T002 on Codex while the assigned worker is still active. Do not spawn anything.",
+      "expected_output": "Foreman selects the portable subagents backend's Codex mapping from the active host, not project configuration. It dispatches a fresh worker with fork_turns: none, records the returned physical handle against planner-F001-T002 in workers.md, keeps the parent turn active, and awaits completion in the foreground. It emits no final answer, working-status message, or continue prompt while that worker remains active.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The active Codex host selects the foreground primitive mapping without a second backend or project setting",
+        "Dispatch uses fork_turns: none and records the returned physical handle against planner-F001-T002",
+        "Foreman keeps the parent turn active and awaits in the foreground",
+        "Foreman gives no final answer, working-status message, or continue prompt while the assigned worker is active"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "codex-timeout-active-worker-rearms-await",
+      "prompt": "$valcraft:foreman — on Codex, the foreground await for worker-F001-T002 returned a timeout and assigned-worker status still says running. Show the next action. Do not call tools.",
+      "expected_output": "Foreman resolves the timeout against the assigned worker's live state. Because worker-F001-T002 is still active, the timeout is nonterminal: Foreman re-arms the foreground await in the same parent turn. It does not read or poll the report file, choose an interval or retry cap, advance the loop, ask the user, or emit a final response.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "The timeout is resolved through assigned-worker state instead of treated as a terminal outcome",
+        "An active worker causes Foreman to re-arm foreground await in the same parent turn",
+        "Foreman neither advances nor asks the user nor emits a final response",
+        "Foreman invents no interval or retry cap and does not poll a report file"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "codex-trigger-turn-false-completion-advances",
+      "prompt": "$valcraft:foreman — on Codex, worker-F001-T002 completes while its parent foreground await is active. The completion is delivered with trigger_turn:false and a done status. Describe handling. Do not call tools.",
+      "expected_output": "Foreman consumes the completion in the already-active parent turn; trigger_turn:false is expected and does not require user or host re-invocation. It reads and validates the assigned worker's report under the existing report contract, records the terminal state in workers.md, applies the loop gate, and immediately dispatches or performs the next required loop step unless that step reaches a human approval or escalation gate.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "trigger_turn:false completion is consumed in the active Codex parent turn",
+        "Foreman validates the report before accepting completion",
+        "Foreman advances the loop without asking the user to continue",
+        "Only an existing human approval or escalation gate may stop the advancing turn"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "codex-early-completion-before-first-await",
+      "prompt": "$valcraft:foreman — on Codex, reviewer-1-F001-T002 finishes after dispatch but before Foreman first calls foreground await. The completion message is already available. Describe handling. Do not call tools.",
+      "expected_output": "Foreman checks the assigned worker state and available completion message before its first foreground await. It consumes the terminal completion immediately, validates the report, records the state, and advances the loop. It does not arm a redundant wait, infer success merely because the worker is absent from live status, or poll the report file.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "An already-delivered completion is consumed before the first foreground await",
+        "The assigned worker's report is validated before the loop advances",
+        "Foreman does not arm a redundant wait or poll a report file",
+        "Absence from live status alone is not accepted as success"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "codex-human-gate-may-end-turn",
+      "prompt": "$valcraft:foreman — on Codex, the assigned worker has completed and its validated report reaches a release-branch approval gate that waits in every approval mode. May the parent turn end? Explain.",
+      "expected_output": "Yes. Foreman records the worker's terminal state, applies the existing release-branch rule, reports the concrete decision needed from the human, and may end the turn. The turn ends because a named human approval gate is active, not because a worker is running, an await timed out, or Foreman promised a later step. The turn-ending invariant applies above attended and unattended approval mode.",
+      "files": [
+        "SKILL.md",
+        "references/approval-modes.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "A named human approval or escalation gate may end the Codex parent turn",
+        "The worker is terminal and its report is processed before the human wait",
+        "The turn ends for the gate, not for an active worker, timeout, status update, or promised next step",
+        "The turn-ending invariant applies in both approval modes"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "codex-initial-and-respawn-identities-stay-fresh",
+      "prompt": "$valcraft:foreman — show Codex native-subagent dispatch mappings for initial planner-F001-T002, its fresh respawn, initial worker-Q1000-QT001, and its fresh respawn. Do not spawn anything.",
+      "expected_output": "Every initial dispatch and respawn uses fork_turns: none. Foreman preserves canonical logical identities planner-F001-T002 and worker-Q1000-QT001, derives a unique lowercase_underscore task_name for each physical dispatch without dropping feature, task, Q-NNN, or QT-XXX digits, and records every returned agent id plus task_name against the logical identity in workers.md. A respawn is a new agent, not follow-up work sent to the prior physical handle.",
+      "files": [
+        "references/backends/subagents.md",
+        "references/hygiene.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Initial feature and quick workers and their respawns all use fork_turns: none",
+        "Canonical logical identities preserve every F/T/Q/QT digit",
+        "Each physical dispatch receives a unique lowercase_underscore task_name and its returned agent id is recorded",
+        "A respawn creates a new agent instead of sending follow-up work to the prior handle"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "codex-terminal-routing-preserves-existing-rules",
+      "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not call tools.",
+      "expected_output": "Foreman resolves each return against the assigned worker. Blocked and question follow the existing blocked-worker and report-status rules; a settled answer or valid respawn creates a fresh worker, while a human decision escalates. Dead and dispatch error follow the existing two-attempt rule. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop; Foreman continues resolving state. Every done report still passes completeness validation.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/contracts.md",
+        "references/hygiene.md"
+      ],
+      "assertions": [
+        "Blocked and question outcomes follow the existing resolution or escalation rules",
+        "Dead and dispatch-error outcomes follow the existing two-attempt rule",
+        "Non-live status without terminal evidence never implies success or loop advancement",
+        "Done still requires report completeness validation"
+      ]
+    },
+    {
+      "id": 24,
+      "name": "claude-code-event-continuation-preserved",
+      "prompt": "/valcraft:foreman — describe native-subagent continuation on Claude Code after dispatching planner-F001-T002. Do not spawn anything.",
+      "expected_output": "Foreman selects the portable subagents backend's Claude Code mapping from the active host. The Agent dispatch establishes the worker's completion notification before Foreman ends the parent turn. The host later re-invokes Foreman when that notification arrives; Foreman consumes the returned status and report under the existing rules. It does not foreground-wait or schedule polling on Claude Code.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "The active Claude Code host selects event continuation without a second backend or project setting",
+        "Dispatch establishes the completion notification before the parent turn ends",
+        "The host re-invokes Foreman when the completion notification arrives",
+        "Claude Code uses neither foreground waiting nor scheduled polling"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "native-subagents-add-no-polling-policy",
+      "prompt": "$valcraft:foreman — audit the portable native-subagents backend for added continuation policy. State what it must not add.",
+      "expected_output": "The portable subagents backend maps Claude Code to event wake and Codex to foreground wake. It adds no external orchestrator, scheduled or periodic polling, report-file polling, user-visible working-status requirement, wait interval, or retry cap. Codex simply re-arms foreground await while the assigned worker remains active; Claude Code waits for its native completion event.",
+      "files": [
+        "SKILL.md",
+        "references/backends/README.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "The same subagents backend maps Codex to foreground and Claude Code to event",
+        "No external orchestrator, scheduled polling, periodic polling, or report-file polling is added",
+        "No wait interval, retry cap, or user-visible working-status requirement is invented",
+        "Codex re-arms native foreground await only while assigned-worker state remains active"
       ]
     }
   ]

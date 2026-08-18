@@ -30,8 +30,9 @@ repository-level reference that keeps new skills consistent with it.
 - **Audit mode** (hone) — report line-referenced findings; the target is not edited.
 - **backend** (foreman) — how the foreman runs workers: a `references/backends/<name>.md`
   file that provides the four primitives (`spawn`, `assign`, `await`, `status`) and
-  declares its `wake`, `answer`, `harnesses`, and `release` capabilities. v1: `subagents`
-  (Claude Code Agent tool) and `ao` (Agent Orchestrator sessions).
+  declares its `wake`, `answer`, `harnesses`, and `release` capabilities. v1: portable
+  native `subagents` (Claude Code event wake or Codex foreground wake, selected by the
+  active host) and `ao` (Agent Orchestrator sessions).
 - **canonical snippet** (hone) — prompt language taken verbatim from a model guide;
   graft it rather than hand-writing an equivalent.
 - **closure check** (foreman) — the reviewer's scoped re-run of the reproductions behind
@@ -74,6 +75,9 @@ repository-level reference that keeps new skills consistent with it.
 - **finding table** (review) — the auditable report unit: one row per finding,
   `R-NNN | severity | claim | evidence | resolution`, with IDs stable across review
   rounds.
+- **foreground wake** (foreman) — a backend await that returns inside the active parent
+  turn. A nonterminal return is resolved through assigned-worker state and re-armed;
+  terminal output is validated and the loop continues without user re-invocation.
 - **fixed-shape block** (forge, review) — the skill's last output: `## Forge handoff`
   (Changed, Verification evidence, Scope, Open questions and deferred findings, Review
   target) or `## Review report` (Mode and change class, Verdict, Findings, Reproductions,
@@ -201,6 +205,10 @@ repository-level reference that keeps new skills consistent with it.
   `spec.md` owns the spec-issue mapping; `tasks.md` owns task definitions and issue
   mappings. By mode, `tasks.md` also owns local checkbox status or the definitions for
   GitHub task projections, while GitHub owns projected task status.
+- **turn-ending invariant** (foreman) — the rule above approval mode: a parent turn ends
+  only at run completion, a named human gate, or after an event backend establishes its
+  completion notification. A foreground worker, nonterminal await, status update, or
+  promised next step cannot end it.
 - **triggering** — how a skill gets invoked: the frontmatter `name` and `description`
   drive automatic selection; `/valcraft:<name>` is the explicit Claude Code path and
   `$valcraft:<name>` is the explicit Codex path.
