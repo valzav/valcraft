@@ -649,6 +649,181 @@
         "R-006 remains open because both the diff and rerun contradict the claimed resolution",
         "Rule 6 remains the closure gate"
       ]
+    },
+    {
+      "id": 34,
+      "name": "default-branch-synchronization-classifies-four-relations",
+      "prompt": "$valcraft:foreman — before selecting Q-004 QT-002, classify these clean default-branch states after fetch: (a) local dev and origin/dev have the same SHA; (b) origin/dev is ahead; (c) local dev is ahead, first without and then with an explicit operator instruction to push it; (d) the refs diverged. The project is unattended. Do not call tools.",
+      "expected_output": "Foreman records the exact local dev and origin/dev SHAs after fetch and classifies their ancestry. Equal proceeds. Clean origin-ahead fast-forwards local dev to origin/dev, verifies the reconciled SHA, and proceeds. Local-ahead waits before pushing without explicit authority; unattended mode does not grant that authority. With the explicit push instruction, Foreman pushes the local default branch, verifies that the refs are reconciled, records the resulting exact SHA, and proceeds. A new task records that reconciled SHA as its branch base. Diverged stops without rebasing, merging, resetting, force-pushing, or creating the task branch. Approval mode authorizes only operations listed in its table.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/backends/subagents.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Foreman records exact local and remote default-branch SHAs and distinguishes equal, origin-ahead, local-ahead, and diverged",
+        "Equal proceeds and clean origin-ahead fast-forwards before proceeding",
+        "Local-ahead waits without explicit push authority even in unattended mode, then pushes and verifies reconciliation when that authority is supplied",
+        "A new task branch starts from the recorded reconciled default-branch SHA",
+        "Diverged stops without rewriting or combining the refs and before task-branch creation",
+        "Approval mode grants only the operations listed in the approval table"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "dirty-shared-checkout-stops-before-synchronization",
+      "prompt": "$valcraft:foreman — step 0 begins in the shared checkout and `git status` shows dirt before Q-004 QT-002 has a task branch. Classify separate cases with a staged edit, an unstaged edit, or an untracked file; in each case the owner may be known or unknown. The project is unattended. What happens next? Do not call tools.",
+      "expected_output": "Foreman preserves the checkout and stops in every case before fetch, switch, default-branch synchronization, or task-branch creation. It records the staged, unstaged, and untracked paths, any known attribution, and the current branch and SHA in state.md, then waits for the operator. Attribution does not authorize the task-start gate to proceed. Foreman does not clean, stash, reset, switch, create a branch, or treat unattended mode as permission to mutate the checkout. Dead-worker recovery of an existing task remains a separate rule.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/backends/subagents.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Staged, unstaged, and untracked shared-checkout dirt each stop step 0 before fetch, switch, or synchronization",
+        "No task branch is created",
+        "Foreman records the dirty paths, any attribution, and exact checkout state and preserves the changes",
+        "Known attribution does not waive the clean task-start gate",
+        "Unattended mode does not authorize cleanup, stash, reset, or branch switching",
+        "Dead-worker recovery remains a separate existing-task rule"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "exact-local-task-tick-is-the-only-review-bypass",
+      "prompt": "$valcraft:foreman — reviewer-2 passed PR head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa for Q-004 QT-002. Compare two later PR heads: (a) bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb changes only that exact selected task's checkbox from unchecked to checked; (b) cccccccccccccccccccccccccccccccccccccccc makes the same tick and changes adjacent task text. Describe the final-head review gate. Do not call tools.",
+      "expected_output": "Foreman records aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as the reviewer-covered SHA and compares each later head exactly against it. For (a), the exact unchecked-to-checked transition for selected Q-004 QT-002 is the sole exception: local intake owns that tick, so it may bypass another scoped review. For (b), the adjacent text means the delta is not the exact exception; Foreman sends the scoped delta from the covered SHA through review and applicable checks before advancing the reviewer-covered SHA. It never uses a change-type allow-list or diff-stat heuristic.",
+      "files": [
+        "references/loop.md",
+        "references/intake-local.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The reviewer-covered SHA is recorded and every later head is compared exactly against it",
+        "Only the selected task's exact unchecked-to-checked transition bypasses another scoped review",
+        "An adjacent text edit requires scoped review and applicable checks",
+        "The covered SHA advances only after that review and its applicable checks pass",
+        "No change-type allow-list or diff-stat heuristic is used"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "all-other-final-head-deltas-require-scoped-review",
+      "prompt": "$valcraft:foreman — after reviewer-2 covers one PR SHA, the PR head changes in four independent cases: a documentation edit, a file rename, a generated-file update, and a merge commit. None is the exact selected-task checkbox transition. Classify each case. Do not call tools.",
+      "expected_output": "Foreman treats each new head as uncovered. Documentation, rename, generated-file, and merge deltas each receive scoped review of the exact delta from the last covered SHA, followed by applicable checks on the resulting final SHA. No category is trusted by name, file type, generation status, merge provenance, or diff size. The covered SHA advances only after review passes and applicable checks cover that exact head.",
+      "files": [
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Documentation deltas require scoped review",
+        "Rename deltas require scoped review",
+        "Generated-file deltas require scoped review",
+        "Merge deltas require scoped review",
+        "Each covered SHA advances only after scoped review and applicable checks pass on the exact resulting head"
+      ]
+    },
+    {
+      "id": 38,
+      "name": "final-head-required-checks-pass-or-wait",
+      "prompt": "$valcraft:foreman — the final PR head is dddddddddddddddddddddddddddddddddddddddd and review covers it. In one case every applicable required check reports success on that SHA. In two other cases one applicable check is running or failing. Classify the three outcomes. Do not call tools.",
+      "expected_output": "Foreman records the final head SHA with the check observations. All applicable required checks passing on that exact SHA classifies as passing and satisfies the check gate. A running check and a failing check each classify as pending/failing and wait before merge. Neither attended nor unattended mode converts a pending or failing result into approval, and Foreman adds no universal CI requirement beyond the applicable checks.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Passing means every applicable required check succeeds on the exact final head",
+        "A running applicable check classifies pending/failing and waits",
+        "A failing applicable check classifies pending/failing and waits",
+        "Approval mode cannot waive the result and no universal CI gate is invented"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "required-check-that-did-not-trigger-is-missing-required",
+      "prompt": "$valcraft:foreman — repository rules require a verification check for Q-004 QT-002, but the check suite returned no run for the exact final PR head. Review passed. Classify the check state and merge decision. Do not call tools.",
+      "expected_output": "Foreman classifies the exact final head as missing-required, records the required check and the source that requires it, and waits before merge. An absent run is not none-applicable and cannot inherit a result from another SHA. Approval mode does not waive the missing required check.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "A configured or required check with no final-head run classifies as missing-required",
+        "Missing-required waits before merge",
+        "The missing run is not none-applicable and cannot borrow another SHA's result",
+        "The requiring source is recorded with the exact final SHA"
+      ]
+    },
+    {
+      "id": 40,
+      "name": "introduced-workflow-and-external-requirement-determine-applicability",
+      "prompt": "$valcraft:foreman — the default branch has no workflow file. PR A introduces a workflow that applies to its own final head. PR B does not add a workflow, but repository rules name an externally run required check. How does Foreman classify applicability? Do not call tools.",
+      "expected_output": "Foreman does not infer none-applicable from the default branch alone. For PR A it inspects workflows present on the default branch or introduced by the PR, so the introduced applicable workflow counts. For PR B it queries repository rules and external required-check sources, so the external requirement counts even without a repository workflow. Each resulting check must report for the exact final SHA; otherwise the state is pending/failing or missing-required as appropriate.",
+      "files": [
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Default-branch workflow absence alone never proves none-applicable",
+        "A workflow introduced by the PR participates in applicability",
+        "An external required check participates even when the repository has no workflow file",
+        "The applicable results must cover the exact final SHA"
+      ]
+    },
+    {
+      "id": 41,
+      "name": "older-head-check-result-cannot-authorize-final-head",
+      "prompt": "$valcraft:foreman — all applicable checks passed on PR head eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee. A scoped review fix creates final head ffffffffffffffffffffffffffffffffffffffff, and no check result exists yet for that SHA. May Foreman merge? Do not call tools.",
+      "expected_output": "No. Foreman records eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as older check evidence but does not apply it to ffffffffffffffffffffffffffffffffffffffff. It reclassifies applicable checks for the exact final head and waits for their final-head results; a required check with no run is missing-required. Review coverage and check coverage are both pinned to the exact final SHA before merge.",
+      "files": [
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "An older-head passing result cannot authorize a newer final head",
+        "Applicable checks are reclassified for the exact final SHA",
+        "A required check with no new-head run is missing-required",
+        "Both review and check coverage are pinned to the final SHA"
+      ]
+    },
+    {
+      "id": 42,
+      "name": "none-applicable-uses-normal-merge-approval-row",
+      "prompt": "$valcraft:foreman — repository task requirements, repository rules, external required checks, and workflows on the default branch and introduced by the PR are all available and queried. None configures or requires a check for final head 1111111111111111111111111111111111111111, which exact review covers. What happens in attended and unattended mode? Do not call tools.",
+      "expected_output": "Foreman records each queried applicability source, the exact final SHA, and the classification none-applicable. That classification satisfies the check gate without inventing a universal CI requirement. Merge then follows the normal step-10 approval row: attended waits for the human; unattended proceeds when the ordinary proceed/wait test passes and no other always-wait row applies.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "None-applicable is available only after every applicability source is queried",
+        "The source observations and exact final SHA are recorded",
+        "No universal CI requirement is invented",
+        "The normal step-10 merge row controls attended and unattended behavior"
+      ]
+    },
+    {
+      "id": 43,
+      "name": "unavailable-applicability-source-stops-classification",
+      "prompt": "$valcraft:foreman — classify checks for three final heads. In separate cases, repository rules are unavailable, the external required-check source is unavailable, or the applicable workflow source cannot be read. Other visible sources show no checks. Do not call tools.",
+      "expected_output": "Foreman stops before assigning passing, pending/failing, missing-required, or none-applicable in all three cases. It records the exact final SHA, the unavailable source, and the probe result, then waits for that source to become available or for human resolution. Visible absence elsewhere cannot substitute for repository rules, external required checks, or workflow inspection. Approval mode does not authorize a guess.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Unavailable repository rules stop before classification",
+        "An unavailable external required-check source stops before classification",
+        "An unavailable applicable-workflow source stops before classification",
+        "Foreman records the exact SHA and failed source probe and does not guess from other visible sources"
+      ]
     }
   ]
 }

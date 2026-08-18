@@ -58,3 +58,22 @@ contracts control attribution and verification.
 Recovery preserves the active wake mapping: Codex remains foreground and Claude Code
 remains event-driven on `subagents`; AO remains event-driven. These scenarios add no
 polling schedule, interval, or retry rule.
+
+## Default synchronization and exact final-head coverage
+
+These ten scenarios cover the task-start synchronization gate and the merge gate. The
+same final-head check classifier applies to normal task PRs, the pending record-and-close
+flow, and retrospective PRs.
+
+| Scenario | Expected distinction | Eval |
+| --- | --- | --- |
+| Four synchronization relations | Equal proceeds; clean origin-ahead fast-forwards; local-ahead waits without explicit push authority and reconciles with it; diverged stops. | 34 `default-branch-synchronization-classifies-four-relations` |
+| Dirty shared checkout | Any staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation, even when attributable; dead-worker recovery remains separate. | 35 `dirty-shared-checkout-stops-before-synchronization` |
+| Exact local tick exception | Only the selected task's exact unchecked-to-checked transition bypasses another review; adjacent text does not. | 36 `exact-local-task-tick-is-the-only-review-bypass` |
+| Other final-head deltas | Documentation, rename, generated-file, and merge deltas each require scoped review. | 37 `all-other-final-head-deltas-require-scoped-review` |
+| Passing versus pending/failing | Applicable required checks must pass on the exact final SHA; running or failing waits. | 38 `final-head-required-checks-pass-or-wait` |
+| Required run absent | A configured or required check that did not trigger is `missing-required`, not `none-applicable`. | 39 `required-check-that-did-not-trigger-is-missing-required` |
+| PR and external applicability | A PR-introduced workflow and an external required check count even when the default branch has no workflow. | 40 `introduced-workflow-and-external-requirement-determine-applicability` |
+| Older-head result | A passing result on an older SHA cannot authorize the final SHA. | 41 `older-head-check-result-cannot-authorize-final-head` |
+| No applicable checks | After every source is queried and none applies, record `none-applicable` and use the normal merge-approval row. | 42 `none-applicable-uses-normal-merge-approval-row` |
+| Applicability source unavailable | An unavailable repository-rule, external-required-check, or workflow source stops before classification. | 43 `unavailable-applicability-source-stops-classification` |

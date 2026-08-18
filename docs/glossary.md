@@ -65,6 +65,10 @@ repository-level reference that keeps new skills consistent with it.
 - **contract** — a prompt artifact's or document's requested outcome plus the
   smallest criteria that prove it. Stated before any judgment; the sole source of
   necessity.
+- **default-branch synchronization** (foreman) — the step-0 classification of exact
+  local and remote default-branch SHAs as equal, local-ahead, origin-ahead, or diverged.
+  Clean origin-ahead may fast-forward. Local-ahead needs explicit push authority.
+  Dirty or diverged state stops before a task branch is created.
 - **deletion test** — the single necessity test: if deleting a claim leaves the
   contract unmet or unproven, the claim survives; otherwise it is noise.
 - **distillate** (distill) — the short structured summary a distill run produces:
@@ -93,6 +97,10 @@ repository-level reference that keeps new skills consistent with it.
   Checks performed, Not examined). Headings verbatim and in order, `none` for an empty
   section; a missing heading makes the output incomplete, and a host loop such as foreman
   may reject it without reading further.
+- **final-head gate** (foreman) — the step-10 merge boundary that pins review and
+  applicable checks to the exact final PR SHA. Check states are `passing`,
+  `pending/failing`, `missing-required`, or `none-applicable`. Only the selected local
+  task's exact unchecked-to-checked transition may bypass another scoped review.
 - **fixture** — an input file a skill's eval runs against, stored under `evals/files/`
   and listed in the eval's `files`.
 - **fuses** (msw) — the kernel's outer stops: at most 3 judgment rounds, and a claim

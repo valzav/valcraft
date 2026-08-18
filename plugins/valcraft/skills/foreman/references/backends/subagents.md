@@ -43,11 +43,22 @@ Do not add an external orchestrator, scheduled or periodic polling, report-file 
 Foreman and workers share one checkout. Consequences:
 
 - The run directory is `<checkout>/.foreman/<run-id>/`; the envelope still carries the absolute path.
-- Workers run serially, so `valcraft:forge`'s branch switch happens in the shared checkout under the foreman. The foreman reads no repository files during a task, so this is safe; after the step 10 merge, the foreman returns the checkout to `foreman_default_branch` (`git switch <branch> && git pull --ff-only`) before picking the next task.
+- Workers run serially, so `valcraft:forge`'s branch switch happens in the shared
+  checkout under the foreman. The foreman reads no repository files during a task, so
+  this is safe.
+- Step 0 owns shared-checkout recovery. Before any fetch, switch, synchronization, or
+  task-branch creation, Foreman requires a clean checkout and records the current branch
+  and exact HEAD. Any staged, unstaged, or untracked change stops in place, whether or
+  not its owner is known. After a merge, the next task returns through step 0's four-way
+  default-branch classification instead of assuming a pull is safe.
 - Step 4's "copy the plan into your worktree" clause is inert — same path, same checkout.
 - `valcraft:review`'s revert-the-fix check uses a disposable `git worktree` of its own; the reviewer removes it before returning.
 
 On worker death, the shared checkout is the accessible worker workspace. Inventory its current branch, refs, exact commit SHAs, report path, and staged, unstaged, and untracked state in place. Do not clean, reset, switch, or stash it. If the dirty state is attributable and recoverable, the fresh replacement verifies it and resumes in the same checkout. If attribution is unresolved, or an external effect cannot be reconciled, escalate before replacement. This recovery step does not change Claude Code's event wake or Codex's foreground wake.
+
+Dead-worker replacement is recovery of an existing task, not permission to pass step 0's
+clean task-start gate or to fetch, switch, synchronize, or create another branch while
+the shared checkout is dirty.
 
 ## Merges
 
@@ -55,7 +66,10 @@ The foreman merges (`references/loop.md`, step 10); the classifier that can deny
 
 ## PR-tracking hook
 
-None. CI state is read with `gh pr checks <n> --json name,state --jq …` at step 9 and step 10.
+None. Check results are read at steps 9 and 10, then correlated with the exact PR head
+under `loop.md`'s shared applicability classifier. A check listing alone cannot prove
+`none-applicable`; repository rules, external required checks, and workflows on the
+default branch or introduced by the PR are separate sources.
 
 ## Eval scenario coverage
 
