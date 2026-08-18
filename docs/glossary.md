@@ -20,7 +20,7 @@ repository-level reference that keeps new skills consistent with it.
   `attended` (missing; wait at every proposal and mutation preview) or `unattended`
   (record each proposal and preview, proceed; still stop for a product-intent change, an
   invented requirement, a `TBD` GitHub target, and every stop condition).
-  Takes the same word as the foreman's mode.
+  When Cast configures Foreman delivery, it writes the same word as the foreman's mode.
 - **assignment envelope** (foreman) — the one shape every worker prompt takes: cold-start
   reading order, identity, the step text, the report instruction, the trust boundary.
 - **assertion** — one verifiable statement in an eval; the graded pass/fail unit.
@@ -150,7 +150,9 @@ repository-level reference that keeps new skills consistent with it.
   The wire format between foreman and workers, and the run's audit and resume source.
 - **scaffold / skeleton** (cast) — the file set cast creates: README, AGENTS.md
   (+ CLAUDE.md symlink), product brief, architecture overview, ADR index, and the
-  first spec triplet. Everything past the skeleton is opt-in.
+  first spec triplet. Everything past the skeleton is opt-in. Foreman configuration is
+  included only when the operator explicitly selects Foreman delivery; manual Forge is
+  the default and adds no `foreman_*` keys.
 - **scope statement** (forge) — the pre-coding declaration of which files and tasks a
   change touches and which adjacent ones it deliberately leaves untouched.
 - **SDD (spec-driven development)** — the working style cast scaffolds: docs before

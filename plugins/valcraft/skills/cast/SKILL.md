@@ -51,7 +51,7 @@ Before allocating a later feature, validate existing feature IDs and stages thro
 3. **Review** — independent (second model or fresh agent); `valcraft:review` owns it. Findings get `R-` IDs, material ones a remediation plan in `docs/plans/`; resolution commits cite the IDs. Never commit raw review records.
 4. **Update docs in the same change** — specs, ADRs, and contracts move with the code.
 
-`valcraft:foreman` runs this loop over worker agents from the project's `AGENTS.md` foreman block; it consumes Cast's tracker projection and never reprojects it.
+When selected during Cast, `valcraft:foreman` runs this loop from the generated `AGENTS.md` project block; it consumes Cast's tracker projection and never reprojects it. Manual Forge scaffolds contain no Foreman keys.
 
 After a feature ships, `valcraft:temper` (foreman's step 11, or by hand) writes the retrospective to `docs/retro/` and proposes promoted lessons as standing rules for `AGENTS.md`.
 
@@ -65,8 +65,8 @@ Apply the scaffold and tracker stop conditions in `references/scaffold.md` and `
 
 ## Report
 
-End the scaffold run with a report and stop: the paths created, merged, skipped, and blocked; every proposal recorded and proceeded under `cast_approval: unattended`; whether the MVP is ready to plan or code; the selected tracker mode; and GitHub tracker activation status. For `github`, name the target when known and the exact activation blocker while pending. For `local`, state that activation is not applicable.
+End with a report: paths created, merged, skipped, and blocked; every proposal recorded and proceeded under `cast_approval: unattended`; MVP readiness; tracker mode and activation; and selected delivery. Name a known GitHub target or pending blocker; for local, activation is not applicable.
 
-Then recommend the next steps, in this order: (1) enrich `docs/product-brief.md` and `specs/001-mvp/spec.md` with the context and use cases the run had to mark as assumptions or open questions — name them; (2) run `valcraft:spec` for a PRD, a next feature, or a quick task; (3) add the foreman block from `valcraft:foreman`'s `templates/project-block.md` to `AGENTS.md` and run `valcraft:foreman` to deliver, or `valcraft:forge <T-ID>` for one task by hand.
+Recommend next: (1) enrich `docs/product-brief.md` and `specs/001-mvp/spec.md` with named missing context; (2) run `valcraft:spec` for a PRD, feature, or quick task; (3) run configured `valcraft:foreman`, or `valcraft:forge <T-ID>` by hand. A manual project may select Foreman in a later Cast retrofit.
 
 Retrofits follow the rules in `references/scaffold.md`.

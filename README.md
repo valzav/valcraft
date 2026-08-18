@@ -39,12 +39,15 @@ The default path for a new project or a new body of work.
    requirements, approach, and checkbox tasks; you choose. Enrich the product brief and
    specs with the context and use cases the scaffold had to mark as assumptions before
    you go further.
-3. **`/valcraft:foreman`** — add the foreman block to `AGENTS.md`
-   (`plugins/valcraft/skills/foreman/templates/project-block.md`) and say "start sprint".
+3. **`/valcraft:foreman`** — explicitly select Foreman delivery during Cast; Cast adds the
+   project block to `AGENTS.md`. Then say "start sprint".
    For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
    code review → fix → merge → close. When the feature closes, `temper` writes the
    retrospective. "deliver quick" runs the same loop over `specs/quick/`; `foreman` can
    also decompose a PRD end to end ("new PRD #N").
+
+   If you leave delivery on the default manual Forge path, Cast writes no `foreman_*`
+   keys. Select Foreman in a later Cast retrofit when you want the coordinated loop.
 
    `foreman` runs from a Claude Code session: as a plain session whose workers are
    subagents, or as an Agent Orchestrator session whose workers are Claude Code and Codex
