@@ -468,7 +468,7 @@
       "id": 23,
       "name": "codex-terminal-routing-preserves-existing-rules",
       "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not call tools.",
-      "expected_output": "Foreman resolves each return against the assigned worker. Blocked and question follow the existing blocked-worker and report-status rules; a settled answer or valid respawn creates a fresh worker, while a human decision escalates. Dead and dispatch error follow the existing two-attempt rule. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop; Foreman continues resolving state. Every done report still passes completeness validation.",
+      "expected_output": "Foreman resolves each return against the assigned worker. Blocked and question follow the existing blocked-worker and report-status rules; a settled answer or valid respawn creates a fresh worker, while a human decision escalates. A dispatch error before any worker can act follows the existing two-attempt rule. A dead worker first triggers the backend-aware recovery inventory and resumes through a fresh worker only after that worker verifies or discards every observation; unsafe recovery escalates. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop; Foreman continues resolving state. Every done report still passes completeness validation.",
       "files": [
         "references/backends/README.md",
         "references/backends/subagents.md",
@@ -477,7 +477,7 @@
       ],
       "assertions": [
         "Blocked and question outcomes follow the existing resolution or escalation rules",
-        "Dead and dispatch-error outcomes follow the existing two-attempt rule",
+        "A dispatch error before work begins follows the existing two-attempt rule, while a dead worker first triggers inventory and verification",
         "Non-live status without terminal evidence never implies success or loop advancement",
         "Done still requires report completeness validation"
       ]
@@ -513,6 +513,107 @@
         "No external orchestrator, scheduled polling, periodic polling, or report-file polling is added",
         "No wait interval, retry cap, or user-visible working-status requirement is invented",
         "Codex re-arms native foreground await only while assigned-worker state remains active"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "assignment-context-preserves-provenance-and-scope",
+      "prompt": "$valcraft:foreman — prepare optional assignment context for worker-F001-T002. The operator instructs: \"retarget PR #17 to dev only\" and attests that check `verify` passed, citing the operator's message. Show the envelope context and how the worker uses it. Do not spawn anything.",
+      "expected_output": "Foreman adds an optional labeled context section after the assignment. It records an Operator instruction/decision with the quoted scope `retarget PR #17 to dev only`; that instruction authorizes only that retarget action and does not authorize merge, tracker closure, or another write. It separately records an Operator attestation that check `verify` passed and names the operator message as its source. The worker treats the attestation as evidence to assess under its skill contract, not as a fact or a substitute for verification. Foreman passes artifact paths and source locators rather than pasting report or tracker content.",
+      "files": [
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The envelope labels the operator instruction/decision separately from the operator attestation",
+        "The instruction preserves its quoted scope and authorizes only the named retarget action",
+        "The attestation names its source and remains evidence rather than an accepted fact",
+        "The envelope carries paths and locators instead of copied report or tracker content"
+      ]
+    },
+    {
+      "id": 27,
+      "name": "replacement-verifies-or-discards-foreman-observations",
+      "prompt": "$valcraft:foreman — a worker died. A Foreman probe observed branch `feat/f001-t002` at commit `abc1234abc1234abc1234abc1234abc1234abc12`, but a later branch probe finds no such ref. Prepare the recovery context and replacement instruction. Do not spawn anything.",
+      "expected_output": "Foreman labels both probe results as Foreman observations and records each probe locator, including the command or backend status source and when it was observed. It does not promote either observation into a fact or choose the older one because it is already in state.md. The fresh replacement must independently inspect authoritative git state, verify or discard every observation, record its disposition, and resume only from the verified state. Because the branch cannot be verified, the replacement discards the stale branch observation rather than recreating or redoing work from it.",
+      "files": [
+        "references/contracts.md",
+        "references/backends/README.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Every Foreman observation carries a probe locator and stays explicitly unverified",
+        "state.md does not override the replacement's authoritative git inspection",
+        "The replacement records whether it verified or discarded each observation",
+        "The stale branch observation is discarded instead of becoming a restart instruction"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "dead-worker-recovers-branch-commit-pr-and-report",
+      "prompt": "$valcraft:foreman — worker-F001-T002 died after creating branch `feat/f001-t002`, commit `abc1234abc1234abc1234abc1234abc1234abc12`, PR #17, and a partial report. All are still queryable. Describe recovery and continuation on each backend. Do not call tools.",
+      "expected_output": "Foreman inventories recoverable git branch and exact commit, PR reference and current tracker state, report path and completeness, working-tree state, and the dead worker's accessible workspace state. It labels every entry as a Foreman observation with its probe locator and records pointers and exact SHAs in state.md. On the shared-checkout backend it inspects the shared branch and working tree in place; on the isolated-worktree backend it inspects the dead session's accessible worktree before replacement. The fresh replacement receives the labeled inventory and prior report path, verifies or discards every observation against git, the tracker, the report, and the accessible workspace, then resumes existing work at the recorded exact commit instead of recreating the branch, commit, PR, or already-completed report sections. The existing host-specific event or foreground await behavior applies after dispatch.",
+      "files": [
+        "references/contracts.md",
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/backends/ao.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The recovery inventory covers git, tracker, report, working tree, and accessible workspace state",
+        "Inventory entries are attributed Foreman observations with probe locators and exact SHAs where applicable",
+        "The replacement verifies or discards the inventory before resuming existing work",
+        "The replacement does not duplicate the branch, commit, PR, or completed report content",
+        "Shared-checkout and isolated-worktree inspection differ without changing U9 wake behavior"
+      ]
+    },
+    {
+      "id": 29,
+      "name": "unsafe-dead-worker-state-escalates",
+      "prompt": "$valcraft:foreman — classify two dead-worker recoveries: (a) the shared checkout is dirty and attribution of the uncommitted changes is unresolved; (b) an isolated worker workspace with uncommitted changes is inaccessible and the worker may have started an external write whose result cannot be reconciled. Do not call tools.",
+      "expected_output": "Foreman escalates both recoveries and does not respawn a replacement to restart the assignment. In (a), it preserves the shared checkout and reports that the dirty state cannot yet be attributed safely. In (b), it reports both the inaccessible worker-only changes and the unreconciled external effect. A replacement may be dispatched only after the relevant state becomes accessible and reconcilable; the two-attempt rule does not authorize discarding or duplicating partial work.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/backends/ao.md"
+      ],
+      "assertions": [
+        "Unattributed dirty shared-checkout state causes escalation without cleanup or restart",
+        "Inaccessible uncommitted worker-only state causes escalation",
+        "An unreconciled external effect causes escalation before any replacement write",
+        "The two-attempt rule does not permit duplicate work or loss of partial state"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "artifact-date-authority-precedence",
+      "prompt": "$valcraft:foreman — resolve dates for three artifacts created on 2031-04-08: the repository policy requires 2031-04-05 for the first while the operator says 2031-04-06; the repository is silent for the second and the operator explicitly says 2031-04-07; neither supplies a date for the third. State each result and authority. Do not write files.",
+      "expected_output": "Foreman resolves each artifact independently. The first uses 2031-04-05 from applicable repository policy, which outranks the operator date. The second uses the explicit operator date 2031-04-07 because no repository policy applies. The third uses its actual creation date, 2031-04-08. It records the authority with each resolved date and does not infer a date from the run ID.",
+      "files": [
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Applicable repository policy outranks an explicit operator date",
+        "An explicit operator date applies only when repository policy is silent",
+        "Actual artifact creation date is the fallback",
+        "Each artifact records its date authority and the run ID supplies no artifact date"
+      ]
+    },
+    {
+      "id": 31,
+      "name": "midnight-run-keeps-id-and-resolves-new-artifact-date",
+      "prompt": "$valcraft:foreman — run `2031-04-08-001` starts before midnight with no repository or operator date rule. A plan is created on 2031-04-08 and a remediation plan on 2031-04-09. Show the identities and dates. Do not write files.",
+      "expected_output": "Foreman keeps the existing run ID `2031-04-08-001` for the whole run. It resolves each artifact when that artifact is created: the first plan uses 2031-04-08 and the later remediation plan uses 2031-04-09. It does not rename the run, freeze 2031-04-08 as a run-wide artifact date, or rewrite the earlier plan's date.",
+      "files": [
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The run ID remains unchanged across midnight",
+        "The first artifact uses its 2031-04-08 creation date",
+        "The later artifact independently uses its 2031-04-09 creation date",
+        "No run-wide frozen date or retrospective date rewrite is introduced"
       ]
     }
   ]

@@ -23,7 +23,7 @@ The foreman and workers run through the active host's native subagent tools. Thi
 
 ### Claude Code — event
 
-The Agent dispatch establishes a completion notification before the foreman ends the parent turn. The host re-invokes the foreman when the notification arrives. Consume its status, validate a `done` report, and continue the loop. On `blocked` or `question`, follow the existing rule and respawn with the decision and prior report path. On no usable terminal return, apply the two-attempt rule. Do not foreground-wait or schedule polling.
+The Agent dispatch establishes a completion notification before the foreman ends the parent turn. The host re-invokes the foreman when the notification arrives. Consume its status, validate a `done` report, and continue the loop. On `blocked` or `question`, follow the existing rule and respawn with the decision and prior report path. On a dispatch or delivery failure before any evidence that the worker acted, apply the two-attempt rule. On `dead`, apply the recovery inventory in `README.md`. Do not foreground-wait or schedule polling.
 
 ### Codex — foreground
 
@@ -34,7 +34,7 @@ Resolve every wait return through the assigned agent's state:
 - A timeout while the assigned agent remains active is nonterminal. Re-arm foreground await in the same turn. Do not send a final response, a working-status message, or a continue prompt.
 - A completion delivered with `trigger_turn: false` is expected because the parent turn is already active. Consume it, read and validate the report, record the terminal state, and continue the loop.
 - `blocked` and `question` follow the existing resolution or escalation rules. A respawn is a fresh agent with the decision and prior report path.
-- `dead` and dispatch errors follow the two-attempt rule. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop.
+- A dispatch error before the worker could act follows the two-attempt rule. `dead` follows the recovery inventory in `README.md`. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop.
 
 Do not add an external orchestrator, scheduled or periodic polling, report-file polling, a wait interval, a retry cap, or a user-visible working-status requirement.
 
@@ -46,6 +46,8 @@ Foreman and workers share one checkout. Consequences:
 - Workers run serially, so `valcraft:forge`'s branch switch happens in the shared checkout under the foreman. The foreman reads no repository files during a task, so this is safe; after the step 10 merge, the foreman returns the checkout to `foreman_default_branch` (`git switch <branch> && git pull --ff-only`) before picking the next task.
 - Step 4's "copy the plan into your worktree" clause is inert — same path, same checkout.
 - `valcraft:review`'s revert-the-fix check uses a disposable `git worktree` of its own; the reviewer removes it before returning.
+
+On worker death, the shared checkout is the accessible worker workspace. Inventory its current branch, refs, exact commit SHAs, report path, and staged, unstaged, and untracked state in place. Do not clean, reset, switch, or stash it. If the dirty state is attributable and recoverable, the fresh replacement verifies it and resumes in the same checkout. If attribution is unresolved, or an external effect cannot be reconciled, escalate before replacement. This recovery step does not change Claude Code's event wake or Codex's foreground wake.
 
 ## Merges
 

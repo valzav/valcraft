@@ -46,6 +46,8 @@ Every AO worker has its own worktree, so a repository-relative `.foreman/` path 
 
 AO's own mailbox (`~/.ao-mail/<project-id>/<session-id>.md`) is not the wire format. If AO tooling needs it, a worker may mirror its report there; the run directory is the source.
 
+On worker death, inspect the dead session's worktree before spawning a replacement. Record its path and accessibility, current branch, refs, exact commit SHAs, report path, and staged, unstaged, and untracked state as Foreman observations with probe locators. Reconcile any tracker or change-request effect separately. If the worktree is accessible, the replacement verifies the inventory there, resumes committed work through the recorded refs, and recovers verified uncommitted changes from the dead worktree into its fresh worktree without reimplementing them. If uncommitted worker-only state is inaccessible, or an external effect remains unreconciled, escalate; do not restart the assignment or run cleanup. The event wake remains unchanged after a safe replacement dispatch.
+
 ## PR-tracking hook
 
 After step 7: `ao session claim-pr <worker-session-id> <pr-url>` so AO tracks CI and review state. AO nudges the worker about CI failures on its own; intervene only if the worker stalls.

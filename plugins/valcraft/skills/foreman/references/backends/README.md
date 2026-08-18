@@ -29,9 +29,25 @@ Applies to every backend, in this order:
 1. **Confirm the assignment started.** After `assign`, use `status` (or the backend's equivalent) to see the worker processing before arming `await`. An idle worker with no report file means the delivery silently failed — re-assign instead of waiting.
 2. **Check before waiting.** Inspect `status` and any completion already delivered for the assigned worker before arming `await`. Act on an early terminal outcome immediately. Absence from live status alone never proves completion or success.
 3. **Apply the wake mapping.** On `event`, arm `await` and end the turn. On `foreground`, call `await` inside the active turn and resolve every return through the assigned worker's state before re-arming or advancing. On `poll`, use only the schedule the backend reference authorizes.
-4. **Act on the outcome.** `report` → read and check completeness (`references/contracts.md`), then act. `blocked` or `question` → blocked-worker rule below. `idle-without-report` → `status` to read the worker's last output; re-assign once, then escalate. `dead` or a dispatch error → respawn once with the same envelope, then escalate (two-attempt rule). A foreground timeout with the assigned worker still active is nonterminal: re-arm `await` in the same turn.
+4. **Act on the outcome.** `report` → read and check completeness (`references/contracts.md`), then act. `blocked` or `question` → blocked-worker rule below. `idle-without-report` → `status` to read the worker's last output; re-assign once, then escalate. A dispatch error before the worker could act → retry once with the same envelope, then escalate (two-attempt rule). `dead` → apply recovery below before any replacement dispatch. A foreground timeout with the assigned worker still active is nonterminal: re-arm `await` in the same turn.
 
 Never poll a report file for completion on an `event` or `foreground` backend. A `poll` backend follows only its own authorized reference.
+
+## Dead-worker recovery
+
+A dead worker may have left useful work or an external effect. Before dispatching a replacement, inventory every state class the backend can inspect:
+
+- git refs, branches, commits, and exact commit SHAs;
+- tracker or change-request references and their current external state;
+- the assigned report path, its existence, and whether its latest block is complete;
+- staged, unstaged, and untracked working-tree state; and
+- the dead worker's accessible workspace state, as defined by the backend reference.
+
+Record each result in `state.md` as a `Foreman observation` with its probe locator and observation time. Record `none observed` when a probe succeeds and finds nothing; record `inaccessible` or `unreconciled` when it cannot settle the state. These observations are a recovery inventory, not facts and not permission to repeat a write.
+
+Escalate before replacement when uncommitted worker-only state is inaccessible, dirty shared-checkout state cannot be attributed safely, or an external effect cannot be reconciled. Preserve the workspace; do not clean it, switch away, recreate a change request, or retry an external write.
+
+When recovery is safe, spawn a fresh worker under the backend's existing attempt rule. Add the recovery inventory and prior report path to the assignment as attributed context. Require the replacement to inspect the authoritative git, tracker, report, working-tree, and accessible-workspace sources; record in its report whether it verified or discarded each observation; then resume the verified existing work. The foreman records those dispositions in `state.md` after accepting the report. The replacement must not recreate a branch, commit, change request, external write, or complete report section that already exists. After dispatch, use the backend's existing wake mapping without change.
 
 ## Blocked-worker rule
 

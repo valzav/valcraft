@@ -28,7 +28,7 @@ project and therefore live in its backend reference rather than `evals.json`.
 
 | Scenario | `subagents` | `ao` |
 | --- | --- | --- |
-| Silent assignment | A dispatch error or unusable terminal return follows the two-attempt rule. | Confirm processing before arming the wait. |
+| Silent assignment | A dispatch or delivery failure before the worker acts follows the two-attempt rule. | Confirm processing before arming the wait. |
 | Early finish | Codex eval 20; Claude Code's event arrives regardless of timing. | Read status and the report once before arming; use the authorized checksum snapshot. |
 | Blocked, resolvable from task | Eval 4 `worker-question-settled-by-spec`. | `answer: interactive`. |
 | Blocked, needs escalation | Eval 5 `worker-blocked-escalates`. | Same rule. |
@@ -39,3 +39,22 @@ project and therefore live in its backend reference rather than `evals.json`.
 Evals 1, 6, 10, and 11 cover the missing project block, release-branch human wait,
 closure check, and feature-close temper dispatch. Evals 12–16 cover quick-task identity,
 selection, validation, close, and physical-handle mapping.
+
+## Attributed resume and artifact dates
+
+These scenarios cover recovery state that is shared across backends. The backend
+reference controls how Foreman inspects the workspace; the assignment and checkpoint
+contracts control attribution and verification.
+
+| Scenario | Expected distinction | Eval |
+| --- | --- | --- |
+| Instruction scope versus attestation | A quoted operator instruction authorizes only its named action; an operator attestation keeps its source and remains evidence. | 26 `assignment-context-preserves-provenance-and-scope` |
+| Observation verification or discard | Every Foreman observation keeps its probe locator; a replacement verifies or discards it against the authoritative source. | 27 `replacement-verifies-or-discards-foreman-observations` |
+| Recoverable worker death | Branch, exact commit, PR, report, working tree, and accessible workspace are inventoried before a fresh replacement resumes existing work. | 28 `dead-worker-recovers-branch-commit-pr-and-report` |
+| Unsafe worker death | Unattributed dirty shared state, inaccessible worker-only changes, or unreconciled external effects escalate without restart. | 29 `unsafe-dead-worker-state-escalates` |
+| Date precedence | Applicable repository policy wins, then an explicit operator date, then the artifact's actual creation date. | 30 `artifact-date-authority-precedence` |
+| Midnight crossing | The run ID stays fixed while an artifact created after midnight resolves a new creation date. | 31 `midnight-run-keeps-id-and-resolves-new-artifact-date` |
+
+Recovery preserves the active wake mapping: Codex remains foreground and Claude Code
+remains event-driven on `subagents`; AO remains event-driven. These scenarios add no
+polling schedule, interval, or retry rule.

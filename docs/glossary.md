@@ -21,8 +21,14 @@ repository-level reference that keeps new skills consistent with it.
   (record each proposal and preview, proceed; still stop for a product-intent change, an
   invented requirement, a `TBD` GitHub target, and every stop condition).
   When Cast configures Foreman delivery, it writes the same word as the foreman's mode.
+- **artifact date** (foreman) — the date resolved when an artifact is created: applicable
+  repository policy first, an explicit operator date second, and the artifact's actual
+  creation date otherwise. A run ID does not supply or freeze artifact dates.
 - **assignment envelope** (foreman) — the one shape every worker prompt takes: cold-start
-  reading order, identity, the step text, the report instruction, the trust boundary.
+  reading order, identity, the step text, optional attributed context, the report
+  instruction, and the trust boundary. Optional context distinguishes a scoped operator
+  instruction or decision, an operator attestation with its source, and a Foreman
+  observation with its probe locator.
 - **assertion** — one verifiable statement in an eval; the graded pass/fail unit.
 - **attended / unattended run** — whether a user can answer questions mid-run.
   Attended → ask; unattended → bind the smallest reading consistent with stated
@@ -78,6 +84,9 @@ repository-level reference that keeps new skills consistent with it.
 - **foreground wake** (foreman) — a backend await that returns inside the active parent
   turn. A nonterminal return is resolved through assigned-worker state and re-armed;
   terminal output is validated and the loop continues without user re-invocation.
+- **Foreman observation** — an attributed result of a named Foreman probe. It records
+  the probe locator and observation time and remains unverified evidence until the
+  assigned worker verifies or discards it against the authoritative source.
 - **fixed-shape block** (forge, review) — the skill's last output: `## Forge handoff`
   (Changed, Verification evidence, Scope, Open questions and deferred findings, Review
   target) or `## Review report` (Mode and change class, Verdict, Findings, Reproductions,
@@ -117,6 +126,11 @@ repository-level reference that keeps new skills consistent with it.
   non-secret deployment or managed-infrastructure observations that are unavailable
   from git and not directly queryable from the authoritative platform. It provides
   context only; current repository and live platform state win on conflict.
+- **operator attestation** (foreman) — an operator-supplied empirical claim with a
+  source locator. It remains attributed evidence and does not replace verification.
+- **operator instruction / decision** (foreman) — an operator statement quoted with
+  its scope. It authorizes only the named choice or action and does not turn an
+  accompanying empirical claim into a fact.
 - **output contract** — the artifact's own required output shape: sections, keys,
   fixed lines, formats. A contract term, never a deletion candidate — distinct from
   the contract, which is the outcome plus its proof criteria.
@@ -147,6 +161,10 @@ repository-level reference that keeps new skills consistent with it.
   "deliver quick" through the unchanged loop; never a feature candidate. Rules:
   `cast/references/quick.md`.
 - **Refine mode** (hone) — edit the target in place, or return revised inline text.
+- **recovery inventory** (foreman) — the attributed Foreman observations gathered after
+  a worker dies: recoverable git, tracker, report, working-tree, and accessible-workspace
+  state. A replacement verifies or discards every observation before resuming existing
+  work; unsafe inaccessible or unreconciled state escalates.
 - **remediation plan** (cast) — a `docs/plans/` entry that resolves material review
   findings; resolution commits cite the finding IDs.
 - **retrofit** (cast) — applying the scaffold to an existing codebase: derive facts
@@ -155,6 +173,10 @@ repository-level reference that keeps new skills consistent with it.
 - **review gate** (forge) — the working-loop boundary where forge ends: the change is
   verified and handed to review, never merged or declared shipped on the implementer's
   own verification.
+- **run checkpoint** (foreman) — the `state.md` record of current-run pointers, exact
+  commit SHAs, attributed context locators, recovery dispositions, and gate decisions.
+  It tells a resumed Foreman what to verify but never overrides git, the tracker, or a
+  git-owned task contract.
 - **run directory** (foreman) — `.foreman/<run-id>/` in the foreman's checkout,
   gitignored: `state.md`, `workers.md`, and one report file per worker role per task.
   The wire format between foreman and workers, and the run's audit and resume source.

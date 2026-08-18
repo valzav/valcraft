@@ -9,10 +9,26 @@ Every assignment the foreman sends has these parts, in this order:
 1. **Cold start.** "You start with no prior context. Read, in this order: the skill named below through its skill invocation; the repository's root `AGENTS.md`; then only the artifacts named in the assignment. Do not read the run directory except the files named here."
 2. **Identity and intent.** Role name, feature, task, tracker reference when one exists, branch name when one exists — and one line of intent: "Your report is the sole input to the foreman's gate decision for `<T>` of `<feature>`; it must stand alone for a reader with no other context."
 3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path — or the quick task file's path — is always present; it is the unique selector.
-4. **Report instruction.** "When your assignment is complete or you are blocked, write your report to `<run dir>/<role>-<feature>-<task>.md` (append if it exists), then stop. The report is the full contract of the skill you ran, followed by a `Status:` line: `done`, `blocked: <one line>`, or `question: <one line>`." Backends that carry a return channel (a subagent's final text) receive only the report path and the status line there.
-5. **Trust boundary.** The paragraph from `SKILL.md`, verbatim.
+4. **Attributed context (optional).** Include only context the worker needs that the named artifacts cannot supply. Label each entry as exactly one of:
+   - `Operator instruction/decision` — quote the instruction and its scope. It authorizes only the named choice or action. It does not establish an empirical claim or authorize another action.
+   - `Operator attestation` — state the claim and its source locator. It remains attributed evidence for the worker to assess under the invoked skill; it is never accepted as a fact or a substitute for required verification.
+   - `Foreman observation` — state the observation and its probe locator, including the command or backend status source and when it was observed. It remains unverified evidence until the worker verifies or discards it against the authoritative source.
+5. **Report instruction.** "When your assignment is complete or you are blocked, write your report to `<run dir>/<role>-<feature>-<task>.md` (append if it exists), then stop. The report is the full contract of the skill you ran, followed by a `Status:` line: `done`, `blocked: <one line>`, or `question: <one line>`." Backends that carry a return channel (a subagent's final text) receive only the report path and the status line there.
+6. **Trust boundary.** The paragraph from `SKILL.md`, verbatim.
 
-State only what the skill cannot know: the run, the target, the inputs. Rules the skill owns are not restated in the envelope — change them in the skill.
+State only what the skill cannot know: the run, the target, the inputs. Pass artifact paths and source or probe locators, not copied report, tracker, diff, or workspace content. Rules the skill owns are not restated in the envelope — change them in the skill.
+
+## Artifact dates
+
+Resolve the date of each artifact when that artifact is created. Use the first applicable authority:
+
+1. the repository's explicit date policy;
+2. an explicit operator date for that artifact; or
+3. the artifact's actual creation date.
+
+For a worker-created artifact, the envelope carries any explicit operator date as an `Operator instruction/decision` scoped to that artifact. The creator still reads and applies repository policy first. When an assignment creates a dated artifact, its report states the artifact path, resolved date, and authority so the foreman can record them with the artifact checkpoint.
+
+A run ID identifies the run; its date does not govern artifact dates. A run that crosses midnight keeps its run ID, while every later artifact resolves its own date anew. Do not rewrite an earlier artifact's date because the run continued on another day.
 
 ## Report contracts
 
