@@ -1,2 +1,4 @@
-planner-F001-T002 → agent planner-F001-T002 (returned)
-reviewer-1-F001-T002 → agent reviewer-1-F001-T002 (returned)
+| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rv-draft-d000 | Drafting | FEAT-001 T-002 | drafter-F001-T002 | subagents | Codex | Codex task drafter-F001-T002 agent agent-rv-draft-000 | none | .foreman/run-verdict-only/drafter-F001-T002-d000.md | 1111111111111111111111111111111111111111 | report_available | accepted and released |
+| rv-plan-review-d000 | PlanReview | FEAT-001 T-002 plan at 0123456789abcdef0123456789abcdef01234567 | plan-reviewer-F001-T002 | subagents | Codex | Codex task plan-reviewer-F001-T002 agent agent-rv-review-000 | none | .foreman/run-verdict-only/plan-reviewer-F001-T002-d000.md | 0123456789abcdef0123456789abcdef01234567 | report_available | returned; validation pending |

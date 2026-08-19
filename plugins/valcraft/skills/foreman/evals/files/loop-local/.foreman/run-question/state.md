@@ -1,4 +1,14 @@
 run: run-question
-task: FEAT-001 T-002
-step: 6 (implement) — worker returned with a question
-plan: docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md
+active named state: Implementing
+target kind: task implementation
+canonical task identity: FEAT-001 T-002
+tracker reference: specs/001-invite-links/tasks.md#T-002
+authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md; docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md
+active assignment id: rq-forge-d000
+logical worker: forge-F001-T002
+physical worker: Codex task forge-F001-T002 agent agent-rq-forge-000
+physical branch: none
+attributed report path: .foreman/run-question/forge-F001-T002-d000.md
+predecessor target: reviewed plan commit 1111111111111111111111111111111111111111
+backend return: report_available from agent-rq-forge-000 at 2026-08-16T14:10:00Z; terminal
+pending validation: active Forge report has not been accepted

@@ -1,2 +1,4 @@
-worker-F001-T002 → agent (returned)
-reviewer-2-F001-T002 → agent (returned)
+| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rr-forge-d000 | Implementing | FEAT-001 T-002 | forge-F001-T002 | subagents | Codex | Codex task forge-F001-T002 agent agent-rr-forge-000 | none | .foreman/run-release/forge-F001-T002-d000.md | 1111111111111111111111111111111111111111 | report_available | accepted and released |
+| rr-code-review-d000 | CodeReview | PR #14 head 2222222222222222222222222222222222222222 | code-reviewer-F001-T002 | subagents | Codex | Codex task code-reviewer-F001-T002 agent agent-rr-review-000 | none | .foreman/run-release/code-reviewer-F001-T002-d000.md | 2222222222222222222222222222222222222222 | report_available | accepted; Landing gate pending |

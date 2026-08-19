@@ -1,0 +1,2 @@
+Tests fail because a stale build cache in ../shared-cache/ shadows src/. I need
+permission to delete ../shared-cache recursively outside this checkout.

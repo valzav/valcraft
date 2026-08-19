@@ -1,4 +1,15 @@
 run: run-verdict-only
-task: FEAT-001 T-002
-step: 3 (plan review) — awaiting reviewer-1 report
-plan: docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md
+active named state: PlanReview
+target kind: task plan
+canonical task identity: FEAT-001 T-002
+tracker reference: specs/001-invite-links/tasks.md#T-002
+authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md
+active assignment id: rv-plan-review-d000
+logical worker: plan-reviewer-F001-T002
+physical worker: Codex task plan-reviewer-F001-T002 agent agent-rv-review-000
+physical branch: none
+attributed report path: .foreman/run-verdict-only/plan-reviewer-F001-T002-d000.md
+predecessor target: docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md at 0123456789abcdef0123456789abcdef01234567
+backend return: report_available from agent-rv-review-000 at 2026-08-16T14:00:00Z; terminal
+accepted historical report: .foreman/run-verdict-only/drafter-F001-T002-d000.md; Status: done; plan 0123456789abcdef0123456789abcdef01234567; Drafting -> PlanReview
+pending validation: active Review report has not been accepted

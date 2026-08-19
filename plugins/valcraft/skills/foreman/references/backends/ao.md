@@ -1,79 +1,130 @@
-# Backend: `ao` — Agent Orchestrator sessions
+# Backend: `ao`
 
-The foreman is an AO orchestrator session (a Claude Code session spawned by AO with these rules). Workers are AO sessions in the same project, each in its own worktree. Requires the `ao` CLI, tmux, and an AO project id (`<project-id>`).
+Foreman runs in an Agent Orchestrator project. Every worker receives an isolated
+worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and an exact
+project id.
 
 ## Flags
 
-| Flag        | Value                                                                                                                                   |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `wake`      | `event` — via a background Bash wait, below                                                                                             |
-| `answer`    | `interactive` — `ao send` into the dialog                                                                                               |
-| `harnesses` | `claude-code`, `codex` — second-harness rule applies: `planner` and `reviewer-2` on `codex`, `reviewer-1` and `worker` on `claude-code` |
-| `release`   | `ao session kill <id>` per worker at step 10; the foreman never runs `ao session cleanup` (below)                                       |
+| Flag | Value |
+| --- | --- |
+| `wake` | authorized background `poll` that wakes Foreman with one backend return |
+| `answer` | `interactive` through `ao send` |
+| `harnesses` | project-supported harnesses; use a distinct harness for Review when available |
+| `release` | terminate the worker session after its accepted report; never run project-wide cleanup |
+| workspace | isolated worktree on the assigned physical branch |
 
-## Primitives
+## Physical identity
 
-- `spawn`: derive one unique physical alias per dispatch. AO session names are at most 20 characters.
-  1. Keep the complete canonical logical name in the assignment and `workers.md`.
-  2. Map delivery roles to `p` (planner), `r1` (reviewer-1), `w` (worker), `r2` (reviewer-2), `rec` (recorder), `er` (evidence-reviewer), and `t` (temper). Map decompose roles to `dp` (planner) and `dr` (reviewer).
-  3. Determine the dispatch ordinal from prior `workers.md` rows for the same logical identity. The first dispatch is `0`; each respawn takes the next unused ordinal.
-  4. Use the canonical logical identity encoded as UTF-8 as the SHA-256 preimage for ordinal `0`. For a later dispatch, use `<canonical logical identity>\ndispatch:<ordinal>`.
-  5. Form `<role-token>-<digest-prefix>` from the lowercase hexadecimal digest. Use as many leading digest characters as fit the 20-character contract.
-  6. Compare the alias with current project sessions and every `workers.md` row. If it is already owned, recompute SHA-256 over `<dispatch preimage>\ncollision:<n>`, starting with `n = 1`, until an unowned alias results.
-  7. Run `ao session new --project <project-id> --agent <harness> --name <physical-alias>` with no initial prompt.
-  8. Record the dispatch ordinal and physical handle in a new `workers.md` row. Preserve prior rows.
+Keep the full canonical logical identity in the assignment and `workers.md`. Map role
+families only for the physical alias prefix:
 
-  Never truncate a canonical identity or cap its numeric width. This procedure maps every logical role, including `Q-1000 QT-001`; both a forced alias collision and a same-identity respawn deterministically receive distinct aliases.
-- `assign`: `ao send --session <id> --message "<envelope>"`. Then confirm the worker visibly started: `tmux capture-pane -p -t <id>` (no `-S`) shows the composer processing. An idle empty composer plus no report file means the send silently failed (the same trap as slash commands) — re-send.
-- `await`: run this as a background Bash command (`run_in_background: true`) and end the turn; its exit re-invokes the foreman with the outcome. `R` is the worker's report path in the run directory.
+- Draft: `d`;
+- Forge: `f`;
+- every Review mode: `r`;
+- Land: `l`;
+- Temper: `t`.
 
-  ```sh
-  S=<worker-session-id>; R="<run dir>/<logical report name>.md"
-  snap() { cksum "$R" 2>/dev/null || echo none; }
-  B=$(snap); seen=0
-  while :; do
-    [ "$(snap)" != "$B" ] && { echo report; break; }
-    st=$(ao session ls --project <project-id> --json | jq -r --arg s "$S" '.data[]|select(.id==$s)|.status')
-    [ -z "$st" ] && { echo dead; break; }
-    [ "$st" = blocked ] && { echo blocked; break; }
-    [ "$st" = working ] && seen=1
-    [ "$st" = idle ] && [ "$seen" = 1 ] && { echo idle-without-report; break; }
-    sleep 30
-  done
-  ```
+Do not define aliases for retired role families or for producer-owned substeps. Only the
+five role families above receive AO alias prefixes.
 
-  The snapshot is a content checksum, not an mtime: a report appended in the same second as the baseline leaves whole-second mtime unchanged, and `stat -f %m` reads nothing on a machine with GNU coreutils. The 30 s poll interval is the owner's standing orchestrator rule (`orchestrator-template.md`, 2026-08-15 revision). Apply the await discipline in `README.md` before arming: read the report file and `ao session ls` once.
+For dispatch ordinal zero, hash the UTF-8 canonical logical identity with SHA-256. For
+later dispatches, hash `<logical identity>\ndispatch:<ordinal>`. Form
+`<role>-<hex-prefix>` with as many digest characters as fit AO's 20-character name
+contract. If current project sessions or any `workers.md` row already owns the result,
+rehash `<dispatch preimage>\ncollision:<n>` until it is unused. Preserve all prior rows.
 
-- `status`: `ao session ls --project <project-id> --json` for liveness; `tmux capture-pane -p -t <id>` for the prompt text — no `-S` for a liveness check, `-S -50` when hunting a prompt, `-S -200` only when reconstructing a failure. Never write to tmux.
+## Physical branch guard
 
-## Answering a blocked worker
+Derive a unique physical branch from the physical alias. Before worker creation:
 
-`AO_SESSION_ID= ao send --session <id> --message "<answer>"`. Inside the orchestrator session `AO_SESSION_ID` is set, and a plain `ao send` prefixes the message with `[from <session-id>]`, which a dialog does not accept. Then re-arm `await`.
+1. Verify the predecessor's exact full SHA and canonical remote ref from the accepted
+   producer report.
+2. Inspect local refs and `git worktree list --porcelain`.
+3. When the physical branch is absent, create it at the predecessor SHA.
+4. When it exists only as this not-yet-spawned dispatch's recorded branch, require its
+   head to equal the predecessor SHA exactly.
+5. Stop before spawn when the branch is stale, belongs to another dispatch, or is
+   already checked out in any worktree.
 
-## Workspaces and the run directory
+Never reset, reuse another dispatch's branch, force-push, or publish the physical branch
+as the canonical task ref. Draft, Forge, and task-PR Land revalidate the canonical
+remote ref before a non-force transfer.
 
-Every AO worker has its own worktree, so a repository-relative `.foreman/` path differs per worker. The run directory is the absolute path inside the foreman's checkout; every envelope carries it, and workers write reports there by absolute path. Step 4's "copy the plan into your worktree" clause is live on this backend.
+## Dispatch and assignment
 
-AO's own mailbox (`~/.ao-mail/<project-id>/<session-id>.md`) is not the wire format. If AO tooling needs it, a worker may mirror its report there; the run directory is the source.
+Run:
 
-On worker death, inspect the dead session's worktree before spawning a replacement. Record its path and accessibility, current branch, refs, exact commit SHAs, report path, and staged, unstaged, and untracked state as Foreman observations with probe locators. Reconcile any tracker or change-request effect separately. If the worktree is accessible, the replacement verifies the inventory there, resumes committed work through the recorded refs, and recovers verified uncommitted changes from the dead worktree into its fresh worktree without reimplementing them. If uncommitted worker-only state is inaccessible, or an external effect remains unreconciled, escalate; do not restart the assignment or run cleanup. The event wake remains unchanged after a safe replacement dispatch.
+```sh
+ao spawn --project <project-id> --harness <harness> --name <physical-alias> --branch <physical-branch>
+```
 
-## PR-tracking hook
+Record the returned session id, alias, branch, predecessor SHA, logical identity, and
+dispatch ordinal in `workers.md`. Assign the envelope with:
 
-After step 7: `ao session claim-pr <worker-session-id> <pr-url>` so AO tracks CI and review state. AO nudges the worker about CI failures on its own; intervene only if the worker stalls.
+```sh
+ao send --session <session-id> --message "<envelope>"
+```
 
-## Merges
+Confirm visible processing with `tmux capture-pane -p -t <session-id>`. An idle composer
+without delivered assignment evidence is `dispatch_error`; retry under the established
+two-attempt rule.
 
-The worker's permission classifier denies `gh pr merge`; the foreman merges from its own session (`references/loop.md`, step 10). After a human merge, the human tells the foreman to verify and continue.
+## Await
 
-## Never run `ao session cleanup`
+Before arming, read AO status once and consume any already available attributed report.
+Then use the owner's standing 30-second AO poll schedule. The background waiter snapshots
+the assigned report by checksum and maps only the active session:
 
-It reclaims the workspace of every terminated session in the project, and every orchestrator session shares one worktree path keyed by the branch rather than the session id. Once an earlier orchestrator session is terminated, cleanup deletes that shared directory — the foreman's own working directory — and the next turn fails with `invalid cwd: No such file or directory`. Tell the human that worker worktrees are pending reclamation and that only they can run `ao session cleanup`, while no orchestrator session is live.
+```sh
+S="<session-id>"; R="<assigned-report-path>"
+snap() { cksum "$R" 2>/dev/null || echo none; }
+B=$(snap); seen=0
+while :; do
+  [ "$(snap)" != "$B" ] && { echo report_available; break; }
+  st=$(ao session ls --project <project-id> --json | jq -r --arg s "$S" '.data[]|select(.id==$s)|.status')
+  [ -z "$st" ] && { echo dead; break; }
+  [ "$st" = blocked ] && { echo permission_blocked; break; }
+  [ "$st" = working ] && seen=1
+  [ "$st" = idle ] && [ "$seen" = 1 ] && { echo idle_without_report; break; }
+  sleep 30
+done
+```
 
-## Rules and respawn
+Run the waiter in the background and end the parent turn only after it is armed. On
+wake, attribute and record its exact return before another action. A command failure
+before the waiter starts is `dispatch_error`. AO does not emit `wait_timeout`; that
+return belongs only to foreground backends.
 
-AO resolves orchestrator rules at spawn: after changing Foreman overrides or these references, respawn the orchestrator session. A changed orchestrator harness is picked up only by a new orchestrator session created from the AO app UI (`ao session restore` does not bring one back). Apply project config with `ao project set-config <project-id> --orchestrator-rules "…" --default-branch <foreman_default_branch> --orchestrator-agent claude-code` — set-config replaces the whole config, so pass every flag. The orchestrator rules text is one line: "Run `valcraft:foreman` for this project."
+The 30-second interval is the owner's standing orchestrator rule from
+`orchestrator-template.md` (2026-08-15 revision); it is not a Foreman-derived retry
+limit.
 
-## Eval scenario coverage
+For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer
+with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm await.
+Never write directly to tmux.
 
-All seven drill scenarios are expressible on this backend (`evals/scenarios.md`); they run against a live AO project, not inside the eval harness.
+## Workspace and recovery
+
+Workers write reports to the absolute run path in Foreman's checkout. On death, inspect
+the dead worktree, refs, exact SHAs, canonical remote state, PR or tracker effects,
+report path, and working-tree state. A safe replacement gets another alias and physical
+branch at the verified predecessor. It recovers verified work without repeating an
+external effect. Reject the predecessor's later report after replacement.
+
+Project-wide session cleanup can delete a live orchestrator workspace. Foreman never
+runs it. Report pending reclamation to the operator after no orchestrator session is
+live.
+
+## PR tracking
+
+After accepting a Forge or Temper report that names an existing PR, associate that PR
+with the producer session using AO's claim-PR command. Do not infer a PR from state or
+claim one for Review or Land.
+
+## Land capability
+
+AO project permission is shared and does not prove a per-dispatch Land-scoped grant.
+Unless a future installed AO capability probe proves the exact Land dispatch alone can
+merge, Land returns `report_available` with
+`Status: blocked: operator_action_required — <prepared action>`. Foreman never merges.

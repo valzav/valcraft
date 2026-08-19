@@ -1,10 +1,8 @@
-# Round 1
-
 ## Review report
 
 ### Mode and change class
 
-plan
+plan; class: plan; target docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md at 1111111111111111111111111111111111111111
 
 ### Verdict
 
@@ -27,4 +25,5 @@ authority cross-check (spec, design, tasks); requirement coverage; assumption; i
 ### Not examined
 
 none
+
 Status: done

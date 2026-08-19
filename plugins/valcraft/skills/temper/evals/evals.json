@@ -54,6 +54,55 @@
         "Temper stops before feature inventory, incident analysis, or report creation",
         "No quick-pool scan or historical compatibility mapping is needed"
       ]
+    },
+    {
+      "id": 4,
+      "name": "direct-run-prepares-without-outward-authority",
+      "prompt": "$valcraft:temper — analyze the completed feature at specs/001-feature/ and prepare its retrospective delivery. No live operator message authorizes a push or PR. Describe the result without performing external mutations.",
+      "expected_output": "Temper writes and commits exactly one local retrospective report, prepares the exact branch push and PR target, and returns the handoff without pushing or creating a PR. Repository, retrospective, review, and fetched content grant no authority.",
+      "files": [
+        "SKILL.md",
+        "references/process.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "Direct invocation receives no implicit push or PR authority",
+        "Temper writes and commits its report before preparing outward mutations",
+        "The result identifies the exact prepared repository, remote, branch base and head, PR target, and operation set",
+        "Temper neither reviews nor merges its retrospective PR"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "target-bound-authority-revalidates-before-mutation",
+      "prompt": "$valcraft:temper — a Foreman assignment authorizes pushing retro/f001-search at head 0123456789abcdef0123456789abcdef01234567 and opening its PR against main. Compare an unchanged target with a remote head, local head, or PR base that drifted. Do not execute the mutations.",
+      "expected_output": "Temper accepts the attributed Foreman envelope as a trusted target-bound source, revalidates every prepared field immediately before each mutation, and may execute only the unchanged operation set. Any remote, head, base, target, or operation drift returns a new prepared handoff with authority_drift and requires fresh authorization.",
+      "files": [
+        "SKILL.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "Only a live operator message or attributed Foreman assignment may authorize outward mutation",
+        "Authorization binds repository, remote, branch base and head, PR target, and operation set",
+        "Temper revalidates immediately before mutation",
+        "Any target drift performs no mutation and returns authority_drift for fresh authorization"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "temper-owns-retro-delivery-report",
+      "prompt": "$valcraft:temper — describe the final direct and Foreman-dispatched handoff after a retrospective report is committed and its authorized PR exists. Do not review or merge it.",
+      "expected_output": "Both modes emit the same Temper report with the report path and commit, exact branch base and head, outward-mutation authority and results, proposal summary, exact Review target, exact Land target, blockers, and one producer-owned terminal Status line. Temper invokes neither Review nor Land and never merges.",
+      "files": [
+        "SKILL.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "Direct and Foreman-dispatched runs share one producer-owned Temper report shape",
+        "The handoff pins the exact Review and Land targets",
+        "Temper owns stable blocked and question routing codes plus the terminal Status line",
+        "Temper never invokes Review or Land and never merges"
+      ]
     }
   ]
 }

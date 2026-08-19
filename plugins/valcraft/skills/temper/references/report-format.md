@@ -1,7 +1,8 @@
-# temper report format
+# Temper report format
 
-The single file a temper run creates. This reference is the format authority; SKILL.md
-owns the process that fills it.
+The single retrospective artifact a Temper run creates. This reference owns its file
+format. `SKILL.md` owns analysis, commit, target-bound delivery, and the final Temper
+handoff report.
 
 ## File
 

@@ -1,90 +1,152 @@
-# Assignment envelope and report contracts
+# Coordination contracts
 
-The foreman speaks to workers in one shape and accepts answers in one shape. This reference defines both. The report contracts belong to the skills that produce them — this file links to them and lists only the foreman-specific additions.
+This registry links producer-owned reports to coordinator transitions. It never copies a
+report shape. The producing skill owns its headings, semantic fields, routing codes, and
+terminal `Status:` line.
 
 ## Assignment envelope
 
-Every assignment the foreman sends has these parts, in this order:
+Send every worker these fields in order:
 
-1. **Cold start.** "You start with no prior context. Read, in this order: the skill named below through its skill invocation (for a Foreman-owned recorder or evidence reviewer, read `references/record-and-close.md` instead); the repository's root `AGENTS.md`; then only the artifacts named in the assignment. Do not read the run directory except the files named here."
-2. **Identity and intent.** Role name, feature, task, tracker reference when one exists, branch name when one exists — and one line of intent: "Your report is the sole input to the foreman's gate decision for `<T>` of `<feature>`; it must stand alone for a reader with no other context."
-3. **The assignment.** The step text from `references/loop.md` (or `review-round.md`, `record-and-close.md`, `decompose.md`), with every placeholder resolved to an absolute path or exact value. The feature's `tasks.md` path — or the quick task file's path — is always present; it is the unique selector. A planner assignment also names every verified durable finding locator recorded against the selected task; the planner reads those tracker records as part of the task contract.
-4. **Attributed context (optional).** Include only context the worker needs that the named artifacts cannot supply. Label each entry as exactly one of:
-   - `Operator instruction/decision` — quote the instruction and its scope. It authorizes only the named choice or action. It does not establish an empirical claim or authorize another action.
-   - `Operator attestation` — state the claim and its source locator. It remains attributed evidence for the worker to assess under the invoked skill; it is never accepted as a fact or a substitute for required verification.
-   - `Foreman observation` — state the observation and its probe locator, including the command or backend status source and when it was observed. It remains unverified evidence until the worker verifies or discards it against the authoritative source.
-5. **Report instruction.** "When your assignment is complete or you are blocked, write your report to `<run dir>/<role>-<feature>-<task>.md` (append if it exists), then stop. The report is the full contract of the skill you ran, followed by a `Status:` line: `done`, `blocked: <one line>`, or `question: <one line>`." Backends that carry a return channel (a subagent's final text) receive only the report path and the status line there.
-6. **Trust boundary.** The paragraph from `SKILL.md`, verbatim.
+1. **Cold start.** Invoke the named skill, then read root `AGENTS.md`, then only the
+   named artifacts and references.
+2. **Assignment identity.** Record the run id, assignment id, named state, feature or
+   quick identity, canonical logical worker identity, current physical worker identity,
+   backend, and exact absolute report path.
+3. **Target.** Name the repository, tracker reference, authoritative task contract,
+   exact predecessor artifact or PR identity and SHA, canonical branch, and physical
+   branch when applicable. Use `none` instead of inventing a git target.
+4. **Intent.** Name the producer skill, its mode, and the exact transition this report
+   may unlock. Pass contract and prior-report paths rather than copied content.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator
+   attestation`, or `Foreman observation`, with its source and scope. Only a live
+   operator instruction or an attributed Foreman assignment field can carry mutation
+   authority. Bind authority to repository or remote, branch base and head, PR or
+   tracker target, and operation set.
+6. **Report instruction.** Require the producer's unchanged report contract at the
+   assigned path. Require the producer to return only that path and its terminal
+   `Status:` line through the backend channel.
+7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
-State only what the skill cannot know: the run, the target, the inputs. Pass artifact paths and source or probe locators, not copied report, tracker, diff, or workspace content. Rules the skill owns are not restated in the envelope — change them in the skill.
+Every dated artifact resolves its date from repository policy, then an explicit
+operator date for that artifact, then its creation date. The run id does not supply an
+artifact date.
 
-## Artifact dates
+## Message registry
 
-Resolve the date of each artifact when that artifact is created. Use the first applicable authority:
+| Message | Producer | Consumer | Authoritative report contract | Active state | `done` transition |
+| --- | --- | --- | --- | --- | --- |
+| Project frame | Cast | direct caller, then Spec | [`../../cast/SKILL.md#report`](../../cast/SKILL.md#report) | OutsideLoop | `ReturnToCaller` |
+| Feature or quick contract | Spec | direct caller, Review, Land | [`../../spec/references/delivery.md#spec-report`](../../spec/references/delivery.md#spec-report) | OutsideLoop | `ReturnToCaller` |
+| Task plan | Draft | Foreman, Review | [`../../draft/references/plan-contract.md#report`](../../draft/references/plan-contract.md#report) | Drafting | `PlanReview` |
+| Plan verdict | Review | Foreman, Draft or Forge | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | PlanReview | `PlanVerdict` |
+| Task implementation and PR | Forge | Foreman, Review | [`../../forge/references/verification-and-handoff.md#forge-report`](../../forge/references/verification-and-handoff.md#forge-report) | Implementing | `CodeReview` |
+| Code verdict | Review | Foreman, Forge or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | CodeReview | `CodeVerdict` |
+| Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../land/SKILL.md#report`](../../land/SKILL.md#report) | Landing or FeatureClose | `LandResult` |
+| Evidence-sufficiency verdict | Review | Foreman, Land | [`../../review/references/evidence-mode.md#report`](../../review/references/evidence-mode.md#report) | EvidenceReview | `Landing` |
+| Retrospective report and PR | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `RetroReview` |
+| Retrospective verdict | Review | Foreman, Temper or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 
-1. the repository's explicit date policy;
-2. an explicit operator date for that artifact; or
-3. the artifact's actual creation date.
+`PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict,
+not prose: pass advances to Implementing, Landing, or Landing respectively; material
+findings return to Drafting, Implementing, or Retrospective. LandResult uses the
+reported target kind: a completed task returns Ready, a completed tracker-only feature
+close enters Retrospective, a completed retrospective PR enters Complete, and completed
+external closure returns Ready.
 
-For a worker-created artifact, the envelope carries any explicit operator date as an `Operator instruction/decision` scoped to that artifact. The creator still reads and applies repository policy first. When an assignment creates a dated artifact, its report states the artifact path, resolved date, and authority so the foreman can record them with the artifact checkpoint.
+## Declared outcome routing
 
-A run ID identifies the run; its date does not govern artifact dates. A run that crosses midnight keeps its run ID, while every later artifact resolves its own date anew. Do not rewrite an earlier artifact's date because the run continued on another day.
+Each declared code has one transition. The detail after `—` never changes it.
 
-## Report contracts
+### Cast
 
-The report a worker writes is the producing skill's own report, unchanged; this file links to where each contract is defined and adds only what the foreman needs on top of it. The foreman reads a report once, in full, when acting on it; afterwards it references the report by path and re-reads only what a decision needs. It never pastes a report into another assignment — it passes the path.
+| Outcome | Transition |
+| --- | --- |
+| `scaffold_approval_required` | `AwaitOwner` |
+| `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `authority_drift`, `push_failed` | `StopProducer` |
 
-| Producer                    | Contract (authoritative)                                                                                                                                        | Foreman-specific additions                                                                                                                                                          |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| planner (step 2)            | `../../msw/SKILL.md` — the msw report for the plan file                                                                                                         | the plan's absolute path; open questions the plan could not settle; the `Status:` line                                                                                              |
-| `valcraft:review`           | `../../review/SKILL.md` — "Report": the `## Review report` block                                                                                                | the `Status:` line                                                                                                                                                                  |
-| reviewer (closure check)    | `../../review/SKILL.md` — shared rule 6 (close only by re-run); the `## Review report` block re-emitted with the resolution column updated for the listed R-IDs | the re-run command and its output per listed R-ID; no new findings; the `Status:` line                                                                                              |
-| `valcraft:forge`            | `../../forge/references/verification-and-handoff.md` — "Step 6": the `## Forge handoff` block                                                                   | `### Review target` names the branch or range the step 8 reviewer pins; the `Status:` line                                                                                          |
-| worker (steps 4, 9)         | `../../review/SKILL.md` — shared rules 3, 4, 6 (R-IDs, remediation plan, closure by re-run)                                                                     | one line per R-ID: resolving commit, repository-relative file-and-line locator, concise claim; no copied hunks; the plan's absolute path (step 4) or remediation plan path (step 9) |
-| recorder (record and close) | `references/record-and-close.md` — criterion evidence and tracker-owned durable record                                                                          | the `## Completion-evidence report` block below; the `Status:` line                                                                                                                 |
-| evidence reviewer           | `references/record-and-close.md` — fresh criterion-by-criterion sufficiency review                                                                              | the `## Evidence-sufficiency report` block below; the `Status:` line                                                                                                                |
-| `valcraft:temper` (step 11) | `../../temper/references/report-format.md` — the report file, sections, incident records, routing table                                                         | the report's absolute path; the PR URL; one line per routed proposal (tier, `L-NNN`, rule statement); the `Status:` line                                                            |
-| planner (decompose)         | `../../cast/SKILL.md`, `../../spec/SKILL.md` — their run reports                                                                                                | every Cast proposal and mutation preview as an exact record, each marked `recorded — proceeded` or `waiting`; feature ID and paths; the spec PR reference; the `Status:` line       |
+### Draft
 
-The recorder's final block is:
+| Outcome | Transition |
+| --- | --- |
+| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift`, `push_failed` | `Blocked` |
+| `product_decision_required`, `owner_decision_required` | `AwaitOwner` |
 
-```markdown
-## Completion-evidence report
-### Target
-### Durable evidence
-### Git target
-### Open gaps
-```
+### Forge
 
-`Durable evidence` has one row per acceptance criterion:
-`criterion | claim | source class and locator | durable evidence locator`. `Git target`
-names the real branch, PR, commit, and exact head when any exists, or records that the
-authoritative probes found none. `Open gaps` names missing evidence or says `none`.
+| Outcome | Transition |
+| --- | --- |
+| `draft_required` | `Drafting` |
+| `review_target_mismatch` | `CodeReview` |
+| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `product_decision_required` | `AwaitOwner` |
 
-The evidence reviewer's final block is:
+### Review
 
-```markdown
-## Evidence-sufficiency report
-### Target and sources
-### Criterion verdicts
-### Overall verdict
-### Not independently verified
-```
+| Outcome | Transition |
+| --- | --- |
+| `review_target_mismatch` | `Blocked` |
+| `review_blocked`, `evidence_review_blocked` | `Blocked` |
+| `evidence_insufficient` | `Landing` |
 
-`Criterion verdicts` has one row for every acceptance criterion:
-`criterion | durable evidence locator | source attribution | independent verification
-and locator | sufficient/insufficient | reason`. `Overall verdict` is exactly
-`sufficient` or `insufficient`. The final section lists every unverified row or says
-`none`.
+### Land
 
-Completeness means: the linked contract's report is present as that skill defines it, plus the additions in the right column. For the forge, review, recorder, and evidence-sufficiency blocks the test is mechanical: every heading present, in order, none empty (`none` is a value). A recorder or evidence-review report that omits a contract criterion is incomplete. For steps 4 and 9, a line missing its R-ID, resolvable commit, repository-relative file-and-line locator, or concise claim is incomplete; copied text or a hunk satisfies none of those fields. A report file appended across rounds holds several blocks; the check applies to the last block in the file, followed by its `Status:` line — an earlier complete block never satisfies a later append. The foreman judges presence, not quality — evidence quality belongs to the fresh sufficiency reviewer and change quality to `valcraft:review`.
+| Outcome | Transition |
+| --- | --- |
+| `review_required` | `ReviewByTarget` |
+| `check_failure_task` | `Implementing` |
+| `check_failure_spec` | `ReturnToSpecCaller` |
+| `check_failure_retro` | `Retrospective` |
+| `evidence_review_required` | `EvidenceReview` |
+| `operator_action_required` | `OperatorAction` |
+| `partial_completion` | `Landing` |
+| `operator_confirmation_required` | `AwaitOwner` |
+| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_required`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 
-## Rejection
+`ReviewByTarget` means task PR to CodeReview, retrospective PR to RetroReview, and spec
+PR to Spec's direct caller outside the loop. It is one target-kind transition function.
 
-A report that carries a verdict, a summary, or a "done" without the required content — or a forge or review block with a heading missing — is incomplete. The foreman does not act on it: it sends the same worker one assignment — "Your report at `<path>` is missing `<named parts>`. Append the full `<skill>` contract and stop." — and awaits again (respawn with the same instruction on a one-shot backend). A second incomplete report escalates (two-attempt rule).
+### Spec
 
-## Status line semantics
+| Outcome | Transition |
+| --- | --- |
+| `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required` | `AwaitOwner` |
+| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
 
-- `done` — act on the report.
-- `blocked: …` — a permission prompt or an external condition; apply the blocked-worker rule in `references/backends/README.md`.
-- `question: …` — the worker needs a decision. Answer it when the spec, design, plan, or the assignment already settles it; otherwise route it through held-task handling in the intake reference or escalate.
+### Temper
+
+| Outcome | Transition |
+| --- | --- |
+| `authority_required` | `Blocked` |
+| `corpus_invalid`, `analysis_blocked`, `git_write_failed`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `owner_decision_required` | `AwaitOwner` |
+
+## Backend returns
+
+Record exactly one return against the active assignment before report validation.
+
+| Backend return | Await effect | Transition |
+| --- | --- | --- |
+| `report_available` | terminal | `ReportValidation` |
+| `permission_blocked` | wait for an allowed answer or escalation | `BlockedPrompt` |
+| `idle_without_report` | terminal | `WorkerRecovery` |
+| `dispatch_error` | terminal | `DispatchRecovery` |
+| `dead` | terminal | `DeadWorkerRecovery` |
+| `wait_timeout` | nonterminal; foreground only | remain in the current named state and re-arm await |
+
+Only `report_available` opens the attributed producer report. A producer's
+`Status: blocked: <code> — <detail>` is report content under `report_available`; it is
+never `permission_blocked`.
+
+## Validation and rejection
+
+Require the active assignment id, logical worker, physical worker, backend return, and
+report path to match `state.md` and `workers.md`. Reject a predecessor's late report
+after replacement, even when its report contract is complete. A report is complete
+only when its producer-owned headings are present in order, required exact identities
+are populated, and exactly one terminal status line is last.
+
+On the first incomplete report, reassign the same producer to append the missing named
+parts. On the second, escalate under the established two-attempt rule. Never fill a
+missing field, copy a shape into another report, interpret prose as a code, or advance
+on an undeclared code.
