@@ -252,20 +252,34 @@
     },
     {
       "id": 13,
-      "name": "reviewed-plan-seeds-ao-and-authorized-task-pr",
-      "prompt": "/valcraft:forge — execute an Agent Orchestrator assignment for T-001. Draft committed and pushed plan docs/plans/2031-04-08-001-feat-t-001-parser-plan.md at 1111111111111111111111111111111111111111 on canonical remote ref refs/heads/feat/f001-t001-parser. Review returned pass for that exact path and SHA. The unique physical branch ao/forge-f001-t001-7c42 is clean and seeded from that SHA. After local implementation produces head 2222222222222222222222222222222222222222, a resumed attributed Foreman assignment authorizes non-force push to that canonical ref and create-or-update PR in repository example/tools on remote origin, base main at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, head 2222222222222222222222222222222222222222. Explain the required execution and final handoff; do not perform external mutations.",
-      "expected_output": "Forge accepts the passing plan review only because it covers the exact plan path and commit. It verifies the AO physical branch was seeded from that commit while preserving the canonical remote task ref as the published branch. It prepares the implementation result, accepts only the resumed target-bound Foreman authority, immediately revalidates every bound field, non-force pushes physical HEAD to the canonical ref, and creates or updates exactly one task PR. Its report pins repository, base, head, canonical branch, physical branch, and PR identity, and ends `Status: done`.",
+      "name": "resumed-authority-executes-isolated-task-pr",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.foreman/forge-assignment.md`. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
+      "expected_output": "Forge verifies the passing Review report covers the exact plan commit and that the AO physical branch contains the prepared implementation head. It accepts only the resumed attributed authority generated for that exact head, revalidates every bound field, runs the real tests, non-force pushes physical HEAD to the canonical ref, and invokes the PR shim exactly once to create the task PR. The canonical remote ref equals the local head, `.eval/pr-calls.log` contains one create call, and the report pins the exact repository, base, head, canonical branch, physical branch, and PR before ending `Status: done`.",
       "files": [
-        "SKILL.md",
-        "references/verification-and-handoff.md"
+        "evals/files/implement-local/.gitignore",
+        "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/bin/gh",
+        "evals/files/implement-local/prepare-eval.sh",
+        "evals/files/implement-local/docs/product-brief.md",
+        "evals/files/implement-local/docs/retention-windows-prd.md",
+        "evals/files/implement-local/docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md",
+        "evals/files/implement-local/specs/001-retention-windows/spec.md",
+        "evals/files/implement-local/specs/001-retention-windows/design.md",
+        "evals/files/implement-local/specs/001-retention-windows/tasks.md",
+        "evals/files/implement-local/src/validation.py",
+        "evals/files/implement-local/tests/test_validation.py",
+        "evals/files/implement-local/eval-tools/implementation/retention.py",
+        "evals/files/implement-local/eval-tools/implementation/test_retention.py"
       ],
       "assertions": [
-        "Forge requires Review verdict pass for exact plan path docs/plans/2031-04-08-001-feat-t-001-parser-plan.md at full SHA 1111111111111111111111111111111111111111",
-        "The AO physical branch is verified as clean and seeded from the reviewed plan SHA while refs/heads/feat/f001-t001-parser remains the canonical remote task ref",
-        "The initial assignment cannot authorize an unknown result; only the resumed attributed authority for exact head 2222222222222222222222222222222222222222 permits push and PR operations",
+        "Forge requires the Review pass for the exact generated plan path and full plan SHA",
+        "The AO physical branch is verified from the reviewed plan SHA while refs/heads/feat/f001-t001-retention-window remains the canonical remote task ref",
+        "Only the resumed attributed Foreman assignment for the generated exact implementation head permits push and PR operations",
         "Forge immediately revalidates repository, remote, base SHA, local head, canonical ref and its remote head, PR target, and operation set",
-        "The push is non-force from physical HEAD to the canonical remote task ref, and exactly one task PR is created or updated",
-        "The Review target and Forge report identify repository example/tools, base main at its exact SHA, implementation head, canonical and physical branches, and exact PR",
+        "The repository test command passes against the prepared implementation",
+        "The push is non-force from physical HEAD to the local canonical remote task ref, which then equals the exact local head",
+        "The instrumented PR log records exactly one create call and the verified PR target matches main and the canonical head",
+        "The Review target and Forge report identify repository example/retention, base main at its exact SHA, implementation head, canonical and physical branches, and exact PR",
         "Forge performs no merge, completion tick, tracker close, plan write, or review"
       ]
     },
@@ -334,6 +348,35 @@
         "Forge requires the incoming code review to cover the exact implementation head before remediation",
         "Forge does not author or revise the plan, perform Review, merge, tick completion, or close tracker state",
         "Every Forge report uses its producer-owned headings and exactly one terminal Status line with a stable code on blocked or question outcomes"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "reviewed-plan-executes-local-implementation",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.foreman/plan-review.md`. Run the documented tests and mutation check, commit the implementation on the current AO physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
+      "expected_output": "Forge verifies the plan Review covers the exact generated plan commit, starts from that commit on the clean AO physical branch, implements only T-001, adds focused tests for AC-001 and AC-002, runs the real test command and a discriminating mutation check, and commits the implementation. Because no exact result-head authority exists, it performs no push or PR mutation. The complete Forge report names the passed plan SHA, actual implementation SHA, verification evidence, canonical and physical branches, PR none, and the exact prepared handoff before ending `Status: done`.",
+      "files": [
+        "evals/files/implement-local/.gitignore",
+        "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/bin/gh",
+        "evals/files/implement-local/prepare-eval.sh",
+        "evals/files/implement-local/docs/product-brief.md",
+        "evals/files/implement-local/docs/retention-windows-prd.md",
+        "evals/files/implement-local/docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md",
+        "evals/files/implement-local/specs/001-retention-windows/spec.md",
+        "evals/files/implement-local/specs/001-retention-windows/design.md",
+        "evals/files/implement-local/specs/001-retention-windows/tasks.md",
+        "evals/files/implement-local/src/validation.py",
+        "evals/files/implement-local/tests/test_validation.py"
+      ],
+      "assertions": [
+        "Forge accepts only the passing Review report for the exact generated plan path and full SHA",
+        "Forge begins from that reviewed commit on the clean AO physical branch and implements T-001 without changing the plan or T-002",
+        "Source and focused tests cover accepted hour and day windows plus every AC-002 rejection",
+        "The documented unittest command passes and a reversible mutation makes a focused test fail before the fix is restored",
+        "Forge commits the implementation and resolves its actual full head SHA",
+        "No push or PR operation occurs because the initial request cannot authorize the previously unknown result head",
+        "The report prepares exact target-bound push and PR fields with PR none and ends Status: done"
       ]
     }
   ]

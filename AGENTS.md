@@ -36,8 +36,9 @@ For instructions, prompts, safety rules, and error messages:
 
 ## Commands
 
-There is no build, no dependency install, and no test runner — the repository is markdown
-and JSON.
+There is no application build or dependency install. The shipped plugin is Markdown,
+JSON, and YAML; standard-library Python scripts validate repository contracts and
+generated metadata.
 
 - Develop a skill live: `claude --plugin-dir /path/to/valcraft/plugins/valcraft`, then
   `/reload-plugins` after each edit.
@@ -56,6 +57,11 @@ and JSON.
   outside `evals/`: `python3 scripts/build-skills-index.py` (CI runs it with `--check`).
   OpenCode consumes the skills through that index over raw GitHub; there is no OpenCode
   manifest.
+- Check the federated worker-report registry, routing codes, backend returns, and active
+  transport-deviation eval references: `python3 scripts/check-coordination-contracts.py`.
+  Run its discriminating static tests with
+  `python3 scripts/tests/test_check_coordination_contracts.py`. These checks detect
+  declaration drift; behavioral evals prove behavior.
 
 ## Architecture constraints
 
@@ -112,5 +118,8 @@ Before marking work complete:
    against the published portable schema if it changed.
 3. Parse every changed JSON or YAML file and confirm all skill-relative paths resolve.
    Run `python3 scripts/build-skills-index.py --check` when a shipped skill file changed.
-4. Update affected docs.
-5. Confirm no secret material was added.
+4. Run `python3 scripts/check-coordination-contracts.py` and
+   `python3 scripts/tests/test_check_coordination_contracts.py` when a report producer,
+   Foreman coordination contract, backend, or Foreman eval changed.
+5. Update affected docs.
+6. Confirm no secret material was added.

@@ -51,8 +51,8 @@ from another skill.
    exact repeated source resumes its feature. Several applicable staged features
    require explicit selection. A complete repeated feature is idempotent.
 4. **Establish the workspace.** Prefer an exact Foreman assignment. Otherwise
-   resolve the default branch from agreeing live authorities, derive the
-   canonical Spec branch from the artifact identity, and reconcile local branch,
+   resolve the default branch from agreeing live authorities. Derive the
+   canonical Spec branch from the artifact identity. Reconcile local branch,
    remote branch, existing artifact, push, and PR state. Never infer or select a
    release branch. Stop on dirty, ambiguous, or diverged state.
 5. **Produce the artifact.** For a feature, create all three artifacts or preserve

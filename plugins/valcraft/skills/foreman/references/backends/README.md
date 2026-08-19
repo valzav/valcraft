@@ -72,13 +72,14 @@ parent permission and Agent Orchestrator project permission are insufficient.
 
 Keep only deviations that change dispatch, await, wake, or workspace behavior.
 
-| Backend | Active deviation | Changed primitive | Discriminating eval |
-| --- | --- | --- | --- |
-| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | Foreman eval 7 |
-| Codex native | parent remains active and uses foreground `wait_agent`; timeout re-arms without a user message | wake/await | Foreman eval 18 |
-| Native subagents | all roles share the parent checkout | workspace | Foreman eval 35 |
-| Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | Foreman eval 63 |
-| Agent Orchestrator | every dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | Foreman eval 62 |
+| Backend | Active deviation | Changed primitive | Coverage key | Discriminating eval |
+| --- | --- | --- | --- | --- |
+| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 7 |
+| Codex native | parent remains active and uses foreground `wait_agent`; timeout re-arms without a user message | wake/await | `transport:codex-foreground-wake` | Foreman eval 18 |
+| Native subagents | all roles share the parent checkout | workspace | `transport:native-shared-workspace` | Foreman eval 35 |
+| Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:ao-poll-wake` | Foreman eval 63 |
+| Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:ao-isolated-branch` | Foreman eval 62 |
+| Agent Orchestrator | a no-git workflow target uses a transport-only branch seeded from the verified default-branch SHA | dispatch/workspace | `transport:ao-no-git-workspace` | Foreman eval 67 |
 
 The corresponding backend reference owns commands. Remove a row when the transport no
 longer deviates; do not preserve historical notes here.

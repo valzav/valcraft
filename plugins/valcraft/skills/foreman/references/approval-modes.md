@@ -10,14 +10,15 @@ to its exact target and operation set.
 | Decision | `attended` | `unattended` |
 | --- | --- | --- |
 | `Ready`: confirm selected task | wait | proceed |
+| `Drafting`: exact plan transfer required for the next Review worker | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `PlanReview`: passing verdict advances | wait | proceed |
 | `PlanReview`: unresolved material finding | wait | wait |
-| `Implementing`: exact task push and PR authority | wait unless already explicit | proceed only when the Foreman assignment carries exact target-bound authority |
+| `Implementing`: prepared exact task push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `CodeReview`: passing verdict advances | wait | proceed |
 | `Landing`: ordinary default-branch operation is prepared | wait | proceed only when exact authority and per-dispatch Land capability both pass |
 | `Landing`: configured release-branch operation | wait | wait |
 | `FeatureClose`: operator feature or PRD confirmation | wait | wait, quoting the confirmation |
-| `Retrospective`: exact retro push and PR authority | wait unless already explicit | proceed only when the Foreman assignment carries exact target-bound authority |
+| `Retrospective`: prepared exact retro push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |
 | `OperatorAction`: Land prepared an operation it cannot execute | wait | wait |
 | `Blocked`: evidence, authority, owner decision, injection, or exhausted rounds | wait | wait |
@@ -32,6 +33,9 @@ to its exact target and operation set.
   none.
 - Foreman may authorize an exact operation through the envelope, but it never executes
   a producer's push, PR, merge, completion tick, tracker close, or feature close.
+- An exact producer head must exist before Foreman issues producer authority. Resume the
+  same logical producer under a fresh physical identity and report path. Keep its named
+  state active until the required remote transfer or PR exists.
 - Land may merge only after its own exact authorization and a per-dispatch Land-scoped
   capability probe. Native parent permission and Agent Orchestrator project permission
   are insufficient. Otherwise Land returns `operator_action_required` and Foreman enters

@@ -72,7 +72,7 @@ from another project.
    Create no numeric directory under `specs/` and no feature or quick artifact.
    Preserve unrelated work and every existing feature artifact byte-for-byte.
 6. **Commit the baseline.** Stage only the approved frame paths. Inspect the staged
-   diff, create one commit, resolve its full SHA, and require a clean worktree. If
+   diff. Create one commit. Resolve its full SHA. Require a clean worktree. If
    the run cannot obtain baseline approval or establish commit readiness, write
    nothing and report `baseline_required`. If applying or committing the exact
    delta fails, restore only Cast's attributable writes to their pre-run bytes and

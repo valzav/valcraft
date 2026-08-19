@@ -36,20 +36,31 @@ rehash `<dispatch preimage>\ncollision:<n>` until it is unused. Preserve all pri
 
 ## Physical branch guard
 
-Derive a unique physical branch from the physical alias. Before worker creation:
+Derive a unique physical branch from the physical alias. Resolve one workspace seed
+before worker creation:
 
-1. Verify the predecessor's exact full SHA and canonical remote ref from the accepted
-   producer report.
+- For a git-backed workflow target, verify the predecessor's exact full SHA and
+  canonical remote ref from the accepted producer report. Use that SHA as the workspace
+  seed.
+- For a workflow target whose branch, PR, commit, and target SHA are all `none`, verify
+  the live remote `HEAD` symref and host-reported default branch agree. Fetch that ref.
+  Use its exact SHA only as the workspace seed. Keep the workflow target's git identity
+  `none`.
+
+Then apply the physical guard:
+
+1. Record the workspace seed SHA and whether it is predecessor or transport-only state.
 2. Inspect local refs and `git worktree list --porcelain`.
-3. When the physical branch is absent, create it at the predecessor SHA.
+3. When the physical branch is absent, create it at the workspace seed SHA.
 4. When it exists only as this not-yet-spawned dispatch's recorded branch, require its
-   head to equal the predecessor SHA exactly.
+   head to equal the workspace seed SHA exactly.
 5. Stop before spawn when the branch is stale, belongs to another dispatch, or is
    already checked out in any worktree.
 
 Never reset, reuse another dispatch's branch, force-push, or publish the physical branch
-as the canonical task ref. Draft, Forge, and task-PR Land revalidate the canonical
-remote ref before a non-force transfer.
+as the canonical task ref. A transport-only seed is never completion evidence, a Review
+target, or a replacement for the workflow target's `none` fields. Draft, Forge, and
+task-PR Land revalidate the canonical remote ref before a non-force transfer.
 
 ## Dispatch and assignment
 
@@ -59,8 +70,8 @@ Run:
 ao spawn --project <project-id> --harness <harness> --name <physical-alias> --branch <physical-branch>
 ```
 
-Record the returned session id, alias, branch, predecessor SHA, logical identity, and
-dispatch ordinal in `workers.md`. Assign the envelope with:
+Record the returned session id, alias, branch, workspace seed SHA and kind, logical
+identity, and dispatch ordinal in `workers.md`. Assign the envelope with:
 
 ```sh
 ao send --session <session-id> --message "<envelope>"
@@ -109,7 +120,7 @@ Never write directly to tmux.
 Workers write reports to the absolute run path in Foreman's checkout. On death, inspect
 the dead worktree, refs, exact SHAs, canonical remote state, PR or tracker effects,
 report path, and working-tree state. A safe replacement gets another alias and physical
-branch at the verified predecessor. It recovers verified work without repeating an
+branch at the verified workspace seed. It recovers verified work without repeating an
 external effect. Reject the predecessor's later report after replacement.
 
 Project-wide session cleanup can delete a live orchestrator workspace. Foreman never

@@ -8,6 +8,7 @@ proves that declared contracts remain linked.
 | Scenario | Eval |
 | --- | --- |
 | Resume exact Draft, Review, Forge, and PR evidence into PlanReview, Implementing, CodeReview, and Landing | 57 |
+| Prepared Draft, Forge, and Temper heads resume the same producer before Review | 65 |
 | Incomplete producer report is re-requested without Foreman reconstruction | 2 |
 | Review closure check and established round cap remain intact | 3, 10 |
 | Declared product question routes to the owner; unsafe permission prompt escalates | 4, 5 |
@@ -39,6 +40,7 @@ covered by evals 63 and 62. These ids appear in the active-deviation registry.
 | Stale or already-checked-out physical branch stops before spawn | 62 |
 | Canonical task ref is revalidated and never force-pushed | 62 |
 | AO checksum and session polling maps attributed observations to backend returns before report access | 63 |
+| AO no-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
 | Every active transport deviation names changed behavior and discriminating eval | 63 |
 
 ## Land boundary
@@ -48,7 +50,7 @@ covered by evals 63 and 62. These ids appear in the active-deviation registry.
 | Release target remains a human gate and Foreman performs no landing mutation | 6 |
 | Shared native or AO permission cannot substitute for per-dispatch Land capability | 60 |
 | Land semantic operator action arrives under `report_available` and enters OperatorAction | 58, 60 |
-| Pending checks keep the same Land assignment active | 58 |
+| Pending checks keep the same Land assignment active | 66 |
 | External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |
 
 External-completion evals characterize routing ownership: Land records and closes,

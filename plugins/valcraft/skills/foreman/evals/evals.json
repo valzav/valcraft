@@ -145,6 +145,7 @@
     {
       "id": 7,
       "name": "cold-start-drafter-and-small-context",
+      "coordination_coverage": "transport:claude-event-wake",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
       "expected_output": "Foreman resolves runtime, creates state.md and workers.md, reconciles readiness, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft:draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event. Foreman does not read the artifacts to plan or run MSW itself.",
       "files": [
@@ -369,6 +370,7 @@
     {
       "id": 18,
       "name": "codex-timeout-active-dispatch-rearms-await",
+      "coordination_coverage": "transport:codex-foreground-wake",
       "prompt": "$valcraft:foreman — on Codex, the foreground await for forge-F001-T002 returned wait_timeout and assigned-worker status still says running. Show the next action. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman records wait_timeout against the active Forge assignment and physical worker. Because it remains active, the return is nonterminal: Foreman re-arms foreground await in the same parent turn. It does not read the report, invent an interval or cap, transition state, ask the user, or emit a final response.",
       "files": [
@@ -437,6 +439,7 @@
     {
       "id": 35,
       "name": "dirty-shared-checkout-stops-before-synchronization",
+      "coordination_coverage": "transport:native-shared-workspace",
       "prompt": "$valcraft:foreman — Ready begins in the shared checkout and `git status` shows dirt before Q-004 QT-002 has a task branch. Classify separate cases with a staged edit, an unstaged edit, or an untracked file; in each case the owner may be known or unknown. The project is unattended. What happens next? Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman preserves the checkout and stops in every case before fetch, switch, default-branch synchronization, or task-branch creation. It records the staged, unstaged, and untracked paths, any known attribution, and the current branch and SHA in state.md, then waits for the operator. Attribution does not authorize the task-start gate to proceed. Foreman does not clean, stash, reset, switch, create a branch, or treat unattended mode as permission to mutate the checkout. Dead-worker recovery of an existing task remains a separate rule.",
       "files": [
@@ -701,6 +704,7 @@
     {
       "id": 62,
       "name": "ao-spawn-requires-exact-unused-physical-branch",
+      "coordination_coverage": "transport:ao-isolated-branch",
       "prompt": "$valcraft:foreman — describe Agent Orchestrator dispatch for drafter-F001-T002 at predecessor SHA 0123456789abcdef0123456789abcdef01234567. Cover a new physical branch, an existing branch at another SHA, and a branch already checked out in a worktree. Do not run commands.",
       "expected_output": "Foreman derives a unique physical alias and physical branch, creates or verifies the unused branch at the exact predecessor SHA, and dispatches with `ao spawn --project <project-id> --harness <harness> --name <physical-alias> --branch <physical-branch>`. A stale or already-checked-out branch stops before spawn. Canonical remote transfer never force-pushes.",
       "files": [
@@ -719,8 +723,9 @@
     {
       "id": 63,
       "name": "ao-poll-classifies-attributed-active-session",
+      "coordination_coverage": "transport:ao-poll-wake",
       "prompt": "$valcraft:foreman — for one attributed active Agent Orchestrator assignment, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, AO polling covered by this eval, and AO isolated branches covered by eval 62.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, AO polling covered by this eval, AO git-backed isolated branches covered by eval 62, and AO no-git transport workspaces covered by eval 67. Every row and eval shares one unique reciprocal coverage key.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -735,7 +740,7 @@
         "An absent assigned AO session returns dead, while a still-working session keeps polling without a backend return",
         "Foreman records the attributed backend return before report access and only report_available opens the assigned report",
         "Every active deviation changes dispatch, await, wake, or workspace behavior",
-        "Each deviation names a discriminating Foreman eval id",
+        "Each deviation names a unique coverage key and discriminating Foreman eval id, and that eval reciprocally names the same key",
         "The registry contains no resolved or historical deviation"
       ]
     },
@@ -754,6 +759,68 @@
         "Feature confirmation routes tracker-only Land before Temper",
         "Temper then Review then Land handle the retrospective PR",
         "Foreman performs no tracker closure, report creation, PR creation, review, or merge"
+      ]
+    },
+    {
+      "id": 65,
+      "name": "prepared-producer-head-resumes-before-review",
+      "prompt": "$valcraft:foreman — compare three complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an AO Draft plan commit that is not on its canonical remote ref, a Forge implementation head with PR none, and a Temper retrospective head with PR none and authority_required. Explain attended and unattended continuation. Do not execute any outward mutation.",
+      "expected_output": "Foreman keeps Drafting, Implementing, or Retrospective active instead of advancing to Review or Blocked. It records the prepared target, applies that named state's approval gate, and resumes the same logical producer under a fresh physical identity with newly attributed exact target-bound authority. Attended waits unless the live operator already granted the exact operation. Unattended may issue the exact Foreman authority after validating the prepared fields. Draft enters PlanReview only when its exact commit is accessible to the Review worker; Forge and Temper enter CodeReview or RetroReview only after the exact PR exists. Foreman executes no push or PR operation.",
+      "files": [
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/backends/README.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "A prepared Draft, Forge, or Temper outward handoff keeps its current producer state active",
+        "The same logical producer resumes under a fresh physical identity and report path",
+        "Fresh authority is attributed and bound to the exact prepared repository, remote, base, head, ref, PR target, and operation set",
+        "Attended waits without existing explicit authority; unattended may issue exact Foreman authority only after validating every prepared field",
+        "Draft advances only when Review can access its exact commit, and Forge or Temper advances only after the exact PR exists",
+        "Foreman performs no push or PR mutation"
+      ]
+    },
+    {
+      "id": 66,
+      "name": "pending-checks-preserve-active-land-assignment",
+      "prompt": "$valcraft:foreman — resume run `run-checks-pending` in evals/files/loop-local/.foreman/run-checks-pending/. Land is still running against exact head 3333333333333333333333333333333333333333 and authoritative checks remain pending. A foreground wait_timeout arrives. Continue the run without spawning or writing.",
+      "expected_output": "Foreman records the nonterminal wait_timeout against the active Landing assignment, preserves the same logical and physical Land worker and report path, and re-arms the backend await in the same active parent turn. It emits no terminal producer report, user-status prompt, replacement dispatch, or named-state transition.",
+      "files": [
+        "evals/files/loop-local/.foreman/run-checks-pending/state.md",
+        "evals/files/loop-local/.foreman/run-checks-pending/workers.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/backends/README.md"
+      ],
+      "assertions": [
+        "Landing remains the active named state on exact head 3333333333333333333333333333333333333333",
+        "The same logical and physical Land assignment remains active",
+        "wait_timeout is recorded as nonterminal and await is re-armed",
+        "No report is opened or synthesized while checks remain pending",
+        "No user-status prompt, replacement dispatch, or state transition occurs"
+      ]
+    },
+    {
+      "id": 67,
+      "name": "ao-no-git-external-completion-uses-transport-seed",
+      "coordination_coverage": "transport:ao-no-git-workspace",
+      "prompt": "$valcraft:foreman — dispatch an Agent Orchestrator Land worker for external completion of task 17. The workflow target has repository example/reports and tracker task 17, but branch, PR, commit, and target SHA are all none. The live remote HEAD and host default agree on main at 0123456789abcdef0123456789abcdef01234567. Describe the workspace guard and Land to EvidenceReview to Land routing. Do not run commands.",
+      "expected_output": "Foreman records the workflow target's git identity as none. For transport only, it verifies the authoritative default branch and exact SHA, creates or verifies one unused AO physical branch at that workspace seed, and spawns the isolated Land worker. The assignment labels the seed as transport state, not completion evidence. Land produces the durable evidence record, fresh Review judges its exact criteria, and Land closes only the real tracker target after a sufficient verdict and authority. No report or reviewer invents a target branch, PR, commit, or SHA.",
+      "files": [
+        "references/backends/ao.md",
+        "references/backends/README.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The external-completion target keeps branch, PR, commit, and target SHA as none",
+        "AO verifies the live default branch and exact SHA as a transport-only workspace seed",
+        "The unique unused physical branch is created or verified at the workspace seed before spawn",
+        "The workspace seed is never accepted as completion evidence or Review coverage",
+        "Land to EvidenceReview to Land uses only the durable evidence record and real tracker target"
       ]
     }
   ]

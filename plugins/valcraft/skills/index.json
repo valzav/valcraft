@@ -2,25 +2,19 @@
   "skills": [
     {
       "name": "cast",
-      "version": "9ee11f81b6dd8757",
+      "version": "8b3cd8dede8a707c",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
-        "references/quick.md",
         "references/scaffold.md",
-        "references/spec-intake.md",
         "templates/AGENTS.md",
         "templates/README.md",
         "templates/adr-index.md",
         "templates/adr.md",
-        "templates/design.md",
         "templates/gitignore-base",
         "templates/overview.md",
         "templates/product-brief.md",
-        "templates/quick.md",
-        "templates/spec.md",
-        "templates/status.md",
-        "templates/tasks.md"
+        "templates/status.md"
       ]
     },
     {
@@ -33,8 +27,17 @@
       ]
     },
     {
+      "name": "draft",
+      "version": "0ff55e61e6501da8",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
       "name": "foreman",
-      "version": "e4d61f3b61cf7705",
+      "version": "3cfb3248e6e2d617",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -42,12 +45,10 @@
         "references/backends/ao.md",
         "references/backends/subagents.md",
         "references/contracts.md",
-        "references/decompose.md",
         "references/hygiene.md",
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
-        "references/record-and-close.md",
         "references/review-round.md",
         "templates/project-block.md",
         "templates/run-dir.md",
@@ -56,7 +57,7 @@
     },
     {
       "name": "forge",
-      "version": "a043dd6566a11cbe",
+      "version": "effe931375d961c7",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -75,6 +76,17 @@
       ]
     },
     {
+      "name": "land",
+      "version": "6fc1c6645711c4b8",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "references/record-and-close.md",
+        "references/tracker-closure.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
       "name": "msw",
       "version": "9ac2c42763515413",
       "files": [
@@ -84,25 +96,34 @@
     },
     {
       "name": "review",
-      "version": "8a6bc4dc915b0157",
+      "version": "b6f94669d39fc46e",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
+        "references/evidence-mode.md",
         "references/plan-mode.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "spec",
-      "version": "58082bfae736f75f",
+      "version": "e56a68b215745f5b",
       "files": [
         "SKILL.md",
+        "references/delivery.md",
+        "references/feature-contract.md",
+        "references/github-projection.md",
+        "references/quick.md",
+        "templates/design.md",
+        "templates/quick.md",
+        "templates/spec.md",
+        "templates/tasks.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "temper",
-      "version": "d6c35bb0663913c9",
+      "version": "98f6d7ae502c833c",
       "files": [
         "SKILL.md",
         "references/process.md",

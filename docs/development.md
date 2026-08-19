@@ -32,6 +32,8 @@ local marketplace installation is still a copy; it does not read later edits liv
 - `plugins/valcraft/` — the plugin: native Claude Code and Codex manifests, the portable
   Agent Plugins manifest, and `skills/<skill>/SKILL.md` with each skill's `references/`,
   `templates/`, and `evals/`. Only this subtree ships to consumers.
+- `scripts/` — standard-library repository checks and generated-artifact builders; these
+  development tools do not ship in the plugin.
 - `docs/`, `AGENTS.md` — repository documentation and agent instructions; never installed.
 
 The tracked-content neutrality rule is defined in
@@ -81,3 +83,23 @@ flat `skills` array). To test a branch before merge, serve the directory locally
 Each skill carries `evals/evals.json` (prompt, fixtures under `evals/files/`, expected
 output, assertions). Run them with the skill-creator skill: "run the evals for
 `plugins/valcraft/skills/<skill>`", with the workspace directed to `.local/`.
+
+## Coordination-contract drift
+
+Each report-producing skill owns its headings, terminal status grammar, and routing
+codes. Foreman's registry links to those contracts and owns only consumers, routes,
+backend returns, and named-state transitions.
+
+Run the static consistency check and its discriminating tests after changing a report
+contract, the Foreman registry, a backend return, an active transport deviation, or its
+named eval:
+
+```bash
+python3 scripts/check-coordination-contracts.py
+python3 scripts/tests/test_check_coordination_contracts.py
+```
+
+The check follows registry links, compares report-heading fingerprints, reconciles
+producer and registry codes, requires the exact backend returns, and resolves each
+active deviation's Foreman eval. It detects declaration drift only. Run the behavioral
+skill evals to prove runtime behavior.

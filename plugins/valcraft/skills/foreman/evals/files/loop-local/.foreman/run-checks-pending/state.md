@@ -1,0 +1,16 @@
+run: run-checks-pending
+active named state: Landing
+target kind: task PR
+canonical task identity: FEAT-001 T-002
+tracker reference: specs/001-invite-links/tasks.md#T-002
+authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md
+active assignment id: rp-land-d000
+logical worker: land-F001-T002
+physical worker: Codex task land-F001-T002 agent agent-rp-land-000
+physical branch: none
+attributed report path: .foreman/run-checks-pending/land-F001-T002-d000.md
+predecessor target: PR #15 head 3333333333333333333333333333333333333333
+review-covered SHA: 3333333333333333333333333333333333333333
+latest worker observation: required checks remain pending on 3333333333333333333333333333333333333333
+backend return: wait_timeout from agent-rp-land-000 at 2026-08-19T16:00:00Z; nonterminal; await re-armed
+active report: none

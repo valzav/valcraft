@@ -79,8 +79,8 @@ durable evidence leaves gate execution `unknown`, not `skipped`.
    implicit authority. Missing authority returns `authority_required` with the prepared
    action.
 7. Re-read every bound field immediately before push. On drift, perform no outward
-   mutation and return `authority_drift` with a replacement prepared handoff. Push only
-   the canonical retrospective ref without force, then verify its remote head.
+   mutation. Return `authority_drift` with a replacement prepared handoff. Push only the
+   canonical retrospective ref without force. Verify its remote head.
 8. Re-read every bound field immediately before PR creation or update. Reconcile an
    existing PR first. On drift, return a new `authority_drift` handoff. Create or update
    one PR against the exact authorized base. Its concise body names the report and

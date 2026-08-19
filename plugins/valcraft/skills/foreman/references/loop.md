@@ -48,14 +48,17 @@ Route only from verified producer reports and exact targets:
 | Durable evidence | Named state |
 | --- | --- |
 | selected eligible task with no plan | `Drafting` |
+| committed Draft plan not yet accessible to the next Review worker | `Drafting` |
 | committed Draft plan without an exact plan verdict | `PlanReview` |
 | exact passing plan verdict without Forge output | `Implementing` |
+| Forge implementation head with required task PR still prepared | `Implementing` |
 | Forge task PR head without an exact code verdict | `CodeReview` |
 | passing code verdict covering the current PR head | `Landing` |
 | Land reports exact operator action | `OperatorAction` |
 | Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
 | confirmed feature not yet closed by Land | `FeatureClose` |
 | feature closure complete without a retrospective PR | `Retrospective` |
+| Temper report head with required retrospective PR still prepared | `Retrospective` |
 | Temper retrospective PR without an exact verdict | `RetroReview` |
 
 Never restart Draft when a current committed plan exists. Never infer Review coverage
@@ -81,8 +84,10 @@ SHA, canonical branch, backend physical branch when applicable, durable deferred
 locators, and exact target-bound outward authority when granted. Foreman writes no plan
 and does not run MSW.
 
-On a complete `Status: done` Draft report, verify the committed plan path and exact head,
-then enter `PlanReview`. Route declared Draft codes through `contracts.md`.
+On a complete `Status: done` Draft report, verify the committed plan path and exact head.
+Apply the prepared outward continuation in `contracts.md` when the next Review worker
+cannot access that exact commit. Enter `PlanReview` only when the Review worker can
+resolve the exact committed head. Route declared Draft codes through `contracts.md`.
 
 ## `PlanReview`
 
@@ -98,7 +103,9 @@ canonical remote task ref, predecessor head, and target-bound push and task-PR a
 when granted. Forge owns implementation, code-finding remediation, verification, push,
 and task-PR preparation or creation.
 
-A complete Forge report with an exact Review target enters `CodeReview`. `draft_required`
+A complete Forge report whose task PR is still `none` applies the prepared outward
+continuation in `contracts.md` and remains in `Implementing`. Enter `CodeReview` only
+after Forge reports one exact task PR and its exact Review target. `draft_required`
 returns to Drafting. Route every other code through the registry. Foreman never edits
 source, pushes, or creates a PR.
 
@@ -160,9 +167,12 @@ feature corpus. Include the exact default-branch base and target-bound authority
 retrospective branch push and PR only when the live operator or Foreman assignment grants
 it. Temper owns the report commit, push, and PR preparation or execution.
 
-A complete Temper report with an exact retrospective Review target enters RetroReview.
-Material retrospective findings return here by R-ID. Foreman never creates the report,
-branch, commit, or PR and never applies proposals.
+A complete Temper report whose retrospective PR is still `none`, including
+`authority_required` with an exact prepared handoff, applies the prepared outward
+continuation in `contracts.md` and remains in `Retrospective`. Enter `RetroReview` only
+after Temper reports one exact retrospective PR and its exact Review target. Material
+retrospective findings return here by R-ID. Foreman never creates the report, branch,
+commit, or PR and never applies proposals.
 
 ## `RetroReview`
 

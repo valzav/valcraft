@@ -32,27 +32,59 @@ Every dated artifact resolves its date from repository policy, then an explicit
 operator date for that artifact, then its creation date. The run id does not supply an
 artifact date.
 
+## Prepared outward continuation
+
+A producer cannot receive exact outward authority until it has prepared the local head
+and every target field. Treat a producer report as a prepared continuation only when its
+structured outward-mutation and Review-target fields name the repository, remote,
+authoritative base, exact local head, canonical ref and observed remote head, PR target,
+and remaining operation set. Do not infer a prepared target from prose.
+
+When Draft must publish its exact plan commit for the next Review worker, Forge still
+reports task PR `none`, or Temper still reports retrospective PR `none`:
+
+1. Keep `Drafting`, `Implementing`, or `Retrospective` active.
+2. Record the accepted report and exact prepared fields in `state.md`.
+3. Apply that named state's approval gate from `approval-modes.md`.
+4. Dispatch the same logical producer under a fresh physical identity and report path.
+5. Attribute newly granted authority to the exact prepared fields and operation set.
+6. Require the producer to revalidate every bound field immediately before mutation.
+
+Attended mode waits unless the live operator already granted the exact operation.
+Unattended mode may issue the exact Foreman authority only after every prepared field
+validates. The approval mode does not itself become authority. Foreman never executes
+the push or PR operation.
+
+Draft advances only when the next Review worker can access its exact commit. A native
+shared checkout may provide that access without a push. An isolated AO Review worker
+requires the canonical remote ref. Forge and Temper advance only after their producer
+reports the exact PR identity and Review target. Temper's structured
+`authority_required` report uses this continuation; it does not enter Blocked.
+
 ## Message registry
 
 | Message | Producer | Consumer | Authoritative report contract | Active state | `done` transition |
 | --- | --- | --- | --- | --- | --- |
 | Project frame | Cast | direct caller, then Spec | [`../../cast/SKILL.md#report`](../../cast/SKILL.md#report) | OutsideLoop | `ReturnToCaller` |
 | Feature or quick contract | Spec | direct caller, Review, Land | [`../../spec/references/delivery.md#spec-report`](../../spec/references/delivery.md#spec-report) | OutsideLoop | `ReturnToCaller` |
-| Task plan | Draft | Foreman, Review | [`../../draft/references/plan-contract.md#report`](../../draft/references/plan-contract.md#report) | Drafting | `PlanReview` |
+| Task plan | Draft | Foreman, Review | [`../../draft/references/plan-contract.md#report`](../../draft/references/plan-contract.md#report) | Drafting | `DraftResult` |
 | Plan verdict | Review | Foreman, Draft or Forge | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | PlanReview | `PlanVerdict` |
-| Task implementation and PR | Forge | Foreman, Review | [`../../forge/references/verification-and-handoff.md#forge-report`](../../forge/references/verification-and-handoff.md#forge-report) | Implementing | `CodeReview` |
+| Task implementation and PR | Forge | Foreman, Review | [`../../forge/references/verification-and-handoff.md#forge-report`](../../forge/references/verification-and-handoff.md#forge-report) | Implementing | `ForgeResult` |
 | Code verdict | Review | Foreman, Forge or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | CodeReview | `CodeVerdict` |
 | Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../land/SKILL.md#report`](../../land/SKILL.md#report) | Landing or FeatureClose | `LandResult` |
-| Evidence-sufficiency verdict | Review | Foreman, Land | [`../../review/references/evidence-mode.md#report`](../../review/references/evidence-mode.md#report) | EvidenceReview | `Landing` |
-| Retrospective report and PR | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `RetroReview` |
+| Evidence-sufficiency verdict | Review | Foreman, Land | [`../../review/references/evidence-mode.md#evidence-sufficiency-report`](../../review/references/evidence-mode.md#evidence-sufficiency-report) | EvidenceReview | `Landing` |
+| Retrospective report and PR | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `TemperResult` |
 | Retrospective verdict | Review | Foreman, Temper or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 
-`PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict,
-not prose: pass advances to Implementing, Landing, or Landing respectively; material
-findings return to Drafting, Implementing, or Retrospective. LandResult uses the
-reported target kind: a completed task returns Ready, a completed tracker-only feature
-close enters Retrospective, a completed retrospective PR enters Complete, and completed
-external closure returns Ready.
+`DraftResult`, `ForgeResult`, and `TemperResult` first apply the prepared outward
+continuation above. They advance to PlanReview, CodeReview, or RetroReview only when the
+next worker can resolve the exact target. `PlanVerdict`, `CodeVerdict`, and
+`RetroVerdict` read the report's structured verdict, not prose: pass advances to
+Implementing, Landing, or Landing respectively; material findings return to Drafting,
+Implementing, or Retrospective. LandResult uses the reported target kind: a completed
+task returns Ready, a completed tracker-only feature close enters Retrospective, a
+completed retrospective PR enters Complete, and completed external closure returns
+Ready.
 
 ## Declared outcome routing
 
@@ -117,7 +149,7 @@ PR to Spec's direct caller outside the loop. It is one target-kind transition fu
 
 | Outcome | Transition |
 | --- | --- |
-| `authority_required` | `Blocked` |
+| `authority_required` | `ResumeProducer` |
 | `corpus_invalid`, `analysis_blocked`, `git_write_failed`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
 | `owner_decision_required` | `AwaitOwner` |
 
