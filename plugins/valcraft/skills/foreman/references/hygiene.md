@@ -11,7 +11,7 @@ The foreman's context is a working resource; the loop survives one context windo
 ## Naming
 
 - Logical workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; quick work uses its qualified identity (`worker-Q007-QT001`). Temper is `temper-<F>`; decompose is `planner-<source>` or `reviewer-<source>`, where `<source>` comes from `references/decompose.md`, never a raw path. Preserve every identity digit; backend-specific physical handles are separate and recorded in `workers.md`.
-- Branches: `feat/f004-t012-<slug>` (quick: `feat/q007-qt001-<slug>`) from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track from `origin/<foreman_release_branch>`.
+- Branches: `feat/f004-t012-<slug>` (quick: `feat/q007-qt001-<slug>`) from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track, when a release branch is explicitly configured, from `origin/<foreman_release_branch>`.
 - Commits and PRs reference feature `T-XXX` or canonical quick `Q-NNN QT-XXX`, the covered `FR-`/`AC-` IDs, and applicable `ADR-`, under the MSW deletion test.
 - Logical reports: `<run dir>/<role>-<F>-<T>.md`, including `<role>-QNNN-QTNNN.md` for quick work. Run directory: `templates/run-dir.md`.
 

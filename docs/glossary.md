@@ -10,17 +10,16 @@ repository-level reference that keeps new skills consistent with it.
 - **analyze / synthesize modes** (temper) — the two retrospective modes: analyze turns
   one corpus of completed work into a graded lesson report; synthesize merges two or
   more analyze reports into re-graded themes with tensions and routing.
-- **approval mode** (foreman) — the project-block input that decides which loop
-  decisions wait for the human: `attended` (every routine decision — pick, summaries,
-  merges, tracker writes) or `unattended` (only feature/PRD close, fast-track,
-  release-branch writes, and escalations; recorded tracker batches and Cast projection
-  execute from their record). Full table and the verbatim
-  question the foreman asks: foreman `references/approval-modes.md`.
+- **approval mode** (foreman) — the runtime value that decides which loop decisions
+  wait for the human: `attended` (every routine decision — pick, summaries, merges,
+  tracker writes) or `unattended` (the missing-key default; only feature/PRD close,
+  configured release-branch writes, fast-track, and escalations wait). See foreman
+  `references/approval-modes.md`.
 - **approval mode** (cast) — the optional `cast_approval` declaration in root `AGENTS.md`:
   `attended` (missing; wait at every proposal and mutation preview) or `unattended`
   (record each proposal and preview, proceed; still stop for a product-intent change, an
   invented requirement, a `TBD` GitHub target, and every stop condition).
-  When Cast configures Foreman delivery, it writes the same word as the foreman's mode.
+  Foreman's approval mode is independent.
 - **artifact date** (foreman) — the date resolved when an artifact is created: applicable
   repository policy first, an explicit operator date second, and the artifact's actual
   creation date otherwise. A run ID does not supply or freeze artifact dates.
@@ -201,9 +200,9 @@ repository-level reference that keeps new skills consistent with it.
   The wire format between foreman and workers, and the run's audit and resume source.
 - **scaffold / skeleton** (cast) — the file set cast creates: README, AGENTS.md
   (+ CLAUDE.md symlink), product brief, architecture overview, ADR index, and the
-  first spec triplet. Everything past the skeleton is opt-in. Foreman configuration is
-  included only when the operator explicitly selects Foreman delivery; manual Forge is
-  the default and adds no `foreman_*` keys.
+  first spec triplet. Everything past the skeleton is opt-in. Foreman and manual Forge
+  are both available without choosing delivery during setup. Cast adds `foreman_*` keys
+  only as explicit project overrides.
 - **scope statement** (forge) — the pre-coding declaration of which files and tasks a
   change touches and which adjacent ones it deliberately leaves untouched.
 - **SDD (spec-driven development)** — the working style cast scaffolds: docs before

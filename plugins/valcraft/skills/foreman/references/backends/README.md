@@ -1,6 +1,6 @@
 # Backends
 
-A backend is how the foreman runs workers. The loop never touches a runner directly; it calls four primitives and reads two capability flags, and each backend reference says how its runner provides them. `foreman_backend` in the project block selects the reference.
+A backend is how the foreman runs workers. The loop never touches a runner directly; it calls four primitives and reads two capability flags, and each backend reference says how its runner provides them. An explicit valid `foreman_backend` selects the reference; missing means native `subagents`.
 
 ## Primitives
 

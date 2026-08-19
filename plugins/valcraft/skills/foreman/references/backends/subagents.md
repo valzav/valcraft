@@ -13,7 +13,7 @@ The foreman and workers run through the active host's native subagent tools. Thi
 
 ## Primitives
 
-- `spawn` + `assign` are one native subagent call with a fresh general-purpose worker. The assignment carries the canonical logical identity and report path. Do not pass a model override unless the project block names one.
+- `spawn` + `assign` are one native subagent call with a fresh general-purpose worker. The assignment carries the canonical logical identity and report path. Do not pass a model override unless explicit project configuration names one.
   - Claude Code: use the Agent tool with the logical worker name and no fork. Record that name as the physical handle.
   - Codex: use `spawn_agent` with `fork_turns: "none"`. Derive a unique lowercase_underscore `task_name` from the complete logical worker identity: `planner-F001-T002` → `planner_f001_t002`; `worker-Q1000-QT001` → `worker_q1000_qt001`. Preserve every identity digit. When that name already belongs to a dispatch in the current agent tree or `workers.md`, append the next unused lowercase_underscore dispatch discriminator. Record both returned agent id and `task_name` as the physical handle. Every respawn is another fresh `spawn_agent`, never `followup_task` on the returned agent.
 - `await` follows the active host mapping below. On Codex, use native `wait_agent`; resolve its return for the assigned agent before another action. The worker's final text carries only the report path and `Status:` line; the report remains on disk.

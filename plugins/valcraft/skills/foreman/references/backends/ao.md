@@ -62,7 +62,7 @@ It reclaims the workspace of every terminated session in the project, and every 
 
 ## Rules and respawn
 
-AO resolves orchestrator rules at spawn: after changing the project block or these references, respawn the orchestrator session. A changed orchestrator harness is picked up only by a new orchestrator session created from the AO app UI (`ao session restore` does not bring one back). Apply project config with `ao project set-config <project-id> --orchestrator-rules "…" --default-branch <foreman_default_branch> --orchestrator-agent claude-code` — set-config replaces the whole config, so pass every flag. The orchestrator rules text is one line: "Run `valcraft:foreman` for this project."
+AO resolves orchestrator rules at spawn: after changing Foreman overrides or these references, respawn the orchestrator session. A changed orchestrator harness is picked up only by a new orchestrator session created from the AO app UI (`ao session restore` does not bring one back). Apply project config with `ao project set-config <project-id> --orchestrator-rules "…" --default-branch <foreman_default_branch> --orchestrator-agent claude-code` — set-config replaces the whole config, so pass every flag. The orchestrator rules text is one line: "Run `valcraft:foreman` for this project."
 
 ## Eval scenario coverage
 

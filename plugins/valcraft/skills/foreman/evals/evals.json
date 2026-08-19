@@ -3,18 +3,18 @@
   "evals": [
     {
       "id": 1,
-      "name": "missing-project-block-stops",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/no-block/, start the delivery loop for the next task.",
-      "expected_output": "Foreman reads the root AGENTS.md, finds project_tracker: local but no foreman block (foreman_backend, foreman_approval_mode, foreman_default_branch, foreman_release_branch), and stops before touching any tracker, spawning any worker, or creating a run directory. Because the run is attended, it proposes a project block from templates/project-block.md, states which values it needs from the user (backend, approval mode, branches) — asking the approval-mode question from references/approval-modes.md, \"Choosing a mode\", with its two answers attended and unattended verbatim — and waits. It does not assume subagents or unattended as defaults and does not begin picking a task.",
+      "name": "missing-foreman-keys-use-runtime-defaults",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/no-block/, resolve Foreman's startup configuration. A live remote HEAD symref for origin and the hosting service both identify main as this repository's default branch. Stop after reporting the resolved configuration; do not mutate files.",
+      "expected_output": "Foreman reads the root AGENTS.md and finds project_tracker: local with no foreman_* keys. It does not stop, propose a project block, ask a configuration question, or mutate AGENTS.md. At invocation it resolves foreman_backend to native subagents, foreman_approval_mode to unattended, and foreman_default_branch to main from agreeing live remote and hosting-service sources. Missing foreman_release_branch means no separate release branch. Foreman reports those runtime values and is ready to enter the ordinary loop; Cast's independently missing cast_approval remains attended and does not change Foreman's unattended runtime mode.",
       "files": [
         "evals/files/no-block/AGENTS.md"
       ],
       "assertions": [
-        "Foreman reads AGENTS.md before any other action",
-        "Foreman reports the missing foreman block as the reason it stops",
-        "Foreman proposes a project block and asks the user for its values instead of assuming them",
-        "Foreman asks the approval-mode question with the two answers attended and unattended, in the wording of references/approval-modes.md, and offers no third mode",
-        "Foreman spawns no worker and creates no run directory"
+        "Missing foreman_backend resolves to native subagents",
+        "Missing foreman_approval_mode resolves to unattended without changing Cast's independently missing attended mode",
+        "Missing foreman_default_branch resolves to main from agreeing live remote and hosting-service sources",
+        "Missing foreman_release_branch means no separate release branch",
+        "Foreman asks no configuration question, proposes no project block, and writes no foreman_* key"
       ]
     },
     {
@@ -985,6 +985,79 @@
         "The direct feature preflight reports QT-001 as invalid because feature tasks use T-XXX",
         "Foreman stops before eligibility, run creation, or worker dispatch",
         "No quick-pool scan or compatibility mapping is required to detect the error"
+      ]
+    },
+    {
+      "id": 53,
+      "name": "explicit-foreman-overrides-win-and-invalid-values-stop",
+      "prompt": "$valcraft:foreman — compare startup for two project files. Project A explicitly declares foreman_backend: ao, foreman_approval_mode: attended, foreman_default_branch: develop, and foreman_release_branch: stable. Project B declares foreman_backend: legacy, foreman_approval_mode: delegated, foreman_default_branch: TBD, and foreman_release_branch: TBD. Resolve each configuration without calling tools.",
+      "expected_output": "For project A, Foreman uses all four explicit valid values unchanged: ao, attended, develop, and stable. Runtime defaults do not replace an explicit override. For project B, Foreman stops before tracker access, run creation, or worker dispatch because legacy is not a supported backend, delegated is not a supported approval mode, and both branch values are invalid. It reports every invalid explicit value and does not silently substitute subagents or unattended, derive a default branch, or treat the invalid release branch as absent.",
+      "files": [
+        "SKILL.md",
+        "templates/project-block.md",
+        "references/backends/README.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "Every explicit valid Foreman value overrides its runtime default",
+        "An invalid explicit backend stops instead of defaulting to subagents",
+        "An invalid explicit approval mode stops instead of defaulting to unattended",
+        "An invalid explicit default or release branch stops instead of deriving or removing it",
+        "Every invalid explicit value is reported and stops before tracker access, run creation, or dispatch"
+      ]
+    },
+    {
+      "id": 54,
+      "name": "default-branch-resolution-uses-authoritative-precedence",
+      "prompt": "$valcraft:foreman — foreman_default_branch is absent. Resolve it in four independent repositories: (A) the live origin HEAD symref and the hosting service both name trunk; (B) the live symref is unavailable and the hosting service reports develop as that repository's default; (C) both live sources are unavailable, while cached origin/HEAD and local main name main; (D) the live origin HEAD symref names trunk while the hosting service reports develop. Do not call tools.",
+      "expected_output": "Foreman resolves A to trunk from the agreeing live sources. It resolves B to develop from the host-reported default because the live symref is unavailable. It stops for C before tracker access, run creation, or dispatch: cached origin/HEAD and a local branch may corroborate a live result but cannot provide the missing value. It stops for D because the live sources disagree. For both stops, Foreman asks for an explicit foreman_default_branch and never guesses another name. The only authorities are the live remote HEAD symref and the same repository's host-reported default branch.",
+      "files": [
+        "SKILL.md",
+        "templates/project-block.md"
+      ],
+      "assertions": [
+        "Agreeing live remote and host sources may resolve a non-conventional branch",
+        "The host-reported remote default resolves the branch when the live remote symref is unavailable",
+        "Cached origin/HEAD and local branches are corroboration only, never the source of a default",
+        "Unavailable or disagreeing live sources stop startup and require an explicit value",
+        "Foreman never guesses a different branch name"
+      ]
+    },
+    {
+      "id": 55,
+      "name": "missing-release-branch-disables-release-only-flows",
+      "prompt": "$valcraft:foreman — foreman_release_branch is absent and the resolved default branch is main. Compare (A) an ordinary reviewed task PR targeting main, (B) a fast-track label, and (C) a direct-write request targeting a release branch. Explain attended and unattended behavior without calling tools.",
+      "expected_output": "Missing foreman_release_branch means the project has no separate release branch; Foreman does not treat main as a release branch. For A, the ordinary step-10 merge row applies: attended waits and unattended proceeds when the ordinary proceed/wait test and all review/check gates pass. For B and C, the requested release-only flows are unavailable because no release branch is explicitly configured. Foreman reports that configuration is required and does not infer main, create a branch, or fall back to the default-branch flow. A later explicit valid foreman_release_branch enables those flows and remains an override.",
+      "files": [
+        "SKILL.md",
+        "templates/project-block.md",
+        "references/approval-modes.md",
+        "references/intake-github.md"
+      ],
+      "assertions": [
+        "An absent release branch does not turn the default branch into a release branch",
+        "Ordinary default-branch merges use the normal approval row",
+        "Fast-track is unavailable without an explicit release branch",
+        "A direct release-branch write is unavailable without an explicit release branch",
+        "Foreman never infers a release branch or falls back from a release-only flow"
+      ]
+    },
+    {
+      "id": 56,
+      "name": "decompose-relays-independent-cast-approval",
+      "prompt": "$valcraft:foreman — decompose a local PRD in a project with no foreman_* keys and no cast_approval declaration. The live origin HEAD symref and the hosting service agree that main is this repository's default branch. The planner reports a Cast artifact proposal as waiting for approval. Resolve the approval boundary without calling tools or mutating files.",
+      "expected_output": "Foreman resolves its missing backend to native subagents and its missing approval mode to unattended, while missing cast_approval independently remains attended. The unattended Foreman mode does not answer the waiting Cast proposal. Foreman relays the exact approval point to the operator and waits; it resumes the planner only after receiving the operator's decision. Foreman records the decision in its summary and never treats its own runtime mode as authority over Cast.",
+      "files": [
+        "SKILL.md",
+        "references/approval-modes.md",
+        "references/decompose.md",
+        "templates/project-block.md"
+      ],
+      "assertions": [
+        "Missing foreman_approval_mode resolves to unattended while missing cast_approval independently remains attended",
+        "Foreman approval mode never answers an approval point Cast raises",
+        "Foreman relays the waiting Cast proposal to the operator and waits",
+        "The planner resumes only after the operator's decision is delivered"
       ]
     }
   ]

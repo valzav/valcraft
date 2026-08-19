@@ -228,7 +228,7 @@ proceed/wait test:
   without a verified durable owner record; the implementation diverged from the plan's
   approach or scope; an issue the plan did not anticipate. Name it.
 
-The approval-modes table says whether a "proceed" executes without the human; a PR against `foreman_release_branch` is its own row.
+The approval-modes table says whether a "proceed" executes without the human; a PR against an explicitly configured `foreman_release_branch` is its own row. Without that key, release-only writes are unavailable and an ordinary default-branch PR remains governed by the normal step 10 row.
 
 To merge, in this order:
 

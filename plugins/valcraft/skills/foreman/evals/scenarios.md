@@ -36,9 +36,19 @@ project and therefore live in its backend reference rather than `evals.json`.
 | Partial mutation failure | Eval 9 `partial-batch-failure-reconciles-before-retry`. | Same intake rule. |
 | Review-round cap | Eval 3 `two-round-cap-escalates`. | Same loop rule. |
 
-Evals 1, 6, 10, and 11 cover the missing project block, release-branch human wait,
-closure check, and feature-close temper dispatch. Evals 12–16 cover quick-task identity,
+Evals 1, 6, 10, and 11 cover missing-key runtime defaults, an explicit release-branch
+human wait, closure check, and feature-close temper dispatch. Evals 12–16 cover quick-task identity,
 selection, validation, close, and physical-handle mapping.
+
+## Runtime configuration
+
+| Scenario | Expected distinction | Eval |
+| --- | --- | --- |
+| No Foreman keys | Default to native subagents and unattended, derive the default branch from agreeing live remote and hosting-service sources, and treat release as unconfigured without changing Cast approval. | 1 `missing-foreman-keys-use-runtime-defaults` |
+| Explicit values | Valid overrides win; invalid explicit values stop instead of receiving defaults. | 53 `explicit-foreman-overrides-win-and-invalid-values-stop` |
+| Default branch | Use an unambiguous live remote HEAD symref or host-reported default for the same repository; unavailable or disagreeing live sources stop. Cached `origin/HEAD` only corroborates. | 54 `default-branch-resolution-uses-authoritative-precedence` |
+| No release branch | Ordinary default-branch merges use the normal approval row; fast-track and direct release writes are unavailable. | 55 `missing-release-branch-disables-release-only-flows` |
+| Independent Cast approval | Missing Foreman approval defaults to unattended while missing Cast approval remains attended; Foreman relays and waits on every Cast gate raised during decompose. | 56 `decompose-relays-independent-cast-approval` |
 
 ## Attributed resume and artifact dates
 

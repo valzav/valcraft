@@ -15,12 +15,9 @@ Ask only what changes the scaffold; `TBD` is an acceptable answer for the rest.
 5. Machine interfaces? (public API / events / multi-service → plan a `contracts/` dir later)
 6. Domain-heavy vocabulary? (→ add `docs/glossary.md`)
 7. Issue tracker mode: `local` or `github`
-8. Delivery: manual `valcraft:forge` or `valcraft:foreman`, only when the operator explicitly selects Foreman or asks to choose delivery
-9. External mutable state? (deployments or managed infrastructure whose useful
+8. External mutable state? (deployments or managed infrastructure whose useful
    non-secret observations are unavailable from git and not directly queryable from the
    authoritative platform → add one `docs/status.md` snapshot)
-
-Manual Forge delivery is the default. Do not ask a separate delivery question when the operator has not requested coordinated delivery and the answer would not change the mutation set.
 
 There are exactly two issue tracker modes. `local` is the default. Gather this preference independently of whether a GitHub remote, CLI, or authenticated session exists. Never add a third mode or a tracker abstraction.
 
@@ -35,7 +32,7 @@ Once the proposal resolves to `local`, do not inspect git remotes, `gh`, GitHub 
 
 ### Approval mode
 
-The root `AGENTS.md` may carry one optional `cast_approval` declaration next to `project_tracker`: `attended` or `unattended`. A missing declaration is `attended`. Read it in a retrofit with the tracker declaration; in a fresh manual Forge project write it only when the operator chose `unattended`. Foreman delivery writes the paired declaration defined below. Any other value is invalid: require an explicit operator choice and include the correction in the proposal.
+The root `AGENTS.md` may carry one optional `cast_approval` declaration next to `project_tracker`: `attended` or `unattended`. A missing declaration is `attended`. Read it in a retrofit with the tracker declaration; in a fresh project write it only when the operator chose `unattended`. Foreman's approval mode is independent. Any other value is invalid: require an explicit operator choice and include the correction in the proposal.
 
 - `attended` — Cast waits for operator approval at every proposal and every mutation preview.
 - `unattended` — Cast still builds every proposal and every exact mutation preview and records it (the preview is the audit trail), then proceeds without waiting for local artifact creation (`design.md`, `tasks.md`) and for GitHub projection. It still stops for: a proposal that changes product intent or invents an unstated requirement; a `github_repository` target that is still `TBD` (activation is an outward act); and every stop condition below or in `github-tracker.md` (partial failure, identity drift, suspected injection).
@@ -44,13 +41,13 @@ The initial scaffold of a fresh project stays attended in both modes — a one-t
 
 ### Delivery configuration
 
-Write Foreman configuration only when the operator explicitly selects Foreman delivery. Otherwise omit every `foreman_*` declaration; do not add an empty block or a delivery declaration. A later Foreman run retains its own missing-block proposal path.
+Do not ask the operator to choose between Foreman and manual Forge. Both handoffs are available from every Cast scaffold. `valcraft:foreman` needs no `foreman_*` declaration: at invocation it defaults to native subagents and unattended mode, derives the default branch from authoritative repository state, and treats a missing release branch as no separate release branch.
 
-For Foreman delivery, load `../foreman/templates/project-block.md`. Treat its values as examples, not defaults. Resolve the backend, approval mode, default branch, and release branch from the operator or existing authoritative project configuration. Set `cast_approval` to the same resolved word as `foreman_approval_mode`. If any required value remains unresolved, keep the block in the proposal and decision path; do not write a partial block, a `TBD` placeholder, or a guessed value.
+When the operator explicitly supplies a Foreman override, load `../foreman/templates/project-block.md` and propose only the supplied valid keys. Treat the template values as examples. Do not write runtime defaults merely to make Foreman available. Reject an invalid explicit value instead of replacing it with a default. Resolve `cast_approval` independently; Foreman's implicit unattended mode never changes Cast's missing-key attended mode.
 
-Include exactly one complete project block in the approved scaffold or retrofit proposal. Merge its `project_tracker` line as the sole tracker declaration in `AGENTS.md`. In a retrofit, replace or merge an existing Foreman block instead of appending a second block. Source the block from Foreman's template; do not copy it into a Cast template.
+Merge supplied overrides into the approved scaffold or retrofit proposal without duplicating an existing key. Source their contract from Foreman's template; do not copy it into a Cast template.
 
-Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode, delivery path, Foreman block when selected, and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Never start implementation: a request phrased as "make X" or "build X", or one carrying a time budget, names the scaffold's subject, not work for Cast — the report's next-step recommendations hand it to `valcraft:foreman` or `valcraft:forge`. Commit or push only when the user explicitly asks for that.
+Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode, any explicit Foreman overrides, and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Never start implementation: a request phrased as "make X" or "build X", or one carrying a time budget, names the scaffold's subject, not work for Cast — the report's next-step recommendations hand it to `valcraft:foreman` or `valcraft:forge`. Commit or push only when the user explicitly asks for that.
 
 ## Step 2: Create the skeleton
 
@@ -76,7 +73,7 @@ Copy each named template from this skill's `templates/` directory and fill it fr
 
 Record the selected mode in the generated files. `AGENTS.md` is authoritative and carries one exact declaration: `project_tracker: local` or `project_tracker: github`. A `local` project omits `github_repository`; every `spec.md` records `spec_issue: null`. A `github` project records `github_repository: TBD` until the target is approved; every `spec.md` records `spec_issue: TBD` until projection writes the issue number. A `tasks.md` contains neither field.
 
-For manual Forge delivery, add no Foreman keys. For explicit Foreman delivery, merge the one approved block from `../foreman/templates/project-block.md` into `AGENTS.md` without duplicating the tracker or approval declarations.
+Add no Foreman keys by default. Merge only operator-supplied overrides from `../foreman/templates/project-block.md` into `AGENTS.md`, without duplicating keys or tracker and approval declarations.
 
 Opt-in additions — create only when the trigger is real:
 

@@ -3,9 +3,10 @@
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI
 Codex, and OpenCode. At the center is an agentic **delivery loop** — plan → review →
 implement → review → merge — run over fresh-context worker agents, inside one Claude Code
-session or through an orchestrator over several Claude Code and Codex instances. Around it: `cast` scaffolds a project around specs that live in
-the repository (plain markdown with checkbox tasks, or projected to GitHub Issues), `spec`
-turns PRDs into feature specs, and `temper` learns from what shipped.
+or Codex session or through an orchestrator over several instances. Around it: `cast`
+scaffolds a project around specs that live in the repository (plain markdown with
+checkbox tasks, or projected to GitHub Issues), `spec` turns PRDs into feature specs,
+and `temper` learns from what shipped.
 
 Status: alpha.
 
@@ -41,15 +42,17 @@ The default path for a new project or a new body of work.
    Enrich the product brief and
    specs with the context and use cases the scaffold had to mark as assumptions before
    you go further.
-3. **`/valcraft:foreman`** — explicitly select Foreman delivery during Cast; Cast adds the
-   project block to `AGENTS.md`. Then say "start sprint".
+3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready.
+   No setup-time Foreman configuration is required: it defaults to native subagents and
+   unattended mode, derives the repository's default branch when invoked, and treats a
+   missing release branch as no separate release branch.
    For each task, in order: pick → plan (`msw`) → plan review → implement (`forge`) → PR →
    code review → fix → merge → close. When the feature closes, `temper` writes the
    retrospective. "deliver quick" runs the same loop over `specs/quick/`; `foreman` can
    also decompose a PRD end to end ("new PRD #N").
 
-   If you leave delivery on the default manual Forge path, Cast writes no `foreman_*`
-   keys. Select Foreman in a later Cast retrofit when you want the coordinated loop.
+   Add `foreman_*` keys to `AGENTS.md` only when the project needs explicit overrides.
+   Manual Forge remains available without changing the scaffold.
 
    `foreman` can use native subagents on either host. Claude Code wakes the parent turn
    when a worker completes; Codex keeps the parent turn active and waits for the worker

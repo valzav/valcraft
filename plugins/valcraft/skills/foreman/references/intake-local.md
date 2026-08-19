@@ -69,4 +69,4 @@ passes its locator to the planner.
 
 ## Fast-track
 
-Not applicable: local mode has no label channel. A change that must reach `foreman_release_branch` directly is a human instruction to the foreman (release-branch row of the approval-modes table).
+Not applicable: local mode has no label channel. A change that must reach an explicitly configured `foreman_release_branch` directly is a human instruction to the foreman (release-branch row of the approval-modes table). Without that key, direct release-branch writes are unavailable; do not infer the default branch.
