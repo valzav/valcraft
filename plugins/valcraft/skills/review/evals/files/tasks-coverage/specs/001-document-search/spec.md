@@ -26,7 +26,5 @@ A member searches documents by title and body text and opens a result.
 ## Acceptance criteria
 
 - [ ] AC-001: Searching a word in a document title returns that document.
-- [ ] AC-002: Searching a word that appears only in a document body returns that
-      document.
-- [ ] AC-003: A document in a private folder the member cannot read never appears in
-      their results.
+- [ ] AC-002: Searching a word that appears only in a document body returns that document.
+- [ ] AC-003: A document in a private folder the member cannot read never appears in their results.

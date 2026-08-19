@@ -12,19 +12,14 @@ created: 2026-08-12
 ## Requirements
 
 - FR-001: `require_non_empty` MUST treat a value made only of whitespace as empty.
-- FR-002: `require_non_empty` MUST reject `None` the same way it rejects an empty
-  string.
+- FR-002: `require_non_empty` MUST reject `None` the same way it rejects an empty string.
 - AC-001: `require_non_empty("   ", "name")` raises `ValueError` naming `name`.
-- AC-002: `require_non_empty(None, "name")` raises `ValueError` naming `name`; the
-  message is the same one an empty string produces.
+- AC-002: `require_non_empty(None, "name")` raises `ValueError` naming `name`; the message is the same one an empty string produces.
 - AC-003: `require_non_empty(" a ", "name")` still returns `" a "` unchanged.
 
 ## Approach
 
-In `src/validation.py`: QT-001 tests `value.strip() == ""` (done). QT-002 treats `None`
-as empty before the strip check so `None.strip()` is never called; the signature widens
-to `Optional[str]` and the docstring says so. Tests for each criterion go in
-`tests/test_validation.py` in the existing `unittest` style. Nothing else changes.
+In `src/validation.py`: QT-001 tests `value.strip() == ""` (done). QT-002 treats `None` as empty before the strip check so `None.strip()` is never called; the signature widens to `Optional[str]` and the docstring says so. Tests for each criterion go in `tests/test_validation.py` in the existing `unittest` style. Nothing else changes.
 
 ## Tasks
 

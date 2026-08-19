@@ -11,18 +11,13 @@ created: 2026-08-14
 
 ## Requirements
 
-- FR-001: When a signed-out administrator opens an export download link, the system MUST
-  record the full requested URL, query string included, as the post-login return target.
-- AC-001: After signing in, the administrator lands on the same link with the same query
-  string and the download proceeds.
+- FR-001: When a signed-out administrator opens an export download link, the system MUST record the full requested URL, query string included, as the post-login return target.
+- AC-001: After signing in, the administrator lands on the same link with the same query string and the download proceeds.
 
 ## Approach
 
-In the export download route's login redirect, build the return target from path and
-query and encode it as a parameter on the login URL; sign-in completion redirects to the
-decoded target. Same-origin relative references only; sign-in itself is untouched.
+In the export download route's login redirect, build the return target from path and query and encode it as a parameter on the login URL; sign-in completion redirects to the decoded target. Same-origin relative references only; sign-in itself is untouched.
 
 ## Tasks
 
-- [x] QT-001 Carry path and query through the sign-in redirect; verifies AC-001;
-  blocked by Q-001 QT-001.
+- [x] QT-001 Carry path and query through the sign-in redirect; verifies AC-001; blocked by Q-001 QT-001.

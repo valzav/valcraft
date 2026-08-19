@@ -2,8 +2,7 @@
 
 ## Contract
 
-Implement T-001 from `specs/001-retention-windows/tasks.md`. Preserve the exact input
-grammar in FR-001, AC-001, and AC-002. Do not implement the T-002 sweep.
+Implement T-001 from `specs/001-retention-windows/tasks.md`. Preserve the exact input grammar in FR-001, AC-001, and AC-002. Do not implement the T-002 sweep.
 
 ## Implementation
 
@@ -15,6 +14,4 @@ grammar in FR-001, AC-001, and AC-002. Do not implement the T-002 sweep.
 
 ## Verification
 
-Run `PYTHONPATH=src python3 -m unittest discover -s tests`. Mutation-check the parser by
-temporarily accepting one rejected form and observing its focused test fail before
-restoring the implementation.
+Run `PYTHONPATH=src python3 -m unittest discover -s tests`. Mutation-check the parser by temporarily accepting one rejected form and observing its focused test fail before restoring the implementation.

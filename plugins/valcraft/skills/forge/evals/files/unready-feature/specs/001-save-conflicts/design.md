@@ -9,8 +9,7 @@ updated: 2026-08-06
 
 ## Summary
 
-<One paragraph: the technical approach. Reference the requirements it satisfies
-(FR-001, NFR-001, SYS-SEC-001).>
+<One paragraph: the technical approach. Reference the requirements it satisfies (FR-001, NFR-001, SYS-SEC-001).>
 
 ## Data model
 

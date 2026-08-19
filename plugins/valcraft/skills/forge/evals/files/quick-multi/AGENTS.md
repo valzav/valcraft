@@ -1,7 +1,6 @@
 # Agent instructions
 
-project_tracker: github
-github_repository: github.example.test/acme/ledger
+project_tracker: github github_repository: github.example.test/acme/ledger
 
 ## Orientation
 

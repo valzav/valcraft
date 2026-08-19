@@ -1,7 +1,6 @@
 # Foreman scenario coverage
 
-Behavioral evals prove the state machine. The future coordination drift check only
-proves that declared contracts remain linked.
+Behavioral evals prove the state machine. The future coordination drift check only proves that declared contracts remain linked.
 
 ## Named states and producer routing
 
@@ -27,9 +26,7 @@ proves that declared contracts remain linked.
 | Dirty shared checkout stops new-task synchronization; dead recovery remains separate | 35 |
 | Late predecessor report is rejected after replacement | 59 |
 
-Claude Code's event completion is covered by eval 7. Codex's foreground continuation is
-covered by eval 18. External-orchestrator polling and isolated branch behavior are covered
-by evals 63 and 62. These ids appear in the active-deviation registry.
+Claude Code's event completion is covered by eval 7. Codex's foreground continuation is covered by eval 18. External-orchestrator polling and isolated branch behavior are covered by evals 63 and 62. These ids appear in the active-deviation registry.
 
 ## External orchestrators
 
@@ -56,8 +53,7 @@ by evals 63 and 62. These ids appear in the active-deviation registry.
 | Pending checks keep the same Land assignment active | 66 |
 | External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |
 
-External-completion evals characterize routing ownership: Land records and closes,
-Review judges sufficiency, and Foreman only validates and transitions.
+External-completion evals characterize routing ownership: Land records and closes, Review judges sufficiency, and Foreman only validates and transitions.
 
 ## Runtime configuration and quick work
 

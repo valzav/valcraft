@@ -19,8 +19,7 @@ Route an incoming support email to the workspace that owns the sender's domain.
 
 ## Functional requirements
 
-- FR-001: The system MUST route an incoming email to the workspace that owns the
-  sender's domain.
+- FR-001: The system MUST route an incoming email to the workspace that owns the sender's domain.
 - FR-002: The system MUST place an email with no matching domain in an unrouted queue.
 
 ## Acceptance criteria

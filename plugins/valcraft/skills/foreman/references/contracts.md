@@ -1,48 +1,26 @@
 # Coordination contracts
 
-This registry links producer-owned reports to coordinator transitions. It never copies a
-report shape. The producing skill owns its headings, semantic fields, routing codes, and
-terminal `Status:` line.
+This registry links producer-owned reports to coordinator transitions. It never copies a report shape. The producing skill owns its headings, semantic fields, routing codes, and terminal `Status:` line.
 
 ## Assignment envelope
 
 Send every worker these fields in order:
 
-1. **Cold start.** Invoke the named skill, then read root `AGENTS.md`, then only the
-   named artifacts and references.
-2. **Assignment identity.** Record the run id, assignment id, named state, feature or
-   quick identity, canonical logical worker identity, current physical worker identity,
-   backend, and exact absolute report path.
-3. **Target.** Name the repository, tracker reference, authoritative task contract,
-   exact predecessor artifact or PR identity and SHA, canonical branch, and physical
-   branch when applicable. Use `none` instead of inventing a git target.
-4. **Intent.** Name the producer skill, its mode, and the exact transition this report
-   may unlock. Pass contract and prior-report paths rather than copied content.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator
-   attestation`, or `Foreman observation`, with its source and scope. Only a live
-   operator instruction or an attributed Foreman assignment field can carry mutation
-   authority. Bind authority to repository or remote, branch base and head, PR or
-   tracker target, and operation set.
-6. **Report instruction.** Require the producer's unchanged report contract at the
-   assigned path. Require the producer to return only that path and its terminal
-   `Status:` line through the backend channel.
+1. **Cold start.** Invoke the named skill, then read root `AGENTS.md`, then only the named artifacts and references.
+2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
+3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
+4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, and operation set.
+6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
-Every dated artifact resolves its date from repository policy, then an explicit
-operator date for that artifact, then its creation date. The run id does not supply an
-artifact date.
+Every dated artifact resolves its date from repository policy, then an explicit operator date for that artifact, then its creation date. The run id does not supply an artifact date.
 
 ## Prepared mutation continuation
 
-A producer cannot receive exact mutation authority until it has prepared the local head
-and every target field. Treat a producer report as a prepared continuation only when its
-structured mutation and handoff fields name every applicable repository, remote,
-authoritative base, exact local head, canonical ref and observed remote head, PR or
-tracker target, and remaining operation. Do not infer a prepared target from prose.
+A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, authoritative base, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
-When Draft must publish its exact plan commit for the next Review worker, Forge still
-reports task PR `none`, Temper still reports retrospective PR `none`, or Land reports
-`authority_required` for an ordinary prepared operation:
+When Draft must publish its exact plan commit for the next Review worker, Forge still reports task PR `none`, Temper still reports retrospective PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
 
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
@@ -51,18 +29,9 @@ reports task PR `none`, Temper still reports retrospective PR `none`, or Land re
 5. Attribute newly granted authority to the exact prepared fields and operation set.
 6. Require the producer to revalidate every bound field immediately before mutation.
 
-Attended mode waits unless the live operator already granted the exact operation.
-Unattended mode may issue the exact Foreman authority only after every prepared field
-validates. The approval mode does not itself become authority. Foreman never executes
-the prepared operation.
+Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Draft advances only when the next Review worker can access its exact commit. A native
-shared checkout may provide that access without a push. An isolated Review worker
-requires the canonical remote ref. Forge and Temper advance only after their producer
-reports the exact PR identity and Review target. Land advances only after its report
-proves the authorized operations complete or names a different declared route. Structured
-`authority_required` reports from Temper and Land use this continuation; they do not
-enter Blocked.
+Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge and Temper advance only after their producer reports the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. Structured `authority_required` reports from Temper and Land use this continuation; they do not enter Blocked.
 
 ## Message registry
 
@@ -79,15 +48,7 @@ enter Blocked.
 | Retrospective report and PR | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `TemperResult` |
 | Retrospective verdict | Review | Foreman, Temper or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 
-`DraftResult`, `ForgeResult`, and `TemperResult` first apply the prepared outward
-continuation above. They advance to PlanReview, CodeReview, or RetroReview only when the
-next worker can resolve the exact target. `PlanVerdict`, `CodeVerdict`, and
-`RetroVerdict` read the report's structured verdict, not prose: pass advances to
-Implementing, Landing, or Landing respectively; material findings return to Drafting,
-Implementing, or Retrospective. LandResult uses the reported target kind: a completed
-task returns Ready, a completed tracker-only feature close enters Retrospective, a
-completed retrospective PR enters Complete, and completed external closure returns
-Ready.
+`DraftResult`, `ForgeResult`, and `TemperResult` first apply the prepared outward continuation above. They advance to PlanReview, CodeReview, or RetroReview only when the next worker can resolve the exact target. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose: pass advances to Implementing, Landing, or Landing respectively; material findings return to Drafting, Implementing, or Retrospective. LandResult uses the reported target kind: a completed task returns Ready, a completed tracker-only feature close enters Retrospective, a completed retrospective PR enters Complete, and completed external closure returns Ready.
 
 ## Declared outcome routing
 
@@ -138,8 +99,7 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 
-`ReviewByTarget` means task PR to CodeReview, retrospective PR to RetroReview, and spec
-PR to Spec's direct caller outside the loop. It is one target-kind transition function.
+`ReviewByTarget` means task PR to CodeReview, retrospective PR to RetroReview, and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
 
 ### Spec
 
@@ -169,22 +129,10 @@ Record exactly one return against the active assignment before report validation
 | `dead` | terminal | `DeadWorkerRecovery` |
 | `wait_timeout` | nonterminal; foreground only | remain in the current named state and re-arm await |
 
-Only `report_available` opens the attributed producer report. A producer's
-`Status: blocked: <code> — <detail>` is report content under `report_available`; it is
-never `permission_blocked`. A host permission prompt or host-enforced transport denial
-is `permission_blocked`, never a synthesized producer report. A tool or credential
-failure observed inside Land uses Land's `external_blocked` or `partial_completion`
-report route.
+Only `report_available` opens the attributed producer report. A producer's `Status: blocked: <code> — <detail>` is report content under `report_available`; it is never `permission_blocked`. A host permission prompt or host-enforced transport denial is `permission_blocked`, never a synthesized producer report. A tool or credential failure observed inside Land uses Land's `external_blocked` or `partial_completion` report route.
 
 ## Validation and rejection
 
-Require the active assignment id, logical worker, physical worker, backend return, and
-report path to match `state.md` and `workers.md`. Reject a predecessor's late report
-after replacement, even when its report contract is complete. A report is complete
-only when its producer-owned headings are present in order, required exact identities
-are populated, and exactly one terminal status line is last.
+Require the active assignment id, logical worker, physical worker, backend return, and report path to match `state.md` and `workers.md`. Reject a predecessor's late report after replacement, even when its report contract is complete. A report is complete only when its producer-owned headings are present in order, required exact identities are populated, and exactly one terminal status line is last.
 
-On the first incomplete report, reassign the same producer to append the missing named
-parts. On the second, escalate under the established two-attempt rule. Never fill a
-missing field, copy a shape into another report, interpret prose as a code, or advance
-on an undeclared code.
+On the first incomplete report, reassign the same producer to append the missing named parts. On the second, escalate under the established two-attempt rule. Never fill a missing field, copy a shape into another report, interpret prose as a code, or advance on an undeclared code.

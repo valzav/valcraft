@@ -24,13 +24,11 @@ updated: <YYYY-MM-DD>
 
 ## Non-goals
 
-- <What this project deliberately does not do. Keep this list honest — it prevents
-  scope creep and agent improvisation.>
+- <What this project deliberately does not do. Keep this list honest — it prevents scope creep and agent improvisation.>
 
 ## System requirements
 
-<Cross-cutting requirements with stable IDs. Split into docs/system-requirements.md
-only when this section outgrows the brief.>
+<Cross-cutting requirements with stable IDs. Split into docs/system-requirements.md only when this section outgrows the brief.>
 
 - SYS-001: ...
 - SYS-SEC-001: ...

@@ -15,15 +15,13 @@ updated: 2026-08-10
 
 ## Summary
 
-An integrator registers an endpoint and receives signed deliveries for subscribed
-workspace events.
+An integrator registers an endpoint and receives signed deliveries for subscribed workspace events.
 
 ## Functional requirements
 
 - FR-001: An integrator MUST be able to register one HTTPS endpoint per workspace.
 - FR-002: Every delivery MUST carry a signature the integrator can verify.
-- FR-003: A delivery that fails MUST be retried, and MUST stop after the endpoint is
-  disabled.
+- FR-003: A delivery that fails MUST be retried, and MUST stop after the endpoint is disabled.
 
 ## Acceptance criteria
 

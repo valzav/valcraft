@@ -16,8 +16,7 @@ created: 2026-08-10
 
 ## Approach
 
-Set the `Content-Disposition` filename in the download handler from the run's stored
-date; body and storage path stay untouched.
+Set the `Content-Disposition` filename in the download handler from the run's stored date; body and storage path stay untouched.
 
 ## Tasks
 

@@ -15,14 +15,12 @@ updated: 2026-08-08
 
 ## Summary
 
-Derive a readable URL slug from a document title, and reject a title that cannot produce
-one.
+Derive a readable URL slug from a document title, and reject a title that cannot produce one.
 
 ## Functional requirements
 
 - FR-001: The system MUST derive a lowercase hyphenated slug from a document title.
-- FR-002: The system MUST reject a title that contains no usable characters, including a
-  title made only of whitespace.
+- FR-002: The system MUST reject a title that contains no usable characters, including a title made only of whitespace.
 
 ## Non-goals
 

@@ -18,8 +18,7 @@ docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md at 11111111111111111111111
 
 ### Finding resolutions
 
-R-001: resolved — added the FR-002 happy-path assertion to step 3.
-R-002: declined — unknown-token handling is outside T-002.
+R-001: resolved — added the FR-002 happy-path assertion to step 3. R-002: declined — unknown-token handling is outside T-002.
 
 ### Outward mutations
 

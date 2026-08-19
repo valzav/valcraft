@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "8b3cd8dede8a707c",
+      "version": "805dbb681ccc06c3",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -19,7 +19,7 @@
     },
     {
       "name": "distill",
-      "version": "b87dea65ae70d77e",
+      "version": "24cea0ed0825de96",
       "files": [
         "SKILL.md",
         "references/compare.md",
@@ -28,7 +28,7 @@
     },
     {
       "name": "draft",
-      "version": "acb550888c4b3c02",
+      "version": "12a2d51688150451",
       "files": [
         "SKILL.md",
         "references/plan-contract.md",
@@ -37,7 +37,7 @@
     },
     {
       "name": "foreman",
-      "version": "72cfd9bdc9c785d7",
+      "version": "ad053da58cb26b6f",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -57,7 +57,7 @@
     },
     {
       "name": "forge",
-      "version": "2f463711218bf52c",
+      "version": "7dcbc48ac97cb0a8",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -66,7 +66,7 @@
     },
     {
       "name": "hone",
-      "version": "2c2d22792886d63a",
+      "version": "3cd54263537785b5",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -88,7 +88,7 @@
     },
     {
       "name": "msw",
-      "version": "9ac2c42763515413",
+      "version": "a6f1724244513279",
       "files": [
         "SKILL.md",
         "references/kernel.md"
@@ -96,7 +96,7 @@
     },
     {
       "name": "review",
-      "version": "0cb668eb4f67e544",
+      "version": "4508b0dca8c72067",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -107,7 +107,7 @@
     },
     {
       "name": "spec",
-      "version": "e475241ef7189be0",
+      "version": "0312bcb60784e29b",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -123,7 +123,7 @@
     },
     {
       "name": "temper",
-      "version": "98f6d7ae502c833c",
+      "version": "e86ca7d1ebfc4a86",
       "files": [
         "SKILL.md",
         "references/process.md",

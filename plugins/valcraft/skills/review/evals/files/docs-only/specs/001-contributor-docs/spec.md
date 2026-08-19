@@ -27,5 +27,4 @@ The README tells a contributor how to run the project's checks.
 
 ## Acceptance criteria
 
-- AC-001: Running the test command exactly as printed in `README.md` from the repository
-  root passes.
+- AC-001: Running the test command exactly as printed in `README.md` from the repository root passes.

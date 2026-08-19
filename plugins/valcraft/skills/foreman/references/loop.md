@@ -1,31 +1,18 @@
 # Named-state delivery loop
 
-This reference owns Foreman's state machine. Every dispatch uses the envelope in
-[`contracts.md`](contracts.md). Every await first records one backend return, then opens
-a producer report only for `report_available`.
+This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Every await first records one backend return, then opens a producer report only for `report_available`.
 
-Only an explicit delivery command enters the loop. `new PRD`, feature-contract
-creation, and quick-task creation route directly to `valcraft:spec` outside Foreman.
+Only an explicit delivery command enters the loop. `new PRD`, feature-contract creation, and quick-task creation route directly to `valcraft:spec` outside Foreman.
 
 ## Quick tasks
 
-Validate the pool with [`../../spec/references/quick.md`](../../spec/references/quick.md).
-Walk files and `QT-XXX` tasks in number order. Preserve the canonical identity
-`Q-NNN QT-XXX`, branch `feat/qNNN-qtNNN-<slug>`, and report identity
-`QNNN-QTNNN`. Quick tasks use the same states and gates as feature tasks. Their task
-artifact replaces `spec.md`, `design.md`, and `tasks.md` in assignments. The last Land
-completion finishes the file without feature confirmation or Temper.
+Validate the pool with [`../../spec/references/quick.md`](../../spec/references/quick.md). Walk files and `QT-XXX` tasks in number order. Preserve the canonical identity `Q-NNN QT-XXX`, branch `feat/qNNN-qtNNN-<slug>`, and report identity `QNNN-QTNNN`. Quick tasks use the same states and gates as feature tasks. Their task artifact replaces `spec.md`, `design.md`, and `tasks.md` in assignments. The last Land completion finishes the file without feature confirmation or Temper.
 
 ## Rebuild before transition
 
-Read `state.md`, the tracker-specific intake, and authoritative git or tracker state.
-Verify every stored path, SHA, branch, PR, issue, backend return, and active worker
-identity before using it.
+Read `state.md`, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
 
-On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch,
-synchronization, or task-branch creation. Record and preserve it. Known attribution does
-not waive this task-start gate. Dead-worker recovery is the separate existing-task
-path in the backend contract.
+On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation. Record and preserve it. Known attribution does not waive this task-start gate. Dead-worker recovery is the separate existing-task path in the backend contract.
 
 Before a new pick, reconcile the clean local default branch with its live remote:
 
@@ -34,12 +21,9 @@ Before a new pick, reconcile the clean local default branch with its live remote
 - local ahead: wait for an operator instruction that names the exact push;
 - diverged: stop without merge, rebase, reset, force push, or task-branch creation.
 
-An absent release branch means no separate release branch. Fast-track and direct
-release-only paths are unavailable. Any configured release-branch write remains a
-human gate.
+An absent release branch means no separate release branch. Fast-track and direct release-only paths are unavailable. Any configured release-branch write remains a human gate.
 
-Apply Spec's readiness contract. An unready feature routes to Spec's direct caller;
-Foreman never repairs feature artifacts. Never interleave feature and quick pools.
+Apply Spec's readiness contract. An unready feature routes to Spec's direct caller; Foreman never repairs feature artifacts. Never interleave feature and quick pools.
 
 ## Resume map
 
@@ -60,15 +44,11 @@ Route only from verified producer reports and exact targets:
 | Temper report head with required retrospective PR still prepared | `Retrospective` |
 | Temper retrospective PR without an exact verdict | `RetroReview` |
 
-Never restart Draft when a current committed plan exists. Never infer Review coverage
-from a branch, PR number, or earlier verdict.
+Never restart Draft when a current committed plan exists. Never infer Review coverage from a branch, PR number, or earlier verdict.
 
 ## `Ready`
 
-Select the first eligible task in artifact order with satisfied dependencies and no
-hold. Apply the approval-mode pick gate. Record the reconciled predecessor SHA,
-canonical task branch, contract path, and intermediate in-progress tracker state. Move
-to `Drafting`.
+Select the first eligible task in artifact order with satisfied dependencies and no hold. Apply the approval-mode pick gate. Record the reconciled predecessor SHA, canonical task branch, contract path, and intermediate in-progress tracker state. Move to `Drafting`.
 
 When no eligible task remains:
 
@@ -78,126 +58,69 @@ When no eligible task remains:
 
 ## `Drafting`
 
-Dispatch `drafter-<identity>` with `valcraft:draft`, the task contract, predecessor
-SHA, canonical branch, backend physical branch when applicable, durable deferred-finding
-locators, and exact target-bound outward authority when granted. Foreman writes no plan
-and does not run MSW.
+Dispatch `drafter-<identity>` with `valcraft:draft`, the task contract, predecessor SHA, canonical branch, backend physical branch when applicable, durable deferred-finding locators, and exact target-bound outward authority when granted. Foreman writes no plan and does not run MSW.
 
-On a complete `Status: done` Draft report, verify the committed plan path and exact head.
-Apply the prepared outward continuation in `contracts.md` when the next Review worker
-cannot access that exact commit. Enter `PlanReview` only when the Review worker can
-resolve the exact committed head. Route declared Draft codes through `contracts.md`.
+On a complete `Status: done` Draft report, verify the committed plan path and exact head. Apply the prepared outward continuation in `contracts.md` when the next Review worker cannot access that exact commit. Enter `PlanReview` only when the Review worker can resolve the exact committed head. Route declared Draft codes through `contracts.md`.
 
 ## `PlanReview`
 
-Dispatch a fresh `plan-reviewer-<identity>` with `valcraft:review` in plan mode on the
-exact committed plan head. A pass enters `Implementing`. Material findings return the
-report path and R-IDs to Drafting. Apply [`review-round.md`](review-round.md) without
-deciding a finding. An exact-target mismatch or undeclared code stops.
+Dispatch a fresh `plan-reviewer-<identity>` with `valcraft:review` in plan mode on the exact committed plan head. A pass enters `Implementing`. Material findings return the report path and R-IDs to Drafting. Apply [`review-round.md`](review-round.md) without deciding a finding. An exact-target mismatch or undeclared code stops.
 
 ## `Implementing`
 
-Dispatch `forge-<identity>` with `valcraft:forge`, the exact passing plan Review report,
-canonical remote task ref, predecessor head, and target-bound push and task-PR authority
-when granted. Forge owns implementation, code-finding remediation, verification, push,
-and task-PR preparation or creation.
+Dispatch `forge-<identity>` with `valcraft:forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and target-bound push and task-PR authority when granted. Forge owns implementation, code-finding remediation, verification, push, and task-PR preparation or creation.
 
-A complete Forge report whose task PR is still `none` applies the prepared outward
-continuation in `contracts.md` and remains in `Implementing`. Enter `CodeReview` only
-after Forge reports one exact task PR and its exact Review target. `draft_required`
-returns to Drafting. Route every other code through the registry. Foreman never edits
-source, pushes, or creates a PR.
+A complete Forge report whose task PR is still `none` applies the prepared outward continuation in `contracts.md` and remains in `Implementing`. Enter `CodeReview` only after Forge reports one exact task PR and its exact Review target. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
 
 ## `CodeReview`
 
-Dispatch a fresh `code-reviewer-<identity>` with `valcraft:review` in code mode on the
-Forge report's exact repository, PR, base, and head. A pass covering the current head
-enters `Landing`. Material findings return to Implementing by R-ID. Apply
-[`review-round.md`](review-round.md). A stale target stops or takes the producer's
-declared mismatch route; Foreman never reviews the delta.
+Dispatch a fresh `code-reviewer-<identity>` with `valcraft:review` in code mode on the Forge report's exact repository, PR, base, and head. A pass covering the current head enters `Landing`. Material findings return to Implementing by R-ID. Apply [`review-round.md`](review-round.md). A stale target stops or takes the producer's declared mismatch route; Foreman never reviews the delta.
 
 ## `Landing`
 
-Dispatch `land-<identity>` with `valcraft:land`, the target kind, exact current target,
-Review report, applicable approval-mode decision, tracker closure target, and any
-trusted target-bound authorization. Land owns final-head comparison, applicable checks,
-completion ticks, merge, closure, partial-mutation reconciliation, and external evidence
-recording.
+Dispatch `land-<identity>` with `valcraft:land`, the target kind, exact current target, Review report, applicable approval-mode decision, tracker closure target, and any trusted target-bound authorization. Land owns final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and external evidence recording.
 
 Route the Land report exactly:
 
-- `review_required`: task PR to CodeReview, retrospective PR to RetroReview, spec PR to
-  Spec's direct caller;
+- `review_required`: task PR to CodeReview, retrospective PR to RetroReview, spec PR to Spec's direct caller;
 - `check_failure_task`: Implementing;
 - `check_failure_retro`: Retrospective;
 - `check_failure_spec`: Spec's direct caller;
 - `evidence_review_required`: EvidenceReview;
 - `partial_completion`: Landing with only remaining operations;
-- `authority_required`: apply the prepared mutation continuation in `contracts.md` and
-  remain in Landing; and
+- `authority_required`: apply the prepared mutation continuation in `contracts.md` and remain in Landing; and
 - unresolved, external, configuration, authority, or applicability codes: Blocked.
 
-When checks are pending, keep Foreman and the active Land worker alive. Continue the
-backend's await discipline against the same assignment. Do not turn a pending check
-into a user-status prompt, new worker, or Foreman-owned classifier. A missing required
-check routes to an artifact owner only after Land's authoritative evidence proves that
-owner; otherwise it remains Blocked.
+When checks are pending, keep Foreman and the active Land worker alive. Continue the backend's await discipline against the same assignment. Do not turn a pending check into a user-status prompt, new worker, or Foreman-owned classifier. A missing required check routes to an artifact owner only after Land's authoritative evidence proves that owner; otherwise it remains Blocked.
 
-A completed task target returns to Ready. A completed external closure returns to Ready.
-A completed feature-close target enters Retrospective. A completed retrospective PR
-enters Complete.
+A completed task target returns to Ready. A completed external closure returns to Ready. A completed feature-close target enters Retrospective. A completed retrospective PR enters Complete.
 
 ## `EvidenceReview`
 
-Dispatch a fresh `review-evidence-<identity>` with `valcraft:review` in evidence mode
-on Land's exact durable evidence record. Review owns criterion-by-criterion sufficiency.
-A sufficient report returns to Landing with the exact verdict. An insufficient or
-blocked report follows the registry. Foreman records and judges no evidence.
+Dispatch a fresh `review-evidence-<identity>` with `valcraft:review` in evidence mode on Land's exact durable evidence record. Review owns criterion-by-criterion sufficiency. A sufficient report returns to Landing with the exact verdict. An insufficient or blocked report follows the registry. Foreman records and judges no evidence.
 
 ## `FeatureClose`
 
-Dispatch tracker-only Land with the exact feature or PRD target and the operator's
-quoted confirmation. Land closes only the authorized real tracker target. On completion,
-enter Retrospective. Foreman neither builds nor executes a closing batch.
+Dispatch tracker-only Land with the exact feature or PRD target and the operator's quoted confirmation. Land closes only the authorized real tracker target. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
 
 ## `Retrospective`
 
-Dispatch `temper-<feature>` with `valcraft:temper` in analyze mode on the exact closed
-feature corpus. Include the exact default-branch base and target-bound authority for the
-retrospective branch push and PR only when the live operator or Foreman assignment grants
-it. Temper owns the report commit, push, and PR preparation or execution.
+Dispatch `temper-<feature>` with `valcraft:temper` in analyze mode on the exact closed feature corpus. Include the exact default-branch base and target-bound authority for the retrospective branch push and PR only when the live operator or Foreman assignment grants it. Temper owns the report commit, push, and PR preparation or execution.
 
-A complete Temper report whose retrospective PR is still `none`, including
-`authority_required` with an exact prepared handoff, applies the prepared outward
-continuation in `contracts.md` and remains in `Retrospective`. Enter `RetroReview` only
-after Temper reports one exact retrospective PR and its exact Review target. Material
-retrospective findings return here by R-ID. Foreman never creates the report, branch,
-commit, or PR and never applies proposals.
+A complete Temper report whose retrospective PR is still `none`, including `authority_required` with an exact prepared handoff, applies the prepared outward continuation in `contracts.md` and remains in `Retrospective`. Enter `RetroReview` only after Temper reports one exact retrospective PR and its exact Review target. Material retrospective findings return here by R-ID. Foreman never creates the report, branch, commit, or PR and never applies proposals.
 
 ## `RetroReview`
 
-Dispatch a fresh `retro-reviewer-<feature>` with `valcraft:review` in code mode on the
-exact Temper PR head. A pass enters Landing with target kind retrospective PR. Material
-findings return to Retrospective. Foreman never reviews or merges the PR.
+Dispatch a fresh `retro-reviewer-<feature>` with `valcraft:review` in code mode on the exact Temper PR head. A pass enters Landing with target kind retrospective PR. Material findings return to Retrospective. Foreman never reviews or merges the PR.
 
 ## `Blocked` and recovery
 
-Name the code, target, source report, and evidence or authority required to leave the
-state. `permission_blocked`, transport failure, and dead-worker recovery remain backend
-returns rather than producer status.
+Name the code, target, source report, and evidence or authority required to leave the state. `permission_blocked`, transport failure, and dead-worker recovery remain backend returns rather than producer status.
 
-A dead worker first records the backend return and complete recovery inventory. A safe
-replacement receives a fresh physical identity and the same logical identity. Reject
-any late predecessor report or path after replacement. Never synthesize or complete the
-dead worker's report.
+A dead worker first records the backend return and complete recovery inventory. A safe replacement receives a fresh physical identity and the same logical identity. Reject any late predecessor report or path after replacement. Never synthesize or complete the dead worker's report.
 
 ## Cross-task findings
 
-Route a finding into the current task only when the current diff caused the inconsistency
-or the owning contract blocks the current task's acceptance criterion. Record the owner
-and passing causal test. Remediation retains R-ID closure, review-round, exact-target,
-and Land gates.
+Route a finding into the current task only when the current diff caused the inconsistency or the owning contract blocks the current task's acceptance criterion. Record the owner and passing causal test. Remediation retains R-ID closure, review-round, exact-target, and Land gates.
 
-Otherwise route a durable finding locator to the future owner through the tracker intake
-without implementing it. Verify that locator before a later Draft assignment. A verified
-non-blocking deferral does not block the current task; an unverified one does.
+Otherwise route a durable finding locator to the future owner through the tracker intake without implementing it. Verify that locator before a later Draft assignment. A verified non-blocking deferral does not block the current task; an unverified one does.

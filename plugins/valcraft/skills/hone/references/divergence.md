@@ -1,8 +1,6 @@
 # Where Claude and Codex diverge
 
-Read this file only for artifacts that target both model families. Divergence notes
-belong in the change report, never in the refined artifact itself — and only where the
-divergence is live for that artifact.
+Read this file only for artifacts that target both model families. Divergence notes belong in the change report, never in the refined artifact itself — and only where the divergence is live for that artifact.
 
 | Topic                | Claude (Fable 5)                                                                                                                                                                                    | Codex (GPT-5.6)                                                                                                                                  |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |

@@ -1,4 +1,3 @@
 # Fixture instructions
 
-project_tracker: local
-project_tracker: github
+project_tracker: local project_tracker: github

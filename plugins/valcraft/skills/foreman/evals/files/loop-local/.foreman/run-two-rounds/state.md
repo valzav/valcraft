@@ -1,17 +1,1 @@
-run: run-two-rounds
-active named state: PlanReview
-target kind: task plan
-canonical task identity: FEAT-001 T-002
-tracker reference: specs/001-invite-links/tasks.md#T-002
-authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md; docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md
-active assignment id: rt-plan-review-d001
-logical worker: plan-reviewer-F001-T002
-physical worker: Codex task plan-reviewer-F001-T002 agent agent-rt-review-001
-physical branch: none
-attributed report path: .foreman/run-two-rounds/plan-reviewer-F001-T002-d001.md
-predecessor target: remediated plan 1111111111111111111111111111111111111111 after .foreman/run-two-rounds/drafter-F001-T002-d001.md
-backend return: report_available from agent-rt-review-001 at 2026-08-16T14:40:00Z; terminal
-accepted historical report: .foreman/run-two-rounds/plan-reviewer-F001-T002-d000.md; Status: done; material R-001 and R-002; PlanReview -> Drafting
-accepted historical report: .foreman/run-two-rounds/drafter-F001-T002-d001.md; Status: done; R-001 resolved and R-002 declined; Drafting -> PlanReview
-accepted active report: .foreman/run-two-rounds/plan-reviewer-F001-T002-d001.md; Status: done; R-002 upheld; PlanReview -> Blocked
-review rounds: two of two; second-round trigger was Draft declining material R-002
+run: run-two-rounds active named state: PlanReview target kind: task plan canonical task identity: FEAT-001 T-002 tracker reference: specs/001-invite-links/tasks.md#T-002 authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md; docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md active assignment id: rt-plan-review-d001 logical worker: plan-reviewer-F001-T002 physical worker: Codex task plan-reviewer-F001-T002 agent agent-rt-review-001 physical branch: none attributed report path: .foreman/run-two-rounds/plan-reviewer-F001-T002-d001.md predecessor target: remediated plan 1111111111111111111111111111111111111111 after .foreman/run-two-rounds/drafter-F001-T002-d001.md backend return: report_available from agent-rt-review-001 at 2026-08-16T14:40:00Z; terminal accepted historical report: .foreman/run-two-rounds/plan-reviewer-F001-T002-d000.md; Status: done; material R-001 and R-002; PlanReview -> Drafting accepted historical report: .foreman/run-two-rounds/drafter-F001-T002-d001.md; Status: done; R-001 resolved and R-002 declined; Drafting -> PlanReview accepted active report: .foreman/run-two-rounds/plan-reviewer-F001-T002-d001.md; Status: done; R-002 upheld; PlanReview -> Blocked review rounds: two of two; second-round trigger was Draft declining material R-002

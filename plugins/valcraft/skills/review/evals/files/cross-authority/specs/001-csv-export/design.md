@@ -9,8 +9,7 @@ updated: 2026-08-04
 
 ## Summary
 
-The export endpoint streams rows from the reporting database through a row limiter and
-writes them to a CSV response (FR-001, FR-002).
+The export endpoint streams rows from the reporting database through a row limiter and writes them to a CSV response (FR-001, FR-002).
 
 ## Interfaces
 
@@ -18,5 +17,4 @@ writes them to a CSV response (FR-001, FR-002).
 
 ## Failure handling
 
-The limiter stops the stream at 5000 rows and appends a truncation notice row. A stream
-that stops early returns the partial file rather than an error.
+The limiter stops the stream at 5000 rows and appends a truncation notice row. A stream that stops early returns the partial file rather than an error.

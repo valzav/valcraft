@@ -54,8 +54,7 @@ updated: <YYYY-MM-DD>
 
 ## Edge cases
 
-<State applicable invalid-input, duplicate, concurrency, timeout, partial-
-completion, and stale-reference behavior precisely.>
+<State applicable invalid-input, duplicate, concurrency, timeout, partial- completion, and stale-reference behavior precisely.>
 
 ## Acceptance criteria
 

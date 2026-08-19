@@ -9,8 +9,7 @@ updated: <YYYY-MM-DD>
 
 ## Completion definition
 
-The feature is complete when every applicable acceptance criterion is verified,
-repository checks pass, and affected git-owned contracts are current.
+The feature is complete when every applicable acceptance criterion is verified, repository checks pass, and affected git-owned contracts are current.
 
 <!-- Read project_tracker from root AGENTS.md. Use exactly one shape throughout.
 

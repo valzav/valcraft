@@ -8,5 +8,4 @@
 ## Acceptance criteria
 
 - AC-001: An immediate export returns a CSV document.
-- AC-002: A future UTC timestamp queues exactly one export and returns its
-  identifier.
+- AC-002: A future UTC timestamp queues exactly one export and returns its identifier.

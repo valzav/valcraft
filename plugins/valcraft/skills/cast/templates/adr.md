@@ -1,12 +1,10 @@
 # NNNN. <Decision title, imperative: "Adopt X", "Represent Y as Z">
 
-Status: proposed | provisional | accepted | superseded by NNNN
-Date: <YYYY-MM-DD>
+Status: proposed | provisional | accepted | superseded by NNNN Date: <YYYY-MM-DD>
 
 ## Context
 
-<The forces that require a decision: constraints, requirements (cite IDs), what breaks
-without one.>
+<The forces that require a decision: constraints, requirements (cite IDs), what breaks without one.>
 
 ## Decision
 

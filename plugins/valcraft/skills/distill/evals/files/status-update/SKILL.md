@@ -9,5 +9,4 @@ description: Post a short status update from recent work. Use when the user asks
 2. Write three short paragraphs: Done, Next, Blocked.
 3. Do not reference commit IDs — write for a non-technical reader.
 4. Keep the whole update under 150 words.
-5. Post the update to the `#status` channel with the messaging tool; if no messaging
-   tool exists, print it in chat.
+5. Post the update to the `#status` channel with the messaging tool; if no messaging tool exists, print it in chat.

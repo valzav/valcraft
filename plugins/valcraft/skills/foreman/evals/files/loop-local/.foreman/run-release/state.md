@@ -1,17 +1,1 @@
-run: run-release
-active named state: CodeReview
-target kind: task PR
-canonical task identity: FEAT-001 T-002
-tracker reference: specs/001-invite-links/tasks.md#T-002
-authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md; docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md
-active assignment id: rr-code-review-d000
-logical worker: code-reviewer-F001-T002
-physical worker: Codex task code-reviewer-F001-T002 agent agent-rr-review-000
-physical branch: none
-attributed report path: .foreman/run-release/code-reviewer-F001-T002-d000.md
-predecessor target: PR #14 against main at 2222222222222222222222222222222222222222
-backend return: report_available from agent-rr-review-000 at 2026-08-16T14:50:00Z; terminal
-accepted historical report: .foreman/run-release/forge-F001-T002-d000.md; Status: done; PR #14 head 2222222222222222222222222222222222222222; Implementing -> CodeReview
-accepted active report: .foreman/run-release/code-reviewer-F001-T002-d000.md; Status: done; verdict pass covering 2222222222222222222222222222222222222222; CodeReview -> Landing gate
-runtime branches: default dev; release main
-approval decision: unresolved because PR #14 targets release branch main
+run: run-release active named state: CodeReview target kind: task PR canonical task identity: FEAT-001 T-002 tracker reference: specs/001-invite-links/tasks.md#T-002 authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md; docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md active assignment id: rr-code-review-d000 logical worker: code-reviewer-F001-T002 physical worker: Codex task code-reviewer-F001-T002 agent agent-rr-review-000 physical branch: none attributed report path: .foreman/run-release/code-reviewer-F001-T002-d000.md predecessor target: PR #14 against main at 2222222222222222222222222222222222222222 backend return: report_available from agent-rr-review-000 at 2026-08-16T14:50:00Z; terminal accepted historical report: .foreman/run-release/forge-F001-T002-d000.md; Status: done; PR #14 head 2222222222222222222222222222222222222222; Implementing -> CodeReview accepted active report: .foreman/run-release/code-reviewer-F001-T002-d000.md; Status: done; verdict pass covering 2222222222222222222222222222222222222222; CodeReview -> Landing gate runtime branches: default dev; release main approval decision: unresolved because PR #14 targets release branch main

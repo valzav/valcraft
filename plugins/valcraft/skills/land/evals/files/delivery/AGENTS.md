@@ -1,7 +1,6 @@
 # Fixture instructions
 
-project_tracker: github
-github_repository: example/reports
+project_tracker: github github_repository: example/reports
 
 The default branch is `main`. Required checks come from this file, hosted branch protection, and workflows on `main` or introduced by the PR. External mutations require an exact trusted operator instruction or attributed Foreman assignment.
 

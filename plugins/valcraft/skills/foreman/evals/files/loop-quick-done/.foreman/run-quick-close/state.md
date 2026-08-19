@@ -1,17 +1,1 @@
-run: run-quick-close
-command: deliver quick
-active named state: Landing
-target kind: quick-task PR
-canonical task identity: Q-002 QT-001
-tracker reference: specs/quick/002-login-redirect-query.md#QT-001
-authoritative contract paths: specs/quick/002-login-redirect-query.md
-active assignment id: rq-land-d000
-logical worker: land-Q002-QT001
-physical worker: Codex task land-Q002-QT001 agent agent-rq-land-000
-physical branch: none
-attributed report path: .foreman/run-quick-close/land-Q002-QT001-d000.md
-predecessor target: PR #21 against dev at 2222222222222222222222222222222222222222
-backend return: report_available from agent-rq-land-000 at 2026-08-16T15:30:00Z; terminal
-accepted active report: .foreman/run-quick-close/land-Q002-QT001-d000.md; Status: done; merged head 3333333333333333333333333333333333333333; Landing -> Ready
-held questions: none
-next state: Ready; the quick pool has no eligible work
+run: run-quick-close command: deliver quick active named state: Landing target kind: quick-task PR canonical task identity: Q-002 QT-001 tracker reference: specs/quick/002-login-redirect-query.md#QT-001 authoritative contract paths: specs/quick/002-login-redirect-query.md active assignment id: rq-land-d000 logical worker: land-Q002-QT001 physical worker: Codex task land-Q002-QT001 agent agent-rq-land-000 physical branch: none attributed report path: .foreman/run-quick-close/land-Q002-QT001-d000.md predecessor target: PR #21 against dev at 2222222222222222222222222222222222222222 backend return: report_available from agent-rq-land-000 at 2026-08-16T15:30:00Z; terminal accepted active report: .foreman/run-quick-close/land-Q002-QT001-d000.md; Status: done; merged head 3333333333333333333333333333333333333333; Landing -> Ready held questions: none next state: Ready; the quick pool has no eligible work

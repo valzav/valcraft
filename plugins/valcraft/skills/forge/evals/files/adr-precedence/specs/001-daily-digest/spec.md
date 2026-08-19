@@ -15,8 +15,7 @@ updated: 2026-08-09
 
 ## Summary
 
-A workspace picks a daily send time, and each member receives one digest of workspace
-activity at that time.
+A workspace picks a daily send time, and each member receives one digest of workspace activity at that time.
 
 ## Functional requirements
 
@@ -26,5 +25,4 @@ activity at that time.
 ## Acceptance criteria
 
 - [ ] AC-001: Setting the send time to 09:00 stores that send time for the workspace.
-- [ ] AC-002: A member receives exactly one digest per day, at the configured send time
-      in the workspace's timezone.
+- [ ] AC-002: A member receives exactly one digest per day, at the configured send time in the workspace's timezone.

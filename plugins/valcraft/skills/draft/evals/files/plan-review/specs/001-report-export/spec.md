@@ -6,5 +6,4 @@
 
 ## Acceptance criteria
 
-- AC-002: A future UTC timestamp queues exactly one export and returns its
-  identifier.
+- AC-002: A future UTC timestamp queues exactly one export and returns its identifier.

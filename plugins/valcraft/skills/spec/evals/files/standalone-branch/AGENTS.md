@@ -1,7 +1,6 @@
 # Agent instructions
 
-project_tracker: local
-foreman_release_branch: stable
+project_tracker: local foreman_release_branch: stable
 
 ## Orientation
 

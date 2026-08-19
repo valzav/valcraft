@@ -9,8 +9,7 @@ updated: 2026-08-04
 
 ## Completion definition
 
-The feature is complete when AC-001 and AC-002 are verified, automated checks pass, and
-affected docs are current.
+The feature is complete when AC-001 and AC-002 are verified, automated checks pass, and affected docs are current.
 
 ## Phase 1: Export path
 
