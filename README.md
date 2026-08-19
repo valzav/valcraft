@@ -22,6 +22,76 @@ Status: alpha.
 | The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
 | Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
 
+## Valcraft's SDD at a glance
+
+Valcraft treats spec-driven development as a repository data model, not a session
+ritual. Product intent, requirements, decisions, tasks, and evidence live in ordinary
+files with stable IDs. Agents can resume from those artifacts without inheriting another
+agent's conversation.
+
+```text
+product idea:
+  -> cast: SDD project scaffold
+    new feature or PRD:
+      -> spec: feature contract or quick task
+        -> foreman: coordinate delivery
+          -> planner: write the task plan, then apply msw
+          -> review: pass the task plan or return findings
+          -> forge: implement the task and produce verification evidence
+          -> review: pass the change or return reproduced findings
+          -> foreman: merge and close the tracker task
+```
+
+`foreman` can coordinate the delivery stages in one loop; the same skills also run
+individually when a human drives the work.
+
+### Primitives
+
+- **Git-owned contract.** Accepted ADRs, `specs/`, and derived project docs define what
+  the change must do, in that precedence order. A chat message can select or clarify
+  work, but it does not silently replace the repository contract.
+- **Stable identity.** Features, requirements, acceptance criteria, tasks, decisions,
+  and findings use IDs such as `FEAT-001`, `FR-001`, `AC-001`, `T-001`, `ADR-0001`, and
+  `R-001`. A quick unit uses the qualified identity `Q-001 QT-001`. Plans, commits,
+  reviews, and tracker records cite these IDs.
+- **One unit of work.** Delivery operates on one feature task, one quick task, or one
+  explicitly scoped plan at a time. Dependencies are part of the task contract, not
+  inferred from conversation order.
+- **Tracker as projection.** Git owns task definitions. Feature status can remain in
+  `tasks.md` checkboxes or project to GitHub Issues; quick tasks always track locally.
+  Tracker state never becomes a second source of requirements.
+- **Readiness before execution.** A feature needs a complete and consistent spec,
+  design, and task decomposition. A quick task carries the same minimum contract in one
+  file. Missing product decisions stop implementation rather than becoming guesses.
+- **Independent evidence.** Planning, implementation, and review use fresh contexts.
+  `forge` verifies its work, but `review` independently decides whether the plan or code
+  satisfies the contract. Findings close only when their reproductions pass.
+
+### Artifacts and skill ownership
+
+- **Project frame:** `AGENTS.md` records the standing development rules and tracker
+  mode; `docs/product-brief.md` records product intent and boundaries. `cast` creates or
+  retrofits them, and every delivery skill reads the applicable rules.
+- **Decision record:** `docs/architecture/adr/NNNN-*.md` captures consequential
+  technical decisions and their consequences. `cast` establishes the ADR structure;
+  `forge` and `review` treat accepted ADRs as the highest project authority.
+- **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance
+  criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX`
+  decomposition and dependencies. `spec` creates the feature spec from one PRD; `cast`
+  completes and validates the triplet; `foreman`, `forge`, and `review` deliver against
+  it.
+- **Quick contract:** `specs/quick/NNN-<slug>.md` combines requirements, approach, and
+  `QT-XXX` tasks for a change that does not need a feature triplet. `spec` creates it;
+  the normal delivery and review skills use it as the complete contract.
+- **Delivery plan:** `docs/plans/*-plan.md` records implementation decisions for
+  non-trivial work or remediation decisions for review findings. `msw` pressure-tests
+  the plan, `review` checks it before implementation, and `forge` executes it. Progress
+  remains in the tracker rather than being written back into the plan.
+- **Evidence and learning:** `forge` produces a verification handoff; `review` produces
+  stable `R-XXX` findings and reproduced evidence; `foreman` stores worker reports in
+  its ignored run directory while coordinating closure. After work ships, `temper`
+  writes an append-only report under `docs/retro/` and proposes durable rules.
+
 ## Workflows
 
 ### 1. The full loop: `cast` → `spec` → `foreman`
