@@ -383,6 +383,58 @@
         "The final line begins exactly Status: blocked: evidence_insufficient —",
         "No implementation review, file edit, tracker mutation, or closure occurs"
       ]
+    },
+    {
+      "id": 19,
+      "name": "plan-verdict-pins-exact-commit-and-rejects-stale-head",
+      "prompt": "/valcraft:review — plan mode is asked to review docs/plans/2031-04-08-001-feat-t-001-parser-plan.md at commit 1111111111111111111111111111111111111111. That committed blob has no material findings. The same path now has a newer commit 2222222222222222222222222222222222222222. Explain the verdict and handoff without editing files.",
+      "expected_output": "Review reads and judges the requested plan blob at the exact full commit. It may return pass for that historical target, but records that the verdict covers only the path at commit 1111111111111111111111111111111111111111. It does not infer coverage for the newer commit from the path, branch, or old pass. The report ends `Status: done` and names the newer head as not examined.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Plan mode binds its verdict to an exact repository-relative plan path and full commit SHA",
+        "The older plan blob can be reviewed explicitly, but a newer commit at the same path is not covered by that verdict",
+        "Review does not infer plan coverage from a branch name, path alone, or prior pass",
+        "The report records the exact covered target, names the newer commit as not examined, and edits nothing",
+        "With no material findings in the requested blob, the verdict is pass and the final line is exactly `Status: done`"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "code-verdict-pins-base-head-and-report-contract",
+      "prompt": "/valcraft:review — review code for repository example/tools, base main at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, head refs/heads/feat/f001-t001-parser at 2222222222222222222222222222222222222222, and PR 42. The checks find no P1 or P2. State the report contract; do not edit files.",
+      "expected_output": "Review resolves and records the exact repository, base ref and SHA, head ref and SHA, and PR identity before diffing. It maps the code to the passed task plan and emits a report-only pass for that exact head. Every Review report heading appears in order, and the final line is exactly `Status: done`. A later head requires a new Review.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Code mode resolves repository example/tools, base main and exact base SHA, head branch and exact head SHA, and PR 42 before review",
+        "The pass applies only to head 2222222222222222222222222222222222222222; a later head is uncovered",
+        "Review remains independent and report-only and performs no source, tracker, PR, merge, or commit mutation",
+        "The report contains all six Review report headings verbatim and in order",
+        "The report ends with exactly `Status: done`"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "review-blockers-use-producer-owned-stable-codes",
+      "prompt": "/valcraft:review — state the report outcomes for an unresolvable review target, a plan target whose commit changed, and a completed review with material findings. Do not edit files.",
+      "expected_output": "Review owns its headings, terminal Status line, and routing codes in direct and orchestrated runs. An unresolvable target uses `review_blocked`; a changed pinned target uses `review_target_mismatch`; completed plan or code review, including material findings, uses `Status: done`. Each blocked status includes human-readable detail. All complete semantic reports are backend return `report_available` rather than `permission_blocked`.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "The Review producer owns report headings, exact terminal Status grammar, and routing codes in direct and orchestrated runs",
+        "An unresolvable target ends `Status: blocked: review_blocked — <detail>`",
+        "A changed pinned target ends `Status: blocked: review_target_mismatch — <detail>`",
+        "Completed plan or code review, including material findings, ends exactly `Status: done`",
+        "A complete semantic Review report is backend return report_available even when its Status is blocked; permission_blocked remains transport-only"
+      ]
     }
   ]
 }
