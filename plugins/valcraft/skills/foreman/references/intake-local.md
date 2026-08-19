@@ -4,7 +4,11 @@ Git is the only tracker. `specs/<NNN>-<feature>/tasks.md` holds checkbox tasks; 
 
 ## Rebuild state
 
-Read `tasks.md` of the selected feature. Read `git branch --list 'feat/*'` and `gh pr list --state open --json number,headRefName,title` (when a remote exists) to detect in-progress tasks: a task branch or open PR whose name carries `<feature>-<task>` marks that task in progress.
+Read `tasks.md` of the selected feature. Require every feature task to use `T-XXX`;
+stop on any other task prefix, including `QT-XXX`. Read `git branch --list 'feat/*'`
+and `gh pr list --state open --json number,headRefName,title` (when a remote exists) to
+detect in-progress tasks: a task branch or open PR whose name carries
+`<feature>-<task>` marks that task in progress.
 
 ## Pick
 

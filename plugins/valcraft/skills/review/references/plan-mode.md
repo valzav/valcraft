@@ -12,7 +12,11 @@ Read this reference for a plan, spec, design, or tasks review. Apply every check
 - **For every configured value, assess necessity separately from authority.** Check the selected value against every applicable ADR, spec, repository instruction, and operator instruction. A governed conflict is a finding even when some value is necessary. A necessary value that no authority governs is implementation discretion, not a missing-authority defect; still assess whether its behavior and evidence meet the contract.
 - **Compare the plan's proposed work against the spec's goals and non-goals.** Work no requirement asks for is scope creep, and it hides best in a plan that is otherwise faithful.
 - **When the target is a feature spec, check its structural contract from `spec-intake.md`**: the directory number matches the frontmatter `id`, the `Sources` section holds exactly one canonical entry, and the `spec_issue` mapping matches the tracker mode.
-- **When the target is `tasks.md`, map every `FR-` and `AC-` — and every `NFR-` and `BR-` the spec declares — to at least one task that verifies it**, and check each `blocked by T-XXX` names an existing task — an unverified requirement is a gap regardless of how complete the task list looks.
+- **When the target is feature `tasks.md`, require every task to use `T-XXX`**;
+  `QT-XXX` is a material finding before readiness. Map every `FR-` and `AC-` — and
+  every `NFR-` and `BR-` the spec declares — to at least one task that verifies it,
+  and check each `blocked by T-XXX` names an existing task. An unverified requirement
+  is a gap regardless of how complete the task list looks.
 - **When the target completes the spec triplet** (`design.md` and `tasks.md` both exist), check the implementation-readiness gate defined in `spec-intake.md` and report a failed gate as a material finding citing the readiness contract.
 - **When the target is a quick task file** (`specs/quick/NNN-*.md`), check
   `quick.md`'s full grammar: filename number equals `id: Q-NNN`, one `Sources` entry,

@@ -51,10 +51,10 @@ The default path for a new project or a new body of work.
    If you leave delivery on the default manual Forge path, Cast writes no `foreman_*`
    keys. Select Foreman in a later Cast retrofit when you want the coordinated loop.
 
-   `foreman` runs from a Claude Code session: as a plain session whose workers are
-   subagents, or as an Agent Orchestrator session whose workers are Claude Code and Codex
-   sessions. In Codex the skill is installed and triggers, but no Codex-native worker
-   backend exists yet.
+   `foreman` can use native subagents on either host. Claude Code wakes the parent turn
+   when a worker completes; Codex keeps the parent turn active and waits for the worker
+   in the foreground. Agent Orchestrator remains a separate backend whose workers can be
+   Claude Code and Codex sessions.
 
 ### 2. Manual loop, one task at a time
 

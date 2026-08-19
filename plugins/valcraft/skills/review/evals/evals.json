@@ -310,6 +310,42 @@
         "The existing disposable-worktree contract is used without duplicating or replacing it",
         "The finding closes only after every failure mode named by its claim stops reproducing"
       ]
+    },
+    {
+      "id": 16,
+      "name": "feature-tasks-reject-quick-prefix-directly",
+      "prompt": "/valcraft:review — in evals/files/quick-file/invalid-project/, review the feature target specs/001-feature/tasks.md before implementation.",
+      "expected_output": "Review selects plan mode and reports a material finding before readiness because the directly targeted feature tasks.md uses QT-001. Feature tasks must use T-XXX. It does not require a quick-file target or quick-pool scan, map QT-001 to T-001, edit the file, or continue as though the feature task were valid.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/docs/product-brief.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+      ],
+      "assertions": [
+        "Review reports QT-001 as a material wrong-prefix finding on the direct feature target",
+        "The finding is reported before readiness",
+        "No quick-pool scan, compatibility mapping, edit, or implementation review occurs"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "code-mode-validates-governing-feature-prefix",
+      "prompt": "/valcraft:review — apply code-mode contract mapping to a change whose commit cites FEAT-001 QT-001 and whose governing feature file is evals/files/quick-file/invalid-project/specs/001-feature/tasks.md. Treat the mapping as a static check; do not edit files.",
+      "expected_output": "Review validates the governing feature tasks.md before mapping the change and reports a finding because QT-001 is invalid in a feature task file; feature tasks use T-XXX. It does not map the commit to current feature work, reinterpret QT-001 as T-001, or wait for a quick-task path to discover the error.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Code-mode mapping validates the governing feature tasks.md directly",
+        "QT-001 is reported as invalid because feature tasks use T-XXX",
+        "The invalid identity is not mapped, normalized, or deferred to quick-mode validation"
+      ]
     }
   ]
 }

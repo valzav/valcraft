@@ -34,7 +34,7 @@
     },
     {
       "name": "foreman",
-      "version": "4c6ec0546120d0bf",
+      "version": "834a1f09a8961adb",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -84,7 +84,7 @@
     },
     {
       "name": "review",
-      "version": "bda749b55cd715ac",
+      "version": "8a6bc4dc915b0157",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -102,7 +102,7 @@
     },
     {
       "name": "temper",
-      "version": "da8843895dc8682b",
+      "version": "d549f27edb945dd3",
       "files": [
         "SKILL.md",
         "references/process.md",

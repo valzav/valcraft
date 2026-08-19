@@ -36,6 +36,24 @@
         "Temper stops before inventory, incident extraction, grading, routing, or report creation",
         "No compatibility parser, fallback, migration, or historical mapping is used"
       ]
+    },
+    {
+      "id": 3,
+      "name": "feature-prefix-preflight-stops-before-inventory",
+      "prompt": "/valcraft:temper — in evals/files/quick-pool/invalid-project/, analyze the feature directory specs/001-feature/. Stop after preflight; do not write a report.",
+      "expected_output": "Temper validates the directly targeted feature tasks.md and stops before inventory because QT-001 is invalid in a feature task file; feature tasks use T-XXX. It does not wait for a quick-pool scan, reinterpret QT-001 as current feature work, examine incidents, or create a report.",
+      "files": [
+        "evals/files/quick-pool/invalid-project/AGENTS.md",
+        "evals/files/quick-pool/invalid-project/docs/product-brief.md",
+        "evals/files/quick-pool/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-pool/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-pool/invalid-project/specs/001-feature/tasks.md"
+      ],
+      "assertions": [
+        "Temper reports QT-001 as invalid because feature tasks use T-XXX",
+        "Temper stops before feature inventory, incident analysis, or report creation",
+        "No quick-pool scan or historical compatibility mapping is needed"
+      ]
     }
   ]
 }

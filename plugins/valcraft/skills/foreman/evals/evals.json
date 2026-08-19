@@ -933,8 +933,8 @@
     {
       "id": 50,
       "name": "blocking-owner-lands-now-unrelated-owner-survives-restart",
-      "prompt": "$valcraft:foreman — while delivering T-007, classify two findings: (a) T-003's contract prevents T-007 from satisfying AC-009; (b) an unrelated defect belongs to future T-011 and neither arose from T-007's diff nor blocks T-007. Then resume a later run that selects T-011. Do not call tools.",
-      "expected_output": "Foreman records each finding's causal owner. It remediates T-003's blocking contract now because T-007 cannot meet AC-009 otherwise, and sends that remediation through the normal review and final-head gates. It does not fix the unrelated T-011 finding now. Instead it records the finding, T-011 ownership, and one durable locator in T-011's tracker-owned task artifact or task issue and records the same locator in state.md. On the later run, Foreman verifies the locator from the authoritative tracker artifact rather than trusting the old checkpoint and includes it in T-011's planner assignment envelope, so restart does not lose the finding.",
+      "prompt": "$valcraft:foreman — while delivering T-007, classify two findings: (a) T-003's contract prevents T-007 from satisfying AC-009; (b) an unrelated defect belongs to future T-011 and neither arose from T-007's diff nor blocks T-007. Take T-007 through its current exact-final-head, check-state, and proceed-or-wait decision, then resume a later run that selects T-011. Do not call tools.",
+      "expected_output": "Foreman records each finding's causal owner. It remediates T-003's blocking contract now because T-007 cannot meet AC-009 otherwise, and sends that remediation through the normal review and final-head gates. It does not fix the unrelated T-011 finding now. Instead it records the finding, T-011 ownership, and one durable locator in T-011's tracker-owned task artifact or task issue and records the same locator in state.md. After verifying that durable owner record, Foreman classifies the non-blocking deferral as settled for T-007. T-007 proceeds only when review and a passing or none-applicable check state cover its exact final head and every other finding is resolved; an open current-task or blocking finding, or an unverified durable deferral, waits. On the later run, Foreman verifies the locator from the authoritative tracker artifact rather than trusting the old checkpoint and includes it in T-011's planner assignment envelope, so restart does not lose the finding.",
       "files": [
         "references/loop.md",
         "references/contracts.md",
@@ -946,6 +946,8 @@
         "The T-003-owned finding lands now because its contract blocks T-007's acceptance criterion",
         "The unrelated T-011 finding is not remediated during T-007",
         "The unrelated finding records its owner and durable locator in the owner tracker artifact or issue and state.md",
+        "A verified durable non-blocking deferral is settled for T-007 and does not block its exact-final-head or proceed decision",
+        "T-007 still waits for an open current-task or blocking finding, an unverified deferral, or a non-passing applicable check state",
         "After restart Foreman verifies the authoritative locator and includes it in T-011's planner envelope"
       ]
     },
@@ -964,6 +966,25 @@
         "Every material-finding remediation receives a closure check",
         "Existing second-full-round triggers apply unchanged",
         "Small size, adjacency, cross-task ownership, and record-and-close origin provide no blanket exemption"
+      ]
+    },
+    {
+      "id": 52,
+      "name": "feature-prefix-preflight-stops-before-pick",
+      "prompt": "$valcraft:foreman — in the Cast project at evals/files/loop-local/, start a local delivery run for feature 002-invalid-prefix. This run is unattended. Stop after feature preflight.",
+      "expected_output": "Foreman reads the selected feature's tasks.md directly and stops before eligibility, run creation, or dispatch because QT-001 is a quick-task identifier in a feature task file. Feature tasks must use T-XXX. It does not wait for or invoke a quick-pool scan, remap QT-001, or select the task.",
+      "files": [
+        "evals/files/loop-local/AGENTS.md",
+        "evals/files/loop-local/.gitignore",
+        "evals/files/loop-local/docs/product-brief.md",
+        "evals/files/loop-local/specs/002-invalid-prefix/spec.md",
+        "evals/files/loop-local/specs/002-invalid-prefix/design.md",
+        "evals/files/loop-local/specs/002-invalid-prefix/tasks.md"
+      ],
+      "assertions": [
+        "The direct feature preflight reports QT-001 as invalid because feature tasks use T-XXX",
+        "Foreman stops before eligibility, run creation, or worker dispatch",
+        "No quick-pool scan or compatibility mapping is required to detect the error"
       ]
     }
   ]

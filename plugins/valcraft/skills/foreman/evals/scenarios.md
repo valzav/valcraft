@@ -92,5 +92,5 @@ planning or a full review cycle; causal routing does not waive existing review g
 | Incomplete criterion | A weak or missing criterion makes the overall verdict insufficient and leaves the task open. | 47 `insufficient-external-completion-evidence-keeps-task-open` |
 | Operator attestation | Preserve attribution and record whether the fresh reviewer independently verified the claim. | 48 `operator-attestation-retains-attribution-and-verification-decision` |
 | Current-diff causation | A cross-task inconsistency caused by the current diff lands now under ordinary review gates. | 49 `current-diff-caused-cross-task-finding-lands-now` |
-| Blocking versus unrelated owner | A blocking owner lands now; an unrelated finding gets a durable owner locator that reaches a future planner after restart. | 50 `blocking-owner-lands-now-unrelated-owner-survives-restart` |
+| Blocking versus unrelated owner | A blocking owner lands now; a verified durable unrelated-owner deferral lets the current exact-final-head/check gate proceed and reaches the future planner after restart. | 50 `blocking-owner-lands-now-unrelated-owner-survives-restart` |
 | No review-round exemption | Small, adjacent, cross-task, and record-and-close remediation retains every existing second-round trigger. | 51 `cross-task-remediation-has-no-blanket-round-two-exemption` |

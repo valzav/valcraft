@@ -153,6 +153,11 @@ batch in GitHub mode. On a later pick, verify the tracker record from its author
 include its locator in the planner envelope as required in step 2. This rule survives a
 run restart; the checkpoint alone is never the durable record.
 
+Once the durable owner record is verified, classify the non-blocking cross-task finding
+as deferred to its owner and settled for the current task. It does not block the current
+task's exact-final-head or proceed decision. A missing or unverified durable record
+remains an open finding.
+
 ### 10. Merge and close
 
 For `local` intake, first have the worker perform its close-task write from
@@ -214,10 +219,13 @@ proceed/wait test:
 
 - **Proceed** when the task is implemented against its spec and design, review and a
   `passing` or `none-applicable` check state cover the exact final head, and every
-  finding from steps 8 and 9 is resolved. Record the decision against that SHA.
+  finding from steps 8 and 9 is either resolved or is a verified, non-blocking
+  cross-task deferral settled under the causal-routing rule. Record the decision
+  against that SHA.
 - **Wait** when anything is unsettled and settling it would take the human — a
   `pending/failing` or `missing-required` check state; an unavailable applicability
-  source; a finding open or deferred; the implementation diverged from the plan's
+  source; an open current-task or blocking finding; a non-blocking cross-task deferral
+  without a verified durable owner record; the implementation diverged from the plan's
   approach or scope; an issue the plan did not anticipate. Name it.
 
 The approval-modes table says whether a "proceed" executes without the human; a PR against `foreman_release_branch` is its own row.
