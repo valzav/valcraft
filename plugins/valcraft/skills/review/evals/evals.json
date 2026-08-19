@@ -359,6 +359,30 @@
         "QT-001 is reported as invalid because feature tasks use T-XXX",
         "The invalid identity is not mapped, normalized, or deferred to quick-mode validation"
       ]
+    },
+    {
+      "id": 18,
+      "name": "evidence-mode-fresh-criterion-sufficiency",
+      "prompt": "/valcraft:review — in evals/files/evidence-mode/, independently assess the exact durable completion record evidence/completion-record.md for externally completed task T-002. This is a fresh context. Do not review implementation or modify the record.",
+      "expected_output": "Review selects evidence mode rather than plan or code mode. It resolves T-002 and enumerates AC-001 and AC-002 from the committed contract, reads only the durable record and its named authoritative sources, and independently assesses each criterion. It preserves the operator attestation as attributed evidence rather than fact. AC-001 is sufficient because the named receipt can be independently matched to the task. AC-002 is insufficient because its claimed header artifact is absent. The overall verdict is insufficient. Review emits every Evidence-sufficiency report heading in order, names the exact durable record under Target and sources, includes both criterion rows, records AC-002 under Not independently verified, ends with Status: blocked: evidence_insufficient — followed by detail, and edits nothing.",
+      "files": [
+        "evals/files/evidence-mode/AGENTS.md",
+        "evals/files/evidence-mode/docs/product-brief.md",
+        "evals/files/evidence-mode/specs/001-report-export/spec.md",
+        "evals/files/evidence-mode/specs/001-report-export/tasks.md",
+        "evals/files/evidence-mode/evidence/completion-record.md",
+        "evals/files/evidence-mode/evidence/export-receipt.txt"
+      ],
+      "assertions": [
+        "Review selects evidence mode and does not substitute plan or code mode",
+        "The fresh reviewer resolves every T-002 criterion from the committed contract",
+        "Operator attestation remains attributed evidence and is not promoted to fact",
+        "AC-001 is independently verified from the named receipt and marked sufficient",
+        "AC-002 is marked insufficient because the named header artifact is absent",
+        "Overall verdict is insufficient and every Evidence-sufficiency report heading appears in order",
+        "The final line begins exactly Status: blocked: evidence_insufficient —",
+        "No implementation review, file edit, tracker mutation, or closure occurs"
+      ]
     }
   ]
 }
