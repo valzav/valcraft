@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "44e20bf79bb55cb6",
+      "version": "9ee11f81b6dd8757",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -19,6 +19,7 @@
         "templates/product-brief.md",
         "templates/quick.md",
         "templates/spec.md",
+        "templates/status.md",
         "templates/tasks.md"
       ]
     },
@@ -33,7 +34,7 @@
     },
     {
       "name": "foreman",
-      "version": "481acbc8c588f1e5",
+      "version": "e4d61f3b61cf7705",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -46,6 +47,7 @@
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
+        "references/record-and-close.md",
         "references/review-round.md",
         "templates/project-block.md",
         "templates/run-dir.md",
@@ -54,7 +56,7 @@
     },
     {
       "name": "forge",
-      "version": "066715ce9b4172d7",
+      "version": "a043dd6566a11cbe",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -82,7 +84,7 @@
     },
     {
       "name": "review",
-      "version": "86d90eda9337e49a",
+      "version": "8a6bc4dc915b0157",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -92,7 +94,7 @@
     },
     {
       "name": "spec",
-      "version": "a4aaba2014aa5225",
+      "version": "58082bfae736f75f",
       "files": [
         "SKILL.md",
         "agents/openai.yaml"
@@ -100,7 +102,7 @@
     },
     {
       "name": "temper",
-      "version": "dda32bcb5a652574",
+      "version": "d6c35bb0663913c9",
       "files": [
         "SKILL.md",
         "references/process.md",

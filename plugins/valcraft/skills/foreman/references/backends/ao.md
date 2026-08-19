@@ -13,12 +13,22 @@ The foreman is an AO orchestrator session (a Claude Code session spawned by AO w
 
 ## Primitives
 
-- `spawn`: `ao session new --project <project-id> --agent <harness> --name <role>-<F>-<T>` with no initial prompt. Session names are 20 characters or fewer; `reviewer-1-F004-T012` is exactly 20.
+- `spawn`: derive one unique physical alias per dispatch. AO session names are at most 20 characters.
+  1. Keep the complete canonical logical name in the assignment and `workers.md`.
+  2. Map delivery roles to `p` (planner), `r1` (reviewer-1), `w` (worker), `r2` (reviewer-2), `rec` (recorder), `er` (evidence-reviewer), and `t` (temper). Map decompose roles to `dp` (planner) and `dr` (reviewer).
+  3. Determine the dispatch ordinal from prior `workers.md` rows for the same logical identity. The first dispatch is `0`; each respawn takes the next unused ordinal.
+  4. Use the canonical logical identity encoded as UTF-8 as the SHA-256 preimage for ordinal `0`. For a later dispatch, use `<canonical logical identity>\ndispatch:<ordinal>`.
+  5. Form `<role-token>-<digest-prefix>` from the lowercase hexadecimal digest. Use as many leading digest characters as fit the 20-character contract.
+  6. Compare the alias with current project sessions and every `workers.md` row. If it is already owned, recompute SHA-256 over `<dispatch preimage>\ncollision:<n>`, starting with `n = 1`, until an unowned alias results.
+  7. Run `ao session new --project <project-id> --agent <harness> --name <physical-alias>` with no initial prompt.
+  8. Record the dispatch ordinal and physical handle in a new `workers.md` row. Preserve prior rows.
+
+  Never truncate a canonical identity or cap its numeric width. This procedure maps every logical role, including `Q-1000 QT-001`; both a forced alias collision and a same-identity respawn deterministically receive distinct aliases.
 - `assign`: `ao send --session <id> --message "<envelope>"`. Then confirm the worker visibly started: `tmux capture-pane -p -t <id>` (no `-S`) shows the composer processing. An idle empty composer plus no report file means the send silently failed (the same trap as slash commands) — re-send.
 - `await`: run this as a background Bash command (`run_in_background: true`) and end the turn; its exit re-invokes the foreman with the outcome. `R` is the worker's report path in the run directory.
 
   ```sh
-  S=<worker-session-id>; R="<run dir>/<role>-<F>-<T>.md"
+  S=<worker-session-id>; R="<run dir>/<logical report name>.md"
   snap() { cksum "$R" 2>/dev/null || echo none; }
   B=$(snap); seen=0
   while :; do
@@ -46,6 +56,8 @@ Every AO worker has its own worktree, so a repository-relative `.foreman/` path 
 
 AO's own mailbox (`~/.ao-mail/<project-id>/<session-id>.md`) is not the wire format. If AO tooling needs it, a worker may mirror its report there; the run directory is the source.
 
+On worker death, inspect the dead session's worktree before spawning a replacement. Record its path and accessibility, current branch, refs, exact commit SHAs, report path, and staged, unstaged, and untracked state as Foreman observations with probe locators. Reconcile any tracker or change-request effect separately. If the worktree is accessible, the replacement verifies the inventory there, resumes committed work through the recorded refs, and recovers verified uncommitted changes from the dead worktree into its fresh worktree without reimplementing them. If uncommitted worker-only state is inaccessible, or an external effect remains unreconciled, escalate; do not restart the assignment or run cleanup. The event wake remains unchanged after a safe replacement dispatch.
+
 ## PR-tracking hook
 
 After step 7: `ao session claim-pr <worker-session-id> <pr-url>` so AO tracks CI and review state. AO nudges the worker about CI failures on its own; intervene only if the worker stalls.
@@ -60,7 +72,7 @@ It reclaims the workspace of every terminated session in the project, and every 
 
 ## Rules and respawn
 
-AO resolves orchestrator rules at spawn: after changing the project block or these references, respawn the orchestrator session. A changed orchestrator harness is picked up only by a new orchestrator session created from the AO app UI (`ao session restore` does not bring one back). Apply project config with `ao project set-config <project-id> --orchestrator-rules "…" --default-branch <foreman_default_branch> --orchestrator-agent claude-code` — set-config replaces the whole config, so pass every flag. The orchestrator rules text is one line: "Run `valcraft:foreman` for this project."
+AO resolves orchestrator rules at spawn: after changing Foreman overrides or these references, respawn the orchestrator session. A changed orchestrator harness is picked up only by a new orchestrator session created from the AO app UI (`ao session restore` does not bring one back). Apply project config with `ao project set-config <project-id> --orchestrator-rules "…" --default-branch <foreman_default_branch> --orchestrator-agent claude-code` — set-config replaces the whole config, so pass every flag. The orchestrator rules text is one line: "Run `valcraft:foreman` for this project."
 
 ## Eval scenario coverage
 

@@ -1,12 +1,12 @@
 ---
 name: spec
 description: >
-  Create the next canonical Cast feature spec, or one quick task file under specs/quick/ for a small change, from exactly one readable local PRD, plan, or requirements document, one explicitly selected GitHub PRD issue, or (quick only) an inline operator brief. Use when user asks to create, write, or generate the next spec or a quick task from a PRD, plan, requirements document, GitHub issue, or short request. Not for implementation, design-only work, editing an existing spec, or tracker-only synchronization.
+  Create the next Cast feature spec or quick-task file from one local document, selected GitHub PRD issue, or inline quick brief. Use to create a new spec, not to implement, edit an existing spec, add design/tasks, or synchronize trackers.
 ---
 
 # spec
 
-Create one product-facing `specs/NNN-slug/spec.md`, or one quick task file `specs/quick/NNN-slug.md` for a small change. Cast is the SDD authority; the local artifact is canonical in every tracker mode. Do not bootstrap or repair a Cast scaffold, resume an existing feature, produce a feature's design or tasks, implement, or commit changes.
+Create one `specs/NNN-slug/spec.md`, or one `specs/quick/NNN-slug.md` for a small change. Cast is authoritative; the local artifact is canonical in every tracker mode. Do not bootstrap or repair a scaffold, resume a feature, produce design or tasks, implement, or commit.
 
 ## Load the Cast contracts
 
@@ -57,7 +57,7 @@ Read `docs/product-brief.md` and, when present and relevant, existing specs, qui
 
 Feature — populate every applicable section of the Cast spec template with only supported product intent: the single canonical source, summary and problem, goals and non-goals, scenarios, functional requirements, quality requirements only when a real constraint exists, applicable edge cases, observable acceptance criteria, visible assumptions and open questions.
 
-Quick task — populate the quick template: the source; `Requirements` as `FR-`/`AC-`; `Approach` in a few lines; `Tasks` as one or a few checkbox `T-` items; open questions when real.
+Quick task — populate the quick template: the source; `Requirements` as `FR-`/`AC-`; `Approach` in a few lines; `Tasks` as one or a few checkbox `QT-` items; open questions when real. Validate every local or qualified quick dependency through `quick.md`; refuse a missing file or task, legacy `T-` task, malformed ID, mixed prefix, or wrong-prefix dependency before writing. Keep any plan's semantic type and slug; never add `quick` solely for this shape.
 
 Preserve every supported requirement from the source. Never invent missing behavior; record ordinary gaps as assumptions or open questions. In a feature, keep implementation choices and test strategy for later design unless the source states a genuine external constraint. Stop before writing when a proposed requirement contradicts an accepted ADR or established spec and the conflict cannot be represented honestly as unresolved.
 

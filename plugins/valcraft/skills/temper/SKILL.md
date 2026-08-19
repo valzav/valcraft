@@ -26,8 +26,15 @@ Resolve and pin every explicit target before analysis: a feature path, quick poo
 
 Inventory units follow the corpus type:
 
-- **Feature directory** — each declared task, with its linked commits.
-- **Quick pool** (`specs/quick/`, or one quick file) — each `Q-NNN T-XXX` task across the files, with its linked commits.
+- **Feature directory** — require every task in `tasks.md` to use `T-XXX`; stop before
+  inventory on any other task prefix, including `QT-XXX`. Then inventory each declared
+  task with its linked commits.
+- **Quick pool** (`specs/quick/`, or one quick file) — validate the full selected pool
+  through Cast's `quick.md` before inventory. Stop on a missing referenced Q file or
+  QT-ID, legacy or mixed-prefix task, malformed ID, wrong-prefix dependency, or
+  `QT-XXX` in feature `tasks.md`. Inventory each `Q-NNN QT-XXX` as a distinct unit and
+  link only commits carrying that qualified identity. Repeated `QT-XXX` values in
+  different files remain separate; historical `Q-NNN T-XXX` never denotes current work.
 - **PR run** — each PR is one unit; examine its commits within it.
 - **Commit range or date window** — group commits that share one stable task ID; each commit without one is its own unit. Never infer semantic work clusters without a git-owned identifier.
 

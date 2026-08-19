@@ -33,7 +33,8 @@ End the run with this block, headings verbatim and in this order; nothing follow
 
 ### Changed (IDs)
 
-<!-- what changed, referenced by T-/FR-/AC-/ADR- IDs -->
+<!-- what changed, referenced by feature T-XXX or quick Q-NNN QT-XXX identities and
+FR-/AC-/ADR- IDs -->
 
 ### Verification evidence
 
@@ -52,7 +53,7 @@ End the run with this block, headings verbatim and in this order; nothing follow
 <!-- the pinned target for the reviewer: branch, PR, or commit range -->
 ```
 
-Route the change to `valcraft:review` or the host loop's reviewer, in a fresh context — a second model or a fresh agent, never the context that implemented the change — carrying the scope statement, the branch or diff target, and the verification evidence. When the host cannot provide an independent reviewer, report the handoff as blocked instead of self-reviewing. Findings come back with IDs (`R-NNN`); material ones get a remediation plan in `docs/plans/`, and resolution commits cite the IDs. Do not commit raw review records.
+Route the change to `valcraft:review` or the host loop's reviewer, in a fresh context — a second model or a fresh agent, never the context that implemented the change — carrying the scope statement, the branch or diff target, and the verification evidence. When the host cannot provide an independent reviewer, report the handoff as blocked instead of self-reviewing. Findings come back with IDs (`R-NNN`); material ones get a remediation plan in `docs/plans/`, and resolution commits cite the IDs. For every resolved R-ID, report one line with the resolving commit, repository-relative file-and-line locator, and concise claim; never copy a hunk or before-and-after text as evidence. Do not commit raw review records.
 
 ## Trust boundary
 

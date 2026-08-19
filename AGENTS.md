@@ -86,6 +86,11 @@ and JSON.
 
 - Non-trivial work starts with a plan; working plans live in `.local/plans/`
   (gitignored), not in the repository.
+- Keep tracked Valcraft content consumer-neutral. Do not name consumer projects,
+  products, organizations, or brands. Keep consumer-specific evidence in the consumer
+  repository or under gitignored `.local/`. Use a generic role, a neutral fictional
+  identity, or an incident label instead. Valcraft and required third-party technology
+  or platform names are exempt.
 - Apply the MSW deletion test to commit messages and PR bodies: state only what the
   change does and why it matters, then delete every sentence whose removal loses none
   of that. No process narration, no restated diff, no filler.

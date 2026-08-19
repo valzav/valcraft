@@ -126,7 +126,7 @@
       "id": 6,
       "name": "quick-task-resolves-and-stops-at-review-gate",
       "prompt": "/valcraft:forge — in the Cast project at evals/files/quick-task/, implement Q-001. This run is unattended.",
-      "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md through the cast quick reference, treats that one file as the Cast contract, and applies quick.md's readiness rule (an AC- present, a substantive Approach, a task, no behavior-changing open question) before coding. It states its scope — src/validation.py and tests/test_validation.py touched, nothing else — and changes `require_non_empty` to reject whitespace-only values while returning a non-blank value unchanged, exactly as the Approach says. It adds the two cases from AC-001 and AC-002 to tests/test_validation.py in the existing unittest style, runs the documented test command, and cites the real output. It hands the change to review and stops: T-001's checkbox in the quick file stays unchecked, nothing is declared done or merged, and any commit references Q-001 T-001. Its last output is the `## Forge handoff` block with all five headings verbatim and in order.",
+      "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and its next eligible QT-001 through the cast quick reference, treats that one file as the Cast contract, and applies quick.md's grammar and readiness rule before coding. It states scope, implements the two criteria, runs the documented tests, and cites real output. It hands the change to review and stops: QT-001 stays unchecked, nothing is declared done or merged, any commit and Changed (IDs) use Q-001 QT-001, and the semantic plan type and slug do not gain quick. Its last output is the complete `## Forge handoff` block.",
       "files": [
         "evals/files/quick-task/AGENTS.md",
         "evals/files/quick-task/docs/product-brief.md",
@@ -141,8 +141,8 @@
         "require_non_empty raises ValueError naming the field for a whitespace-only value and returns ` a ` unchanged",
         "New tests follow the existing unittest style and cover AC-001 and AC-002",
         "Forge runs the documented test command and cites its real output as evidence",
-        "T-001's checkbox in the quick file remains unchecked; the run ends at the review handoff without declaring the task shipped or merging",
-        "Any commit subject references Q-001 T-001",
+        "QT-001's checkbox in the quick file remains unchecked; the run ends at the review handoff without declaring the task shipped or merging",
+        "Any commit subject and Forge Changed (IDs) entry references Q-001 QT-001; the plan name remains semantic without a quick type or slug token",
         "The run's last output is the `## Forge handoff` block with all five headings present, verbatim and in order"
       ]
     },
@@ -150,7 +150,7 @@
       "id": 7,
       "name": "bare-q-id-picks-next-eligible-task-in-github-mode",
       "prompt": "/valcraft:forge — in the Cast project at evals/files/quick-multi/, implement Q-001. This run is unattended.",
-      "expected_output": "Forge resolves the bare Q-001 through the cast quick reference: specs/quick/001-validation-hardening.md holds two tasks; T-001 is checked, so the next eligible task is T-002, whose `blocked by T-001` is satisfied by T-001's checkbox in the same file — the project's `project_tracker: github` does not send forge to GitHub for a quick task's dependency, and no gh command runs. It applies quick.md's readiness rule, states scope (src/validation.py and tests/test_validation.py), and implements T-002 as the Approach says: `None` is treated as empty before the strip check, the signature widens to Optional[str], the empty-string message is reused, and ` a ` still returns unchanged. It adds tests for AC-002 and re-checks AC-003 in the existing unittest style, runs the documented test command, cites the real output, and stops at the review handoff: no checkbox ticked, no label applied, no merge, commits citing Q-001 T-002, and the `## Forge handoff` block last.",
+      "expected_output": "Forge resolves bare Q-001 through quick.md: QT-001 is checked, so next eligible QT-002 has its local `blocked by QT-001` satisfied. Even in github mode dependency status comes only from that checkbox and no gh call runs. Forge applies readiness, states scope, implements AC-002 while preserving AC-003, runs the documented tests, and stops at review: no checkbox ticked, label, or merge; commits and Changed (IDs) cite Q-001 QT-002; the complete Forge handoff is last.",
       "files": [
         "evals/files/quick-multi/AGENTS.md",
         "evals/files/quick-multi/docs/product-brief.md",
@@ -159,15 +159,98 @@
         "evals/files/quick-multi/tests/test_validation.py"
       ],
       "assertions": [
-        "Forge resolves bare Q-001 to T-002 — the first unchecked task whose dependency is checked — and does not re-implement the checked T-001",
-        "Forge treats T-002's `blocked by T-001` as satisfied by the checkbox in the quick file and does not require or query a GitHub issue",
+        "Forge resolves bare Q-001 to QT-002 — the first unchecked task whose dependency is checked — and does not re-implement checked QT-001",
+        "Forge treats QT-002's `blocked by QT-001` as satisfied by the quick-file checkbox and does not require or query a GitHub issue",
         "No gh command, GitHub label, or remote inspection is performed for the quick task",
         "require_non_empty(None, 'name') raises ValueError naming the field with the same message as the empty string, and ' a ' returns unchanged",
         "New tests follow the existing unittest style and cover AC-002 and AC-003",
         "Forge runs the documented test command and cites its real output",
-        "T-002's checkbox remains unchecked; the run ends at the review handoff without merging",
-        "Any commit subject references Q-001 T-002",
+        "QT-002's checkbox remains unchecked; the run ends at the review handoff without merging",
+        "Any commit subject and Changed (IDs) entry references Q-001 QT-002",
         "The run's last output is the `## Forge handoff` block with all five headings, verbatim and in order"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "cross-file-unchecked-quick-dependency-blocks",
+      "prompt": "/valcraft:forge — in evals/files/quick-multi/blocked-project/, implement Q-002 QT-001. This run is unattended.",
+      "expected_output": "Forge validates the pool, resolves Q-002 QT-001, then stops before workspace or code changes because its cross-file target Q-001 QT-001 exists but is unchecked. GitHub mode does not cause any issue lookup. The blocker is the canonical target identity.",
+      "files": [
+        "evals/files/quick-multi/blocked-project/AGENTS.md",
+        "evals/files/quick-multi/blocked-project/docs/product-brief.md",
+        "evals/files/quick-multi/blocked-project/specs/quick/001-foundation.md",
+        "evals/files/quick-multi/blocked-project/specs/quick/002-dependent.md"
+      ],
+      "assertions": [
+        "Forge resolves the cross-file reference to Q-001 QT-001 and sees its checkbox is unchecked",
+        "Forge stops before code, tests, branch, commit, or handoff",
+        "Forge performs no quick-task GitHub issue lookup, label, or status operation"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "invalid-quick-prefixes-stop-forge",
+      "prompt": "/valcraft:forge — in evals/files/quick-multi/invalid-project/, implement Q-009. This run is unattended.",
+      "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with legacy T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map legacy IDs, or change the workspace.",
+      "files": [
+        "evals/files/quick-multi/invalid-project/AGENTS.md",
+        "evals/files/quick-multi/invalid-project/docs/product-brief.md",
+        "evals/files/quick-multi/invalid-project/specs/quick/009-invalid.md"
+      ],
+      "assertions": [
+        "Forge reports legacy T-002, mixed prefixes, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Forge stops before eligibility, implementation, or handoff",
+        "No compatibility mapping, fallback, migration, or GitHub lookup occurs"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "bare-qt-resolves-one-quick-match",
+      "prompt": "/valcraft:forge — in evals/files/quick-task/, resolve bare QT-001 and stop before workspace setup.",
+      "expected_output": "Forge enumerates valid quick files, finds exactly one QT-001 in Q-001, resolves canonical Q-001 QT-001, and stops where requested. It does not search feature tasks or drop the Q qualifier from durable identity.",
+      "files": [
+        "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/docs/product-brief.md",
+        "evals/files/quick-task/specs/quick/001-trim-before-validate.md"
+      ],
+      "assertions": [
+        "Bare QT-001 resolves only after exactly-one quick-file enumeration",
+        "The resolved durable identity is Q-001 QT-001",
+        "Feature tasks are not searched for QT-001"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "bare-t-never-searches-quick-files",
+      "prompt": "/valcraft:forge — in evals/files/quick-task/, implement bare T-001. This run is unattended.",
+      "expected_output": "Forge searches feature tasks.md only, finds no feature T-001, and stops as unresolved. It never interprets the quick file's QT-001 or historical quick T-001 as a match.",
+      "files": [
+        "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/docs/product-brief.md",
+        "evals/files/quick-task/specs/quick/001-trim-before-validate.md"
+      ],
+      "assertions": [
+        "Bare T-001 searches feature tasks.md only",
+        "The quick QT-001 is not a match and no legacy quick lookup occurs",
+        "Forge stops before implementation because no feature task resolves"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "checked-cross-file-quick-dependency-passes-gate",
+      "prompt": "/valcraft:forge — in evals/files/quick-multi/, resolve Q-002 QT-001 through dependency gating and stop before workspace setup.",
+      "expected_output": "Forge validates both files, resolves Q-002 QT-001, resolves its cross-file dependency Q-001 QT-001, and finds the target checked. The gate passes using only the quick-file checkbox despite github mode; no issue lookup runs. Forge stops where requested without implementation.",
+      "files": [
+        "evals/files/quick-multi/AGENTS.md",
+        "evals/files/quick-multi/docs/product-brief.md",
+        "evals/files/quick-multi/specs/quick/001-validation-hardening.md",
+        "evals/files/quick-multi/specs/quick/002-cross-file-dependent.md"
+      ],
+      "assertions": [
+        "Forge resolves checked cross-file target Q-001 QT-001 for Q-002 QT-001",
+        "The dependency gate passes from the quick checkbox alone",
+        "No GitHub issue lookup, label, or status operation occurs",
+        "Canonical Q-002 QT-001 is preserved through the gate"
       ]
     }
   ]

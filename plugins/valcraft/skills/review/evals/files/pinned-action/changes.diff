@@ -1,0 +1,15 @@
+diff --git a/.github/workflows/retry.yml b/.github/workflows/retry.yml
+new file mode 100644
+--- /dev/null
++++ b/.github/workflows/retry.yml
+@@ -0,0 +1,10 @@
++name: retry queued work
++
++on:
++  workflow_dispatch:
++
++jobs:
++  retry:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: example/retry-action@0123456789abcdef0123456789abcdef01234567

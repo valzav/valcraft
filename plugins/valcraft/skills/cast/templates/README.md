@@ -18,6 +18,9 @@ Pre-development | Prototype | Alpha | Beta | Production
 - [Architecture overview](docs/architecture/overview.md)
 - [Architecture decisions](docs/architecture/adr/)
 - [Feature specifications](specs/)
+<!-- When docs/status.md exists, render this bullet and remove this instruction:
+- [Operational snapshot](docs/status.md) — dated, non-authoritative external observations.
+Omit both the bullet and this instruction when the snapshot is absent. -->
 
 ## Development
 

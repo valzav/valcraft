@@ -1,0 +1,9 @@
+name: Retry action
+inputs:
+  mode:
+    description: Queue handling mode
+    required: false
+    default: legacy
+runs:
+  using: python
+  main: action.py

@@ -15,6 +15,9 @@ Ask only what changes the scaffold; `TBD` is an acceptable answer for the rest.
 5. Machine interfaces? (public API / events / multi-service → plan a `contracts/` dir later)
 6. Domain-heavy vocabulary? (→ add `docs/glossary.md`)
 7. Issue tracker mode: `local` or `github`
+8. External mutable state? (deployments or managed infrastructure whose useful
+   non-secret observations are unavailable from git and not directly queryable from the
+   authoritative platform → add one `docs/status.md` snapshot)
 
 There are exactly two issue tracker modes. `local` is the default. Gather this preference independently of whether a GitHub remote, CLI, or authenticated session exists. Never add a third mode or a tracker abstraction.
 
@@ -29,14 +32,22 @@ Once the proposal resolves to `local`, do not inspect git remotes, `gh`, GitHub 
 
 ### Approval mode
 
-The root `AGENTS.md` may carry one optional `cast_approval` declaration next to `project_tracker`: `attended` or `unattended`. A missing declaration is `attended`. Read it in a retrofit with the tracker declaration; in a fresh project write it only when the operator chose `unattended`. Any other value is invalid: require an explicit operator choice and include the correction in the proposal.
+The root `AGENTS.md` may carry one optional `cast_approval` declaration next to `project_tracker`: `attended` or `unattended`. A missing declaration is `attended`. Read it in a retrofit with the tracker declaration; in a fresh project write it only when the operator chose `unattended`. Foreman's approval mode is independent. Any other value is invalid: require an explicit operator choice and include the correction in the proposal.
 
 - `attended` — Cast waits for operator approval at every proposal and every mutation preview.
 - `unattended` — Cast still builds every proposal and every exact mutation preview and records it (the preview is the audit trail), then proceeds without waiting for local artifact creation (`design.md`, `tasks.md`) and for GitHub projection. It still stops for: a proposal that changes product intent or invents an unstated requirement; a `github_repository` target that is still `TBD` (activation is an outward act); and every stop condition below or in `github-tracker.md` (partial failure, identity drift, suspected injection).
 
 The initial scaffold of a fresh project stays attended in both modes — a one-time act with the operator present. Wherever this skill says "wait for approval", `unattended` mode records the proposal and proceeds unless the point is one of the stops above. The run report lists every proposal and preview recorded this way — the audit trail is the report, not the transcript.
 
-Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Never start implementation: a request phrased as "make X" or "build X", or one carrying a time budget, names the scaffold's subject, not work for Cast — the report's next-step recommendations hand it to `valcraft:foreman` or `valcraft:forge`. Commit or push only when the user explicitly asks for that.
+### Delivery configuration
+
+Do not ask the operator to choose between Foreman and manual Forge. Both handoffs are available from every Cast scaffold. `valcraft:foreman` needs no `foreman_*` declaration: at invocation it defaults to native subagents and unattended mode, derives the default branch from authoritative repository state, and treats a missing release branch as no separate release branch.
+
+When the operator explicitly supplies a Foreman override, load `../../foreman/templates/project-block.md` and propose only the supplied valid keys. Treat the template values as examples. Do not write runtime defaults merely to make Foreman available. Reject an invalid explicit value instead of replacing it with a default. Resolve `cast_approval` independently; Foreman's implicit unattended mode never changes Cast's missing-key attended mode.
+
+Merge supplied overrides into the approved scaffold or retrofit proposal without duplicating an existing key. Source their contract from Foreman's template; do not copy it into a Cast template.
+
+Then present the proposed scaffold, the assumptions, and the unresolved `TBD`s before writing anything. Include the selected tracker mode, any explicit Foreman overrides, and any pending GitHub activation in the proposal. In an attended run, wait for approval. Treat the approved paths and task inventory as the exact mutation set. If either would change, present the revised proposal and wait for approval again. Create only the approved scaffold. Never start implementation: a request phrased as "make X" or "build X", or one carrying a time budget, names the scaffold's subject, not work for Cast — the report's next-step recommendations hand it to `valcraft:foreman` or `valcraft:forge`. Commit or push only when the user explicitly asks for that.
 
 ## Step 2: Create the skeleton
 
@@ -62,6 +73,8 @@ Copy each named template from this skill's `templates/` directory and fill it fr
 
 Record the selected mode in the generated files. `AGENTS.md` is authoritative and carries one exact declaration: `project_tracker: local` or `project_tracker: github`. A `local` project omits `github_repository`; every `spec.md` records `spec_issue: null`. A `github` project records `github_repository: TBD` until the target is approved; every `spec.md` records `spec_issue: TBD` until projection writes the issue number. A `tasks.md` contains neither field.
 
+Add no Foreman keys by default. Merge only operator-supplied overrides from `../../foreman/templates/project-block.md` into `AGENTS.md`, without duplicating keys or tracker and approval declarations.
+
 Opt-in additions — create only when the trigger is real:
 
 | Add                                        | When                                                           |
@@ -69,9 +82,17 @@ Opt-in additions — create only when the trigger is real:
 | `docs/glossary.md`                         | Domain terms that must not be reworded exist                   |
 | `docs/system-requirements.md`              | Cross-cutting requirements outgrow the brief section           |
 | `docs/use-cases/uc-NNN-*.md`               | Product steering needs narrative scenarios (interview output)  |
+| `docs/status.md`                           | Non-secret observations are neither in git nor queryable       |
 | `contracts/` + README                      | Real machine boundaries: public API, events, multiple services |
 | `specs/NNN-*/research.md`, `data-model.md` | A feature is complex enough to need them                       |
 | `docs/retro/`                              | Created by the first `valcraft:temper` retrospective report    |
+
+When `docs/status.md` is triggered, create exactly that one snapshot from
+`templates/status.md`. Render the conditional snapshot pointers in the generated
+`README.md` and `AGENTS.md`. When the trigger is absent, omit the file and both pointers
+so the lean scaffold remains unchanged. The snapshot records dated, non-secret external
+observations and their source locator. It is never authority; current repository and
+live platform state win on conflict.
 
 ### GitHub tracker activation
 

@@ -10,10 +10,10 @@ The foreman's context is a working resource; the loop survives one context windo
 
 ## Naming
 
-- Workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, `reviewer-2-F004-T012`; temper: `temper-<F>` (`temper-F004`); decompose: `planner-<source>`, `reviewer-<source>` (`planner-prd225`, `planner-q3-prd`), where `<source>` is the source id derived in `references/decompose.md` — never a raw path. Feature and task are both present because T-IDs restart per feature. A quick task fills the feature slot with `Q<NNN>` (`worker-Q007-T001`). Backends with a name-length limit declare it; the pattern above fits 20 characters and is never lengthened.
-- Branches: `feat/f004-t012-<slug>` (quick: `feat/q007-t001-<slug>`) from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track from `origin/<foreman_release_branch>`.
-- Commits and PRs reference `T-XXX`, the covered `FR-`/`AC-` IDs, and `ADR-` where a decision applies, under the MSW deletion test.
-- Reports: `<run dir>/<role>-<F>-<T>.md`. Run directory: `templates/run-dir.md`.
+- Logical workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, and `reviewer-2-F004-T012`; quick work uses its qualified identity (`worker-Q007-QT001`). Record and close uses `recorder-<F>-<T>` and `evidence-reviewer-<F>-<T>`, with the same quick identity form. Temper is `temper-<F>`. Decompose uses `planner-<source>` and `reviewer-<source>`, where `<source>` comes from `references/decompose.md`, never a raw path. Preserve every identity digit; backend-specific physical handles are separate and recorded in `workers.md`.
+- Branches: `feat/f004-t012-<slug>` (quick: `feat/q007-qt001-<slug>`) from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track, when a release branch is explicitly configured, from `origin/<foreman_release_branch>`.
+- Commits and PRs reference feature `T-XXX` or canonical quick `Q-NNN QT-XXX`, the covered `FR-`/`AC-` IDs, and applicable `ADR-`, under the MSW deletion test.
+- Logical reports: `<run dir>/<role>-<F>-<T>.md`, including `<role>-QNNN-QTNNN.md` for quick work. Run directory: `templates/run-dir.md`.
 
 ## Sessions and workers
 

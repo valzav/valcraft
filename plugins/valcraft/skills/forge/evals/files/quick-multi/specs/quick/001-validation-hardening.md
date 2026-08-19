@@ -21,12 +21,12 @@ created: 2026-08-12
 
 ## Approach
 
-In `src/validation.py`: T-001 tests `value.strip() == ""` (done). T-002 treats `None`
+In `src/validation.py`: QT-001 tests `value.strip() == ""` (done). QT-002 treats `None`
 as empty before the strip check so `None.strip()` is never called; the signature widens
 to `Optional[str]` and the docstring says so. Tests for each criterion go in
 `tests/test_validation.py` in the existing `unittest` style. Nothing else changes.
 
 ## Tasks
 
-- [x] T-001 Reject whitespace-only values; verifies AC-001 and AC-003.
-- [ ] T-002 Reject `None`; verifies AC-002 and keeps AC-003; blocked by T-001.
+- [x] QT-001 Reject whitespace-only values; verifies AC-001 and AC-003.
+- [ ] QT-002 Reject `None`; verifies AC-002 and keeps AC-003; blocked by QT-001.

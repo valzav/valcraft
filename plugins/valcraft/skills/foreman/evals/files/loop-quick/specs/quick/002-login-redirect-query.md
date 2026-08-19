@@ -24,4 +24,5 @@ decoded target. Same-origin relative references only; sign-in itself is untouche
 
 ## Tasks
 
-- [ ] T-001 Carry path and query through the sign-in redirect; verifies AC-001.
+- [ ] QT-001 Carry path and query through the sign-in redirect; verifies AC-001;
+  blocked by Q-001 QT-001.

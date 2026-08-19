@@ -1,14 +1,12 @@
-# Foreman project block
+# Foreman runtime configuration
 
-Add this block to the project's root `AGENTS.md`, under "Project metadata" next to Cast's `project_tracker` declaration. It replaces any per-project orchestrator rules file: the loop lives in `valcraft:foreman`; the project states only what the skill cannot know.
+`valcraft:foreman` works without any `foreman_*` key. Add only explicit project overrides to root `AGENTS.md`; do not write keys merely to make Foreman available.
 
 ```yaml
 foreman_backend: subagents # subagents | ao — references/backends/<name>.md
-foreman_approval_mode: unattended # attended | unattended — references/approval-modes.md, "Choosing a mode"
-foreman_default_branch: main # task PRs target this branch
-foreman_release_branch: main # writes here wait for the human in every mode; equal to default when there is no separate release branch
-project_tracker: local # Cast's declaration, reused — local | github (with github_repository)
-cast_approval: unattended # Cast's declaration — the same word as the foreman mode (below)
+foreman_approval_mode: attended # attended | unattended — references/approval-modes.md
+foreman_default_branch: develop # task PRs target this branch
+foreman_release_branch: stable # enables release-only flows; writes here wait in every mode
 ```
 
 Optional, only when the project needs it:
@@ -19,9 +17,12 @@ foreman_clarification_assignees: # github intake only — who receives a needs-c
   default: <login>
 ```
 
-Rules:
+Resolution rules:
 
-- One block per project. A missing block stops a foreman run.
-- `cast_approval` takes the same word as `foreman_approval_mode`. In `unattended`, Cast's projection is a recorded mutation preview executed from its record — the same standing as the foreman's tracker batches — while `TBD` target activation waits in every mode. Cast reads its own declaration when the planner runs it during decompose; under `unattended` only Cast's residual stops reach the foreman as approval points. Missing means `attended`.
-- The backend reference may require its own environment (`ao`: an AO project id and `set-config`; see the reference). That wiring lives in the operator's configuration, never in the block.
+- Missing `foreman_backend` means native `subagents`. Missing `foreman_approval_mode` means `unattended`.
+- For a missing `foreman_default_branch`, resolve the live remote `HEAD` symref (for example, `git ls-remote --symref origin HEAD`) and the hosting service's reported default branch for the same repository. Use the branch only when the available live sources resolve it unambiguously; stop and ask for an explicit value when both live sources are unavailable or they disagree. A cached `origin/HEAD` may corroborate a live result but never supplies the value.
+- Missing `foreman_release_branch` means no separate release branch. Fast-track and direct release-branch writes are unavailable until an explicit valid branch is configured. Ordinary merges to the default branch still use the normal approval row.
+- An explicit valid value overrides its runtime default. An invalid or ambiguous explicit value stops; never silently replace it.
+- `cast_approval` is independent: its missing-key default remains `attended`.
+- The `ao` override requires its own operator configuration; see its backend reference.
 - `.foreman/` must be gitignored; `valcraft:cast` adds it at scaffold time.

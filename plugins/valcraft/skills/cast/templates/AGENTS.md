@@ -43,6 +43,17 @@ target, and every stop condition. Render the line only when the operator chose
   change too small for a feature.
 - `<source dir>` — application code. `<test dir>` — automated tests.
 
+<!-- When docs/status.md exists, render the section below and remove these comment
+markers. Omit the whole section when the snapshot is absent.
+
+## Operational snapshot
+
+`docs/status.md` contains dated, non-secret observations about external mutable state.
+Use it as context only. Current branch, check, issue, deployment, and other live
+repository or platform state win on conflict. Never copy credentials, tokens, secret
+values, or a source locator that contains a secret into it.
+-->
+
 Read the docs relevant to your change before modifying code or specifications. On
 conflict, accepted ADRs prevail, then `specs/`, then derived `docs/`. Do not invent
 missing requirements — record assumptions and open questions in the relevant spec, and
@@ -67,9 +78,10 @@ Resolve `project_tracker` before starting task work.
 
 - Use the checkboxes in `tasks.md` as task status.
 - Quick tasks (`specs/quick/*.md`) track the same way in every tracker mode: the
-  checkbox in the file's `## Tasks` section is the status.
+  `QT-XXX` checkbox in the file's `## Tasks` section is the status.
 - Work from the git-owned task text, order, and explicit `blocked by T-XXX`
-  annotations.
+  annotations in feature `tasks.md`. Quick dependencies use `blocked by QT-XXX` in one
+  file or `blocked by Q-NNN QT-XXX` across quick files.
 - Mark a task complete in `tasks.md` only after its required verification passes.
 - Do not require a GitHub remote, GitHub CLI, or GitHub authentication.
 
@@ -194,7 +206,8 @@ For instructions, prompts, safety rules, and error messages:
 
 - Product intent and the spec-issue mapping live in `spec.md`; implementation detail
   lives in `design.md`.
-- Reference requirement and task IDs (`FR-`, `AC-`, `T-`) from commits and tests.
+- Reference requirement and task IDs (`FR-`, `AC-`, feature `T-`, qualified quick
+  `Q-NNN QT-XXX`) from commits and tests.
 - Apply the MSW deletion test to commit messages and PR bodies: state only what the
   change does and why it matters, then delete every sentence whose removal loses none
   of that. No process narration, no restated diff, no filler.

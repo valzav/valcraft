@@ -176,7 +176,7 @@
       "id": 8,
       "name": "plan-mode-quick-file-identity-and-coverage",
       "prompt": "/valcraft:review — in the Cast project at evals/files/quick-file/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts including the cast quick reference because the target is a quick task file, and reports material findings. It reports a P1 that the file violates quick.md's identity rule: the filename prefix is 003 while the frontmatter says id: Q-002. It reports that AC-002 (retry starts a new run with the failed run's parameters) is verified by no task — T-001 covers AC-001 only — as a coverage gap in the Tasks section, mapping every AC to a task the way it does for tasks.md, and does not describe that gap as a failure of quick.md's readiness rule; readiness is judged separately, on quick.md's own terms. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column; the verdict is material findings. No file is edited and nothing is committed.",
+      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; this is a coverage gap separate from readiness. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
       "files": [
         "evals/files/quick-file/AGENTS.md",
         "evals/files/quick-file/docs/product-brief.md",
@@ -185,10 +185,179 @@
       "assertions": [
         "Review loads the cast quick reference and applies its identity rule to the file",
         "A material finding cites quick.md's identity rule: filename prefix 003 does not match id: Q-002",
-        "A finding reports AC-002 as unverified by any task, as a coverage gap in the Tasks section",
+        "A finding reports AC-002 as unverified by any task because QT-001 covers only AC-001, as a coverage gap in the Tasks section",
         "The coverage gap is not attributed to quick.md's readiness rule; readiness is judged separately on quick.md's own terms",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
         "No file is edited and no fix is committed"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "code-mode-maps-qualified-quick-commit",
+      "prompt": "/valcraft:review — in evals/files/quick-file/code-project/, perform an offline code-mode contract review of changes.diff using the captured commit list in commit-log.txt.",
+      "expected_output": "Review maps current commit Q-002 QT-001 to specs/quick/002-dependent.md, distinguishes it from repeated QT-001 in Q-001, validates the checked cross-file dependency, and does not interpret historical Q-001 T-001 as current work. The report uses Q-002 QT-001 throughout.",
+      "files": [
+        "evals/files/quick-file/code-project/AGENTS.md",
+        "evals/files/quick-file/code-project/docs/product-brief.md",
+        "evals/files/quick-file/code-project/docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md",
+        "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
+        "evals/files/quick-file/code-project/specs/quick/002-dependent.md",
+        "evals/files/quick-file/code-project/commit-log.txt",
+        "evals/files/quick-file/code-project/changes.diff"
+      ],
+      "assertions": [
+        "Review maps Q-002 QT-001 to the Q-002 file, not the repeated QT-001 in Q-001",
+        "Review resolves checked dependency Q-001 QT-001 from quick-file checkbox state",
+        "Historical Q-001 T-001 is not interpreted as current quick work",
+        "The report preserves canonical Q-002 QT-001 identity"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "plan-mode-rejects-invalid-quick-and-feature-prefixes",
+      "prompt": "/valcraft:review — in evals/files/quick-file/invalid-project/, review specs/quick/009-invalid.md and its stored dependency contract before implementation.",
+      "expected_output": "Review reports material grammar findings before readiness: mixed QT/T tasks, legacy T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing QT-999 in Q-009, missing Q-404, and QT-001 in feature tasks.md. It performs no legacy mapping and does not edit files.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/docs/product-brief.md",
+        "evals/files/quick-file/invalid-project/specs/quick/009-invalid.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+      ],
+      "assertions": [
+        "Review reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Review reports QT-001 in feature tasks.md as a wrong-prefix feature task",
+        "The verdict is material findings before readiness or implementation",
+        "No compatibility mapping or edit occurs"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "quick-plan-keeps-semantic-name",
+      "prompt": "/valcraft:review — in evals/files/quick-file/code-project/, review docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md for Q-002 QT-001.",
+      "expected_output": "Review resolves the qualified quick task and checked dependency, accepts semantic type `fix` and slug `dependent-behavior`, and does not require or propose a quick type or slug component. The plan's task identity remains Q-002 QT-001.",
+      "files": [
+        "evals/files/quick-file/code-project/AGENTS.md",
+        "evals/files/quick-file/code-project/docs/product-brief.md",
+        "evals/files/quick-file/code-project/docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md",
+        "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
+        "evals/files/quick-file/code-project/specs/quick/002-dependent.md"
+      ],
+      "assertions": [
+        "Review preserves semantic type fix and slug dependent-behavior",
+        "Review does not require, add, or recommend a quick plan type or slug token",
+        "The plan resolves canonical Q-002 QT-001 and its checked Q-001 QT-001 dependency"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "plan-mode-governed-value-conflict",
+      "prompt": "/valcraft:review — explain the plan-mode verdict for a necessary queue concurrency value when the plan configures `4`, an accepted ADR requires `2`, and the spec requires concurrent processing without setting a number. Treat this as a static contract check; do not edit files.",
+      "expected_output": "Review evaluates necessity and authority separately. Some concurrency value is necessary to implement the spec, but the configured value 4 conflicts with the applicable accepted ADR requiring 2. It reports a material authority finding despite the value being necessary, cites the ADR conflict, and does not let necessity override permission.",
+      "files": [
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Review separately evaluates whether a concurrency value is necessary and whether the selected value is permitted",
+        "The configured value 4 produces a material finding because it conflicts with the applicable accepted ADR requiring 2",
+        "Necessity does not override or erase a conflict with governing authority",
+        "The spec's silence on the number does not make the ADR inapplicable"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "plan-mode-ungoverned-value-is-discretion",
+      "prompt": "/valcraft:review — explain the plan-mode verdict for a necessary internal batch-size value when every applicable ADR, spec, repository instruction, and operator instruction is silent on the number. The plan selects a value and includes a test for the required behavior. Treat this as a static contract check; do not edit files.",
+      "expected_output": "Review evaluates necessity and authority separately. A batch size is necessary to implement the work, while no applicable authority governs the exact value. Review records the selected number as implementation discretion and evaluates whether its behavior and evidence satisfy the contract. It does not invent a missing-authority defect or demand a new ADR merely because the exact number is unspecified.",
+      "files": [
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Review checks every applicable authority before classifying the value as ungoverned",
+        "The necessary but ungoverned batch size is implementation discretion",
+        "Review evaluates the selected value's behavior and evidence against the contract",
+        "Review reports no missing-authority defect and does not demand a new ADR solely for the number"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "code-mode-pinned-action-source-controls",
+      "prompt": "/valcraft:review — in evals/files/pinned-action/, perform an offline code-mode review of changes.diff using commit-log.txt and the captured project files. Determine whether the change satisfies the git-owned contract. Do not edit files.",
+      "expected_output": "Review maps the diff to T-001 and independently follows the workflow's pinned revision to inspect both action.yml and action.py under that exact capture. Their omitted-input default is `legacy`, so the pinned behavior controls despite current documentation claiming `safe`. Review runs python3 reproduce.py before reporting the violation of FR-001 and AC-001. Its Checks performed section records the command, the exact stdout `legacy: queued item discarded`, and the pinned action.yml and action.py locators. Mutable documentation does not override the pinned source.",
+      "files": [
+        "references/code-mode.md",
+        "evals/files/pinned-action/AGENTS.md",
+        "evals/files/pinned-action/.github/workflows/retry.yml",
+        "evals/files/pinned-action/action-captures/0123456789abcdef0123456789abcdef01234567/action.yml",
+        "evals/files/pinned-action/action-captures/0123456789abcdef0123456789abcdef01234567/action.py",
+        "evals/files/pinned-action/action-captures/current/README.md",
+        "evals/files/pinned-action/docs/product-brief.md",
+        "evals/files/pinned-action/specs/001-retry-safety/spec.md",
+        "evals/files/pinned-action/specs/001-retry-safety/tasks.md",
+        "evals/files/pinned-action/changes.diff",
+        "evals/files/pinned-action/commit-log.txt",
+        "evals/files/pinned-action/reproduce.py"
+      ],
+      "assertions": [
+        "Review maps the diff to T-001 and inspects both action source and declared defaults at the exact captured revision pinned by the workflow",
+        "The pinned implementation's legacy default controls the review",
+        "Current mutable documentation does not override contradictory pinned source",
+        "Review independently discovers the pinned source inspection and reproduce.py check from the workflow and fixture rather than from the prompt",
+        "The Checks performed evidence names python3 reproduce.py, exact stdout `legacy: queued item discarded`, and both pinned source locators before reporting the FR-001 and AC-001 violation"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "code-mode-exercises-every-named-failure-mode",
+      "prompt": "/valcraft:review — closure-check a finding whose claim names timeout, cancellation, and malformed-response exits as losing queued work. The remediation report says all three are fixed, but evidence exercises only timeout. State the closure result. Do not edit files.",
+      "expected_output": "Review keeps the finding open. It must exercise timeout, cancellation, and malformed-response exits separately because the finding's claim names all three failure modes. A passing timeout reproduction proves only timeout. The reviewer uses the existing disposable-worktree and Rule 6 contracts for the checks and closes the finding only when every named mode no longer reproduces the loss.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Timeout, cancellation, and malformed-response exits are each exercised",
+        "Passing evidence for timeout alone leaves the finding open",
+        "Closure still follows shared Rule 6 rather than a new closure rule",
+        "The existing disposable-worktree contract is used without duplicating or replacing it",
+        "The finding closes only after every failure mode named by its claim stops reproducing"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "feature-tasks-reject-quick-prefix-directly",
+      "prompt": "/valcraft:review — in evals/files/quick-file/invalid-project/, review the feature target specs/001-feature/tasks.md before implementation.",
+      "expected_output": "Review selects plan mode and reports a material finding before readiness because the directly targeted feature tasks.md uses QT-001. Feature tasks must use T-XXX. It does not require a quick-file target or quick-pool scan, map QT-001 to T-001, edit the file, or continue as though the feature task were valid.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/docs/product-brief.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+      ],
+      "assertions": [
+        "Review reports QT-001 as a material wrong-prefix finding on the direct feature target",
+        "The finding is reported before readiness",
+        "No quick-pool scan, compatibility mapping, edit, or implementation review occurs"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "code-mode-validates-governing-feature-prefix",
+      "prompt": "/valcraft:review — apply code-mode contract mapping to a change whose commit cites FEAT-001 QT-001 and whose governing feature file is evals/files/quick-file/invalid-project/specs/001-feature/tasks.md. Treat the mapping as a static check; do not edit files.",
+      "expected_output": "Review validates the governing feature tasks.md before mapping the change and reports a finding because QT-001 is invalid in a feature task file; feature tasks use T-XXX. It does not map the commit to current feature work, reinterpret QT-001 as T-001, or wait for a quick-task path to discover the error.",
+      "files": [
+        "evals/files/quick-file/invalid-project/AGENTS.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Code-mode mapping validates the governing feature tasks.md directly",
+        "QT-001 is reported as invalid because feature tasks use T-XXX",
+        "The invalid identity is not mapped, normalized, or deferred to quick-mode validation"
       ]
     }
   ]

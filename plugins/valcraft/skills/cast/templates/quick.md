@@ -23,17 +23,20 @@ created: <YYYY-MM-DD>
 
 ## Approach
 
-<!-- How the change is made: the files or subsystems touched, the mechanism, what stays
-     untouched. This is the design; a few lines is the norm. -->
+<!-- State the intended behavior and how the change is made: the files or subsystems
+     touched, the mechanism, and what stays untouched. Do not copy mutable environment
+     or deployment status. When relevant, link to docs/status.md for observation context;
+     the snapshot does not define target behavior, acceptance criteria, or authority. -->
 
 ...
 
 ## Tasks
 
-<!-- Checkbox status is the task's status in every tracker mode. Cite as `Q-001 T-001`.
-     `blocked by T-XXX` is the only dependency form. -->
+<!-- Checkbox status is the task's status in every tracker mode. Cite as
+     `Q-001 QT-001`. Use `blocked by QT-XXX` locally or
+     `blocked by Q-NNN QT-XXX` across quick files. -->
 
-- [ ] T-001 <Task>; verifies AC-001.
+- [ ] QT-001 <Task>; verifies AC-001.
 
 ## Open questions
 

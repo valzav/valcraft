@@ -1,0 +1,23 @@
+---
+id: Q-002
+created: 2026-08-18
+---
+
+# Dependent behavior
+
+## Sources
+
+- operator request, 2026-08-18
+
+## Requirements
+
+- FR-001: The utility MUST provide dependent behavior.
+- AC-001: The dependent behavior is available.
+
+## Approach
+
+Add the behavior after the foundation.
+
+## Tasks
+
+- [ ] QT-001 Add dependent behavior; verifies AC-001; blocked by Q-001 QT-001.

@@ -22,4 +22,4 @@ date; the export body and storage path stay untouched.
 
 ## Tasks
 
-- [x] T-001 Set the download filename from the run date; verifies AC-001.
+- [x] QT-001 Set the download filename from the run date; verifies AC-001.

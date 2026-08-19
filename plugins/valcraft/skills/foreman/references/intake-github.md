@@ -18,7 +18,7 @@ Within the ready feature, take the first task in git `tasks.md` order whose proj
 
 ## Hold
 
-- A question raised mid-task: record and apply `needs-clarification` with a question comment on the task issue, or `on-hold` when the block is not a question. When the project block declares `foreman_clarification_assignees`, set the structured assignee field to the one login the question's category maps to (`default` when no category matches); never name assignees in free text. Notification and relayed answers are the tracker side's concern (a bridge, a human); the label is cleared by whoever answers, per the project's convention.
+- A question raised mid-task: record and apply `needs-clarification` with a question comment on the task issue, or `on-hold` when the block is not a question. When project configuration declares `foreman_clarification_assignees`, set the structured assignee field to the one login the question's category maps to (`default` when no category matches); never name assignees in free text. Notification and relayed answers are the tracker side's concern (a bridge, a human); the label is cleared by whoever answers, per the project's convention.
 - After a hold, proceed to another task only if the feature still passes the readiness gate — no open behavior-changing question — or the human's explicit acceptance is committed in the feature artifacts. Otherwise stop and report.
 - An answer or finding that contradicts the committed spec pauses the task; the spec amendment is committed and referenced from the issue before work resumes, and only then does the foreman record and clear `on-hold`.
 - A task the human rejects, or an answer makes unnecessary, closes as `not planned` through an ordinary tracker write batch — the same standing as closing a done task — whose comment names the reason and the deciding answer; if the rejection contradicts the committed spec, the amendment lands first.
@@ -26,6 +26,22 @@ Within the ready feature, take the first task in git `tasks.md` order whose proj
 ## Close a task
 
 There is no checkbox: issue state is completion. After the merge at step 10, record and execute the closing batch — close the issue with a comment naming the merged PR, and remove `in-progress`.
+
+For work completed outside the loop, use `record-and-close.md`. First serialize and
+execute the attributed, criterion-keyed evidence comment as its own batch. After the
+fresh reviewer reports every criterion sufficient and applicable checks pass against
+their real targets, serialize the closing batch: a comment naming the evidence-comment
+URL and sufficient verdict, close the issue, and remove `in-progress`. Do not
+invent a branch, commit, PR, SHA, or git review target. A partial failure uses the
+ordinary reconcile-before-retry rule.
+
+## Deferred cross-task findings
+
+For a finding that `loop.md` routes to a future owner, serialize one comment batch for
+the owning task issue. The comment records the finding ID, owner identity, claim, and
+source locator. After execution, record the resulting comment URL in `state.md`. Do not
+alter the owner issue's status or labels. A future pick verifies that URL from the issue
+and passes it to the planner.
 
 ## Close a feature
 
@@ -37,6 +53,7 @@ After Cast's projection completes, one recorded batch adds what Cast does not pr
 
 ## Fast-track
 
+- Fast-track is unavailable when `foreman_release_branch` is absent. Report that an explicit release branch is required; do not infer the default branch or fall back to an ordinary task PR.
 - `fast-track` on a task issue is a request to land the task on `foreman_release_branch`. Read the label's latest add actor (`gh api repos/<owner>/<repo>/issues/<n>/events` or `.../timeline`, filter `labeled` + `fast-track`, last actor) and put it in the approval request; the human's approval is the authorization. An actor the human does not recognize: alert, remove the label only with approval, change nothing about branches.
 - An authorized fast-track task branches from current `origin/<foreman_release_branch>`; the worker proves it (`git fetch origin && git merge-base --is-ancestor origin/<release> HEAD`, and `git log origin/<release>..HEAD` shows only the task's own commits) and its governing spec, design, tasks, and ADRs are identical on the release branch. Its PR targets the release branch. If the worker cannot create and prove that base, stop and surface — never fall back to the default branch base. The merge is a release-branch write (its approval-modes row).
 - After any commit lands on the release branch (promotion, fast-track, hotfix, tag), a release → default back-merge is required before the next deliver run; check at step 0 and surface it when missing.

@@ -1,0 +1,6 @@
+diff --git a/src/dependent.py b/src/dependent.py
+new file mode 100644
+--- /dev/null
++++ b/src/dependent.py
+@@ -0,0 +1 @@
++enabled = True

@@ -34,6 +34,9 @@ local marketplace installation is still a copy; it does not read later edits liv
   `templates/`, and `evals/`. Only this subtree ships to consumers.
 - `docs/`, `AGENTS.md` — repository documentation and agent instructions; never installed.
 
+The tracked-content neutrality rule is defined in
+[AGENTS.md](../AGENTS.md#change-discipline).
+
 ## Packaging
 
 The plugin ships three manifests over one shared `skills/` tree:

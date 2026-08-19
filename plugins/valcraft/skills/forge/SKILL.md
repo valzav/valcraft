@@ -1,7 +1,7 @@
 ---
 name: forge
 description: >
-  Implement one unit of work — a Cast task (T-XXX), a quick task (Q-NNN), a plan document, or a small fully-specified feature or fix — from its git-owned definition: plan, code, verify with discriminating evidence, and hand the change to review. Use when the user or an orchestrator assigns implementation of a task, T-ID, Q-ID, plan, bug fix, or small feature. Not for project scaffolding (valcraft:cast), spec creation (valcraft:spec), or reviewing (valcraft:review) — forge implements Cast's Plan and Implement steps and always ends at the review gate.
+  Implement one assigned Cast task (feature T-XXX or quick Q-NNN QT-XXX), plan, or small fully-specified fix: plan, code, verify, and hand the change to review. Use for implementation, not scaffolding, spec creation, or review.
 ---
 
 # forge
@@ -20,14 +20,14 @@ Before resolving the assignment, read the project's root `AGENTS.md` and resolve
 
 Accept exactly one unit of work:
 
-- **T-XXX** — T-IDs number per feature and per quick file, so a bare `T-XXX` names no unit. Resolve it through the feature or `Q-NNN` qualifier or the `tasks.md` / quick file path in the assignment, or by enumerating `specs/*/tasks.md` and `specs/quick/*.md` — continue only on exactly one match; on zero or several, ask when attended, report the blocker when not. A bare `Q-NNN` names that file's next eligible task per `quick.md`; none eligible stops. Then read every artifact of the unit's Cast contract, including its plan in `docs/plans/` if one exists.
+- **Task ID** — a bare `T-XXX` searches feature `tasks.md` only and must resolve exactly once. A quick task is canonically `Q-NNN QT-XXX`; a bare `QT-XXX` proceeds only when enumeration finds exactly one matching valid quick file, while a bare `Q-NNN` selects that file's next eligible `QT-XXX` per `quick.md`. Validate the whole selected quick file and every dependency before eligibility. Stop on zero or several matches, a missing referenced Q file or QT-ID, a legacy or mixed-prefix quick file, malformed ID, wrong prefix, or `QT-XXX` in feature `tasks.md`; never map old syntax. Then read the unit's whole Cast contract and any plan in `docs/plans/`.
 - **Plan path** — the path must resolve inside the repository to a git-tracked file; accept an untracked plan only when the operator explicitly supplies it as the assignment. The plan is the contract; read the spec artifacts it cites. When it implements a Cast task, resolve that unit and task — the gates below apply.
 - **Free-form small feature or fix** — confirm it fits one coherent change; route anything larger to `valcraft:spec` (quick task or feature).
 
 Gate any assignment that resolves to a Cast task — by ID or through a plan — before coding:
 
 - The feature is implementation-ready per `spec-intake.md` (a quick file: per `quick.md`). A task from a staged or unready unit stops here — route it to Cast.
-- Every `blocked by T-XXX` on the task is complete: a quick file's checkbox in every mode; else checked in `tasks.md` in local mode, closed on GitHub in github mode.
+- Every dependency is complete: quick local `blocked by QT-XXX` and cross-file `blocked by Q-NNN QT-XXX` read only the referenced quick checkbox in every tracker mode; feature `blocked by T-XXX` reads `tasks.md` in local mode or GitHub in github mode.
 
 Then state the scope: which files and tasks this change touches, and which adjacent ones it deliberately leaves untouched — including tasks that share a file with this one. Resolve a conflict between authorities by Cast's precedence: accepted ADRs, then `specs/`, then derived `docs/`. A contradiction precedence cannot resolve, or a requirement the sources cannot answer, stops the task: ask when attended, else report the blocker.
 

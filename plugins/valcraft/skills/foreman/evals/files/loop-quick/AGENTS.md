@@ -23,5 +23,5 @@ foreman_release_branch: main
 
 ## Change discipline
 
-- Reference requirement and task IDs (`FR-`, `AC-`, `Q-`, `T-`) from commits and tests.
+- Reference requirement and task IDs (`FR-`, `AC-`, `Q-NNN QT-XXX`) from commits and tests.
 - Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.

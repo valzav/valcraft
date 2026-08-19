@@ -1,6 +1,6 @@
 # NNNN. <Decision title, imperative: "Adopt X", "Represent Y as Z">
 
-Status: proposed | accepted | superseded by NNNN
+Status: proposed | provisional | accepted | superseded by NNNN
 Date: <YYYY-MM-DD>
 
 ## Context
@@ -11,6 +11,16 @@ without one.>
 ## Decision
 
 <The selected approach, stated plainly.>
+
+<!-- Include this section only when the decision depends on concrete tool, library,
+     action, or runtime behavior. Keep the ADR proposed or provisional until the
+     evidence is reproduced. Omit the section for conceptual decisions. -->
+
+## Verification
+
+- Tool and version: <exact version exercised>
+- Reproduction: <command or probe>
+- Observed result: <output that proves the mechanism>
 
 ## Alternatives
 
