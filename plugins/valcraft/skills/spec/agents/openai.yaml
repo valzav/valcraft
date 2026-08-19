@@ -1,4 +1,4 @@
 interface:
   display_name: "Spec"
-  short_description: "Create the next canonical Cast feature spec or a quick task"
-  default_prompt: "Use $valcraft:spec to create the next Cast feature spec or a quick task from this PRD, plan, requirements document, GitHub issue, or request."
+  short_description: "Create complete feature contracts or quick tasks"
+  default_prompt: "Use $valcraft:spec to create or resume a complete feature contract or quick task from this source."
