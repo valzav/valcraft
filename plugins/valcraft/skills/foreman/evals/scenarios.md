@@ -28,10 +28,10 @@ proves that declared contracts remain linked.
 | Late predecessor report is rejected after replacement | 59 |
 
 Claude Code's event completion is covered by eval 7. Codex's foreground continuation is
-covered by eval 18. Agent Orchestrator's authorized poll and isolated branch behavior are
-covered by evals 63 and 62. These ids appear in the active-deviation registry.
+covered by eval 18. External-orchestrator polling and isolated branch behavior are covered
+by evals 63 and 62. These ids appear in the active-deviation registry.
 
-## Agent Orchestrator
+## External orchestrators
 
 | Scenario | Eval |
 | --- | --- |
@@ -39,8 +39,8 @@ covered by evals 63 and 62. These ids appear in the active-deviation registry.
 | Spawn command carries project, harness, physical alias, and exact physical branch | 62 |
 | Stale or already-checked-out physical branch stops before spawn | 62 |
 | Canonical task ref is revalidated and never force-pushed | 62 |
-| AO checksum and session polling maps attributed observations to backend returns before report access | 63 |
-| AO no-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
+| Checksum and session polling maps attributed observations to backend returns before report access | 63 |
+| No-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
 | Every active transport deviation names changed behavior and discriminating eval | 63 |
 
 ## Land boundary
@@ -48,8 +48,11 @@ covered by evals 63 and 62. These ids appear in the active-deviation registry.
 | Scenario | Eval |
 | --- | --- |
 | Release target remains a human gate and Foreman performs no landing mutation | 6 |
-| Shared native or AO permission cannot substitute for per-dispatch Land capability | 60 |
-| Land semantic operator action arrives under `report_available` and enters OperatorAction | 58, 60 |
+| Unattended local and GitHub landing works under shared native or external execution permission | 60 |
+| Prepared Land authority resumes through a fresh physical dispatch while Landing remains active | 58, 60 |
+| Native subagents and the registered external backend satisfy Land execution conformance | 68, 69 |
+| Future backends require a dedicated registered Land execution eval | 68, 69 |
+| Host permission prompts remain backend `permission_blocked`; Land owns execution failures | 8, 58 |
 | Pending checks keep the same Land assignment active | 66 |
 | External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |
 

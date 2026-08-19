@@ -50,8 +50,8 @@ message or resumed assignment that binds:
 Immediately before mutation, re-read every bound field and the clean local head.
 On any change, perform no outward mutation. Return the live target as a new
 prepared handoff with `authority_drift`; fresh authority must bind it. Never
-merge, rebase, reset, force-push, publish an Agent Orchestrator physical branch,
-or substitute a remote or ref.
+merge, rebase, reset, force-push, publish an external-orchestrator physical
+branch, or substitute a remote or ref.
 
 For an authorized push, send physical `HEAD` by non-force refspec to the
 canonical remote task ref. Verify that the remote ref equals the local head.

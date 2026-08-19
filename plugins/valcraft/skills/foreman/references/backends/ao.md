@@ -30,9 +30,10 @@ five role families above receive AO alias prefixes.
 
 For dispatch ordinal zero, hash the UTF-8 canonical logical identity with SHA-256. For
 later dispatches, hash `<logical identity>\ndispatch:<ordinal>`. Form
-`<role>-<hex-prefix>` with as many digest characters as fit AO's 20-character name
-contract. If current project sessions or any `workers.md` row already owns the result,
-rehash `<dispatch preimage>\ncollision:<n>` until it is unused. Preserve all prior rows.
+`<role>-<hex-prefix>` from the lowercase hexadecimal digest with as many characters as
+fit AO's 20-character name contract. If current project sessions or any `workers.md`
+row already owns the result, rehash `<dispatch preimage>\ncollision:<n>` until it is
+unused. Preserve all prior rows.
 
 ## Physical branch guard
 
@@ -133,9 +134,14 @@ After accepting a Forge or Temper report that names an existing PR, associate th
 with the producer session using AO's claim-PR command. Do not infer a PR from state or
 claim one for Review or Land.
 
-## Land capability
+## Land execution
 
-AO project permission is shared and does not prove a per-dispatch Land-scoped grant.
-Unless a future installed AO capability probe proves the exact Land dispatch alone can
-merge, Land returns `report_available` with
-`Status: blocked: operator_action_required — <prepared action>`. Foreman never merges.
+Apply the shared authority rule in [`README.md`](README.md#permission-prompts) with these
+transport mappings:
+
+| Field | Mapping |
+| --- | --- |
+| Execution capability | `shared backend permission` |
+| Permission signal | AO blocked permission prompt |
+| Permission return | `permission_blocked` |
+| Producer failure | `Land report` |

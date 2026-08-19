@@ -13,8 +13,8 @@ Status: alpha.
 
 | If you have seen this…                                              | valcraft's answer                                                                                                                                                                                                  |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code. |
-| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                                   |
+| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code.                 |
+| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                                      |
 | One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                                |
 | Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                              |
 | Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                                |
@@ -126,8 +126,8 @@ The default path for a new project or a new body of work.
 
    `foreman` can use native subagents on either host. Claude Code wakes the parent turn
    when a worker completes; Codex keeps the parent turn active and waits for the worker
-   in the foreground. Agent Orchestrator remains a separate backend whose workers can be
-   Claude Code and Codex sessions.
+   in the foreground. External orchestrators integrate through registered Foreman
+   backends.
 
 ### 2. Manual loop, one task at a time
 
@@ -142,8 +142,9 @@ Same contracts, you drive:
    change, and prepare or create the authorized task PR. Run `/valcraft:review` in code
    mode on the exact head; return findings to Forge by `R-ID`.
 4. `/valcraft:land` — revalidate Review coverage and applicable checks, then perform
-   only the authorized finalization and closure operations. A backend without scoped
-   Land capability returns the exact operator action instead of merging through Foreman.
+   only the authorized finalization and closure operations. In unattended mode, exact
+   target-bound Land authority permits ordinary landing on native subagents,
+   external orchestrators, and conforming future backends; Foreman never merges.
 5. `/valcraft:temper` over the closed feature, then route its exact PR through Review
    and Land.
 
@@ -160,19 +161,19 @@ Same contracts, you drive:
 
 ## Skills at a glance
 
-| Skill                                                  | Claude Code         | Codex               | OpenCode  |
-| ------------------------------------------------------ | ------------------- | ------------------- | --------- |
-| `cast` — create or retrofit the project frame          | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
-| `spec` — create a feature or quick contract            | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
+| Skill                                                   | Claude Code         | Codex               | OpenCode  |
+| ------------------------------------------------------- | ------------------- | ------------------- | --------- |
+| `cast` — create or retrofit the project frame           | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
+| `spec` — create a feature or quick contract             | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
 | `draft` — write a task plan and apply MSW               | `/valcraft:draft`   | `$valcraft:draft`   | `draft`   |
-| `forge` — implement a reviewed task                    | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
-| `review` — review an exact plan, change, or evidence   | `/valcraft:review`  | `$valcraft:review`  | `review`  |
+| `forge` — implement a reviewed task                     | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
+| `review` — review an exact plan, change, or evidence    | `/valcraft:review`  | `$valcraft:review`  | `review`  |
 | `land` — finalize reviewed work and close tracker state | `/valcraft:land`    | `$valcraft:land`    | `land`    |
-| `foreman` — coordinate the delivery loop               | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper` — produce a retrospective and its handoff     | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
-| `hone` — refine a prompt artifact                      | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
-| `distill` — reduce a prompt to its essence             | `/valcraft:distill` | `$valcraft:distill` | `distill` |
-| `msw` — MSW Kernel over a document                     | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
+| `foreman` — coordinate the delivery loop                | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
+| `temper` — produce a retrospective and its handoff      | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `hone` — refine a prompt artifact                       | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
+| `distill` — reduce a prompt to its essence              | `/valcraft:distill` | `$valcraft:distill` | `distill` |
+| `msw` — MSW Kernel over a document                      | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
 
 Skills also trigger from natural requests ("new project", "review this PR",
 "retrospective on feature 3"); the command is the explicit path. OpenCode has no plugin
@@ -186,7 +187,7 @@ namespace: its `skill` tool loads them by bare name, and a skill that says "run
 | An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin, no runtime dependency, and nothing to install into the project beyond the files `cast` writes.                                                                                                                |
 | Specs and tasks live in the framework's own folders and formats.                             | Specs are ordinary files under `specs/`, tasks are checkboxes or GitHub Issues you already use, decisions are ADRs — readable and editable without the tool.                                                                                               |
 | SDD is a session ritual, not a project rule; work done outside it drifts from the specs.     | `cast` writes the discipline into `AGENTS.md`, so every agent session — inside the loop or not — cites IDs, updates the affected spec or ADR in the same change, and reviews against the same contract; `cast` retrofits an existing project the same way. |
-| Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | Valcraft's roles are skills with contracts (`spec`, `draft`, `forge`, `review`, `land`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                               |
+| Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | Valcraft's roles are skills with contracts (`spec`, `draft`, `forge`, `review`, `land`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                                |
 | A dozen generated documents and a traceability matrix nobody reads.                          | The skeleton is small; every other artifact is opt-in with a stated trigger. IDs and links give traceability; the skills trim generated verbosity before committing.                                                                                       |
 | Adoption is all or nothing.                                                                  | Each skill runs alone: `draft` on one task, `review` on an exact target, `forge` on a passed plan, `land` on reviewed work, or `cast` to retrofit — the loop is there when you want it.                                                                    |
 

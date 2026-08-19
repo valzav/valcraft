@@ -92,9 +92,9 @@ For first implementation, begin at Draft's exact passing plan-review SHA:
 
 - A shared checkout uses the canonical task branch and requires its clean HEAD
   to equal the reviewed plan SHA.
-- An Agent Orchestrator dispatch uses its unique physical branch, verifies that
-  it is clean and seeded from the reviewed plan SHA, and keeps the canonical
-  task branch as the remote ref. Never publish the physical branch name.
+- An isolated-workspace backend uses a unique physical branch, verifies that it
+  is clean and seeded from the reviewed plan SHA, and keeps the canonical task
+  branch as the remote ref. Never publish the physical branch name.
 
 On resume, accept only attributable implementation commits descending from the
 reviewed plan SHA, with the reviewed plan blob unchanged. Reconcile local

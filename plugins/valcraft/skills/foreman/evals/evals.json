@@ -167,28 +167,20 @@
     },
     {
       "id": 8,
-      "name": "land-operator-action-waits-without-foreman-merge",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-merge-denied` from .foreman/run-merge-denied/ and take the next loop step.",
-      "expected_output": "Foreman records backend return report_available and validates Land's complete operator_action_required report for PR #15. It enters OperatorAction, surfaces Land's exact prepared merge action, and waits. Foreman never runs or retries that command, uses no substitute API or push, and dispatches no other role to merge. After the operator acts, the same logical Land target resumes against authoritative state; the task does not return to Ready before Land reports closure complete.",
+      "name": "land-permission-prompt-is-a-backend-return",
+      "prompt": "$valcraft:foreman — an authorized Land worker immediately revalidates task PR 42, then the host raises a permission prompt before the assigned merge can execute. Classify the result and next state. Do not run a merge or synthesize a worker report.",
+      "expected_output": "Foreman records backend return permission_blocked for the active Land assignment. It does not create a Land report, semantic routing code, fallback merge, substitute API call, or tracker mutation. It uses the selected backend's permission-prompt discipline: answer only when the committed contract, Land role, exact workspace, and target-bound authority settle the prompt; otherwise escalate the exact prompt. Landing remains the active producer state until an authorized Land worker returns a complete attributed report.",
       "files": [
-        "evals/files/loop-local/AGENTS.md",
-        "evals/files/loop-local/.gitignore",
-        "evals/files/loop-local/docs/product-brief.md",
-        "evals/files/loop-local/docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md",
-        "evals/files/loop-local/specs/001-invite-links/spec.md",
-        "evals/files/loop-local/specs/001-invite-links/design.md",
-        "evals/files/loop-local/specs/001-invite-links/tasks.md",
-        "evals/files/loop-local/.foreman/run-merge-denied/state.md",
-        "evals/files/loop-local/.foreman/run-merge-denied/workers.md",
-        "evals/files/loop-local/.foreman/run-merge-denied/forge-F001-T002-d000.md",
-        "evals/files/loop-local/.foreman/run-merge-denied/code-reviewer-F001-T002-d000.md",
-        "evals/files/loop-local/.foreman/run-merge-denied/land-F001-T002-d000.md"
+        "references/contracts.md",
+        "references/backends/README.md",
+        "references/loop.md"
       ],
       "assertions": [
-        "Foreman records Land's operator_action_required report under backend report_available",
-        "Foreman surfaces the exact prepared action and attempts no merge or substitute path",
-        "Foreman remains in OperatorAction and does not return to Ready",
-        "Foreman leaves the T-002 checkbox and the PR branch untouched"
+        "A host permission prompt is backend return permission_blocked",
+        "Foreman creates no semantic Land report or routing code for the prompt",
+        "Only the selected backend's permission-prompt discipline may answer or escalate the prompt",
+        "Foreman performs no fallback merge, substitute API call, or tracker mutation",
+        "Landing remains active until an authorized Land worker returns a complete attributed report"
       ]
     },
     {
@@ -332,8 +324,8 @@
     {
       "id": 16,
       "name": "backend-physical-handles-preserve-quick-identity",
-      "prompt": "/valcraft:foreman — demonstrate Agent Orchestrator handle derivation for Draft, Forge, every Review mode, Land, and Temper. Include forge-Q-1000-QT-001, assume its first alias is already owned, and show a fresh AO respawn plus its Codex native-subagent handle. Do not spawn anything.",
-      "expected_output": "Foreman preserves every canonical logical identity. AO maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t, then hashes the full logical identity and dispatch ordinal. Collision and respawn hashing produce distinct aliases and preserved workers rows. Codex independently derives forge_q1000_qt001. No retired role family or producer-owned substep receives an alias.",
+      "prompt": "/valcraft:foreman — using the selected external-orchestrator backend, demonstrate handle derivation for Draft, Forge, every Review mode, Land, and Temper. Include forge-Q-1000-QT-001, assume its first alias is already owned, and show a fresh respawn plus its Codex native-subagent handle. Do not spawn anything.",
+      "expected_output": "Foreman preserves every canonical logical identity. The selected backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t, then hashes the full logical identity and dispatch ordinal. Collision and respawn hashing produce distinct aliases and preserved workers rows. Codex independently derives forge_q1000_qt001. No retired role family or producer-owned substep receives an alias.",
       "files": [
         "references/hygiene.md",
         "references/backends/ao.md",
@@ -342,10 +334,10 @@
       ],
       "assertions": [
         "Canonical Q-1000 QT-001 and logical forge-Q1000-QT001 remain intact",
-        "AO maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t with no alias for retired role families or producer-owned substeps",
-        "The AO alias uses lowercase hexadecimal SHA-256 over the UTF-8 canonical identity and as many leading digest characters as fit the 20-character contract",
-        "The forced AO collision is detected before spawn and deterministically rehashes the dispatch preimage plus newline collision:1 until a distinct checked alias is available",
-        "A same-identity AO respawn uses the next dispatch ordinal, hashes the canonical identity plus newline dispatch:1, receives a distinct alias, and preserves both workers.md rows",
+        "The external-orchestrator backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t with no alias for retired role families or producer-owned substeps",
+        "The external-orchestrator alias uses lowercase hexadecimal SHA-256 over the UTF-8 canonical identity and as many leading digest characters as fit the 20-character contract",
+        "The forced external-orchestrator collision is detected before spawn and deterministically rehashes the dispatch preimage plus newline collision:1 until a distinct checked alias is available",
+        "A same-identity external-orchestrator respawn uses the next dispatch ordinal, hashes the canonical identity plus newline dispatch:1, receives a distinct alias, and preserves both workers.md rows",
         "Codex independently uses lowercase_underscore forge_q1000_qt001",
         "workers.md maps each physical handle to canonical identity without a numeric-width cap"
       ]
@@ -516,7 +508,9 @@
       "files": [
         "references/loop.md",
         "references/contracts.md",
-        "templates/run-dir.md"
+        "templates/run-dir.md",
+        "../review/references/evidence-mode.md",
+        "../land/references/record-and-close.md"
       ],
       "assertions": [
         "The reviewer accounts for every criterion rather than judging only supplied evidence",
@@ -649,8 +643,8 @@
     {
       "id": 58,
       "name": "backend-returns-remain-separate-from-semantic-status",
-      "prompt": "$valcraft:foreman — classify these backend returns for the active Land assignment: report_available carrying `Status: blocked: operator_action_required — merge PR 42`; permission_blocked; idle_without_report; dispatch_error; dead; and wait_timeout while the foreground worker remains active. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman records exactly one backend return before taking another action. Only report_available opens and validates the attributed Land report; operator_action_required then maps to OperatorAction. permission_blocked awaits an allowed answer or escalation. idle_without_report, dispatch_error, and dead end the current await and take their recovery routes. wait_timeout is nonterminal and re-arms foreground waiting while the worker remains active.",
+      "prompt": "$valcraft:foreman — classify these backend returns for the active Land assignment: report_available carrying `Status: blocked: authority_required — merge PR 42`; permission_blocked; idle_without_report; dispatch_error; dead; and wait_timeout while the foreground worker remains active. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records exactly one backend return before taking another action. Only report_available opens and validates the attributed Land report; a complete prepared authority_required report then keeps Landing active and maps to ResumeProducer. permission_blocked awaits an allowed answer or escalation without creating a Land report. idle_without_report, dispatch_error, and dead end the current await and take their recovery routes. wait_timeout is nonterminal and re-arms foreground waiting while the worker remains active.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -661,7 +655,7 @@
         "The backend return is recorded separately as exactly report_available, permission_blocked, idle_without_report, dispatch_error, dead, or wait_timeout",
         "Only report_available opens a report-producer report",
         "Land semantic blocked status never collides with backend permission_blocked",
-        "operator_action_required maps to OperatorAction from report_available",
+        "A complete prepared authority_required report maps to ResumeProducer from report_available and keeps Landing active",
         "wait_timeout is nonterminal only for foreground waiting"
       ]
     },
@@ -683,37 +677,42 @@
     },
     {
       "id": 60,
-      "name": "land-capability-never-falls-back-to-foreman",
-      "prompt": "$valcraft:foreman — Land has exact target-bound authorization to merge PR 42. Compare a per-dispatch Land-scoped capability probe that passes with (a) native parent permission and (b) Agent Orchestrator project permission. Do not run a merge.",
-      "expected_output": "Only the proven per-dispatch Land-scoped capability permits Land to execute the exact merge. Native parent permission and AO project permission are shared and therefore insufficient; Land returns report_available with `Status: blocked: operator_action_required — <prepared action>`, and Foreman enters OperatorAction without merging.",
+      "name": "unattended-land-authority-across-trackers-and-backends",
+      "prompt": "$valcraft:foreman — in unattended mode, an ordinary default-branch task is ready for Landing. Compare project_tracker local and github under native subagents and an external orchestrator. The initial Land worker has shared session or project execution permission but no mutation authority, and returns a complete authority_required report with exact prepared fields. State the continuation, execution, closure, and future-backend rules. Do not execute a merge.",
+      "expected_output": "For all four tracker and backend combinations, Foreman accepts the attributed prepared report, keeps Landing active, validates the exact repository, remote, base, head, PR, tracker target, and operation set, then dispatches the same logical Land producer under a fresh physical identity with exact target-bound authority. Shared native-session or external-orchestrator project permission is sufficient execution permission but grants no mutation authority by itself. Land immediately revalidates and owns the ordinary merge plus mode-valid closure: the exact local feature-task tick in local mode or the serialized hosted task-close batch in GitHub mode. Foreman never merges. A future backend must let an authorized Land worker execute these operations and map host permission prompts or transport denials to permission_blocked while preserving producer-owned failures as Land reports. Release-branch work and feature or PRD confirmation still wait for the operator.",
       "files": [
         "references/loop.md",
         "references/contracts.md",
         "references/backends/README.md",
         "references/backends/subagents.md",
         "references/backends/ao.md",
-        "references/approval-modes.md"
+        "references/approval-modes.md",
+        "references/intake-local.md",
+        "references/intake-github.md"
       ],
       "assertions": [
-        "Only a per-dispatch role-scoped capability probe permits Land to merge",
-        "Native parent and AO project permission are insufficient",
-        "Unproven capability returns Land operator_action_required under backend report_available",
-        "Foreman never executes or retries a merge"
+        "All four local or github tracker and native or external-orchestrator backend combinations proceed through ordinary unattended Landing",
+        "Foreman accepts the complete prepared report, keeps Landing active, and grants only exact target-bound Land authority through a fresh physical dispatch after validating every prepared field",
+        "Shared native-session and external-orchestrator project permission are sufficient execution permission but not mutation authority",
+        "Land immediately revalidates and owns the merge plus the tracker-mode-valid closure",
+        "A future backend allows authorized Land execution, returns host permission prompts or transport denials as permission_blocked, and preserves producer-owned failures as Land reports",
+        "Foreman never executes or retries a merge",
+        "Release-branch work and feature or PRD confirmation remain operator gates"
       ]
     },
     {
       "id": 62,
-      "name": "ao-spawn-requires-exact-unused-physical-branch",
-      "coordination_coverage": "transport:ao-isolated-branch",
-      "prompt": "$valcraft:foreman — describe Agent Orchestrator dispatch for drafter-F001-T002 at predecessor SHA 0123456789abcdef0123456789abcdef01234567. Cover a new physical branch, an existing branch at another SHA, and a branch already checked out in a worktree. Do not run commands.",
-      "expected_output": "Foreman derives a unique physical alias and physical branch, creates or verifies the unused branch at the exact predecessor SHA, and dispatches with `ao spawn --project <project-id> --harness <harness> --name <physical-alias> --branch <physical-branch>`. A stale or already-checked-out branch stops before spawn. Canonical remote transfer never force-pushes.",
+      "name": "isolated-backend-spawn-requires-exact-unused-physical-branch",
+      "coordination_coverage": "transport:isolated-branch",
+      "prompt": "$valcraft:foreman — using the selected external-orchestrator backend, describe dispatch for drafter-F001-T002 at predecessor SHA 0123456789abcdef0123456789abcdef01234567. Cover a new physical branch, an existing branch at another SHA, and a branch already checked out in a worktree. Do not run commands.",
+      "expected_output": "Foreman derives a unique physical alias and physical branch, creates or verifies the unused branch at the exact predecessor SHA, and uses the backend-declared spawn command with the required project, harness, alias, and branch fields. A stale or already-checked-out branch stops before spawn. Canonical remote transfer never force-pushes.",
       "files": [
         "references/backends/ao.md",
         "references/contracts.md",
         "templates/run-dir.md"
       ],
       "assertions": [
-        "AO dispatch uses ao spawn with project, harness, physical alias, and physical branch",
+        "The external-orchestrator dispatch uses the backend-declared spawn command with project, harness, physical alias, and physical branch",
         "The physical branch is unused and points at the predecessor's exact SHA before spawn",
         "Stale and already-checked-out branches stop before worker creation",
         "The canonical remote task ref is revalidated and never force-pushed",
@@ -722,10 +721,10 @@
     },
     {
       "id": 63,
-      "name": "ao-poll-classifies-attributed-active-session",
-      "coordination_coverage": "transport:ao-poll-wake",
-      "prompt": "$valcraft:foreman — for one attributed active Agent Orchestrator assignment, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, AO polling covered by this eval, AO git-backed isolated branches covered by eval 62, and AO no-git transport workspaces covered by eval 67. Every row and eval shares one unique reciprocal coverage key.",
+      "name": "polling-backend-classifies-attributed-active-session",
+      "coordination_coverage": "transport:poll-wake",
+      "prompt": "$valcraft:foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, and no-git transport workspaces covered by eval 67. Every row and eval shares one unique reciprocal coverage key.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -735,9 +734,9 @@
       ],
       "assertions": [
         "An attributed assigned-report checksum change returns report_available",
-        "A blocked active AO session returns permission_blocked",
+        "A blocked active external-orchestrator session returns permission_blocked",
         "A session observed working and then idle without an assigned-report change returns idle_without_report",
-        "An absent assigned AO session returns dead, while a still-working session keeps polling without a backend return",
+        "An absent assigned external-orchestrator session returns dead, while a still-working session keeps polling without a backend return",
         "Foreman records the attributed backend return before report access and only report_available opens the assigned report",
         "Every active deviation changes dispatch, await, wake, or workspace behavior",
         "Each deviation names a unique coverage key and discriminating Foreman eval id, and that eval reciprocally names the same key",
@@ -764,7 +763,7 @@
     {
       "id": 65,
       "name": "prepared-producer-head-resumes-before-review",
-      "prompt": "$valcraft:foreman — compare three complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an AO Draft plan commit that is not on its canonical remote ref, a Forge implementation head with PR none, and a Temper retrospective head with PR none and authority_required. Explain attended and unattended continuation. Do not execute any outward mutation.",
+      "prompt": "$valcraft:foreman — compare three complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an external-orchestrator Draft plan commit that is not on its canonical remote ref, a Forge implementation head with PR none, and a Temper retrospective head with PR none and authority_required. Explain attended and unattended continuation. Do not execute any outward mutation.",
       "expected_output": "Foreman keeps Drafting, Implementing, or Retrospective active instead of advancing to Review or Blocked. It records the prepared target, applies that named state's approval gate, and resumes the same logical producer under a fresh physical identity with newly attributed exact target-bound authority. Attended waits unless the live operator already granted the exact operation. Unattended may issue the exact Foreman authority after validating the prepared fields. Draft enters PlanReview only when its exact commit is accessible to the Review worker; Forge and Temper enter CodeReview or RetroReview only after the exact PR exists. Foreman executes no push or PR operation.",
       "files": [
         "references/loop.md",
@@ -804,10 +803,10 @@
     },
     {
       "id": 67,
-      "name": "ao-no-git-external-completion-uses-transport-seed",
-      "coordination_coverage": "transport:ao-no-git-workspace",
-      "prompt": "$valcraft:foreman — dispatch an Agent Orchestrator Land worker for external completion of task 17. The workflow target has repository example/reports and tracker task 17, but branch, PR, commit, and target SHA are all none. The live remote HEAD and host default agree on main at 0123456789abcdef0123456789abcdef01234567. Describe the workspace guard and Land to EvidenceReview to Land routing. Do not run commands.",
-      "expected_output": "Foreman records the workflow target's git identity as none. For transport only, it verifies the authoritative default branch and exact SHA, creates or verifies one unused AO physical branch at that workspace seed, and spawns the isolated Land worker. The assignment labels the seed as transport state, not completion evidence. Land produces the durable evidence record, fresh Review judges its exact criteria, and Land closes only the real tracker target after a sufficient verdict and authority. No report or reviewer invents a target branch, PR, commit, or SHA.",
+      "name": "external-backend-no-git-completion-uses-transport-seed",
+      "coordination_coverage": "transport:no-git-workspace",
+      "prompt": "$valcraft:foreman — dispatch a Land worker through the selected external-orchestrator backend for external completion of task 17. The workflow target has repository example/reports and tracker task 17, but branch, PR, commit, and target SHA are all none. The live remote HEAD and host default agree on main at 0123456789abcdef0123456789abcdef01234567. Describe the workspace guard and Land to EvidenceReview to Land routing. Do not run commands.",
+      "expected_output": "Foreman records the workflow target's git identity as none. For transport only, it verifies the authoritative default branch and exact SHA, creates or verifies one unused physical branch at that workspace seed, and spawns the isolated Land worker. The assignment labels the seed as transport state, not completion evidence. Land produces the durable evidence record, fresh Review judges its exact criteria, and Land closes only the real tracker target after a sufficient verdict and authority. No report or reviewer invents a target branch, PR, commit, or SHA.",
       "files": [
         "references/backends/ao.md",
         "references/backends/README.md",
@@ -817,10 +816,58 @@
       ],
       "assertions": [
         "The external-completion target keeps branch, PR, commit, and target SHA as none",
-        "AO verifies the live default branch and exact SHA as a transport-only workspace seed",
+        "The external-orchestrator backend verifies the live default branch and exact SHA as a transport-only workspace seed",
         "The unique unused physical branch is created or verified at the workspace seed before spawn",
         "The workspace seed is never accepted as completion evidence or Review coverage",
         "Land to EvidenceReview to Land uses only the durable evidence record and real tracker target"
+      ]
+    },
+    {
+      "id": 68,
+      "name": "subagents-land-execution-conformance",
+      "backend_conformance": [
+        "subagents"
+      ],
+      "prompt": "$valcraft:foreman — audit the native subagents backend for ordinary unattended Land execution under both local and GitHub tracking. The initial Land worker has native parent execution permission, returns a complete prepared authority_required report, and has no mutation authority. State the exact continuation, permission signal, producer-failure route, and mode-valid closure. Do not execute mutations.",
+      "expected_output": "Foreman accepts the prepared report, keeps Landing active, validates every bound field, and dispatches the same logical Land producer under a fresh native physical identity with exact target-bound authority. Native parent permission is execution capability only. Land immediately revalidates and owns merge plus the local task tick or hosted close batch. A host permission prompt or host-enforced denial is permission_blocked. A tool or credential failure observed inside Land remains a Land report. Foreman never merges.",
+      "files": [
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Native parent permission supplies execution capability but no mutation authority",
+        "A complete prepared authority_required report keeps Landing active and resumes the same logical Land producer under a fresh physical identity with exact authority",
+        "Land immediately revalidates and owns merge plus the tracker-mode-valid closure",
+        "A host permission prompt or host-enforced denial is permission_blocked",
+        "A failure observed inside Land remains a producer-owned Land report",
+        "Foreman never merges"
+      ]
+    },
+    {
+      "id": 69,
+      "name": "external-backend-land-execution-conformance",
+      "backend_conformance": [
+        "ao"
+      ],
+      "prompt": "$valcraft:foreman — audit the selected external-orchestrator backend for ordinary unattended Land execution under both local and GitHub tracking. The initial Land worker has project execution permission, returns a complete prepared authority_required report, and has no mutation authority. State the exact continuation, permission signal, producer-failure route, and mode-valid closure. Do not execute mutations.",
+      "expected_output": "Foreman accepts the prepared report, keeps Landing active, validates every bound field, and dispatches the same logical Land producer under a fresh backend alias and physical branch with exact target-bound authority. Project permission is execution capability only. Land immediately revalidates and owns merge plus the local task tick or hosted close batch. A backend permission prompt is permission_blocked. A tool or credential failure observed inside Land remains a Land report. Foreman never merges.",
+      "files": [
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/backends/README.md",
+        "references/backends/ao.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "External-orchestrator project permission supplies execution capability but no mutation authority",
+        "A complete prepared authority_required report keeps Landing active and resumes the same logical Land producer under a fresh backend alias and physical branch with exact authority",
+        "Land immediately revalidates and owns merge plus the tracker-mode-valid closure",
+        "A blocked backend permission prompt is permission_blocked",
+        "A failure observed inside Land remains a producer-owned Land report",
+        "Foreman never merges"
       ]
     }
   ]

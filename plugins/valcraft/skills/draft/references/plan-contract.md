@@ -37,9 +37,11 @@ expansion.
 
 ## Resolve the workspace
 
-Record the repository, remote, authoritative default branch and base, canonical
-task branch, physical branch when one exists, current branch, exact HEAD,
-task-plan path when one exists, and local and remote canonical-branch heads.
+Record the repository, operator-selected local baseline ref and SHA, canonical
+task branch, physical branch when one exists, current branch, exact HEAD, and
+task-plan path when one exists. Record remote identity, authoritative default
+branch and base, and the remote canonical-branch head only when live outward
+resolution supplies them. Otherwise record those outward fields as unresolved.
 
 An exact Foreman assignment overrides standalone derivation. Require its
 repository, task artifact, reconciled base SHA, canonical task branch, backend
@@ -48,35 +50,34 @@ coordinator state.
 
 Without an envelope:
 
-1. Derive the canonical task branch from repository policy and the artifact
+1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state
+   before switching or creating a branch. Stop on unattributed changes. Use the
+   clean current checked-out ref selected by the invocation as the planning
+   baseline. Resolve and record its exact HEAD locally.
+2. Derive the canonical task branch from repository policy and the artifact
    identity. The Valcraft scaffold conventions are `feat/fNNN-tNNN-<slug>` and
    `feat/qNNN-qtNNN-<slug>`.
-2. Resolve the default branch from both the live remote `HEAD` symref and the
-   hosting service's reported default. Available live sources must agree. Cached
-   `origin/HEAD` and local names may corroborate, but never decide. Stop when
-   live authority is missing or conflicts. Do not infer a release branch.
-3. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state
-   before switching, synchronizing, or creating a branch. Stop on unattributed
-   changes.
-4. Fetch the relevant refs. If the canonical branch exists locally and remotely,
-   classify their ancestry. Resume an equal or clean fast-forwardable branch.
-   Stop on divergence. If only the remote exists, create its local tracking
-   branch. If only the local exists, resume it without treating its existence as
-   push authority. If neither exists, create it from the authoritative
-   default-branch base.
-5. Reconcile an existing plan and commits before writing. Update the existing
+3. Reconcile the local canonical branch against the selected local baseline.
+   Create it from that baseline when absent. Resume it only when its attributable
+   plan history is equal to or descends cleanly from the baseline. Stop on
+   ambiguous ancestry or divergence. Do not fetch or fabricate remote state for
+   local planning.
+4. Reconcile an existing plan and commits before writing. Update the existing
    plan for this task instead of allocating another.
+
+Do not infer a release branch. A configured release branch does not select the
+local baseline or redirect the canonical task branch.
 
 On a shared-checkout assignment, use the canonical task branch. Preserve and
 report any state not attributable to this task; do not stash, clean, reset, or
 absorb it.
 
-On Agent Orchestrator, require a unique physical dispatch branch and predecessor
-SHA in the envelope. Verify that the clean physical branch is seeded from that
-exact SHA. Keep the canonical task branch as the remote ref; do not publish the
-physical branch name. Commit locally on the physical branch, then, only with
-valid push authority, use a non-force refspec from physical `HEAD` to the
-canonical remote task ref.
+On an isolated-workspace backend, require a unique physical dispatch branch and
+predecessor SHA in the envelope. Verify that the clean physical branch is seeded
+from that exact SHA. Keep the canonical task branch as the remote ref; do not
+publish the physical branch name. Commit locally on the physical branch, then,
+only with valid push authority, use a non-force refspec from physical `HEAD` to
+the canonical remote task ref.
 
 ## Write the plan
 
@@ -85,10 +86,15 @@ Use an explicit operator artifact date when supplied; otherwise use the current
 local date. Allocate the next unused plan number for that date. Preserve the
 existing path on revision.
 
-Choose the type and slug from the task's semantic change and repository
-convention. Preserve an existing semantic name. A quick task remains
-`Q-NNN QT-XXX` in plan content, commit messages, and reports, but `quick` is not
-a plan type or slug solely because the task is quick.
+Preserve an existing semantic name. For a new feature-task plan, use type
+`feat` and slug `t-NNN-<canonical-task-branch-slug>` unless the root
+`AGENTS.md` requires another semantic type. The canonical branch slug names the
+delivered outcome; omit an imperative such as `add` when it only introduces the
+outcome. For a new quick-task plan, obey an explicit semantic type rule in the
+root `AGENTS.md` and use the quick file's semantic slug without its identity
+prefix. A quick task remains `Q-NNN QT-XXX` in plan content, commit messages,
+and reports, but `quick` is not a plan type or slug solely because the task is
+quick.
 
 The plan must contain the smallest implementation-ready contract that proves the
 task:
@@ -150,16 +156,30 @@ live message or resumed assignment. The authority must bind:
 - target remote ref; and
 - an operation set that explicitly contains the non-force push.
 
-Without that authority, keep the local reviewable commit and record the exact
-prepared push handoff under `Outward mutations`; `Status: done` still means the
-plan is ready for Review at its local commit.
+Without that authority, keep the local reviewable commit. Under `Outward
+mutations`, record the prepared push handoff to the extent resolved. When live
+outward fields have not been resolved, record the push intent and mark remote
+identity, default branch, base, canonical remote head, and target remote ref as
+unresolved. `Status: done` still means the plan is ready for Review at its local
+commit.
+
+Before preparing an exact push target or applying push authority, resolve the
+remote identity. Resolve the default branch from both the live remote `HEAD`
+symref and the hosting service's reported default. Require the sources to agree.
+Fetch the relevant refs and classify the local baseline and canonical branch
+against the live default base and canonical remote head. Cached `origin/HEAD` and
+local names may corroborate, but never decide. Missing or conflicting authority,
+a local baseline that does not match the resolved remote base, or diverged
+canonical heads blocks only the outward stage with `workspace_not_ready`.
+Preserve the local commit and report the exact local Review target plus the live
+or unresolved outward fields. Never infer a release branch.
 
 Immediately before an authorized push, re-read every bound field and the clean
 local head. On any change, perform no outward mutation. Return a new prepared
 handoff with the live values and `authority_drift`; fresh authority must bind
-that handoff. Never merge, rebase, reset, force-push, publish an Agent
-Orchestrator physical branch, or substitute a different remote or ref to work
-around drift or failure.
+that handoff. Never merge, rebase, reset, force-push, publish an
+external-orchestrator physical branch, or substitute a different remote or ref
+to work around drift or failure.
 
 After a push, read the canonical remote ref and require it to equal the local
 plan head. A command failure or unverifiable result reports `push_failed`
@@ -214,8 +234,9 @@ Use these blocked-status routing codes:
 
 - `assignment_invalid` — the target is missing, malformed, ambiguous, or cannot
   be tied to its contract.
-- `workspace_not_ready` — required live branch authority is missing, state is
-  dirty, or refs diverge.
+- `workspace_not_ready` — the selected local baseline is unavailable, local
+  state is dirty or diverged, or an outward stage lacks agreeing live branch
+  authority or finds incompatible refs.
 - `review_target_mismatch` — a remediation report does not cover this task and
   plan commit.
 - `msw_failed` — MSW could not complete for a reason other than an owner

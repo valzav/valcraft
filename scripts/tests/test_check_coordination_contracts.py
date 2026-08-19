@@ -17,6 +17,7 @@ PRODUCERS = ("cast", "draft", "forge", "review", "land", "spec", "temper")
 CONTRACTS = "plugins/valcraft/skills/foreman/references/contracts.md"
 DRAFT_CONTRACT = "plugins/valcraft/skills/draft/references/plan-contract.md"
 BACKENDS = "plugins/valcraft/skills/foreman/references/backends/README.md"
+SUBAGENTS = "plugins/valcraft/skills/foreman/references/backends/subagents.md"
 FOREMAN_EVALS = "plugins/valcraft/skills/foreman/evals/evals.json"
 FORGE_MESSAGE_ROW = (
     "| Task implementation and PR | Forge | Foreman, Review | "
@@ -175,6 +176,76 @@ class CoordinationContractCheckTests(unittest.TestCase):
             row + "| `surprise` | terminal | `ReportValidation` |\n",
         )
         self.assert_check_fails("unexpected=['surprise']")
+
+    def test_unregistered_concrete_backend_fails(self) -> None:
+        source = self.root / SUBAGENTS
+        source.with_name("future.md").write_text(source.read_text())
+        self.assert_check_fails("backend conformance registry differs")
+
+    def test_backend_without_land_execution_contract_fails(self) -> None:
+        self.replace(SUBAGENTS, "## Land execution", "## Landing")
+        self.assert_check_fails("backend lacks Land execution contract")
+
+    def test_backend_name_must_match_reference_and_heading(self) -> None:
+        self.replace(
+            BACKENDS,
+            "| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 68 |",
+            "| `native` | [`subagents.md`](subagents.md) | Foreman eval 68 |",
+        )
+        self.assert_check_fails("backend conformance name differs")
+
+    def test_backend_land_execution_mapping_must_be_complete(self) -> None:
+        self.replace(
+            SUBAGENTS,
+            "| Permission return | `permission_blocked` |",
+            "| Permission return | none |",
+        )
+        self.assert_check_fails("backend permission mapping is incomplete")
+
+    def test_backend_land_execution_capability_must_be_shared(self) -> None:
+        self.replace(
+            SUBAGENTS,
+            "| Execution capability | `shared backend permission` |",
+            "| Execution capability | `dispatch-scoped permission` |",
+        )
+        self.assert_check_fails("backend execution capability is invalid")
+
+    def test_backend_land_execution_signal_must_be_concrete(self) -> None:
+        self.replace(
+            SUBAGENTS,
+            "| Permission signal | native host permission prompt or host-enforced denial |",
+            "| Permission signal | none |",
+        )
+        self.assert_check_fails("backend permission signal is incomplete")
+
+    def test_backend_conformance_with_unrelated_eval_fails(self) -> None:
+        self.replace(
+            BACKENDS,
+            "| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 68 |",
+            "| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 8 |",
+        )
+        self.assert_check_fails("does not load backend conformance reference")
+
+    def test_backend_conformance_eval_metadata_is_reciprocal(self) -> None:
+        path = self.root / FOREMAN_EVALS
+        text = path.read_text()
+        self.assertIn('"backend_conformance": [\n        "subagents"', text)
+        path.write_text(
+            text.replace(
+                '"backend_conformance": [\n        "subagents"',
+                '"backend_conformance": [\n        "native"',
+                1,
+            )
+        )
+        self.assert_check_fails("does not reciprocally name backend")
+
+    def test_backend_conformance_eval_cannot_be_reused(self) -> None:
+        self.replace(
+            BACKENDS,
+            "| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 68 |",
+            "| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 69 |",
+        )
+        self.assert_check_fails("backend conformance reuses Foreman eval")
 
     def test_transport_deviation_without_eval_reference_fails(self) -> None:
         self.replace(

@@ -16,6 +16,7 @@ from pathlib import Path
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 CONTRACTS = Path("plugins/valcraft/skills/foreman/references/contracts.md")
 BACKENDS = Path("plugins/valcraft/skills/foreman/references/backends/README.md")
+BACKEND_DIRECTORY = BACKENDS.parent
 FOREMAN_EVALS = Path("plugins/valcraft/skills/foreman/evals/evals.json")
 
 BACKEND_RETURNS = {
@@ -31,6 +32,13 @@ BACKEND_RETURNS = {
         "nonterminal; foreground only",
         "remain in the current named state and re-arm await",
     ),
+}
+
+LAND_EXECUTION_FIELDS = {
+    "Execution capability",
+    "Permission signal",
+    "Permission return",
+    "Producer failure",
 }
 
 # These fingerprints name only the producer-owned report headings and their order. The
@@ -460,6 +468,117 @@ def check_transport_deviations(root: Path, errors: list[str]) -> None:
             )
 
 
+def check_backend_conformance(root: Path, errors: list[str]) -> None:
+    backend_text = (root / BACKENDS).read_text()
+    rows = table_rows(section(backend_text, "Backend conformance"))
+    eval_data = json.loads((root / FOREMAN_EVALS).read_text())
+    evals = {entry["id"]: entry for entry in eval_data["evals"]}
+    observed: dict[str, Path] = {}
+    conformance_evals: dict[int, str] = {}
+
+    for row in rows[1:]:
+        if len(row) != 3:
+            errors.append(
+                f"backend conformance row has {len(row)} columns: {' | '.join(row)}"
+            )
+            continue
+        names = re.findall(r"`([a-z][a-z0-9_-]*)`", row[0])
+        links = re.findall(r"\[[^]]+\]\(([^)]+)\)", row[1])
+        reference = re.fullmatch(r"Foreman eval (\d+)", row[2])
+        if len(names) != 1 or len(links) != 1 or reference is None:
+            errors.append(f"invalid backend conformance row: {' | '.join(row)}")
+            continue
+        name = names[0]
+        relative = Path(links[0])
+        path = BACKEND_DIRECTORY / relative
+        if name in observed:
+            errors.append(f"duplicate backend conformance entry: {name}")
+            continue
+        observed[name] = path
+        if not (root / path).is_file():
+            errors.append(f"backend conformance reference does not resolve: {path}")
+            continue
+        if name != path.stem:
+            errors.append(
+                f"backend conformance name differs from reference stem: {name}, {path}"
+            )
+        concrete_text = (root / path).read_text()
+        if f"# Backend: `{name}`" not in concrete_text:
+            errors.append(f"backend heading does not name registered backend: {path}")
+        land_section = section(concrete_text, "Land execution")
+        if not land_section:
+            errors.append(f"backend lacks Land execution contract: {path}")
+        else:
+            land_rows = table_rows(land_section)
+            mappings = {
+                mapping[0]: mapping[1]
+                for mapping in land_rows[1:]
+                if len(mapping) == 2
+            }
+            if set(mappings) != LAND_EXECUTION_FIELDS:
+                errors.append(
+                    f"backend Land execution fields differ: {path}; "
+                    f"expected={sorted(LAND_EXECUTION_FIELDS)}, "
+                    f"observed={sorted(mappings)}"
+                )
+            if mappings.get("Execution capability") != "`shared backend permission`":
+                errors.append(f"backend execution capability is invalid: {path}")
+            permission_signal = mappings.get("Permission signal", "").strip().lower()
+            if permission_signal in {"", "none", "n/a"}:
+                errors.append(f"backend permission signal is incomplete: {path}")
+            if mappings.get("Permission return") != "`permission_blocked`":
+                errors.append(f"backend permission mapping is incomplete: {path}")
+            if mappings.get("Producer failure") != "`Land report`":
+                errors.append(f"backend producer-failure mapping is incomplete: {path}")
+        eval_id = int(reference.group(1))
+        if eval_id not in evals:
+            errors.append(f"backend conformance names missing eval {eval_id}: {name}")
+            continue
+        if eval_id in conformance_evals:
+            errors.append(
+                f"backend conformance reuses Foreman eval {eval_id}: "
+                f"{conformance_evals[eval_id]}, {name}"
+            )
+            continue
+        conformance_evals[eval_id] = name
+        eval_path = str(path.relative_to(Path("plugins/valcraft/skills/foreman")))
+        if eval_path not in evals[eval_id].get("files", []):
+            errors.append(
+                f"Foreman eval {eval_id} does not load backend conformance reference: "
+                f"{eval_path}"
+            )
+        conformance = evals[eval_id].get("backend_conformance", [])
+        if conformance != [name]:
+            errors.append(
+                f"Foreman eval {eval_id} does not reciprocally name backend: {name}"
+            )
+
+    concrete = {
+        path.name
+        for path in (root / BACKEND_DIRECTORY).glob("*.md")
+        if path.name != "README.md"
+    }
+    registered = {path.name for path in observed.values()}
+    if concrete != registered:
+        errors.append(
+            "backend conformance registry differs from concrete backends; "
+            f"missing={sorted(concrete - registered)}, "
+            f"unexpected={sorted(registered - concrete)}"
+        )
+
+    eval_backends = {
+        name
+        for entry in evals.values()
+        for name in entry.get("backend_conformance", [])
+    }
+    unexpected_eval_backends = sorted(eval_backends - set(observed))
+    if unexpected_eval_backends:
+        errors.append(
+            "Foreman eval backend conformance has no registry entry: "
+            f"{unexpected_eval_backends}"
+        )
+
+
 def check(root: Path) -> list[str]:
     errors: list[str] = []
     contracts_text = (root / CONTRACTS).read_text()
@@ -467,6 +586,7 @@ def check(root: Path) -> list[str]:
     routing = parse_routing_registry(contracts_text, errors)
     check_routing_codes(producer_codes, routing, errors)
     check_backend_returns(contracts_text, errors)
+    check_backend_conformance(root, errors)
     check_transport_deviations(root, errors)
     return errors
 

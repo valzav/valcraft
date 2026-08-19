@@ -6,9 +6,11 @@ grammar and authority rules.
 
 ## Resolve the workspace
 
-Record repository and remote identity, authoritative default branch and base,
-canonical Spec branch, physical branch when present, current branch and exact
-HEAD, artifact paths, and local and remote canonical-branch heads.
+Record the repository, operator-selected local baseline ref and SHA, canonical
+Spec branch, physical branch when present, current branch and exact HEAD, and
+artifact paths. Record remote identity, authoritative default branch and base,
+and the remote canonical-branch head only when live outward resolution supplies
+them. Otherwise record those outward fields as unresolved.
 
 An exact Foreman assignment overrides standalone derivation. Require its
 repository, accepted source or artifact, reconciled base SHA, canonical branch,
@@ -17,32 +19,29 @@ coordinator state.
 
 Without an envelope:
 
-1. Resolve the default branch from both the live remote `HEAD` symref and the
-   hosting service's reported default. Available live sources must agree. Cached
-   `origin/HEAD` and local names may corroborate but never decide. Missing or
-   conflicting live authority stops the run. Never infer a release branch.
+1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state
+   before switching or creating a branch. Stop on unattributed changes. Use the
+   clean current checked-out ref selected by the invocation as the Spec
+   baseline. Resolve and record its exact HEAD locally.
 2. Derive the canonical Spec branch from the artifact identity:
    `spec/fNNN-<slug>` for a feature and `spec/qNNN-<slug>` for a quick task.
-3. Inspect current branch, exact HEAD, staged, unstaged, and untracked state
-   before switching, synchronizing, or creating a branch. Stop on unattributed
-   changes.
-4. Fetch the relevant refs. Resume equal or clean fast-forwardable local and
-   remote canonical branches. Stop on divergence. If only the remote exists,
-   create its tracking branch. If only the local exists, resume it without
-   treating existence as push authority. If neither exists, create it from the
-   authoritative default-branch base.
-5. Reconcile existing artifacts, commits, projection, push, and matching spec PR
-   state before writing. Never duplicate a complete result.
+3. Reconcile the local canonical branch against the selected local baseline.
+   Create it from that baseline when absent. Resume it only when its attributable
+   Spec history is equal to or descends cleanly from the baseline. Stop on
+   ambiguous ancestry or divergence. Do not fetch or fabricate remote state for
+   local production.
+4. Reconcile existing artifacts and commits before writing. Never duplicate a
+   complete local result.
 
 On a shared checkout, use the canonical Spec branch. Preserve and report
-unattributed state; do not stash, clean, reset, or absorb it. On Agent
-Orchestrator, require a unique clean physical branch seeded from the assignment's
-exact predecessor SHA. Keep the canonical branch as the remote ref. Never publish
-the physical branch name.
+unattributed state; do not stash, clean, reset, or absorb it. On an
+isolated-workspace backend, require a unique clean physical branch seeded from
+the assignment's exact predecessor SHA. Keep the canonical branch as the remote
+ref. Never publish the physical branch name.
 
-A configured release branch does not change this resolution. A Spec PR targets
-the authoritative default branch unless exact live operator authority explicitly
-defines another already prepared target.
+A configured release branch does not select the local baseline. When live
+outward resolution succeeds, a Spec PR targets the authoritative default
+branch.
 
 ## Commit the artifact
 
@@ -104,10 +103,30 @@ On resume, reconcile authoritative tracker, branch, and PR state. Do not repeat 
 verified completed operation. Reuse a matching PR that appeared despite a failed
 response.
 
-Without outward authority, keep the committed local artifact and return the exact
-prepared projection, push, and PR handoff. `Status: done` means a ready artifact
-is available at the reported local Review target; it does not imply that an
-outward mutation ran or that Land finalized it.
+Without outward authority, keep the committed local artifact. Return the
+prepared projection, push, and PR handoff to the extent resolved. Mark every
+unresolved outward field explicitly. `Status: done` means a ready artifact is
+available at the reported local Review target; it does not imply that an outward
+mutation ran or that Land finalized it.
+
+Before preparing an exact projection, push, or PR target or applying authority
+for one, resolve the remote identity. Resolve the default branch from both the
+live remote `HEAD` symref and the hosting service's reported default. Require the
+sources to agree. Fetch the relevant refs and classify the local baseline and
+canonical branch against the live default base and canonical remote head. Cached
+`origin/HEAD` and local names may corroborate, but never decide. Missing or
+conflicting authority, a local baseline that does not match the resolved remote
+base, or diverged canonical heads blocks only the outward stage with
+`workspace_not_ready`. Preserve the local commit and report the exact local
+Review target plus the live or unresolved outward fields. Never infer a release
+branch.
+
+When no outward operation is requested, do not require output-remote or
+output-hosting tools for workspace or delivery resolution. Mark remote identity,
+default branch, base, canonical remote head, push target, and PR target as
+unresolved. Report Land target as `none` until an exact PR exists. A pending
+GitHub tracker target may still produce and commit the local triplet before
+reporting `tracker_target_required`.
 
 ## Review revision and handoffs
 
@@ -171,8 +190,9 @@ Use these stable blocked codes:
 - `scaffold_invalid` — project framing or tracker metadata fails preflight.
 - `feature_identity_invalid` — an existing feature, quick task, task, mapping, or
   dependency identity is invalid or collides.
-- `workspace_not_ready` — live default-branch authority is missing or conflicts,
-  state is dirty, or refs diverge.
+- `workspace_not_ready` — the selected local baseline is unavailable, local
+  state is dirty or diverged, or an outward stage lacks agreeing live branch
+  authority or finds incompatible refs.
 - `review_target_mismatch` — a revision report does not cover this artifact and
   exact head.
 - `git_write_failed` — an artifact cannot be staged, committed, or resolved at

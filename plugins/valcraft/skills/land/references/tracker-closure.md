@@ -6,7 +6,7 @@ Reconcile live tracker and PR state before preparation, immediately before mutat
 
 | Target | Valid completion operations |
 | --- | --- |
-| Task PR | add the exact local or quick tick before the final gate when applicable; merge the reviewed PR; then apply any hosted close batch |
+| Task PR | add the exact mode-valid completion tick before the final gate when applicable; merge the reviewed PR; then apply any mode-valid hosted close batch |
 | Spec PR | merge the reviewed PR; no task closure |
 | Retrospective PR | merge the reviewed PR; no task closure |
 | Tracker-only feature or PRD | apply only the confirmed tracker close; invent no git target |
@@ -15,9 +15,13 @@ Reconcile live tracker and PR state before preparation, immediately before mutat
 
 A closed-unmerged PR never proves task completion. A spec or retrospective merge never closes an implementation task.
 
-## Local and quick tasks
+## Tracker-mode closure
 
-The selected feature task or `Q-NNN QT-XXX` item closes through its exact unchecked-to-checked transition on the task PR. Apply the exception in `final-head-and-checks.md`. Do not edit adjacent content. A completed quick file needs no feature confirmation or retrospective.
+Resolve the tracker mode from the root `AGENTS.md` before preparing closure:
+
+- In `local` mode, a selected feature task closes through its exact unchecked-to-checked transition in `tasks.md`. Apply the exception in `final-head-and-checks.md`. Do not prepare a hosted tracker batch.
+- In `github` mode, a selected feature task closes through the serialized hosted tracker batch. Do not tick the feature task in `tasks.md`.
+- In every tracker mode, a selected `Q-NNN QT-XXX` closes through its exact unchecked-to-checked transition in the quick-task file. Apply the exception in `final-head-and-checks.md`. Do not edit adjacent content or create a hosted quick-task close batch. A completed quick file needs no feature confirmation or retrospective.
 
 For `not planned`, follow the committed tracker contract. Record the deciding reason. Do not invent a task PR or completed implementation.
 
@@ -31,7 +35,7 @@ Feature or PRD closure requires authoritative proof that its children meet the t
 
 ## Merge and recovery
 
-Immediately before merge, re-read the PR identity, base, head, state, merge method, Review coverage, and check state. Then prove target-bound authorization and per-dispatch Land capability as required by `SKILL.md`.
+Immediately before merge, re-read the PR identity, base, head, state, merge method, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 
 After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure.
 

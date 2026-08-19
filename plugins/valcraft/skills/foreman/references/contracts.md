@@ -32,18 +32,19 @@ Every dated artifact resolves its date from repository policy, then an explicit
 operator date for that artifact, then its creation date. The run id does not supply an
 artifact date.
 
-## Prepared outward continuation
+## Prepared mutation continuation
 
-A producer cannot receive exact outward authority until it has prepared the local head
+A producer cannot receive exact mutation authority until it has prepared the local head
 and every target field. Treat a producer report as a prepared continuation only when its
-structured outward-mutation and Review-target fields name the repository, remote,
-authoritative base, exact local head, canonical ref and observed remote head, PR target,
-and remaining operation set. Do not infer a prepared target from prose.
+structured mutation and handoff fields name every applicable repository, remote,
+authoritative base, exact local head, canonical ref and observed remote head, PR or
+tracker target, and remaining operation. Do not infer a prepared target from prose.
 
 When Draft must publish its exact plan commit for the next Review worker, Forge still
-reports task PR `none`, or Temper still reports retrospective PR `none`:
+reports task PR `none`, Temper still reports retrospective PR `none`, or Land reports
+`authority_required` for an ordinary prepared operation:
 
-1. Keep `Drafting`, `Implementing`, or `Retrospective` active.
+1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
 3. Apply that named state's approval gate from `approval-modes.md`.
 4. Dispatch the same logical producer under a fresh physical identity and report path.
@@ -53,13 +54,15 @@ reports task PR `none`, or Temper still reports retrospective PR `none`:
 Attended mode waits unless the live operator already granted the exact operation.
 Unattended mode may issue the exact Foreman authority only after every prepared field
 validates. The approval mode does not itself become authority. Foreman never executes
-the push or PR operation.
+the prepared operation.
 
 Draft advances only when the next Review worker can access its exact commit. A native
-shared checkout may provide that access without a push. An isolated AO Review worker
+shared checkout may provide that access without a push. An isolated Review worker
 requires the canonical remote ref. Forge and Temper advance only after their producer
-reports the exact PR identity and Review target. Temper's structured
-`authority_required` report uses this continuation; it does not enter Blocked.
+reports the exact PR identity and Review target. Land advances only after its report
+proves the authorized operations complete or names a different declared route. Structured
+`authority_required` reports from Temper and Land use this continuation; they do not
+enter Blocked.
 
 ## Message registry
 
@@ -130,10 +133,10 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_spec` | `ReturnToSpecCaller` |
 | `check_failure_retro` | `Retrospective` |
 | `evidence_review_required` | `EvidenceReview` |
-| `operator_action_required` | `OperatorAction` |
 | `partial_completion` | `Landing` |
 | `operator_confirmation_required` | `AwaitOwner` |
-| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_required`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
+| `authority_required` | `ResumeProducer` |
+| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 
 `ReviewByTarget` means task PR to CodeReview, retrospective PR to RetroReview, and spec
 PR to Spec's direct caller outside the loop. It is one target-kind transition function.
@@ -168,7 +171,10 @@ Record exactly one return against the active assignment before report validation
 
 Only `report_available` opens the attributed producer report. A producer's
 `Status: blocked: <code> — <detail>` is report content under `report_available`; it is
-never `permission_blocked`.
+never `permission_blocked`. A host permission prompt or host-enforced transport denial
+is `permission_blocked`, never a synthesized producer report. A tool or credential
+failure observed inside Land uses Land's `external_blocked` or `partial_completion`
+report route.
 
 ## Validation and rejection
 

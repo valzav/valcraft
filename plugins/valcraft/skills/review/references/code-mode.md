@@ -30,9 +30,11 @@ Classify the pinned file list as **docs** when it touches only documentation,
 Feature commits cite `T-`, `FR-`, or plan `R-` IDs. Validate the governing
 feature `tasks.md` before mapping and require `T-XXX`. Quick commits cite
 `Q-NNN QT-XXX`; resolve the exact pair and dependencies through `quick.md`.
-Reject missing, historical, legacy, mixed, malformed, or wrong-prefix identity
-instead of normalizing it. A change governed by no task or requirement is a
-finding.
+Apply identity validation only to commits that contribute to the pinned review
+target. Earlier history may establish context, but it is not current work.
+Within the target, reject missing, legacy, mixed, malformed, or wrong-prefix
+identity instead of normalizing it. A change governed by no task or requirement
+is a finding.
 
 Require the passed task plan path and exact Review-passed plan commit for a
 non-trivial implementation. A code finding within that plan resolves in Forge.

@@ -24,7 +24,7 @@ git remote add origin "$PWD/.eval/remote.git"
 git push -q origin main
 plan_sha=$(git rev-parse HEAD)
 git push -q origin "$plan_sha:refs/heads/feat/f001-t001-retention-window"
-git switch -q -c ao/forge-f001-t001-eval
+git switch -q -c external/forge-f001-t001-eval
 
 cat > .foreman/plan-review.md <<EOF
 ## Review report
@@ -66,7 +66,7 @@ if [ "$mode" = implemented ]; then
 Producer: valcraft:forge
 Named state: Implementing
 Logical worker: forge-F001-T001
-Physical worker: ao/forge-f001-t001-eval
+Physical worker: external/forge-f001-t001-eval
 Repository: example/retention
 Remote: origin = $PWD/.eval/remote.git
 Base: main at $plan_sha

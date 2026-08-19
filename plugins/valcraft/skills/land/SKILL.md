@@ -21,7 +21,7 @@ Resolve one target:
 - `not planned` task closure; or
 - external completion for one open feature or quick task.
 
-Read the repository's root `AGENTS.md`, the target's committed contract, the exact Review report or evidence record, and only the live sources needed to verify current state. Read [final-head-and-checks.md](references/final-head-and-checks.md) for every PR. Read [tracker-closure.md](references/tracker-closure.md) for every tracker mutation. Read [record-and-close.md](references/record-and-close.md) for external completion.
+Read the repository's root `AGENTS.md`, the target's committed contract, the exact Review report or evidence record, and only the live sources needed to verify current state. Resolve exactly one `project_tracker: local` or `project_tracker: github` declaration from the root `AGENTS.md` before selecting closure operations. A missing, conflicting, or invalid declaration ends `Status: question: target_ambiguous — <detail>`. Read [final-head-and-checks.md](references/final-head-and-checks.md) for every PR. Read [tracker-closure.md](references/tracker-closure.md) for every tracker mutation. Read [record-and-close.md](references/record-and-close.md) for external completion.
 
 An orchestration envelope may name the target and attribute authority. Direct invocation uses the same workflow and report, but has no implicit authority to push, create or update a PR, merge, or mutate tracker state.
 
@@ -40,9 +40,8 @@ Never broaden, infer, transfer, or retain authority for changed fields. Release-
 3. **Gate.** For a PR, apply exact-final-head Review coverage and the four-state check classifier. A closed-unmerged PR cannot close its task. For external completion, require the exact fresh evidence-sufficiency report.
 4. **Prepare.** Record the exact target, covered head or no-git evidence, check sources and state, proposed ordered mutations, already completed mutations, and required authorization. Preparation changes no external state.
 5. **Authorize.** Verify target-bound authority for every proposed external mutation. Missing authority ends `Status: blocked: authority_required — <prepared action>`.
-6. **Probe merge capability.** Before a merge, prove that the backend grants merge permission to this Land dispatch only. A native parent permission or Agent Orchestrator project permission is not scoped proof. Without proof, return backend `report_available` with `Status: blocked: operator_action_required — <exact operator merge action>`. Foreman does not merge. After the operator acts, resume at reconciliation.
-7. **Execute.** Revalidate immediately, then perform only the authorized operations in their recorded order. Re-read authoritative state after each one. Preserve a partial result and end `Status: blocked: partial_completion — <remaining operations>` if any remainder fails.
-8. **Report.** Emit the report below. Direct invocation returns Review and operator handoffs instead of spawning workers. Under orchestration, Foreman routes the same report.
+6. **Execute.** Revalidate immediately, then perform only the authorized operations in their recorded order. Shared native-session or external-orchestrator project permission provides execution capability but grants no mutation authority. Exact trusted target-bound authorization and immediate revalidation are the role boundary. Re-read authoritative state after each operation. A tool or credential failure before any mutation ends `Status: blocked: external_blocked — <failure>`. Preserve a partial result and end `Status: blocked: partial_completion — <remaining operations>` if any remainder fails. A host permission prompt or transport denial is backend return `permission_blocked`, not a Land report.
+7. **Report.** Emit the report below. Direct invocation returns Review and operator handoffs instead of spawning workers. Under orchestration, Foreman routes the same report.
 
 ## Routing codes
 
@@ -52,7 +51,6 @@ Use these codes when the condition applies; never substitute prose for a code:
 - `check_failure_task`, `check_failure_spec`, `check_failure_retro` — evidence identifies the artifact owner;
 - `missing_required_check`, `check_source_unavailable`, `external_blocked` — no artifact owner is proven;
 - `authority_required`, `authority_drift`, `release_authority_required` — exact mutation authority is absent or stale;
-- `operator_action_required` — authorization exists but the backend lacks per-dispatch Land-scoped merge capability;
 - `evidence_review_required`, `evidence_insufficient` — external-completion evidence needs or fails fresh Review;
 - `operator_confirmation_required` — feature or PRD closure lacks the operator's confirmation;
 - `partial_completion` — at least one external mutation completed and exact operations remain;

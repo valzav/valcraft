@@ -28,7 +28,7 @@
     },
     {
       "name": "draft",
-      "version": "0ff55e61e6501da8",
+      "version": "acb550888c4b3c02",
       "files": [
         "SKILL.md",
         "references/plan-contract.md",
@@ -37,7 +37,7 @@
     },
     {
       "name": "foreman",
-      "version": "3cfb3248e6e2d617",
+      "version": "72cfd9bdc9c785d7",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -57,7 +57,7 @@
     },
     {
       "name": "forge",
-      "version": "effe931375d961c7",
+      "version": "2f463711218bf52c",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -77,7 +77,7 @@
     },
     {
       "name": "land",
-      "version": "6fc1c6645711c4b8",
+      "version": "1f3b13ffc49ef14b",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -96,7 +96,7 @@
     },
     {
       "name": "review",
-      "version": "b6f94669d39fc46e",
+      "version": "0cb668eb4f67e544",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -107,7 +107,7 @@
     },
     {
       "name": "spec",
-      "version": "e56a68b215745f5b",
+      "version": "e475241ef7189be0",
       "files": [
         "SKILL.md",
         "references/delivery.md",

@@ -19,9 +19,8 @@
   `forge-Q007-QT001`. Retrospective workers are `temper-F004`,
   `retro-reviewer-F004`, and `land-F004-retro`.
 - Branches: canonical task `feat/f004-t012-<slug>` or
-  `feat/q007-qt001-<slug>`; retrospective `retro/f004-<slug>`. Agent
-  Orchestrator physical branches are unique dispatch refs and never replace the
-  canonical remote ref.
+  `feat/q007-qt001-<slug>`; retrospective `retro/f004-<slug>`. External-orchestrator
+  physical branches are unique dispatch refs and never replace the canonical remote ref.
 - Preserve every identity digit. Backend physical aliases remain separate and every
   dispatch gets a new row in `workers.md`.
 

@@ -54,7 +54,6 @@ Route only from verified producer reports and exact targets:
 | Forge implementation head with required task PR still prepared | `Implementing` |
 | Forge task PR head without an exact code verdict | `CodeReview` |
 | passing code verdict covering the current PR head | `Landing` |
-| Land reports exact operator action | `OperatorAction` |
 | Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
 | confirmed feature not yet closed by Land | `FeatureClose` |
 | feature closure complete without a retrospective PR | `Retrospective` |
@@ -133,8 +132,9 @@ Route the Land report exactly:
 - `check_failure_retro`: Retrospective;
 - `check_failure_spec`: Spec's direct caller;
 - `evidence_review_required`: EvidenceReview;
-- `operator_action_required`: OperatorAction;
 - `partial_completion`: Landing with only remaining operations;
+- `authority_required`: apply the prepared mutation continuation in `contracts.md` and
+  remain in Landing; and
 - unresolved, external, configuration, authority, or applicability codes: Blocked.
 
 When checks are pending, keep Foreman and the active Land worker alive. Continue the
@@ -179,13 +179,6 @@ commit, or PR and never applies proposals.
 Dispatch a fresh `retro-reviewer-<feature>` with `valcraft:review` in code mode on the
 exact Temper PR head. A pass enters Landing with target kind retrospective PR. Material
 findings return to Retrospective. Foreman never reviews or merges the PR.
-
-## `OperatorAction`
-
-This state is reachable only from backend return `report_available` carrying Land's
-complete `Status: blocked: operator_action_required — <prepared action>`. Surface the
-exact prepared action. Do not execute or delegate it. After the operator acts, return to
-Landing; Land revalidates authoritative state and performs only remaining closure.
 
 ## `Blocked` and recovery
 

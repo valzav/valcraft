@@ -36,7 +36,7 @@ repository-level reference that keeps new skills consistent with it.
   file that provides the four primitives (`spawn`, `assign`, `await`, `status`) and
   declares its `wake`, `answer`, `harnesses`, and `release` capabilities. v1: portable
   native `subagents` (Claude Code event wake or Codex foreground wake, selected by the
-  active host) and `ao` (Agent Orchestrator sessions).
+  active host) plus registered external-orchestrator backends.
 - **backend return** (foreman) — the transport result recorded before report validation:
   exactly `report_available`, `permission_blocked`, `idle_without_report`,
   `dispatch_error`, `dead`, or `wait_timeout`. It describes worker transport state, not

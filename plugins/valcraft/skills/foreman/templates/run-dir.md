@@ -30,8 +30,8 @@ Append one row for every physical dispatch:
 
 Preserve prior rows and report paths after respawn. Use the dispatch discriminator in
 the report filename so a predecessor cannot append to its replacement's active path. A
-Codex identity records task name and agent id. An
-AO identity records session id, alias, dispatch ordinal, branch, workspace seed SHA, and
+Codex identity records task name and agent id. An external-orchestrator identity records
+the backend-defined session id, alias, dispatch ordinal, branch, workspace seed SHA, and
 whether that seed is predecessor or transport-only state.
 Record terminal evidence before marking a row done. Workers write only their assigned
 report path.
@@ -49,8 +49,8 @@ Append checkpoints with:
   exact artifact or PR identity, and registry transition;
 - canonical and physical branch refs, exact local and remote SHAs, workspace seed SHA
   and kind, and synchronization classification;
-- workflow target git identity, preserving `none` independently from an AO transport-only
-  workspace seed;
+- workflow target git identity, preserving `none` independently from an
+  external-orchestrator transport-only workspace seed;
 - Review-covered SHA, current head, and producer-reported delta or check route;
 - approval decision and exact target-bound authority source;
 - intermediate tracker state, held questions, deferred-finding owner and durable

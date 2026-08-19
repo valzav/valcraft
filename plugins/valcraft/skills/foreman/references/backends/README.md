@@ -64,9 +64,23 @@ committed task contract settles it and the action stays within the worker's assi
 role, workspace, and target-bound authority. Otherwise escalate with the exact prompt.
 Use the backend's `answer` behavior; a respawn always receives a new physical identity.
 
-No prompt can grant merge permission to Foreman or another producer. Land may merge
-only after its own per-dispatch Land-scoped capability probe passes. Shared native
-parent permission and Agent Orchestrator project permission are insufficient.
+No prompt can grant merge authority to Foreman or another producer. Shared session or
+project permission may make Land's assigned operation executable, but it grants no
+mutation authority. Land acts only with exact trusted target-bound authorization and
+immediate authoritative revalidation. A host permission prompt or host-enforced denial
+is `permission_blocked`; a tool or credential failure observed inside Land uses Land's
+`external_blocked` or `partial_completion` report route.
+
+## Backend conformance
+
+Every concrete backend declares Land execution and names an eval that reads that exact
+backend contract. The static coordination checker rejects an unregistered backend or a
+row whose eval does not load its reference.
+
+| Backend | Reference | Land execution eval |
+| --- | --- | --- |
+| `subagents` | [`subagents.md`](subagents.md) | Foreman eval 68 |
+| `ao` | [`ao.md`](ao.md) | Foreman eval 69 |
 
 ## Active transport deviations
 
@@ -77,15 +91,19 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 7 |
 | Codex native | parent remains active and uses foreground `wait_agent`; timeout re-arms without a user message | wake/await | `transport:codex-foreground-wake` | Foreman eval 18 |
 | Native subagents | all roles share the parent checkout | workspace | `transport:native-shared-workspace` | Foreman eval 35 |
-| Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:ao-poll-wake` | Foreman eval 63 |
-| Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:ao-isolated-branch` | Foreman eval 62 |
-| Agent Orchestrator | a no-git workflow target uses a transport-only branch seeded from the verified default-branch SHA | dispatch/workspace | `transport:ao-no-git-workspace` | Foreman eval 67 |
+| Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:poll-wake` | Foreman eval 63 |
+| Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:isolated-branch` | Foreman eval 62 |
+| Agent Orchestrator | a no-git workflow target uses a transport-only branch seeded from the verified default-branch SHA | dispatch/workspace | `transport:no-git-workspace` | Foreman eval 67 |
 
 The corresponding backend reference owns commands. Remove a row when the transport no
 longer deviates; do not preserve historical notes here.
 
 ## Adding a backend
 
-Define the four primitives, six returns, flags, workspace model, capability probe,
-active deviations with eval ids, and recovery access. Declare an unsupported scenario
-as `n/a` with the exact degradation.
+Define the four primitives, six returns, flags, workspace model, Land execution,
+active deviations with eval ids, and recovery access. An authorized Land worker must
+be able to execute ordinary default-branch merge and tracker operations; shared backend
+permission is sufficient execution capability. Return a host permission prompt or
+host-enforced denial as `permission_blocked`. Preserve producer-owned failures as
+producer reports. Declare any other unsupported scenario as `n/a` with the exact
+degradation.

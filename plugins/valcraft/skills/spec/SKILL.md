@@ -51,10 +51,11 @@ from another skill.
    exact repeated source resumes its feature. Several applicable staged features
    require explicit selection. A complete repeated feature is idempotent.
 4. **Establish the workspace.** Prefer an exact Foreman assignment. Otherwise
-   resolve the default branch from agreeing live authorities. Derive the
-   canonical Spec branch from the artifact identity. Reconcile local branch,
-   remote branch, existing artifact, push, and PR state. Never infer or select a
-   release branch. Stop on dirty, ambiguous, or diverged state.
+   use the clean current checked-out ref selected by the invocation as the local
+   baseline and resolve its exact HEAD. Derive and reconcile the canonical Spec
+   branch locally. Keep remote and default-branch fields unresolved until an
+   outward stage needs them. Never infer or select a release branch. Stop on
+   dirty, ambiguous, or diverged local state.
 5. **Produce the artifact.** For a feature, create all three artifacts or preserve
    existing artifacts and create every missing one. For a quick task, create one
    complete file. Preserve supported intent and unresolved questions. Never
@@ -66,13 +67,18 @@ from another skill.
 7. **Commit the reviewable state.** Stage only Spec-owned artifact paths. Commit
    each reviewable state and report the exact full head. A complete unchanged
    repeated artifact creates no commit.
-8. **Prepare tracker projection.** In GitHub mode, reconcile the whole triplet:
-   parent issue, tasks, mappings, same-repository PRD parenting, hierarchy, order,
-   dependencies, generated labels, and staged clarification metadata. Local mode
-   and quick tasks never inspect or mutate an output tracker.
+8. **Prepare tracker projection.** When GitHub projection is requested,
+   reconcile the whole triplet: parent issue, tasks, mappings, same-repository
+   PRD parenting, hierarchy, order, dependencies, generated labels, and staged
+   clarification metadata. Local mode and quick tasks never inspect or mutate an
+   output tracker.
 9. **Apply outward authority.** A direct invocation has no implicit authority to
-   project, push, or create or update a PR. Accept only live operator authority or
-   an attributed Foreman assignment field bound to the exact prepared target and
+   project, push, or create or update a PR. When an outward operation is
+   requested or authorized, resolve agreeing live remote identity, remote
+   `HEAD`, hosting-service default branch, base, and canonical remote head.
+   Missing, conflicting, or diverged outward state blocks that stage without
+   discarding the local commit. Accept only live operator authority or an
+   attributed Foreman assignment field bound to the exact prepared target and
    operation set. Revalidate immediately before every mutation stage. Drift
    performs no mutation and returns a new prepared handoff.
 10. **Reconcile partial results.** Record each verified local and remote operation.
@@ -92,8 +98,8 @@ from another skill.
   supporting context, not a second source.
 - Local artifact writes and commits follow from the Spec request. Projection,
   push, and PR mutation require separate exact authority.
-- The canonical Spec PR targets the live authoritative default branch. A missing
-  release-branch setting means no separate release branch; a present setting does
-  not redirect Spec.
+- When live outward resolution succeeds, the canonical Spec PR targets the
+  authoritative default branch. A missing release-branch setting means no
+  separate release branch; a present setting does not redirect Spec.
 - Never force-push, merge, close tracker state, or broaden an authorized operation.
 - Review provides findings or a verdict, not authority. Land owns finalization.

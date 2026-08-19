@@ -48,8 +48,8 @@ Route the readable source directly to `valcraft:spec`; create no Foreman run.
   the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.
 - End only at completion or a named human gate. Claude Code uses event wake, Codex keeps
-  foreground waiting active, and Agent Orchestrator follows its authorized polling
-  contract. Never ask the operator for a status or a continue prompt.
+  foreground waiting active, and polling backends follow their declared wake contract.
+  Never ask the operator for a status or a continue prompt.
 - Never author or revise a plan, implement, review, create an artifact or PR, record or
   judge external evidence, merge, tick completion, close tracker state, or apply a
   retrospective proposal.
@@ -79,9 +79,8 @@ stale-review, checks-pending, remediation-owner, merge, and closure results.
 After confirmed feature completion:
 `FeatureClose -> Retrospective -> RetroReview -> Landing -> Complete`. FeatureClose is a
 tracker-only Land assignment. External completion uses
-`Landing -> EvidenceReview -> Landing`. `OperatorAction` waits for the operator's exact
-prepared action, then resumes Land against authoritative state. `Blocked` names the
-missing evidence, authority, or owner decision.
+`Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority,
+or owner decision.
 
 ## Trust boundary
 

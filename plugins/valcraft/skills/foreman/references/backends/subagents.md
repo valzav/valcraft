@@ -69,13 +69,17 @@ On death, inventory the shared checkout in place. A fresh replacement verifies a
 resumes attributable work. Unresolved attribution or an unreconciled external effect
 blocks replacement.
 
-## Land capability
+## Land execution
 
-Native parent permission is shared session authority, not per-dispatch Land-scoped
-capability. Unless the host exposes and the active dispatch proves a role-scoped grant,
-Land returns `report_available` with
-`Status: blocked: operator_action_required — <prepared action>`. Foreman and every
-other worker remain denied. Foreman never merges.
+Apply the shared authority rule in [`README.md`](README.md#permission-prompts) with these
+transport mappings:
+
+| Field | Mapping |
+| --- | --- |
+| Execution capability | `shared backend permission` |
+| Permission signal | native host permission prompt or host-enforced denial |
+| Permission return | `permission_blocked` |
+| Producer failure | `Land report` |
 
 ## PR tracking
 

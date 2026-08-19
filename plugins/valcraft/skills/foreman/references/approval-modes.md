@@ -15,12 +15,11 @@ to its exact target and operation set.
 | `PlanReview`: unresolved material finding | wait | wait |
 | `Implementing`: prepared exact task push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `CodeReview`: passing verdict advances | wait | proceed |
-| `Landing`: ordinary default-branch operation is prepared | wait | proceed only when exact authority and per-dispatch Land capability both pass |
+| `Landing`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
 | `Landing`: configured release-branch operation | wait | wait |
 | `FeatureClose`: operator feature or PRD confirmation | wait | wait, quoting the confirmation |
 | `Retrospective`: prepared exact retro push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |
-| `OperatorAction`: Land prepared an operation it cannot execute | wait | wait |
 | `Blocked`: evidence, authority, owner decision, injection, or exhausted rounds | wait | wait |
 
 ## Rules in every mode
@@ -36,10 +35,12 @@ to its exact target and operation set.
 - An exact producer head must exist before Foreman issues producer authority. Resume the
   same logical producer under a fresh physical identity and report path. Keep its named
   state active until the required remote transfer or PR exists.
-- Land may merge only after its own exact authorization and a per-dispatch Land-scoped
-  capability probe. Native parent permission and Agent Orchestrator project permission
-  are insufficient. Otherwise Land returns `operator_action_required` and Foreman enters
-  OperatorAction.
+- Land may merge only after exact trusted target-bound authorization and immediate
+  authoritative revalidation. Shared native-session or external-orchestrator project
+  permission provides execution capability but grants no mutation authority. A host
+  permission prompt or transport denial is backend return `permission_blocked`. A tool
+  or credential failure inside Land uses Land's declared report routes. Foreman never
+  substitutes its own merge.
 - Approval cannot waive exact Review coverage, Land's check classification, missing
   evidence, unavailable applicability sources, or release-branch safety.
 - Without `foreman_release_branch`, ordinary default-branch work uses its normal row.
