@@ -37,14 +37,12 @@ Confirm `.foreman/` is ignored (`git check-ignore -q .foreman/`); if not, stop a
 
 ## Roles
 
-| Role         | Steps      | Independence                          |
-| ------------ | ---------- | ------------------------------------- |
-| `planner`    | 2          | fresh                                 |
-| `reviewer-1` | 3, 5       | fresh; not the planner or worker      |
-| `worker`     | 4, 6, 7, 9 | fresh; owns the plan from step 4      |
-| `reviewer-2` | 8          | fresh; not the worker; second harness |
-| `recorder` / `evidence reviewer` | record/close | fresh; distinct |
-| `temper`     | 11         | fresh; once per feature               |
+- `planner`: step 2; fresh.
+- `reviewer-1`: steps 3 and 5; fresh; not the planner or worker.
+- `worker`: steps 4, 6, 7, and 9; fresh; owns the plan from step 4.
+- `reviewer-2`: step 8; fresh; not the worker; second harness.
+- `recorder` and `evidence reviewer`: record and close; fresh and distinct.
+- `temper`: step 11; fresh; once per feature.
 
 Use a second harness for `planner` and `reviewer-2` when available; otherwise fresh context provides independence. Names: `references/hygiene.md`.
 

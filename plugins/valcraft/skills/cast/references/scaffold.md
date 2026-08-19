@@ -43,7 +43,7 @@ The initial scaffold of a fresh project stays attended in both modes — a one-t
 
 Do not ask the operator to choose between Foreman and manual Forge. Both handoffs are available from every Cast scaffold. `valcraft:foreman` needs no `foreman_*` declaration: at invocation it defaults to native subagents and unattended mode, derives the default branch from authoritative repository state, and treats a missing release branch as no separate release branch.
 
-When the operator explicitly supplies a Foreman override, load `../foreman/templates/project-block.md` and propose only the supplied valid keys. Treat the template values as examples. Do not write runtime defaults merely to make Foreman available. Reject an invalid explicit value instead of replacing it with a default. Resolve `cast_approval` independently; Foreman's implicit unattended mode never changes Cast's missing-key attended mode.
+When the operator explicitly supplies a Foreman override, load `../../foreman/templates/project-block.md` and propose only the supplied valid keys. Treat the template values as examples. Do not write runtime defaults merely to make Foreman available. Reject an invalid explicit value instead of replacing it with a default. Resolve `cast_approval` independently; Foreman's implicit unattended mode never changes Cast's missing-key attended mode.
 
 Merge supplied overrides into the approved scaffold or retrofit proposal without duplicating an existing key. Source their contract from Foreman's template; do not copy it into a Cast template.
 
@@ -73,7 +73,7 @@ Copy each named template from this skill's `templates/` directory and fill it fr
 
 Record the selected mode in the generated files. `AGENTS.md` is authoritative and carries one exact declaration: `project_tracker: local` or `project_tracker: github`. A `local` project omits `github_repository`; every `spec.md` records `spec_issue: null`. A `github` project records `github_repository: TBD` until the target is approved; every `spec.md` records `spec_issue: TBD` until projection writes the issue number. A `tasks.md` contains neither field.
 
-Add no Foreman keys by default. Merge only operator-supplied overrides from `../foreman/templates/project-block.md` into `AGENTS.md`, without duplicating keys or tracker and approval declarations.
+Add no Foreman keys by default. Merge only operator-supplied overrides from `../../foreman/templates/project-block.md` into `AGENTS.md`, without duplicating keys or tracker and approval declarations.
 
 Opt-in additions — create only when the trigger is real:
 
@@ -82,7 +82,7 @@ Opt-in additions — create only when the trigger is real:
 | `docs/glossary.md`                         | Domain terms that must not be reworded exist                   |
 | `docs/system-requirements.md`              | Cross-cutting requirements outgrow the brief section           |
 | `docs/use-cases/uc-NNN-*.md`               | Product steering needs narrative scenarios (interview output)  |
-| `docs/status.md`                            | Useful non-secret external observations are unavailable from git and not directly queryable from the authoritative platform |
+| `docs/status.md`                           | Non-secret observations are neither in git nor queryable       |
 | `contracts/` + README                      | Real machine boundaries: public API, events, multiple services |
 | `specs/NNN-*/research.md`, `data-model.md` | A feature is complex enough to need them                       |
 | `docs/retro/`                              | Created by the first `valcraft:temper` retrospective report    |

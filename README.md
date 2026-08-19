@@ -17,7 +17,7 @@ Status: alpha.
 | The agent forgets requirements between sessions and reinvents them. | `cast` scaffolds a lean spec structure inside the repository (`spec.md`, `design.md`, `tasks.md`) with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that commits, tests, and reviews cite. Context lives with the code. |
 | "Make X" turns into a pile of unreviewed code.                      | `cast` scaffolds and stops; `foreman` gates every task through an independent plan review and code review, and nothing merges on the implementer's own verification.                                               |
 | One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                                |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                      |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                              |
 | Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                                |
 | The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
 | Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
@@ -39,9 +39,8 @@ The default path for a new project or a new body of work.
    **quick task** instead — one file `specs/quick/NNN-<slug>.md` (`Q-NNN`) with
    requirements, approach, and `QT-XXX` checkbox tasks; you choose. Quick dependencies
    are `blocked by QT-XXX` within one file or `blocked by Q-NNN QT-XXX` across files.
-   Enrich the product brief and
-   specs with the context and use cases the scaffold had to mark as assumptions before
-   you go further.
+   Before continuing, enrich the product brief and specs with any context or use cases
+   that the scaffold had to record as assumptions.
 3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready.
    No setup-time Foreman configuration is required: it defaults to native subagents and
    unattended mode, derives the repository's default branch when invoked, and treats a

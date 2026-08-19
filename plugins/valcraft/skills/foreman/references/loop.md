@@ -202,8 +202,10 @@ Record exactly one check state:
 `pending/failing` and `missing-required` wait before merge. `passing` and
 `none-applicable` satisfy the check gate; `none-applicable` does not create a separate
 approval path. Do not invent a universal CI gate. Advance the reviewer-covered SHA to
-the exact final head only after the scoped review passes, or the exact local checkbox
-exception applies, and the final head's check state is `passing` or `none-applicable`.
+the exact final head only when both conditions hold:
+
+1. The scoped review passes, or the exact local checkbox exception applies.
+2. The final head's check state is `passing` or `none-applicable`.
 
 This classifier is the shared merge gate for normal task PRs, record-and-close, and
 step 11 retrospective PRs. In a tracker-only record-and-close path with no real git

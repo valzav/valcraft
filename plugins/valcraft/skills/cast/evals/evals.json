@@ -151,12 +151,12 @@
       "id": 8,
       "name": "fresh-project-explicit-foreman-overrides",
       "prompt": "/valcraft:cast — new project: \"ledger\", a local CLI that records expenses and prints a monthly total. Primary user: me. MVP: record one expense and include it in the monthly total. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use local task tracking and these Foreman overrides: backend subagents, approval mode unattended, default branch main, and release branch main.",
-      "expected_output": "Cast treats the operator-supplied Foreman values as explicit overrides, not as activation requirements. It loads ../foreman/templates/project-block.md and includes foreman_backend: subagents, foreman_approval_mode: unattended, foreman_default_branch: main, and foreman_release_branch: main in the root AGENTS.md proposal. It does not propose cast_approval because the operator supplied no Cast approval override; Cast's missing-key mode remains attended. The selected project_tracker: local line remains the sole tracker declaration. The initial scaffold waits for approval. After approval Cast writes the overrides without copying or recreating the template in Cast. The report states that Foreman would also have worked without these keys.",
+      "expected_output": "Cast treats the operator-supplied Foreman values as explicit overrides, not as activation requirements. From scaffold.md it loads ../../foreman/templates/project-block.md and includes foreman_backend: subagents, foreman_approval_mode: unattended, foreman_default_branch: main, and foreman_release_branch: main in the root AGENTS.md proposal. It does not propose cast_approval because the operator supplied no Cast approval override; Cast's missing-key mode remains attended. The selected project_tracker: local line remains the sole tracker declaration. The initial scaffold waits for approval. After approval Cast writes the overrides without copying or recreating the template in Cast. The report states that Foreman would also have worked without these keys.",
       "files": [
         "../foreman/templates/project-block.md"
       ],
       "assertions": [
-        "Cast loads the project block from ../foreman/templates/project-block.md and does not copy its content into a Cast template",
+        "From scaffold.md, Cast loads the project block from ../../foreman/templates/project-block.md and does not copy its content into a Cast template",
         "The approved proposal contains the four explicit Foreman overrides plus project_tracker: local and no cast_approval declaration",
         "Foreman's explicit unattended mode does not change Cast's independently missing attended mode",
         "project_tracker is declared exactly once in AGENTS.md",

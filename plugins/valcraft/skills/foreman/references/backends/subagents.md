@@ -21,6 +21,9 @@ The foreman and workers run through the active host's native subagent tools. Thi
 
 ## Await discipline on this backend
 
+Do not add an external orchestrator, scheduled or periodic polling, report-file polling,
+a wait interval, a retry cap, or a user-visible working-status requirement.
+
 ### Claude Code — event
 
 The Agent dispatch establishes a completion notification before the foreman ends the parent turn. The host re-invokes the foreman when the notification arrives. Consume its status, validate a `done` report, and continue the loop. On `blocked` or `question`, follow the existing rule and respawn with the decision and prior report path. On a dispatch or delivery failure before any evidence that the worker acted, apply the two-attempt rule. On `dead`, apply the recovery inventory in `README.md`. Do not foreground-wait or schedule polling.
@@ -35,8 +38,6 @@ Resolve every wait return through the assigned agent's state:
 - A completion delivered with `trigger_turn: false` is expected because the parent turn is already active. Consume it, read and validate the report, record the terminal state, and continue the loop.
 - `blocked` and `question` follow the existing resolution or escalation rules. A respawn is a fresh agent with the decision and prior report path.
 - A dispatch error before the worker could act follows the two-attempt rule. `dead` follows the recovery inventory in `README.md`. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop.
-
-Do not add an external orchestrator, scheduled or periodic polling, report-file polling, a wait interval, a retry cap, or a user-visible working-status requirement.
 
 ## Workspace and the run directory
 

@@ -309,24 +309,6 @@
       ]
     },
     {
-      "id": 14,
-      "name": "quick-cross-file-unchecked-target-blocks",
-      "prompt": "/valcraft:foreman — in evals/files/loop-quick/blocked-project/, deliver quick and stop after eligibility classification.",
-      "expected_output": "Foreman validates both files, sees Q-002 QT-001 depends on unchecked Q-001 QT-001, and does not pick Q-002. It picks Q-001 QT-001 first by file order. Even in GitHub mode it reads only quick-file checkboxes and performs no quick-task issue lookup.",
-      "files": [
-        "evals/files/loop-quick/blocked-project/AGENTS.md",
-        "evals/files/loop-quick/blocked-project/.gitignore",
-        "evals/files/loop-quick/blocked-project/docs/product-brief.md",
-        "evals/files/loop-quick/blocked-project/specs/quick/001-foundation.md",
-        "evals/files/loop-quick/blocked-project/specs/quick/002-dependent.md"
-      ],
-      "assertions": [
-        "Unchecked Q-001 QT-001 blocks dependent Q-002 QT-001",
-        "Foreman selects Q-001 QT-001 rather than the blocked task",
-        "No GitHub issue lookup, label, or batch is used for either quick task"
-      ]
-    },
-    {
       "id": 15,
       "name": "invalid-quick-prefixes-stop-before-pick",
       "prompt": "/valcraft:foreman — in evals/files/loop-quick/invalid-project/, deliver quick. This run is unattended.",
@@ -346,8 +328,8 @@
     {
       "id": 16,
       "name": "backend-physical-handles-preserve-quick-identity",
-      "prompt": "/valcraft:foreman — demonstrate backend handle derivation for worker Q-1000 QT-001. On Agent Orchestrator, assume the first derived alias is already owned by Q-007 QT-001; on Codex use the native subagent handle contract. Do not spawn anything.",
-      "expected_output": "Foreman keeps canonical Q-1000 QT-001 and logical worker-Q1000-QT001 intact. AO derives a compact role-token plus digest alias no longer than 20 characters, detects the forced collision before spawn, derives and checks a distinct alias, and records the mapping. Codex independently derives lowercase_underscore worker_q1000_qt001. Neither backend truncates the canonical identity or caps numeric width.",
+      "prompt": "/valcraft:foreman — demonstrate Agent Orchestrator handle derivation for every delivery role and both decompose roles. Include worker Q-1000 QT-001, and assume its first derived alias is already owned by Q-007 QT-001. Then show a fresh AO respawn of worker Q-1000 QT-001 and the Codex native-subagent handle for that quick worker. Do not spawn anything.",
+      "expected_output": "Foreman keeps every canonical logical identity intact. AO maps planner, reviewer-1, worker, reviewer-2, recorder, evidence-reviewer, temper, decompose planner, and decompose reviewer to p, r1, w, r2, rec, er, t, dp, and dr. The first physical dispatch uses ordinal 0 and lowercase hexadecimal SHA-256 over the UTF-8 canonical identity. A forced alias collision rehashes the dispatch preimage plus a newline and collision:1 until an unowned alias is found. A respawn of the same logical identity takes dispatch ordinal 1, hashes the canonical identity plus a newline and dispatch:1, receives a distinct checked alias, and keeps both physical-dispatch rows in workers.md. Every alias uses the leading digest characters that fit 20 characters. Codex independently derives lowercase_underscore worker_q1000_qt001. Neither backend truncates a canonical identity or caps numeric width.",
       "files": [
         "references/hygiene.md",
         "references/backends/ao.md",
@@ -356,8 +338,10 @@
       ],
       "assertions": [
         "Canonical Q-1000 QT-001 and logical worker-Q1000-QT001 remain intact",
-        "The AO physical alias is independently derived from a compact role token and digest and is at most 20 characters",
-        "The forced AO collision is detected before spawn and produces a distinct checked alias",
+        "AO maps planner, reviewer-1, worker, reviewer-2, recorder, evidence-reviewer, temper, decompose planner, and decompose reviewer to p, r1, w, r2, rec, er, t, dp, and dr",
+        "The AO alias uses lowercase hexadecimal SHA-256 over the UTF-8 canonical identity and as many leading digest characters as fit the 20-character contract",
+        "The forced AO collision is detected before spawn and deterministically rehashes the dispatch preimage plus newline collision:1 until a distinct checked alias is available",
+        "A same-identity AO respawn uses the next dispatch ordinal, hashes the canonical identity plus newline dispatch:1, receives a distinct alias, and preserves both workers.md rows",
         "Codex independently uses lowercase_underscore worker_q1000_qt001",
         "workers.md maps each physical handle to canonical identity without a numeric-width cap"
       ]
@@ -382,7 +366,7 @@
     {
       "id": 18,
       "name": "codex-timeout-active-worker-rearms-await",
-      "prompt": "$valcraft:foreman — on Codex, the foreground await for worker-F001-T002 returned a timeout and assigned-worker status still says running. Show the next action. Do not call tools.",
+      "prompt": "$valcraft:foreman — on Codex, the foreground await for worker-F001-T002 returned a timeout and assigned-worker status still says running. Show the next action. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman resolves the timeout against the assigned worker's live state. Because worker-F001-T002 is still active, the timeout is nonterminal: Foreman re-arms the foreground await in the same parent turn. It does not read or poll the report file, choose an interval or retry cap, advance the loop, ask the user, or emit a final response.",
       "files": [
         "references/backends/README.md",
@@ -393,58 +377,6 @@
         "An active worker causes Foreman to re-arm foreground await in the same parent turn",
         "Foreman neither advances nor asks the user nor emits a final response",
         "Foreman invents no interval or retry cap and does not poll a report file"
-      ]
-    },
-    {
-      "id": 19,
-      "name": "codex-trigger-turn-false-completion-advances",
-      "prompt": "$valcraft:foreman — on Codex, worker-F001-T002 completes while its parent foreground await is active. The completion is delivered with trigger_turn:false and a done status. Describe handling. Do not call tools.",
-      "expected_output": "Foreman consumes the completion in the already-active parent turn; trigger_turn:false is expected and does not require user or host re-invocation. It reads and validates the assigned worker's report under the existing report contract, records the terminal state in workers.md, applies the loop gate, and immediately dispatches or performs the next required loop step unless that step reaches a human approval or escalation gate.",
-      "files": [
-        "references/backends/README.md",
-        "references/backends/subagents.md",
-        "references/contracts.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "trigger_turn:false completion is consumed in the active Codex parent turn",
-        "Foreman validates the report before accepting completion",
-        "Foreman advances the loop without asking the user to continue",
-        "Only an existing human approval or escalation gate may stop the advancing turn"
-      ]
-    },
-    {
-      "id": 20,
-      "name": "codex-early-completion-before-first-await",
-      "prompt": "$valcraft:foreman — on Codex, reviewer-1-F001-T002 finishes after dispatch but before Foreman first calls foreground await. The completion message is already available. Describe handling. Do not call tools.",
-      "expected_output": "Foreman checks the assigned worker state and available completion message before its first foreground await. It consumes the terminal completion immediately, validates the report, records the state, and advances the loop. It does not arm a redundant wait, infer success merely because the worker is absent from live status, or poll the report file.",
-      "files": [
-        "references/backends/README.md",
-        "references/backends/subagents.md",
-        "references/contracts.md"
-      ],
-      "assertions": [
-        "An already-delivered completion is consumed before the first foreground await",
-        "The assigned worker's report is validated before the loop advances",
-        "Foreman does not arm a redundant wait or poll a report file",
-        "Absence from live status alone is not accepted as success"
-      ]
-    },
-    {
-      "id": 21,
-      "name": "codex-human-gate-may-end-turn",
-      "prompt": "$valcraft:foreman — on Codex, the assigned worker has completed and its validated report reaches a release-branch approval gate that waits in every approval mode. May the parent turn end? Explain.",
-      "expected_output": "Yes. Foreman records the worker's terminal state, applies the existing release-branch rule, reports the concrete decision needed from the human, and may end the turn. The turn ends because a named human approval gate is active, not because a worker is running, an await timed out, or Foreman promised a later step. The turn-ending invariant applies above attended and unattended approval mode.",
-      "files": [
-        "SKILL.md",
-        "references/approval-modes.md",
-        "references/backends/subagents.md"
-      ],
-      "assertions": [
-        "A named human approval or escalation gate may end the Codex parent turn",
-        "The worker is terminal and its report is processed before the human wait",
-        "The turn ends for the gate, not for an active worker, timeout, status update, or promised next step",
-        "The turn-ending invariant applies in both approval modes"
       ]
     },
     {
@@ -467,7 +399,7 @@
     {
       "id": 23,
       "name": "codex-terminal-routing-preserves-existing-rules",
-      "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not call tools.",
+      "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman resolves each return against the assigned worker. Blocked and question follow the existing blocked-worker and report-status rules; a settled answer or valid respawn creates a fresh worker, while a human decision escalates. A dispatch error before any worker can act follows the existing two-attempt rule. A dead worker first triggers the backend-aware recovery inventory and resumes through a fresh worker only after that worker verifies or discards every observation; unsafe recovery escalates. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop; Foreman continues resolving state. Every done report still passes completeness validation.",
       "files": [
         "references/backends/README.md",
@@ -483,143 +415,9 @@
       ]
     },
     {
-      "id": 24,
-      "name": "claude-code-event-continuation-preserved",
-      "prompt": "/valcraft:foreman — describe native-subagent continuation on Claude Code after dispatching planner-F001-T002. Do not spawn anything.",
-      "expected_output": "Foreman selects the portable subagents backend's Claude Code mapping from the active host. The Agent dispatch establishes the worker's completion notification before Foreman ends the parent turn. The host later re-invokes Foreman when that notification arrives; Foreman consumes the returned status and report under the existing rules. It does not foreground-wait or schedule polling on Claude Code.",
-      "files": [
-        "references/backends/README.md",
-        "references/backends/subagents.md"
-      ],
-      "assertions": [
-        "The active Claude Code host selects event continuation without a second backend or project setting",
-        "Dispatch establishes the completion notification before the parent turn ends",
-        "The host re-invokes Foreman when the completion notification arrives",
-        "Claude Code uses neither foreground waiting nor scheduled polling"
-      ]
-    },
-    {
-      "id": 25,
-      "name": "native-subagents-add-no-polling-policy",
-      "prompt": "$valcraft:foreman — audit the portable native-subagents backend for added continuation policy. State what it must not add.",
-      "expected_output": "The portable subagents backend maps Claude Code to event wake and Codex to foreground wake. It adds no external orchestrator, scheduled or periodic polling, report-file polling, user-visible working-status requirement, wait interval, or retry cap. Codex simply re-arms foreground await while the assigned worker remains active; Claude Code waits for its native completion event.",
-      "files": [
-        "SKILL.md",
-        "references/backends/README.md",
-        "references/backends/subagents.md"
-      ],
-      "assertions": [
-        "The same subagents backend maps Codex to foreground and Claude Code to event",
-        "No external orchestrator, scheduled polling, periodic polling, or report-file polling is added",
-        "No wait interval, retry cap, or user-visible working-status requirement is invented",
-        "Codex re-arms native foreground await only while assigned-worker state remains active"
-      ]
-    },
-    {
-      "id": 26,
-      "name": "assignment-context-preserves-provenance-and-scope",
-      "prompt": "$valcraft:foreman — prepare optional assignment context for worker-F001-T002. The operator instructs: \"retarget PR #17 to dev only\" and attests that check `verify` passed, citing the operator's message. Show the envelope context and how the worker uses it. Do not spawn anything.",
-      "expected_output": "Foreman adds an optional labeled context section after the assignment. It records an Operator instruction/decision with the quoted scope `retarget PR #17 to dev only`; that instruction authorizes only that retarget action and does not authorize merge, tracker closure, or another write. It separately records an Operator attestation that check `verify` passed and names the operator message as its source. The worker treats the attestation as evidence to assess under its skill contract, not as a fact or a substitute for verification. Foreman passes artifact paths and source locators rather than pasting report or tracker content.",
-      "files": [
-        "references/contracts.md"
-      ],
-      "assertions": [
-        "The envelope labels the operator instruction/decision separately from the operator attestation",
-        "The instruction preserves its quoted scope and authorizes only the named retarget action",
-        "The attestation names its source and remains evidence rather than an accepted fact",
-        "The envelope carries paths and locators instead of copied report or tracker content"
-      ]
-    },
-    {
-      "id": 27,
-      "name": "replacement-verifies-or-discards-foreman-observations",
-      "prompt": "$valcraft:foreman — a worker died. A Foreman probe observed branch `feat/f001-t002` at commit `abc1234abc1234abc1234abc1234abc1234abc12`, but a later branch probe finds no such ref. Prepare the recovery context and replacement instruction. Do not spawn anything.",
-      "expected_output": "Foreman labels both probe results as Foreman observations and records each probe locator, including the command or backend status source and when it was observed. It does not promote either observation into a fact or choose the older one because it is already in state.md. The fresh replacement must independently inspect authoritative git state, verify or discard every observation, record its disposition, and resume only from the verified state. Because the branch cannot be verified, the replacement discards the stale branch observation rather than recreating or redoing work from it.",
-      "files": [
-        "references/contracts.md",
-        "references/backends/README.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Every Foreman observation carries a probe locator and stays explicitly unverified",
-        "state.md does not override the replacement's authoritative git inspection",
-        "The replacement records whether it verified or discarded each observation",
-        "The stale branch observation is discarded instead of becoming a restart instruction"
-      ]
-    },
-    {
-      "id": 28,
-      "name": "dead-worker-recovers-branch-commit-pr-and-report",
-      "prompt": "$valcraft:foreman — worker-F001-T002 died after creating branch `feat/f001-t002`, commit `abc1234abc1234abc1234abc1234abc1234abc12`, PR #17, and a partial report. All are still queryable. Describe recovery and continuation on each backend. Do not call tools.",
-      "expected_output": "Foreman inventories recoverable git branch and exact commit, PR reference and current tracker state, report path and completeness, working-tree state, and the dead worker's accessible workspace state. It labels every entry as a Foreman observation with its probe locator and records pointers and exact SHAs in state.md. On the shared-checkout backend it inspects the shared branch and working tree in place; on the isolated-worktree backend it inspects the dead session's accessible worktree before replacement. The fresh replacement receives the labeled inventory and prior report path, verifies or discards every observation against git, the tracker, the report, and the accessible workspace, then resumes existing work at the recorded exact commit instead of recreating the branch, commit, PR, or already-completed report sections. The existing host-specific event or foreground await behavior applies after dispatch.",
-      "files": [
-        "references/contracts.md",
-        "references/backends/README.md",
-        "references/backends/subagents.md",
-        "references/backends/ao.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "The recovery inventory covers git, tracker, report, working tree, and accessible workspace state",
-        "Inventory entries are attributed Foreman observations with probe locators and exact SHAs where applicable",
-        "The replacement verifies or discards the inventory before resuming existing work",
-        "The replacement does not duplicate the branch, commit, PR, or completed report content",
-        "Shared-checkout and isolated-worktree inspection differ without changing U9 wake behavior"
-      ]
-    },
-    {
-      "id": 29,
-      "name": "unsafe-dead-worker-state-escalates",
-      "prompt": "$valcraft:foreman — classify two dead-worker recoveries: (a) the shared checkout is dirty and attribution of the uncommitted changes is unresolved; (b) an isolated worker workspace with uncommitted changes is inaccessible and the worker may have started an external write whose result cannot be reconciled. Do not call tools.",
-      "expected_output": "Foreman escalates both recoveries and does not respawn a replacement to restart the assignment. In (a), it preserves the shared checkout and reports that the dirty state cannot yet be attributed safely. In (b), it reports both the inaccessible worker-only changes and the unreconciled external effect. A replacement may be dispatched only after the relevant state becomes accessible and reconcilable; the two-attempt rule does not authorize discarding or duplicating partial work.",
-      "files": [
-        "references/backends/README.md",
-        "references/backends/subagents.md",
-        "references/backends/ao.md"
-      ],
-      "assertions": [
-        "Unattributed dirty shared-checkout state causes escalation without cleanup or restart",
-        "Inaccessible uncommitted worker-only state causes escalation",
-        "An unreconciled external effect causes escalation before any replacement write",
-        "The two-attempt rule does not permit duplicate work or loss of partial state"
-      ]
-    },
-    {
-      "id": 30,
-      "name": "artifact-date-authority-precedence",
-      "prompt": "$valcraft:foreman — resolve dates for three artifacts created on 2031-04-08: the repository policy requires 2031-04-05 for the first while the operator says 2031-04-06; the repository is silent for the second and the operator explicitly says 2031-04-07; neither supplies a date for the third. State each result and authority. Do not write files.",
-      "expected_output": "Foreman resolves each artifact independently. The first uses 2031-04-05 from applicable repository policy, which outranks the operator date. The second uses the explicit operator date 2031-04-07 because no repository policy applies. The third uses its actual creation date, 2031-04-08. It records the authority with each resolved date and does not infer a date from the run ID.",
-      "files": [
-        "references/contracts.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Applicable repository policy outranks an explicit operator date",
-        "An explicit operator date applies only when repository policy is silent",
-        "Actual artifact creation date is the fallback",
-        "Each artifact records its date authority and the run ID supplies no artifact date"
-      ]
-    },
-    {
-      "id": 31,
-      "name": "midnight-run-keeps-id-and-resolves-new-artifact-date",
-      "prompt": "$valcraft:foreman — run `2031-04-08-001` starts before midnight with no repository or operator date rule. A plan is created on 2031-04-08 and a remediation plan on 2031-04-09. Show the identities and dates. Do not write files.",
-      "expected_output": "Foreman keeps the existing run ID `2031-04-08-001` for the whole run. It resolves each artifact when that artifact is created: the first plan uses 2031-04-08 and the later remediation plan uses 2031-04-09. It does not rename the run, freeze 2031-04-08 as a run-wide artifact date, or rewrite the earlier plan's date.",
-      "files": [
-        "references/contracts.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "The run ID remains unchanged across midnight",
-        "The first artifact uses its 2031-04-08 creation date",
-        "The later artifact independently uses its 2031-04-09 creation date",
-        "No run-wide frozen date or retrospective date rewrite is introduced"
-      ]
-    },
-    {
       "id": 32,
       "name": "resolution-report-requires-commit-and-locator",
-      "prompt": "$valcraft:foreman — validate two worker resolution reports at step 4. The first says `R-004 fixed: clarified the plan`. The second says `R-004 | 0123456789abcdef0123456789abcdef01234567 | docs/plans/2031-04-08-001-fix-retry-plan.md:42 | retry state now follows ADR-0002`. Describe the report gate and branch state. Do not call tools.",
+      "prompt": "$valcraft:foreman — validate two worker resolution reports at step 4. The first says `R-004 fixed: clarified the plan`. The second says `R-004 | 0123456789abcdef0123456789abcdef01234567 | docs/plans/2031-04-08-001-fix-retry-plan.md:42 | retry state now follows ADR-0002`. Describe the report gate, the task branch state, and which branch Forge uses later. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman first requires the task branch to exist or resume before step-4 remediation and requires the worker to commit the plan change on that branch. It rejects the first report as incomplete because it lacks the resolving commit and repository-relative file-and-line locator. It accepts the second line mechanically because it names the R-ID, resolving commit, repository-relative locator, and concise claim. It requests no copied hunk or before-and-after text. Forge later resumes the same task branch.",
       "files": [
         "references/loop.md",
@@ -634,46 +432,9 @@
       ]
     },
     {
-      "id": 33,
-      "name": "closure-check-follows-resolving-diff",
-      "prompt": "$valcraft:foreman — a step-9 report says `R-006 | fedcba9876543210fedcba9876543210fedcba98 | src/retry.py:61 | all retry exits preserve the queued item`. Inspection of that commit shows the timeout exit still deletes the item, and the original R-006 reproduction still fails. Describe the closure result. Do not call tools.",
-      "expected_output": "Foreman sends the same reviewer the resolving commit and report path. The closure reviewer inspects the named commit and its diff before rerunning the original R-006 reproduction. The actual diff controls over the worker's concise claim, and the failed reproduction confirms the discrepancy. R-006 remains open; the report claim, commit subject, or locator alone cannot close it under Rule 6.",
-      "files": [
-        "references/contracts.md",
-        "references/review-round.md"
-      ],
-      "assertions": [
-        "The closure reviewer inspects the named resolving commit and diff before rerunning the original reproduction",
-        "The actual commit and diff control when the worker's concise claim contradicts them",
-        "The original R-006 reproduction is rerun against the remediated artifact",
-        "R-006 remains open because both the diff and rerun contradict the claimed resolution",
-        "Rule 6 remains the closure gate"
-      ]
-    },
-    {
-      "id": 34,
-      "name": "default-branch-synchronization-classifies-four-relations",
-      "prompt": "$valcraft:foreman — before selecting Q-004 QT-002, classify these clean default-branch states after fetch: (a) local dev and origin/dev have the same SHA; (b) origin/dev is ahead; (c) local dev is ahead, first without and then with an explicit operator instruction to push it; (d) the refs diverged. The project is unattended. Do not call tools.",
-      "expected_output": "Foreman records the exact local dev and origin/dev SHAs after fetch and classifies their ancestry. Equal proceeds. Clean origin-ahead fast-forwards local dev to origin/dev, verifies the reconciled SHA, and proceeds. Local-ahead waits before pushing without explicit authority; unattended mode does not grant that authority. With the explicit push instruction, Foreman pushes the local default branch, verifies that the refs are reconciled, records the resulting exact SHA, and proceeds. A new task records that reconciled SHA as its branch base. Diverged stops without rebasing, merging, resetting, force-pushing, or creating the task branch. Approval mode authorizes only operations listed in its table.",
-      "files": [
-        "references/loop.md",
-        "references/approval-modes.md",
-        "references/backends/subagents.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Foreman records exact local and remote default-branch SHAs and distinguishes equal, origin-ahead, local-ahead, and diverged",
-        "Equal proceeds and clean origin-ahead fast-forwards before proceeding",
-        "Local-ahead waits without explicit push authority even in unattended mode, then pushes and verifies reconciliation when that authority is supplied",
-        "A new task branch starts from the recorded reconciled default-branch SHA",
-        "Diverged stops without rewriting or combining the refs and before task-branch creation",
-        "Approval mode grants only the operations listed in the approval table"
-      ]
-    },
-    {
       "id": 35,
       "name": "dirty-shared-checkout-stops-before-synchronization",
-      "prompt": "$valcraft:foreman — step 0 begins in the shared checkout and `git status` shows dirt before Q-004 QT-002 has a task branch. Classify separate cases with a staged edit, an unstaged edit, or an untracked file; in each case the owner may be known or unknown. The project is unattended. What happens next? Do not call tools.",
+      "prompt": "$valcraft:foreman — step 0 begins in the shared checkout and `git status` shows dirt before Q-004 QT-002 has a task branch. Classify separate cases with a staged edit, an unstaged edit, or an untracked file; in each case the owner may be known or unknown. The project is unattended. What happens next? Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman preserves the checkout and stops in every case before fetch, switch, default-branch synchronization, or task-branch creation. It records the staged, unstaged, and untracked paths, any known attribution, and the current branch and SHA in state.md, then waits for the operator. Attribution does not authorize the task-start gate to proceed. Foreman does not clean, stash, reset, switch, create a branch, or treat unattended mode as permission to mutate the checkout. Dead-worker recovery of an existing task remains a separate rule.",
       "files": [
         "references/loop.md",
@@ -691,144 +452,9 @@
       ]
     },
     {
-      "id": 36,
-      "name": "exact-local-task-tick-is-the-only-review-bypass",
-      "prompt": "$valcraft:foreman — reviewer-2 passed PR head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa for Q-004 QT-002. Compare two later PR heads: (a) bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb changes only that exact selected task's checkbox from unchecked to checked; (b) cccccccccccccccccccccccccccccccccccccccc makes the same tick and changes adjacent task text. Describe the final-head review gate. Do not call tools.",
-      "expected_output": "Foreman records aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as the reviewer-covered SHA and compares each later head exactly against it. For (a), the exact unchecked-to-checked transition for selected Q-004 QT-002 is the sole exception: local intake owns that tick, so it may bypass another scoped review. For (b), the adjacent text means the delta is not the exact exception; Foreman sends the scoped delta from the covered SHA through review and applicable checks before advancing the reviewer-covered SHA. It never uses a change-type allow-list or diff-stat heuristic.",
-      "files": [
-        "references/loop.md",
-        "references/intake-local.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "The reviewer-covered SHA is recorded and every later head is compared exactly against it",
-        "Only the selected task's exact unchecked-to-checked transition bypasses another scoped review",
-        "An adjacent text edit requires scoped review and applicable checks",
-        "The covered SHA advances only after that review and its applicable checks pass",
-        "No change-type allow-list or diff-stat heuristic is used"
-      ]
-    },
-    {
-      "id": 37,
-      "name": "all-other-final-head-deltas-require-scoped-review",
-      "prompt": "$valcraft:foreman — after reviewer-2 covers one PR SHA, the PR head changes in four independent cases: a documentation edit, a file rename, a generated-file update, and a merge commit. None is the exact selected-task checkbox transition. Classify each case. Do not call tools.",
-      "expected_output": "Foreman treats each new head as uncovered. Documentation, rename, generated-file, and merge deltas each receive scoped review of the exact delta from the last covered SHA, followed by applicable checks on the resulting final SHA. No category is trusted by name, file type, generation status, merge provenance, or diff size. The covered SHA advances only after review passes and applicable checks cover that exact head.",
-      "files": [
-        "references/loop.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Documentation deltas require scoped review",
-        "Rename deltas require scoped review",
-        "Generated-file deltas require scoped review",
-        "Merge deltas require scoped review",
-        "Each covered SHA advances only after scoped review and applicable checks pass on the exact resulting head"
-      ]
-    },
-    {
-      "id": 38,
-      "name": "final-head-required-checks-pass-or-wait",
-      "prompt": "$valcraft:foreman — the final PR head is dddddddddddddddddddddddddddddddddddddddd and review covers it. In one case every applicable required check reports success on that SHA. In two other cases one applicable check is running or failing. Classify the three outcomes. Do not call tools.",
-      "expected_output": "Foreman records the final head SHA with the check observations. All applicable required checks passing on that exact SHA classifies as passing and satisfies the check gate. A running check and a failing check each classify as pending/failing and wait before merge. Neither attended nor unattended mode converts a pending or failing result into approval, and Foreman adds no universal CI requirement beyond the applicable checks.",
-      "files": [
-        "references/loop.md",
-        "references/approval-modes.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Passing means every applicable required check succeeds on the exact final head",
-        "A running applicable check classifies pending/failing and waits",
-        "A failing applicable check classifies pending/failing and waits",
-        "Approval mode cannot waive the result and no universal CI gate is invented"
-      ]
-    },
-    {
-      "id": 39,
-      "name": "required-check-that-did-not-trigger-is-missing-required",
-      "prompt": "$valcraft:foreman — repository rules require a verification check for Q-004 QT-002, but the check suite returned no run for the exact final PR head. Review passed. Classify the check state and merge decision. Do not call tools.",
-      "expected_output": "Foreman classifies the exact final head as missing-required, records the required check and the source that requires it, and waits before merge. An absent run is not none-applicable and cannot inherit a result from another SHA. Approval mode does not waive the missing required check.",
-      "files": [
-        "references/loop.md",
-        "references/approval-modes.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "A configured or required check with no final-head run classifies as missing-required",
-        "Missing-required waits before merge",
-        "The missing run is not none-applicable and cannot borrow another SHA's result",
-        "The requiring source is recorded with the exact final SHA"
-      ]
-    },
-    {
-      "id": 40,
-      "name": "introduced-workflow-and-external-requirement-determine-applicability",
-      "prompt": "$valcraft:foreman — the default branch has no workflow file. PR A introduces a workflow that applies to its own final head. PR B does not add a workflow, but repository rules name an externally run required check. How does Foreman classify applicability? Do not call tools.",
-      "expected_output": "Foreman does not infer none-applicable from the default branch alone. For PR A it inspects workflows present on the default branch or introduced by the PR, so the introduced applicable workflow counts. For PR B it queries repository rules and external required-check sources, so the external requirement counts even without a repository workflow. Each resulting check must report for the exact final SHA; otherwise the state is pending/failing or missing-required as appropriate.",
-      "files": [
-        "references/loop.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Default-branch workflow absence alone never proves none-applicable",
-        "A workflow introduced by the PR participates in applicability",
-        "An external required check participates even when the repository has no workflow file",
-        "The applicable results must cover the exact final SHA"
-      ]
-    },
-    {
-      "id": 41,
-      "name": "older-head-check-result-cannot-authorize-final-head",
-      "prompt": "$valcraft:foreman — all applicable checks passed on PR head eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee. A scoped review fix creates final head ffffffffffffffffffffffffffffffffffffffff, and no check result exists yet for that SHA. May Foreman merge? Do not call tools.",
-      "expected_output": "No. Foreman records eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as older check evidence but does not apply it to ffffffffffffffffffffffffffffffffffffffff. It reclassifies applicable checks for the exact final head and waits for their final-head results; a required check with no run is missing-required. Review coverage and check coverage are both pinned to the exact final SHA before merge.",
-      "files": [
-        "references/loop.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "An older-head passing result cannot authorize a newer final head",
-        "Applicable checks are reclassified for the exact final SHA",
-        "A required check with no new-head run is missing-required",
-        "Both review and check coverage are pinned to the final SHA"
-      ]
-    },
-    {
-      "id": 42,
-      "name": "none-applicable-uses-normal-merge-approval-row",
-      "prompt": "$valcraft:foreman — repository task requirements, repository rules, external required checks, and workflows on the default branch and introduced by the PR are all available and queried. None configures or requires a check for final head 1111111111111111111111111111111111111111, which exact review covers. What happens in attended and unattended mode? Do not call tools.",
-      "expected_output": "Foreman records each queried applicability source, the exact final SHA, and the classification none-applicable. That classification satisfies the check gate without inventing a universal CI requirement. Merge then follows the normal step-10 approval row: attended waits for the human; unattended proceeds when the ordinary proceed/wait test passes and no other always-wait row applies.",
-      "files": [
-        "references/loop.md",
-        "references/approval-modes.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "None-applicable is available only after every applicability source is queried",
-        "The source observations and exact final SHA are recorded",
-        "No universal CI requirement is invented",
-        "The normal step-10 merge row controls attended and unattended behavior"
-      ]
-    },
-    {
-      "id": 43,
-      "name": "unavailable-applicability-source-stops-classification",
-      "prompt": "$valcraft:foreman — classify checks for three final heads. In separate cases, repository rules are unavailable, the external required-check source is unavailable, or the applicable workflow source cannot be read. Other visible sources show no checks. Do not call tools.",
-      "expected_output": "Foreman stops before assigning passing, pending/failing, missing-required, or none-applicable in all three cases. It records the exact final SHA, the unavailable source, and the probe result, then waits for that source to become available or for human resolution. Visible absence elsewhere cannot substitute for repository rules, external required checks, or workflow inspection. Approval mode does not authorize a guess.",
-      "files": [
-        "references/loop.md",
-        "references/approval-modes.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "Unavailable repository rules stop before classification",
-        "An unavailable external required-check source stops before classification",
-        "An unavailable applicable-workflow source stops before classification",
-        "Foreman records the exact SHA and failed source probe and does not guess from other visible sources"
-      ]
-    },
-    {
       "id": 44,
       "name": "local-external-completion-records-criterion-evidence",
-      "prompt": "$valcraft:foreman — an operator says feature task T-004 was completed outside the loop. The local tracker task covers AC-006 and AC-007, and verifiable evidence exists for both. Describe record and close. Do not call tools.",
+      "prompt": "$valcraft:foreman — an operator says feature task T-004 was completed outside the loop. The local tracker task covers AC-006 and AC-007, and verifiable evidence exists for both. Describe record and close. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman selects the narrow record-and-close path instead of planning or replaying implementation. A fresh recorder writes attributed evidence for AC-006 and AC-007 beside T-004 in tasks.md and reports each criterion's durable locator. A separate fresh evidence-sufficiency reviewer assesses every criterion and records its independent-verification decision. The evidence write and task tick use a task PR, so the exact-final-head review and applicable-check classifier must pass on its final SHA before Foreman merges; only then is T-004 closed. No planner or full code/plan review cycle is created for the already-completed work.",
       "files": [
         "references/record-and-close.md",
@@ -846,7 +472,7 @@
     {
       "id": 45,
       "name": "quick-external-completion-keeps-evidence-in-quick-file",
-      "prompt": "$valcraft:foreman — Q-009 QT-002 was completed outside the loop and its acceptance criteria have evidence. Describe the tracker artifact and close gates. Do not call tools.",
+      "prompt": "$valcraft:foreman — Q-009 QT-002 was completed outside the loop and its acceptance criteria have evidence. Describe the tracker artifact and close gates. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman uses record and close for canonical task Q-009 QT-002. The fresh recorder places criterion-keyed, attributed evidence beside QT-002 in specs/quick/009-<slug>.md; it creates no feature tasks.md entry or GitHub task issue. A separate fresh sufficiency reviewer assesses every criterion and records whether each source was independently verified. The quick-file evidence and exact checkbox transition land through a task PR whose exact final head receives required scoped review and applicable checks. Foreman merges and treats the quick file as done only after every criterion is sufficient and all gates pass.",
       "files": [
         "references/record-and-close.md",
@@ -863,7 +489,7 @@
     {
       "id": 46,
       "name": "github-external-completion-uses-attributed-serialized-close",
-      "prompt": "$valcraft:foreman — GitHub-tracked T-006 was completed by an external operation with evidence for every acceptance criterion and no branch, commit, or PR. Describe record and close. Do not call tools.",
+      "prompt": "$valcraft:foreman — GitHub-tracked T-006 was completed by an external operation with evidence for every acceptance criterion and no branch, commit, or PR. Describe record and close. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman does not invent a git review target. It serializes the recorder's attributed, criterion-keyed evidence as an exact comment batch for T-006's task issue, executes it under the approval mode, and records the resulting comment locator. A separate fresh reviewer reads the committed task contract and durable issue evidence, independently verifies what can be verified, and returns sufficient for every criterion. Foreman queries every applicable check source against the real authoritative targets; any check requiring an unavailable git head remains unsatisfied rather than receiving a fabricated SHA. After sufficient evidence and satisfied applicable checks, Foreman serializes and executes the ordinary close batch, cites the evidence comment and sufficient verdict, and removes in-progress. Partial batch failure still reconciles before retry.",
       "files": [
         "references/record-and-close.md",
@@ -882,7 +508,7 @@
     {
       "id": 47,
       "name": "insufficient-external-completion-evidence-keeps-task-open",
-      "prompt": "$valcraft:foreman — an external-completion recorder supports AC-001 strongly, gives only an unverifiable conclusion for AC-002, and omits AC-003. The task is open. What does the sufficiency gate do? Do not call tools.",
+      "prompt": "$valcraft:foreman — an external-completion recorder supports AC-001 strongly, gives only an unverifiable conclusion for AC-002, and omits AC-003. The task is open. What does the sufficiency gate do? Do not spawn workers. Do not write files. Report only.",
       "expected_output": "The fresh evidence-sufficiency reviewer emits one row for each of AC-001, AC-002, and AC-003. AC-001 may be sufficient; AC-002 is insufficient with its weak source and verification decision named; AC-003 is insufficient because no evidence locator exists. The overall verdict is insufficient. Foreman records the report and missing or weak criteria in state.md, leaves the task open and unticked, runs no close batch, and does not convert the operator's completion claim into proof.",
       "files": [
         "references/record-and-close.md",
@@ -897,26 +523,9 @@
       ]
     },
     {
-      "id": 48,
-      "name": "operator-attestation-retains-attribution-and-verification-decision",
-      "prompt": "$valcraft:foreman — the only evidence for AC-004 is the operator statement `the recovery drill succeeded`, sourced to the current conversation. Can record and close use it? Do not call tools.",
-      "expected_output": "The recorder labels the statement Operator attestation, records the conversation source locator and criterion AC-004, and never restates it as a Foreman fact. The fresh sufficiency reviewer records whether it independently verified the claimed state and how. The attestation may support AC-004 when that criterion can be satisfied by attributed testimony, but it does not automatically become sufficient and cannot replace verification the criterion or an applicable check requires. Foreman closes only if the per-criterion verdict is sufficient and all other gates pass.",
-      "files": [
-        "references/record-and-close.md",
-        "references/contracts.md",
-        "templates/run-dir.md"
-      ],
-      "assertions": [
-        "The statement remains labeled Operator attestation with its source locator",
-        "The reviewer records whether and how it independently verified the claim",
-        "Attestation can support a criterion but is not automatically sufficient",
-        "Attestation cannot replace criterion-required verification or an applicable check"
-      ]
-    },
-    {
       "id": 49,
       "name": "current-diff-caused-cross-task-finding-lands-now",
-      "prompt": "$valcraft:foreman — review of T-005 finds that its current diff made T-002's already-delivered contract inconsistent. The fix touches T-002-owned text. Route the finding. Do not call tools.",
+      "prompt": "$valcraft:foreman — review of T-005 finds that its current diff made T-002's already-delivered contract inconsistent. The fix touches T-002-owned text. Route the finding. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman records T-002 as the causal owner and remediates the finding in T-005's current work because the current diff caused the inconsistency. The owner boundary does not defer a defect introduced by the current change. The remediation follows the ordinary R-ID resolution, closure check, exact-final-head, and applicable-check gates. Any existing second-full-round trigger still applies; adjacency or a small edit grants no exemption.",
       "files": [
         "references/loop.md",
@@ -933,7 +542,7 @@
     {
       "id": 50,
       "name": "blocking-owner-lands-now-unrelated-owner-survives-restart",
-      "prompt": "$valcraft:foreman — while delivering T-007, classify two findings: (a) T-003's contract prevents T-007 from satisfying AC-009; (b) an unrelated defect belongs to future T-011 and neither arose from T-007's diff nor blocks T-007. Take T-007 through its current exact-final-head, check-state, and proceed-or-wait decision, then resume a later run that selects T-011. Do not call tools.",
+      "prompt": "$valcraft:foreman — while delivering T-007, classify two findings: (a) T-003's contract prevents T-007 from satisfying AC-009; (b) an unrelated defect belongs to future T-011 and neither arose from T-007's diff nor blocks T-007. Take T-007 through its current exact-final-head, check-state, and proceed-or-wait decision, then resume a later run that selects T-011. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman records each finding's causal owner. It remediates T-003's blocking contract now because T-007 cannot meet AC-009 otherwise, and sends that remediation through the normal review and final-head gates. It does not fix the unrelated T-011 finding now. Instead it records the finding, T-011 ownership, and one durable locator in T-011's tracker-owned task artifact or task issue and records the same locator in state.md. After verifying that durable owner record, Foreman classifies the non-blocking deferral as settled for T-007. T-007 proceeds only when review and a passing or none-applicable check state cover its exact final head and every other finding is resolved; an open current-task or blocking finding, or an unverified durable deferral, waits. On the later run, Foreman verifies the locator from the authoritative tracker artifact rather than trusting the old checkpoint and includes it in T-011's planner assignment envelope, so restart does not lose the finding.",
       "files": [
         "references/loop.md",
@@ -954,7 +563,7 @@
     {
       "id": 51,
       "name": "cross-task-remediation-has-no-blanket-round-two-exemption",
-      "prompt": "$valcraft:foreman — a current-task fix also makes a small adjacent edit in another task's owned contract. The edit is required by the current causal routing test. Does it bypass a second review round? Do not call tools.",
+      "prompt": "$valcraft:foreman — a current-task fix also makes a small adjacent edit in another task's owned contract. The edit is required by the current causal routing test. Does it bypass a second review round? Do not spawn workers. Do not write files. Report only.",
       "expected_output": "No blanket exemption exists. Foreman first routes the edit now only because current-diff causation or current-contract blocking requires it. It then applies review-round.md unchanged: a closure check always follows material-finding remediation, and a second full round runs whenever an existing trigger fires, including resolution beyond the evidence-cited scope or an approach change. Small size, adjacency, cross-task ownership, or record-and-close origin is not an exemption. If no listed trigger fires, Foreman records that result and uses the closure check as the round's final state.",
       "files": [
         "references/loop.md",
@@ -969,47 +578,9 @@
       ]
     },
     {
-      "id": 52,
-      "name": "feature-prefix-preflight-stops-before-pick",
-      "prompt": "$valcraft:foreman — in the Cast project at evals/files/loop-local/, start a local delivery run for feature 002-invalid-prefix. This run is unattended. Stop after feature preflight.",
-      "expected_output": "Foreman reads the selected feature's tasks.md directly and stops before eligibility, run creation, or dispatch because QT-001 is a quick-task identifier in a feature task file. Feature tasks must use T-XXX. It does not wait for or invoke a quick-pool scan, remap QT-001, or select the task.",
-      "files": [
-        "evals/files/loop-local/AGENTS.md",
-        "evals/files/loop-local/.gitignore",
-        "evals/files/loop-local/docs/product-brief.md",
-        "evals/files/loop-local/specs/002-invalid-prefix/spec.md",
-        "evals/files/loop-local/specs/002-invalid-prefix/design.md",
-        "evals/files/loop-local/specs/002-invalid-prefix/tasks.md"
-      ],
-      "assertions": [
-        "The direct feature preflight reports QT-001 as invalid because feature tasks use T-XXX",
-        "Foreman stops before eligibility, run creation, or worker dispatch",
-        "No quick-pool scan or compatibility mapping is required to detect the error"
-      ]
-    },
-    {
-      "id": 53,
-      "name": "explicit-foreman-overrides-win-and-invalid-values-stop",
-      "prompt": "$valcraft:foreman — compare startup for two project files. Project A explicitly declares foreman_backend: ao, foreman_approval_mode: attended, foreman_default_branch: develop, and foreman_release_branch: stable. Project B declares foreman_backend: legacy, foreman_approval_mode: delegated, foreman_default_branch: TBD, and foreman_release_branch: TBD. Resolve each configuration without calling tools.",
-      "expected_output": "For project A, Foreman uses all four explicit valid values unchanged: ao, attended, develop, and stable. Runtime defaults do not replace an explicit override. For project B, Foreman stops before tracker access, run creation, or worker dispatch because legacy is not a supported backend, delegated is not a supported approval mode, and both branch values are invalid. It reports every invalid explicit value and does not silently substitute subagents or unattended, derive a default branch, or treat the invalid release branch as absent.",
-      "files": [
-        "SKILL.md",
-        "templates/project-block.md",
-        "references/backends/README.md",
-        "references/approval-modes.md"
-      ],
-      "assertions": [
-        "Every explicit valid Foreman value overrides its runtime default",
-        "An invalid explicit backend stops instead of defaulting to subagents",
-        "An invalid explicit approval mode stops instead of defaulting to unattended",
-        "An invalid explicit default or release branch stops instead of deriving or removing it",
-        "Every invalid explicit value is reported and stops before tracker access, run creation, or dispatch"
-      ]
-    },
-    {
       "id": 54,
       "name": "default-branch-resolution-uses-authoritative-precedence",
-      "prompt": "$valcraft:foreman — foreman_default_branch is absent. Resolve it in four independent repositories: (A) the live origin HEAD symref and the hosting service both name trunk; (B) the live symref is unavailable and the hosting service reports develop as that repository's default; (C) both live sources are unavailable, while cached origin/HEAD and local main name main; (D) the live origin HEAD symref names trunk while the hosting service reports develop. Do not call tools.",
+      "prompt": "$valcraft:foreman — foreman_default_branch is absent. Resolve it in four independent repositories: (A) the live origin HEAD symref and the hosting service both name trunk; (B) the live symref is unavailable and the hosting service reports develop as that repository's default; (C) both live sources are unavailable, while cached origin/HEAD and local main name main; (D) the live origin HEAD symref names trunk while the hosting service reports develop. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman resolves A to trunk from the agreeing live sources. It resolves B to develop from the host-reported default because the live symref is unavailable. It stops for C before tracker access, run creation, or dispatch: cached origin/HEAD and a local branch may corroborate a live result but cannot provide the missing value. It stops for D because the live sources disagree. For both stops, Foreman asks for an explicit foreman_default_branch and never guesses another name. The only authorities are the live remote HEAD symref and the same repository's host-reported default branch.",
       "files": [
         "SKILL.md",

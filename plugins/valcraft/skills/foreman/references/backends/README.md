@@ -8,19 +8,23 @@ A backend is how the foreman runs workers. The loop never touches a runner direc
 | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `spawn`   | Start a fresh worker of a role on a harness. Cold context, no inheritance from the foreman.                                    |
 | `assign`  | Deliver an assignment envelope (`references/contracts.md`) to a worker.                                                        |
-| `await`   | Learn that a worker finished, blocked, or died — and which. A foreground wait may also return a nonterminal timeout.          |
+| `await`   | Learn that a worker finished, blocked, or died — and which. A foreground wait may also return a nonterminal timeout.           |
 | `status`  | Inspect a worker: liveness, and the text of a prompt it is blocked on. May be `none`.                                          |
 
 Some backends fold `spawn` and `assign` into one operation; the reference says so.
 
 ## Capability flags
 
-| Flag        | Values                     | Meaning                                                                                                                                                                                                             |
-| ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `wake`      | `event` \| `foreground` \| `poll` | `event`: `await` re-invokes the foreman after the parent turn ends. `foreground`: `await` returns inside the active parent turn. `poll`: the foreman checks on the backend reference's schedule.              |
-| `answer`    | `interactive` \| `respawn` | `interactive`: a blocked worker can receive an answer and continue. `respawn`: the worker is one-shot; a block or question ends it, and the foreman spawns a new worker with the decision included in the envelope. |
-| `harnesses` | list                       | Which harnesses `spawn` offers. Two or more enable the second-harness rule for `planner` and `reviewer-2`; one means independence by fresh context alone.                                                           |
-| `release`   | how workers end            | How the foreman ends a task's workers (step 10) and the temper worker (step 11), and what it must not do.                                                                                                           |
+- `wake` is `event`, `foreground`, or `poll`. With `event`, `await` re-invokes the
+  foreman after the parent turn ends. With `foreground`, it returns inside the active
+  parent turn. With `poll`, the foreman checks on the backend reference's schedule.
+- `answer` is `interactive` or `respawn`. An interactive worker can receive an answer
+  and continue. A one-shot respawn worker ends on a block or question; the foreman
+  starts a new worker with the decision in its envelope.
+- `harnesses` lists what `spawn` offers. Two or more enable the second-harness rule for
+  `planner` and `reviewer-2`; one provides independence through fresh context alone.
+- `release` defines how the foreman ends task workers at step 10 and the temper worker
+  at step 11, including prohibited cleanup.
 
 ## Await discipline
 

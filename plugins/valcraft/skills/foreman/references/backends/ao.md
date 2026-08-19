@@ -13,7 +13,17 @@ The foreman is an AO orchestrator session (a Claude Code session spawned by AO w
 
 ## Primitives
 
-- `spawn`: AO session names are at most 20 characters. Keep the canonical logical name in the assignment and `workers.md`; never truncate it or cap its numeric width. Derive a physical alias independently as `<role-token>-<digest-prefix>`, where the role token is `p`, `r1`, `w`, or `r2` and the lowercase hexadecimal digest is over the canonical logical identity. Use as many digest characters as fit the 20-character contract. Before `ao session new`, compare the alias with current project sessions and `workers.md`. If another canonical identity owns it, derive a new digest from the canonical identity plus a collision discriminator and check again; never reuse a colliding alias. Then run `ao session new --project <project-id> --agent <harness> --name <physical-alias>` with no initial prompt. This maps `Q-1000 QT-001` without truncation; a forced first-alias collision yields another alias.
+- `spawn`: derive one unique physical alias per dispatch. AO session names are at most 20 characters.
+  1. Keep the complete canonical logical name in the assignment and `workers.md`.
+  2. Map delivery roles to `p` (planner), `r1` (reviewer-1), `w` (worker), `r2` (reviewer-2), `rec` (recorder), `er` (evidence-reviewer), and `t` (temper). Map decompose roles to `dp` (planner) and `dr` (reviewer).
+  3. Determine the dispatch ordinal from prior `workers.md` rows for the same logical identity. The first dispatch is `0`; each respawn takes the next unused ordinal.
+  4. Use the canonical logical identity encoded as UTF-8 as the SHA-256 preimage for ordinal `0`. For a later dispatch, use `<canonical logical identity>\ndispatch:<ordinal>`.
+  5. Form `<role-token>-<digest-prefix>` from the lowercase hexadecimal digest. Use as many leading digest characters as fit the 20-character contract.
+  6. Compare the alias with current project sessions and every `workers.md` row. If it is already owned, recompute SHA-256 over `<dispatch preimage>\ncollision:<n>`, starting with `n = 1`, until an unowned alias results.
+  7. Run `ao session new --project <project-id> --agent <harness> --name <physical-alias>` with no initial prompt.
+  8. Record the dispatch ordinal and physical handle in a new `workers.md` row. Preserve prior rows.
+
+  Never truncate a canonical identity or cap its numeric width. This procedure maps every logical role, including `Q-1000 QT-001`; both a forced alias collision and a same-identity respawn deterministically receive distinct aliases.
 - `assign`: `ao send --session <id> --message "<envelope>"`. Then confirm the worker visibly started: `tmux capture-pane -p -t <id>` (no `-S`) shows the composer processing. An idle empty composer plus no report file means the send silently failed (the same trap as slash commands) — re-send.
 - `await`: run this as a background Bash command (`run_in_background: true`) and end the turn; its exit re-invokes the foreman with the outcome. `R` is the worker's report path in the run directory.
 

@@ -65,8 +65,8 @@ acceptance criteria, task status, or authority.
 
 ## Tracking
 
-Quick tasks track locally: the checkbox in `## Tasks` is the task status — and the
-dependency status a `blocked by QT-XXX` or qualified dependency reads — git the only tracker. This holds in every
+Quick tasks track locally. The checkbox in `## Tasks` is the task status and the status
+read by a local or qualified dependency. Git is the only tracker. This holds in every
 `project_tracker` mode: in `github` mode too, no label, issue, or closing batch exists
 for a quick task, and nothing about it is read from or written to GitHub. The file
 carries no `spec_issue` and projects to no issue. `quick_tracker` in the root `AGENTS.md`
@@ -91,9 +91,9 @@ blocking section or question.
 ## Closing
 
 A task closes when its box is ticked (`- [x] QT-XXX …`) in a reviewed change that cites
-the canonical `Q-NNN QT-XXX` identity. A quick file whose every task is ticked is done — no confirmation, no
-per-file retrospective. Retrospectives over quick work run on demand with `specs/quick/`
-as the corpus.
+the canonical `Q-NNN QT-XXX` identity. A quick file whose every task is ticked is done.
+It needs no confirmation or per-file retrospective. Retrospectives over quick work run
+on demand with `specs/quick/` as the corpus.
 
 Quick-task plans keep the repository's semantic plan type and slug. Do not add `quick`
 to either solely because the task comes from `specs/quick/`.

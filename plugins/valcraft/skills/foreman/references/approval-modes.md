@@ -9,7 +9,7 @@ An explicit valid `foreman_approval_mode` selects which decisions wait for the h
 | Step 1 pick confirmation                                                 | wait       | proceed                                       |
 | Step 5 summary, proceed/wait test says proceed                           | wait       | proceed                                       |
 | Step 5 summary, test says wait                                           | wait       | wait                                          |
-| Push a local-ahead default branch                                        | wait for explicit push authority | wait for explicit push authority             |
+| Push a local-ahead default branch                                        | wait       | wait                                          |
 | Step 10 merge, test says proceed                                         | wait       | proceed                                       |
 | Step 10 merge, test says wait                                            | wait       | wait                                          |
 | Tracker write batch (labels, task close — done or not planned, comments) | wait       | execute from recorded batch                   |

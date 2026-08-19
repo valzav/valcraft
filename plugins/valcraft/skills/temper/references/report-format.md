@@ -78,8 +78,8 @@ Stage attribution records the responsible gate's execution as one of:
    `verified deep` — the unit's record read in full plus two or more independent
    verifications performed this run (diff read, targeted grep, cross-source
    match); `verified` — record read in full plus one verification; `skimmed` —
-   record read partially or through search, no verification; `commit-record
-only` — headline and metadata only.
+   record read partially or through search, no verification; `commit-record only` —
+   headline and metadata only.
 3. **Case studies** — the strongest incidents, written against the evidence: what the
    record claims, what the evidence shows, verbatim quotes with their locators, and
    the full incident record for each.
