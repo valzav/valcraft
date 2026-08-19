@@ -12,7 +12,7 @@ Read the repository's root `AGENTS.md` first. Accept exactly one target:
   context needed to interpret it. A bare `T-XXX` must resolve exactly once
   across feature task files.
 - A quick task is canonically `Q-NNN QT-XXX`. Read
-  `../../cast/references/quick.md`, validate the selected quick file and its
+  `../../spec/references/quick.md`, validate the selected quick file and its
   referenced dependencies, and use that one file as its spec, design, and task
   list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Never map
   legacy syntax.

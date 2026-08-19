@@ -42,7 +42,7 @@ When every task is checked or removed and the human confirms, the feature is clo
 
 ## Quick tasks
 
-The quick pool is `specs/quick/*.md` (`../../cast/references/quick.md`); each file is its own contract with its own `## Tasks` checkboxes.
+The quick pool is `specs/quick/*.md` (`../../spec/references/quick.md`); each file is its own contract with its own `## Tasks` checkboxes.
 
 - **Rebuild state**: validate every quick file against `quick.md` before eligibility. Stop on a legacy or mixed prefix, malformed ID, wrong-prefix dependency, missing referenced Q file or QT-ID, or `QT-XXX` in feature `tasks.md`. Read valid quick files in number order; detect in-progress work by branches and open PRs named `qNNN-qtNNN`.
 - **Pick**: walk files and tasks in order. Pick the first unchecked `QT-XXX` whose local `blocked by QT-XXX` and cross-file `blocked by Q-NNN QT-XXX` targets are checked and which is not held. In every tracker mode, read status only from quick-file checkboxes and perform no quick-task issue lookup. Propose the canonical `Q-NNN QT-XXX` identity, file path, and summary. A bare `Q-NNN` selects that file's next eligible task.

@@ -30,7 +30,7 @@ Inventory units follow the corpus type:
   inventory on any other task prefix, including `QT-XXX`. Then inventory each declared
   task with its linked commits.
 - **Quick pool** (`specs/quick/`, or one quick file) — validate the full selected pool
-  through Cast's `quick.md` before inventory. Stop on a missing referenced Q file or
+  through `../spec/references/quick.md` before inventory. Stop on a missing referenced Q file or
   QT-ID, legacy or mixed-prefix task, malformed ID, wrong-prefix dependency, or
   `QT-XXX` in feature `tasks.md`. Inventory each `Q-NNN QT-XXX` as a distinct unit and
   link only commits carrying that qualified identity. Repeated `QT-XXX` values in
@@ -44,7 +44,7 @@ Synthesize mode requires at least two distinct readable analyze reports; fewer b
 
 The baseline is git-owned evidence: commit bodies and the IDs they cite, plans and remediation plans in `docs/plans/`, review finding IDs in resolution commits, specs and ADRs, and PR threads where a remote exists. When corpus history exists only on the remote — squash-merged PRs whose branches were pruned — read it through the platform's API rather than fetching objects into the pinned repository. Session transcripts, review records, and CI logs are bonus sources when the host keeps them — use them when present, never require them.
 
-Cast conventions strengthen the git baseline, but they do not prove that a gate ran or that an agent followed a particular skill revision. In a project without Cast conventions, work from whatever git history exists, report which evidence capabilities are absent, leave unsupported attribution unknown, and never upgrade a lesson to compensate for the thinner evidence.
+Valcraft SDD conventions strengthen the git baseline, but they do not prove that a gate ran or that an agent followed a particular skill revision. In a project without those conventions, work from whatever git history exists, report which evidence capabilities are absent, leave unsupported attribution unknown, and never upgrade a lesson to compensate for the thinner evidence.
 
 ## Incident records and grades
 

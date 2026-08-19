@@ -5,7 +5,7 @@
       "id": 1,
       "name": "plan-mode-cross-authority-contradiction",
       "prompt": "/valcraft:review — in the Cast project at evals/files/cross-authority/, review docs/plans/2026-08-05-001-feat-t-002-row-limiter-plan.md before implementation.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts (root AGENTS.md, the cast spec-intake reference, and the cited spec.md, design.md, and tasks.md), and reports material findings. It reports that the plan's EXPORT_ROW_CAP = 5000 violates FR-002, which mandates a 500-row cap, as a P1 citing FR-002 and the concrete input that fires it. It also reports that spec.md and design.md contradict each other on the same cap, that Cast's precedence order does not separate two artifacts inside specs/, and that the contradiction between the authorities is therefore its own finding rather than one the reviewer settles silently. The canonical source docs/csv-export-prd.md states the 500-row cap, which corroborates the spec and identifies design.md as the document that must change. It routes the plan's \"fixture database starts empty\" statement to a live-data check demand rather than accepting it as asserted. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column. The verdict is material findings. No file is edited, no fix is committed, and no review record is written into the repository.",
+      "expected_output": "Review selects plan mode, loads the project and Spec-owned contracts (root AGENTS.md, Spec's feature-contract reference, and the cited spec.md, design.md, and tasks.md), and reports material findings. It reports that the plan's EXPORT_ROW_CAP = 5000 violates FR-002, which mandates a 500-row cap, as a P1 citing FR-002 and the concrete input that fires it. It also reports that spec.md and design.md contradict each other on the same cap, that the governing precedence does not separate two artifacts inside specs/, and that the contradiction between the authorities is therefore its own finding rather than one the reviewer settles silently. The canonical source docs/csv-export-prd.md states the 500-row cap, which corroborates the spec and identifies design.md as the document that must change. It routes the plan's \"fixture database starts empty\" statement to a live-data check demand rather than accepting it as asserted. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column. The verdict is material findings. No file is edited, no fix is committed, and no review record is written into the repository.",
       "files": [
         "evals/files/cross-authority/AGENTS.md",
         "evals/files/cross-authority/docs/csv-export-prd.md",
@@ -16,10 +16,10 @@
         "evals/files/cross-authority/specs/001-csv-export/tasks.md"
       ],
       "assertions": [
-        "Review selects plan mode and reads root AGENTS.md, the cast spec-intake reference, and the cited spec.md, design.md, and tasks.md before judging the plan",
+        "Review selects plan mode and reads root AGENTS.md, ../spec/references/feature-contract.md, and the cited spec.md, design.md, and tasks.md before judging the plan",
         "A material finding reports that the plan's 5000-row cap violates FR-002's 500-row cap and names the concrete export size that fires it",
         "A separate finding reports the spec.md and design.md contradiction on the cap itself, rather than silently adopting either value",
-        "The report states that Cast's precedence order (accepted ADRs, then specs/, then derived docs/) does not resolve a conflict between two artifacts inside specs/, and resolves it instead from the spec's canonical status and the PRD source",
+        "The report states that project precedence (accepted ADRs, then specs/, then derived docs/) does not resolve a conflict between two artifacts inside specs/, and resolves it instead from the spec's canonical status and the PRD source",
         "The plan's assumption that the fixture database starts empty is routed to a live-data check demand instead of being accepted as asserted",
         "Findings are presented as a table with stable R-NNN IDs, a severity per finding, evidence, and a resolution column",
         "The verdict is material findings, and the report names the R-IDs a remediation plan must cite",
@@ -31,7 +31,7 @@
       "id": 2,
       "name": "plan-mode-readiness-gate-fails",
       "prompt": "/valcraft:review — in the Cast project at evals/files/readiness-gate/, review the specs/001-mention-notifications/ feature for implementation readiness.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts, and applies the implementation-readiness gate defined in the cast spec-intake reference because the spec triplet is complete. It reports a P1 that the feature is not implementation-ready, citing the readiness contract: design.md contains template instructions, placeholder angle-bracket text, and TBD-only sections rather than substantive project-specific content, and the spec's open question about whether editing a published comment to add a mention notifies the newly mentioned member can change observable behavior and AC-001. It does not resolve the open question itself, invent the missing design content, or edit any file. The verdict is material findings, and the report states what was not examined.",
+      "expected_output": "Review selects plan mode, loads the project and Spec-owned contracts, and applies the implementation-readiness gate defined in Spec's feature-contract reference because the feature triplet is complete. It reports a P1 that the feature is not implementation-ready, citing the readiness contract: design.md contains template instructions, placeholder angle-bracket text, and TBD-only sections rather than substantive project-specific content, and the spec's open question about whether editing a published comment to add a mention notifies the newly mentioned member can change observable behavior and AC-001. It does not resolve the open question itself, invent the missing design content, or edit any file. The verdict is material findings, and the report states what was not examined.",
       "files": [
         "evals/files/readiness-gate/AGENTS.md",
         "evals/files/readiness-gate/docs/mention-notifications-prd.md",
@@ -42,7 +42,7 @@
       ],
       "assertions": [
         "Review applies the implementation-readiness gate because design.md and tasks.md both exist",
-        "A material finding cites the spec-intake readiness contract and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
+        "A material finding cites Spec's feature-contract readiness rule and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
         "The finding identifies the spec's open question about mentions added by editing a published comment as behavior-affecting and tied to AC-001",
         "Review does not answer the open product question, invent design content, or fill any placeholder",
         "No file is edited and no fix is committed",

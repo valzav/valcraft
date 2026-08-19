@@ -5,7 +5,7 @@
       "id": 1,
       "name": "blocked-dependency-stops-before-coding",
       "prompt": "/valcraft:forge — in the Cast project at evals/files/blocked-task/, implement T-002 of specs/001-workspace-invites/.",
-      "expected_output": "Forge loads the Cast contracts, resolves project_tracker: local from the root AGENTS.md, and gates the assignment before coding. T-002 declares `blocked by T-001`, and T-001's checkbox in tasks.md is unchecked, so the dependency is not complete and forge stops and reports the blocker. It writes no implementation code, creates no test, makes no commit, and does not mark or unmark any checkbox. It does not implement T-001 on its own initiative to unblock itself, and it does not reinterpret the dependency as advisory ordering. The report names T-001 as the incomplete dependency and states that the local checkbox is the status authority in this mode.",
+      "expected_output": "Forge loads the Spec-owned feature contract, resolves project_tracker: local from the root AGENTS.md, and gates the assignment before coding. T-002 declares `blocked by T-001`, and T-001's checkbox in tasks.md is unchecked, so the dependency is not complete and forge stops and reports the blocker. It writes no implementation code, creates no test, makes no commit, and does not mark or unmark any checkbox. It does not implement T-001 on its own initiative to unblock itself, and it does not reinterpret the dependency as advisory ordering. The report names T-001 as the incomplete dependency and states that the local checkbox is the status authority in this mode.",
       "files": [
         "evals/files/blocked-task/AGENTS.md",
         "evals/files/blocked-task/docs/workspace-invites-prd.md",
@@ -27,7 +27,7 @@
       "id": 2,
       "name": "unready-feature-routes-to-spec",
       "prompt": "/valcraft:forge — in the Cast project at evals/files/unready-feature/, implement T-001 of specs/001-save-conflicts/.",
-      "expected_output": "Forge loads the git-owned feature contract and applies the implementation-readiness gate from the cast spec-intake reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior for AC-001. Forge stops, names both blockers, and routes the feature to Spec, the feature-artifact producer. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
+      "expected_output": "Forge loads the git-owned feature contract and applies the implementation-readiness gate from Spec's feature-contract reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior for AC-001. Forge stops, names both blockers, and routes the feature to Spec, the feature-artifact producer. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
       "files": [
         "evals/files/unready-feature/AGENTS.md",
         "evals/files/unready-feature/docs/save-conflicts-prd.md",
@@ -37,7 +37,7 @@
         "evals/files/unready-feature/specs/001-save-conflicts/tasks.md"
       ],
       "assertions": [
-        "Forge applies the implementation-readiness gate from the cast spec-intake reference before writing code",
+        "Forge applies the implementation-readiness gate from ../spec/references/feature-contract.md before writing code",
         "The stop report identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
         "The stop report identifies the unresolved question about the member's unsaved text as behavior-affecting for AC-001",
         "Forge routes the feature to Spec rather than completing the design itself or routing feature production to Cast",
@@ -109,7 +109,7 @@
         "evals/files/adr-precedence/specs/001-daily-digest/tasks.md"
       ],
       "assertions": [
-        "Forge reads accepted ADR-0001 as part of the Cast contract for this task",
+        "Forge reads accepted ADR-0001 as part of the git-owned contract for this task",
         "Forge detects the conflict between design.md's local wall-clock storage and ADR-0001's UTC storage rule",
         "Contract precedence is applied: the accepted ADR prevails over design.md, so any plan must use UTC with timezone stored separately",
         "Forge does not invent an unresolved authority blocker because precedence settles the conflict",
@@ -131,7 +131,7 @@
         "evals/files/quick-task/tests/test_validation.py"
       ],
       "assertions": [
-        "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and names that file as the Cast contract",
+        "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md through Spec's quick contract and names that file as the git-owned task contract",
         "Forge applies the quick readiness rule and explicitly identifies the quick file as a complete single-step implementation and verification contract before proceeding without a separate plan",
         "Forge states the scope — src/validation.py and tests/test_validation.py — before implementing",
         "require_non_empty raises ValueError naming the field for a whitespace-only value and returns ` a ` unchanged",

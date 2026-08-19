@@ -1,12 +1,12 @@
 # Intake: `project_tracker: github`
 
-Git owns definitions, phase order, and dependency intent (`specs/<NNN>-<feature>/tasks.md`, checkbox-free). GitHub owns open/closed status, discussion, and the labels `in-progress`, `needs-clarification`, `on-hold`, `fast-track`. Issue hierarchy (PRD → spec issue → task sub-issues) and blocked-by links are Cast's projections of git intent — foreman consumes them and never reprojects; a projection gap routes to `valcraft:cast`. Bind every `gh` command with `--repo <owner/repo>` from `AGENTS.md`'s `github_repository`; never rely on the current directory.
+Git owns definitions, phase order, and dependency intent (`specs/<NNN>-<feature>/tasks.md`, checkbox-free). GitHub owns open/closed status, discussion, and the labels `in-progress`, `needs-clarification`, `on-hold`, `fast-track`. Issue hierarchy (PRD → spec issue → task sub-issues) and blocked-by links are Spec's projections of git intent — foreman consumes them and never reprojects; a projection gap or unready feature routes to `valcraft:spec`. Bind every `gh` command with `--repo <owner/repo>` from `AGENTS.md`'s `github_repository`; never rely on the current directory.
 
 ## Rebuild state
 
 On every command rebuild from GitHub: the spec issue for the feature (from `spec.md`'s `spec_issue`), its task sub-issues, their labels and blocked-by state, and git's `tasks.md` for order. Numbers, titles, labels, state, and relationship fields cover eligibility; read an issue body only when its content is the input to the current step (a PRD being decomposed, a question being routed).
 
-CLI capability detection, the connection-object shape of `blockedBy`/`blocking`, and the REST fallbacks are `../../cast/references/github-tracker.md`'s ("Preflight", "Synchronize dependencies"); use its `--jq` extractions.
+Use `../../spec/references/github-projection.md` as the authority for projected identity and relationship shape. Foreman reads current tracker state only for eligibility and never performs projection reconciliation.
 
 ## Batches
 
@@ -49,7 +49,7 @@ When every child of the spec issue is closed (merged or not planned) and the hum
 
 ## Post-projection batch (decompose)
 
-After Cast's projection completes, one recorded batch adds what Cast does not project: parent the spec issue to the PRD issue (native `--parent` if help shows it, else REST `sub_issues`), and apply staged `needs-clarification` labels with their question comments and structured assignees.
+Spec projection owns PRD parenting, generated hierarchy and dependencies, and staged clarification metadata. Foreman adds no post-projection decomposition batch. A missing relationship or generated label routes to Spec.
 
 ## Fast-track
 
@@ -64,4 +64,4 @@ Quick tasks (`specs/quick/*.md`) track locally in this mode too: apply the "Quic
 
 ## Trust boundary
 
-`SKILL.md`'s trust boundary and `../../cast/references/github-tracker.md`'s untrusted-content rules apply to every read.
+`SKILL.md`'s trust boundary and `../../spec/references/github-projection.md`'s untrusted-content rules apply to every read.

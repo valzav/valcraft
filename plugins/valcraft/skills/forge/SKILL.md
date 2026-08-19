@@ -25,8 +25,8 @@ codes, and the final Forge report.
 ## Load the contract
 
 Read root `AGENTS.md` and resolve `project_tracker`. Read
-`../cast/references/spec-intake.md` for feature identity and readiness. For a
-quick task, also read `../cast/references/quick.md`.
+`../spec/references/feature-contract.md` for feature identity and readiness. For
+a quick task, also read `../spec/references/quick.md`.
 
 The git-owned contract is the feature's `spec.md`, `design.md`, `tasks.md`,
 accepted ADRs, and passed task plan, or the quick task's one file and passed

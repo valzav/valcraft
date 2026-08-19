@@ -9,7 +9,7 @@ Pre-development | Prototype | Alpha | Beta | Production
 ## Repository structure
 
 - `docs/` — product brief, plans, and architecture documentation.
-- `specs/` — feature specifications, designs, and task plans.
+- `specs/` — Spec-owned feature triplets and quick-task contracts.
 - `<source dirs>` — application code.
 
 ## Documentation
@@ -23,6 +23,13 @@ Pre-development | Prototype | Alpha | Beta | Production
 Omit both the bullet and this instruction when the snapshot is absent. -->
 
 ## Development
+
+### Spec-driven workflow
+
+Start with the project frame and product brief created by Cast. Run
+`valcraft:spec` to create `001-mvp`, a later feature triplet, or a quick task.
+For task delivery, use Draft, Review, Forge, Review, and Land directly, or let
+Foreman coordinate those stages.
 
 ### Prerequisites
 

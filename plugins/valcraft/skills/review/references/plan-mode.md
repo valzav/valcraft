@@ -50,10 +50,10 @@ For feature `tasks.md`, require every task to use `T-XXX`. Map every declared
 `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered
 requirements as material findings.
 
-When `design.md` and `tasks.md` both exist, apply `spec-intake.md`'s complete
+When `design.md` and `tasks.md` both exist, apply `feature-contract.md`'s complete
 implementation-readiness gate.
 
-For `specs/quick/NNN-*.md`, apply `quick.md`'s full grammar: filename number,
+For `specs/quick/NNN-*.md`, apply Spec's `quick.md` full grammar: filename number,
 `id: Q-NNN`, one source, `QT-XXX` tasks, qualified dependencies, readiness, and
 AC coverage. Reject legacy, mixed, malformed, missing, or wrong-prefix
 identities before eligibility. Preserve a semantic plan type and slug; `quick`
