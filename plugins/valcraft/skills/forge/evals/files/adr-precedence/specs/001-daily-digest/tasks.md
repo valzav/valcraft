@@ -17,5 +17,4 @@ The feature is complete when AC-001 and AC-002 are verified and automated checks
 
 ## Phase 2: Scheduling
 
-- [ ] T-002 Add `due_workspaces` and the hourly scheduler pass; verifies FR-002 and
-      AC-002; blocked by T-001.
+- [ ] T-002 Add `due_workspaces` and the hourly scheduler pass; verifies FR-002 and AC-002; blocked by T-001.

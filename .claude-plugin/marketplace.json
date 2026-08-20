@@ -1,7 +1,7 @@
 {
   "name": "valcraft",
   "metadata": {
-    "description": "Agent skills for spec-driven delivery — one plugin for Claude Code, OpenAI Codex, and OpenCode. At the center: an agentic delivery loop (plan → review → implement → review → merge) over fresh-context worker agents; around it, cast scaffolds specs in the repo, spec turns PRDs into feature specs, temper learns from what shipped."
+    "description": "Agent skills for spec-driven delivery — one plugin for Claude Code, OpenAI Codex, and OpenCode. Foreman coordinates a fresh-context Draft → Review → Forge → Review → Land loop; Cast frames projects, Spec creates feature and quick contracts, and Temper learns from shipped work."
   },
   "owner": {
     "name": "valcraft contributors",
@@ -11,7 +11,7 @@
     {
       "name": "valcraft",
       "source": "./plugins/valcraft",
-      "description": "Reusable agent skills: cast (spec-driven project scaffold), spec (Cast feature spec generation), forge (task implementation), review (plan and code review), foreman (delivery loop over worker agents), temper (evidence-based retrospectives), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+      "description": "Reusable agent skills: cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (retrospective production and authorized PRs), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
       "category": "productivity",
       "homepage": "https://github.com/valzav/valcraft",
       "tags": ["skills", "sdd", "scaffold", "prompt-engineering"]

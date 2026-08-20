@@ -6,5 +6,4 @@ Members miss workspace activity because nothing tells them when someone mentions
 
 ## MVP outcome
 
-A member is notified when another member mentions them, and can reach the mention from
-the notification.
+A member is notified when another member mentions them, and can reach the mention from the notification.

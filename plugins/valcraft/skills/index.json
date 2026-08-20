@@ -2,30 +2,24 @@
   "skills": [
     {
       "name": "cast",
-      "version": "9ee11f81b6dd8757",
+      "version": "805dbb681ccc06c3",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
-        "references/quick.md",
         "references/scaffold.md",
-        "references/spec-intake.md",
         "templates/AGENTS.md",
         "templates/README.md",
         "templates/adr-index.md",
         "templates/adr.md",
-        "templates/design.md",
         "templates/gitignore-base",
         "templates/overview.md",
         "templates/product-brief.md",
-        "templates/quick.md",
-        "templates/spec.md",
-        "templates/status.md",
-        "templates/tasks.md"
+        "templates/status.md"
       ]
     },
     {
       "name": "distill",
-      "version": "b87dea65ae70d77e",
+      "version": "24cea0ed0825de96",
       "files": [
         "SKILL.md",
         "references/compare.md",
@@ -33,8 +27,17 @@
       ]
     },
     {
+      "name": "draft",
+      "version": "12a2d51688150451",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
       "name": "foreman",
-      "version": "e4d61f3b61cf7705",
+      "version": "ad053da58cb26b6f",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -42,12 +45,10 @@
         "references/backends/ao.md",
         "references/backends/subagents.md",
         "references/contracts.md",
-        "references/decompose.md",
         "references/hygiene.md",
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
-        "references/record-and-close.md",
         "references/review-round.md",
         "templates/project-block.md",
         "templates/run-dir.md",
@@ -56,7 +57,7 @@
     },
     {
       "name": "forge",
-      "version": "a043dd6566a11cbe",
+      "version": "7dcbc48ac97cb0a8",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -65,7 +66,7 @@
     },
     {
       "name": "hone",
-      "version": "2c2d22792886d63a",
+      "version": "3cd54263537785b5",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -75,8 +76,19 @@
       ]
     },
     {
+      "name": "land",
+      "version": "1f3b13ffc49ef14b",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "references/record-and-close.md",
+        "references/tracker-closure.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
       "name": "msw",
-      "version": "9ac2c42763515413",
+      "version": "a6f1724244513279",
       "files": [
         "SKILL.md",
         "references/kernel.md"
@@ -84,25 +96,34 @@
     },
     {
       "name": "review",
-      "version": "8a6bc4dc915b0157",
+      "version": "4508b0dca8c72067",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
+        "references/evidence-mode.md",
         "references/plan-mode.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "spec",
-      "version": "58082bfae736f75f",
+      "version": "0312bcb60784e29b",
       "files": [
         "SKILL.md",
+        "references/delivery.md",
+        "references/feature-contract.md",
+        "references/github-projection.md",
+        "references/quick.md",
+        "templates/design.md",
+        "templates/quick.md",
+        "templates/spec.md",
+        "templates/tasks.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "temper",
-      "version": "d6c35bb0663913c9",
+      "version": "e86ca7d1ebfc4a86",
       "files": [
         "SKILL.md",
         "references/process.md",

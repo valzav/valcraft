@@ -9,8 +9,7 @@ updated: 2026-08-07
 
 ## Completion definition
 
-The feature is complete when all applicable acceptance criteria are verified, automated
-checks pass, and affected docs are current.
+The feature is complete when all applicable acceptance criteria are verified, automated checks pass, and affected docs are current.
 
 ## Phase 1: Index
 

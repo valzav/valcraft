@@ -2,8 +2,7 @@
 
 ## User and problem
 
-Members do not come back to the product between meetings, so workspace activity goes
-unread.
+Members do not come back to the product between meetings, so workspace activity goes unread.
 
 ## MVP outcome
 

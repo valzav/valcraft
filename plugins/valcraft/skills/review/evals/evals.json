@@ -5,7 +5,7 @@
       "id": 1,
       "name": "plan-mode-cross-authority-contradiction",
       "prompt": "/valcraft:review — in the Cast project at evals/files/cross-authority/, review docs/plans/2026-08-05-001-feat-t-002-row-limiter-plan.md before implementation.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts (root AGENTS.md, the cast spec-intake reference, and the cited spec.md, design.md, and tasks.md), and reports material findings. It reports that the plan's EXPORT_ROW_CAP = 5000 violates FR-002, which mandates a 500-row cap, as a P1 citing FR-002 and the concrete input that fires it. It also reports that spec.md and design.md contradict each other on the same cap, that Cast's precedence order does not separate two artifacts inside specs/, and that the contradiction between the authorities is therefore its own finding rather than one the reviewer settles silently. The canonical source docs/csv-export-prd.md states the 500-row cap, which corroborates the spec and identifies design.md as the document that must change. It routes the plan's \"fixture database starts empty\" statement to a live-data check demand rather than accepting it as asserted. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column. The verdict is material findings. No file is edited, no fix is committed, and no review record is written into the repository.",
+      "expected_output": "Review selects plan mode, loads the project and Spec-owned contracts (root AGENTS.md, Spec's feature-contract reference, and the cited spec.md, design.md, and tasks.md), and reports material findings. It reports that the plan's EXPORT_ROW_CAP = 5000 violates FR-002, which mandates a 500-row cap, as a P1 citing FR-002 and the concrete input that fires it. It also reports that spec.md and design.md contradict each other on the same cap, that the governing precedence does not separate two artifacts inside specs/, and that the contradiction between the authorities is therefore its own finding rather than one the reviewer settles silently. The canonical source docs/csv-export-prd.md states the 500-row cap, which corroborates the spec and identifies design.md as the document that must change. It routes the plan's \"fixture database starts empty\" statement to a live-data check demand rather than accepting it as asserted. Findings appear as an auditable table with stable R-IDs, severities, evidence, and a resolution column. The verdict is material findings. No file is edited, no fix is committed, and no review record is written into the repository.",
       "files": [
         "evals/files/cross-authority/AGENTS.md",
         "evals/files/cross-authority/docs/csv-export-prd.md",
@@ -16,10 +16,10 @@
         "evals/files/cross-authority/specs/001-csv-export/tasks.md"
       ],
       "assertions": [
-        "Review selects plan mode and reads root AGENTS.md, the cast spec-intake reference, and the cited spec.md, design.md, and tasks.md before judging the plan",
+        "Review selects plan mode and reads root AGENTS.md, ../spec/references/feature-contract.md, and the cited spec.md, design.md, and tasks.md before judging the plan",
         "A material finding reports that the plan's 5000-row cap violates FR-002's 500-row cap and names the concrete export size that fires it",
         "A separate finding reports the spec.md and design.md contradiction on the cap itself, rather than silently adopting either value",
-        "The report states that Cast's precedence order (accepted ADRs, then specs/, then derived docs/) does not resolve a conflict between two artifacts inside specs/, and resolves it instead from the spec's canonical status and the PRD source",
+        "The report states that project precedence (accepted ADRs, then specs/, then derived docs/) does not resolve a conflict between two artifacts inside specs/, and resolves it instead from the spec's canonical status and the PRD source",
         "The plan's assumption that the fixture database starts empty is routed to a live-data check demand instead of being accepted as asserted",
         "Findings are presented as a table with stable R-NNN IDs, a severity per finding, evidence, and a resolution column",
         "The verdict is material findings, and the report names the R-IDs a remediation plan must cite",
@@ -31,7 +31,7 @@
       "id": 2,
       "name": "plan-mode-readiness-gate-fails",
       "prompt": "/valcraft:review — in the Cast project at evals/files/readiness-gate/, review the specs/001-mention-notifications/ feature for implementation readiness.",
-      "expected_output": "Review selects plan mode, loads the Cast contracts, and applies the implementation-readiness gate defined in the cast spec-intake reference because the spec triplet is complete. It reports a P1 that the feature is not implementation-ready, citing the readiness contract: design.md contains template instructions, placeholder angle-bracket text, and TBD-only sections rather than substantive project-specific content, and the spec's open question about whether editing a published comment to add a mention notifies the newly mentioned member can change observable behavior and AC-001. It does not resolve the open question itself, invent the missing design content, or edit any file. The verdict is material findings, and the report states what was not examined.",
+      "expected_output": "Review selects plan mode, loads the project and Spec-owned contracts, and applies the implementation-readiness gate defined in Spec's feature-contract reference because the feature triplet is complete. It reports a P1 that the feature is not implementation-ready, citing the readiness contract: design.md contains template instructions, placeholder angle-bracket text, and TBD-only sections rather than substantive project-specific content, and the spec's open question about whether editing a published comment to add a mention notifies the newly mentioned member can change observable behavior and AC-001. It does not resolve the open question itself, invent the missing design content, or edit any file. The verdict is material findings, and the report states what was not examined.",
       "files": [
         "evals/files/readiness-gate/AGENTS.md",
         "evals/files/readiness-gate/docs/mention-notifications-prd.md",
@@ -42,7 +42,7 @@
       ],
       "assertions": [
         "Review applies the implementation-readiness gate because design.md and tasks.md both exist",
-        "A material finding cites the spec-intake readiness contract and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
+        "A material finding cites Spec's feature-contract readiness rule and identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
         "The finding identifies the spec's open question about mentions added by editing a published comment as behavior-affecting and tied to AC-001",
         "Review does not answer the open product question, invent design content, or fill any placeholder",
         "No file is edited and no fix is committed",
@@ -358,6 +358,82 @@
         "Code-mode mapping validates the governing feature tasks.md directly",
         "QT-001 is reported as invalid because feature tasks use T-XXX",
         "The invalid identity is not mapped, normalized, or deferred to quick-mode validation"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "evidence-mode-fresh-criterion-sufficiency",
+      "prompt": "/valcraft:review — in evals/files/evidence-mode/, independently assess the exact durable completion record evidence/completion-record.md for externally completed task T-002. This is a fresh context. Do not review implementation or modify the record.",
+      "expected_output": "Review selects evidence mode rather than plan or code mode. It resolves T-002 and enumerates AC-001 and AC-002 from the committed contract, reads only the durable record and its named authoritative sources, and independently assesses each criterion. It preserves the operator attestation as attributed evidence rather than fact. AC-001 is sufficient because the named receipt can be independently matched to the task. AC-002 is insufficient because its claimed header artifact is absent. The overall verdict is insufficient. Review emits every Evidence-sufficiency report heading in order, names the exact durable record under Target and sources, includes both criterion rows, records AC-002 under Not independently verified, ends with Status: blocked: evidence_insufficient — followed by detail, and edits nothing.",
+      "files": [
+        "evals/files/evidence-mode/AGENTS.md",
+        "evals/files/evidence-mode/docs/product-brief.md",
+        "evals/files/evidence-mode/specs/001-report-export/spec.md",
+        "evals/files/evidence-mode/specs/001-report-export/tasks.md",
+        "evals/files/evidence-mode/evidence/completion-record.md",
+        "evals/files/evidence-mode/evidence/export-receipt.txt"
+      ],
+      "assertions": [
+        "Review selects evidence mode and does not substitute plan or code mode",
+        "The fresh reviewer resolves every T-002 criterion from the committed contract",
+        "Operator attestation remains attributed evidence and is not promoted to fact",
+        "AC-001 is independently verified from the named receipt and marked sufficient",
+        "AC-002 is marked insufficient because the named header artifact is absent",
+        "Overall verdict is insufficient and every Evidence-sufficiency report heading appears in order",
+        "The final line begins exactly Status: blocked: evidence_insufficient —",
+        "No implementation review, file edit, tracker mutation, or closure occurs"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "plan-verdict-pins-exact-commit-and-rejects-stale-head",
+      "prompt": "/valcraft:review — plan mode is asked to review docs/plans/2031-04-08-001-feat-t-001-parser-plan.md at commit 1111111111111111111111111111111111111111. That committed blob has no material findings. The same path now has a newer commit 2222222222222222222222222222222222222222. Explain the verdict and handoff without editing files.",
+      "expected_output": "Review reads and judges the requested plan blob at the exact full commit. It may return pass for that historical target, but records that the verdict covers only the path at commit 1111111111111111111111111111111111111111. It does not infer coverage for the newer commit from the path, branch, or old pass. The report ends `Status: done` and names the newer head as not examined.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Plan mode binds its verdict to an exact repository-relative plan path and full commit SHA",
+        "The older plan blob can be reviewed explicitly, but a newer commit at the same path is not covered by that verdict",
+        "Review does not infer plan coverage from a branch name, path alone, or prior pass",
+        "The report records the exact covered target, names the newer commit as not examined, and edits nothing",
+        "With no material findings in the requested blob, the verdict is pass and the final line is exactly `Status: done`"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "code-verdict-pins-base-head-and-report-contract",
+      "prompt": "/valcraft:review — review code for repository example/tools, base main at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, head refs/heads/feat/f001-t001-parser at 2222222222222222222222222222222222222222, and PR 42. The checks find no P1 or P2. State the report contract; do not edit files.",
+      "expected_output": "Review resolves and records the exact repository, base ref and SHA, head ref and SHA, and PR identity before diffing. It maps the code to the passed task plan and emits a report-only pass for that exact head. Every Review report heading appears in order, and the final line is exactly `Status: done`. A later head requires a new Review.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Code mode resolves repository example/tools, base main and exact base SHA, head branch and exact head SHA, and PR 42 before review",
+        "The pass applies only to head 2222222222222222222222222222222222222222; a later head is uncovered",
+        "Review remains independent and report-only and performs no source, tracker, PR, merge, or commit mutation",
+        "The report contains all six Review report headings verbatim and in order",
+        "The report ends with exactly `Status: done`"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "review-blockers-use-producer-owned-stable-codes",
+      "prompt": "/valcraft:review — state the report outcomes for an unresolvable review target, a plan target whose commit changed, and a completed review with material findings. Do not edit files.",
+      "expected_output": "Review owns its headings, terminal Status line, and routing codes in direct and orchestrated runs. An unresolvable target uses `review_blocked`; a changed pinned target uses `review_target_mismatch`; completed plan or code review, including material findings, uses `Status: done`. Each blocked status includes human-readable detail. All complete semantic reports are backend return `report_available` rather than `permission_blocked`.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "The Review producer owns report headings, exact terminal Status grammar, and routing codes in direct and orchestrated runs",
+        "An unresolvable target ends `Status: blocked: review_blocked — <detail>`",
+        "A changed pinned target ends `Status: blocked: review_target_mismatch — <detail>`",
+        "Completed plan or code review, including material findings, ends exactly `Status: done`",
+        "A complete semantic Review report is backend return report_available even when its Status is blocked; permission_blocked remains transport-only"
       ]
     }
   ]

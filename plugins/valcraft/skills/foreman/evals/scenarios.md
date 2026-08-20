@@ -1,69 +1,65 @@
-# Foreman scenarios × backends
+# Foreman scenario coverage
 
-## Native-subagent continuation
+Behavioral evals prove the state machine. The future coordination drift check only proves that declared contracts remain linked.
 
-One portable `subagents` backend selects its primitive mapping from the active host.
-These four scenarios discriminate the host-specific Codex continuation contract from
-the pre-change event-only contract.
+## Named states and producer routing
 
-| Scenario | Codex | Claude Code | Eval |
-| --- | --- | --- | --- |
-| Foreground wait; no final while active | Keep the parent turn active after fresh dispatch and await the assigned worker in the foreground. | `n/a` — event wake does not foreground-wait. | 17 `codex-foreground-await-keeps-parent-active` |
-| Timeout while worker remains active | Resolve the return through assigned-worker state and re-arm in the same turn. | `n/a` — the Agent event has no foreground timeout. | 18 `codex-timeout-active-worker-rearms-await` |
-| Initial and respawn identity | Feature and `Q-NNN QT-XXX` dispatches are fresh, use `fork_turns: "none"`, and map unique physical handles to complete logical identities. | Initial and respawn Agent calls are fresh and keep the complete logical name. | 22 `codex-initial-and-respawn-identities-stay-fresh` |
-| Blocked, question, dead, error, or non-live without terminal evidence | Route the first four through existing rules; never treat the last as success. | Route returned status through the same rules. | 23 `codex-terminal-routing-preserves-existing-rules` |
+| Scenario | Eval |
+| --- | --- |
+| Resume exact Draft, Review, Forge, and PR evidence into PlanReview, Implementing, CodeReview, and Landing | 57 |
+| Prepared Draft, Forge, and Temper heads resume the same producer before Review | 65 |
+| Incomplete producer report is re-requested without Foreman reconstruction | 2 |
+| Review closure check and established round cap remain intact | 3, 10 |
+| Declared product question routes to the owner; unsafe permission prompt escalates | 4, 5 |
+| Cross-task causal owner and durable future-owner routing remain intact | 49, 50, 51 |
+| Feature confirmation routes Land, Temper, Review, Land | 64 |
+| New PRD routes directly to Spec outside Foreman | 56 |
 
-Evals 2, 4, 7, 11, and 12 also state both host continuations at existing dispatch and
-respawn points instead of ending unconditionally after dispatch.
+## Backend returns and recovery
 
-## Existing backend drills
+| Scenario | Eval |
+| --- | --- |
+| Six backend returns remain separate from producer semantic status | 58 |
+| Codex foreground active wait and timeout re-arm without user prompt | 17, 18 |
+| Fresh native physical identities preserve complete logical identities | 22 |
+| Dead, dispatch failure, blocked prompt, and missing terminal evidence remain distinct | 23 |
+| Dirty shared checkout stops new-task synchronization; dead recovery remains separate | 35 |
+| Late predecessor report is rejected after replacement | 59 |
 
-The factory drill scenarios remain shared loop coverage. AO rows require a live AO
-project and therefore live in its backend reference rather than `evals.json`.
+Claude Code's event completion is covered by eval 7. Codex's foreground continuation is covered by eval 18. External-orchestrator polling and isolated branch behavior are covered by evals 63 and 62. These ids appear in the active-deviation registry.
 
-| Scenario | `subagents` | `ao` |
-| --- | --- | --- |
-| Silent assignment | A dispatch or delivery failure before the worker acts follows the two-attempt rule. | Confirm processing before arming the wait. |
-| Blocked, resolvable from task | Eval 4 `worker-question-settled-by-spec`. | `answer: interactive`. |
-| Blocked, needs escalation | Eval 5 `worker-blocked-escalates`. | Same rule. |
-| Merge denied | Eval 8 `merge-denied-reports-command-and-waits`. | Same loop rule. |
-| Partial mutation failure | Eval 9 `partial-batch-failure-reconciles-before-retry`. | Same intake rule. |
-| Review-round cap | Eval 3 `two-round-cap-escalates`. | Same loop rule. |
+## External orchestrators
 
-Evals 1, 6, 10, and 11 cover missing-key runtime defaults, an explicit release-branch
-human wait, closure check, and feature-close temper dispatch. Evals 12, 13, 15, and 16
-cover quick-task selection, close, validation, and physical-handle mapping.
+| Scenario | Eval |
+| --- | --- |
+| Role-family physical aliases preserve canonical logical identity | 16 |
+| Spawn command carries project, harness, physical alias, and exact physical branch | 62 |
+| Stale or already-checked-out physical branch stops before spawn | 62 |
+| Canonical task ref is revalidated and never force-pushed | 62 |
+| Checksum and session polling maps attributed observations to backend returns before report access | 63 |
+| No-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
+| Every active transport deviation names changed behavior and discriminating eval | 63 |
 
-## Runtime configuration
+## Land boundary
 
-| Scenario | Expected distinction | Eval |
-| --- | --- | --- |
-| No Foreman keys | Default to native subagents and unattended, derive the default branch from agreeing live remote and hosting-service sources, and treat release as unconfigured without changing Cast approval. | 1 `missing-foreman-keys-use-runtime-defaults` |
-| Default branch | Use an unambiguous live remote HEAD symref or host-reported default for the same repository; unavailable or disagreeing live sources stop. Cached `origin/HEAD` only corroborates. | 54 `default-branch-resolution-uses-authoritative-precedence` |
-| No release branch | Ordinary default-branch merges use the normal approval row; fast-track and direct release writes are unavailable. | 55 `missing-release-branch-disables-release-only-flows` |
-| Independent Cast approval | Missing Foreman approval defaults to unattended while missing Cast approval remains attended; Foreman relays and waits on every Cast gate raised during decompose. | 56 `decompose-relays-independent-cast-approval` |
+| Scenario | Eval |
+| --- | --- |
+| Release target remains a human gate and Foreman performs no landing mutation | 6 |
+| Unattended local and GitHub landing works under shared native or external execution permission | 60 |
+| Prepared Land authority resumes through a fresh physical dispatch while Landing remains active | 58, 60 |
+| Native subagents and the registered external backend satisfy Land execution conformance | 68, 69 |
+| Future backends require a dedicated registered Land execution eval | 68, 69 |
+| Host permission prompts remain backend `permission_blocked`; Land owns execution failures | 8, 58 |
+| Pending checks keep the same Land assignment active | 66 |
+| External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |
 
-## Default synchronization and exact final-head coverage
+External-completion evals characterize routing ownership: Land records and closes, Review judges sufficiency, and Foreman only validates and transitions.
 
-This scenario discriminates the task-start clean-checkout gate from the pre-change
-contract.
+## Runtime configuration and quick work
 
-| Scenario | Expected distinction | Eval |
-| --- | --- | --- |
-| Dirty shared checkout | Any staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation, even when attributable; dead-worker recovery remains separate. | 35 `dirty-shared-checkout-stops-before-synchronization` |
-
-## External completion and causal finding routing
-
-These seven scenarios cover Foreman's narrow record-and-close path and the routing of
-findings whose causal owner is another task. Record and close does not replay normal
-planning or a full review cycle; causal routing does not waive existing review gates.
-
-| Scenario | Expected distinction | Eval |
-| --- | --- | --- |
-| Local external completion | Store attributed evidence per criterion beside the feature task; merge the evidence-and-tick PR only after fresh sufficiency review and the shared final-head gate. | 44 `local-external-completion-records-criterion-evidence` |
-| Quick external completion | Store evidence beside the canonical `Q-NNN QT-XXX` task in its quick file and use the same local close gates. | 45 `quick-external-completion-keeps-evidence-in-quick-file` |
-| GitHub external completion | Write attributed evidence and close through serialized task-issue batches without inventing a git target. | 46 `github-external-completion-uses-attributed-serialized-close` |
-| Incomplete criterion | A weak or missing criterion makes the overall verdict insufficient and leaves the task open. | 47 `insufficient-external-completion-evidence-keeps-task-open` |
-| Current-diff causation | A cross-task inconsistency caused by the current diff lands now under ordinary review gates. | 49 `current-diff-caused-cross-task-finding-lands-now` |
-| Blocking versus unrelated owner | A blocking owner lands now; a verified durable unrelated-owner deferral lets the current exact-final-head/check gate proceed and reaches the future planner after restart. | 50 `blocking-owner-lands-now-unrelated-owner-survives-restart` |
-| No review-round exemption | Small, adjacent, cross-task, and record-and-close remediation retains every existing second-round trigger. | 51 `cross-task-remediation-has-no-blanket-round-two-exemption` |
+| Scenario | Eval |
+| --- | --- |
+| Missing keys select native subagents, unattended, live default branch, and no separate release branch | 1 |
+| Live default-branch authorities and stop conditions | 54 |
+| Missing release branch disables release-only flows without changing ordinary delivery | 55 |
+| Quick selection, completion, validation, and qualified identities | 12, 13, 15, 16 |

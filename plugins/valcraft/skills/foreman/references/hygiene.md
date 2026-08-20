@@ -2,30 +2,31 @@
 
 ## Context
 
-The foreman's context is a working resource; the loop survives one context window only if it stays small.
-
-- Hold loop state only: task, step, report paths, gate decisions, executed batches. Rebuild everything else from the tracker, git, and the run directory on every command.
-- Never read a spec, design, plan, or diff the worker can read instead. The foreman reads a report once when acting on it, then references it by path; assignments carry paths, not content.
-- Every `gh` read names explicit fields (`--json … --jq …`); never fetch default-shaped issue or PR JSON. Backend inspection (`status`) uses the smallest window the backend reference allows.
+- Hold only the active named state, exact target pointers, logical and physical worker identities, assigned report paths, backend returns, gate decisions, and recovery observations.
+- Rebuild other facts from git, tracker state, producer reports, and the run directory.
+- Read a producer report only after `report_available`. Pass its path to the next worker; never paste report, tracker, plan, diff, or fetched content into an assignment.
+- Use explicit fields for hosted-tracker reads and the smallest backend status window.
 
 ## Naming
 
-- Logical workers: `<role>-<F>-<T>` — `planner-F004-T012`, `reviewer-1-F004-T012`, `worker-F004-T012`, and `reviewer-2-F004-T012`; quick work uses its qualified identity (`worker-Q007-QT001`). Record and close uses `recorder-<F>-<T>` and `evidence-reviewer-<F>-<T>`, with the same quick identity form. Temper is `temper-<F>`. Decompose uses `planner-<source>` and `reviewer-<source>`, where `<source>` comes from `references/decompose.md`, never a raw path. Preserve every identity digit; backend-specific physical handles are separate and recorded in `workers.md`.
-- Branches: `feat/f004-t012-<slug>` (quick: `feat/q007-qt001-<slug>`) from `origin/<foreman_default_branch>`; retro report `retro/f004-<slug>`; fast-track, when a release branch is explicitly configured, from `origin/<foreman_release_branch>`.
-- Commits and PRs reference feature `T-XXX` or canonical quick `Q-NNN QT-XXX`, the covered `FR-`/`AC-` IDs, and applicable `ADR-`, under the MSW deletion test.
-- Logical reports: `<run dir>/<role>-<F>-<T>.md`, including `<role>-QNNN-QTNNN.md` for quick work. Run directory: `templates/run-dir.md`.
+- Feature workers: `drafter-F004-T012`, `plan-reviewer-F004-T012`, `forge-F004-T012`, `code-reviewer-F004-T012`, `land-F004-T012`, and `review-evidence-F004-T012`.
+- Quick workers preserve the qualified identity, for example `forge-Q007-QT001`. Retrospective workers are `temper-F004`, `retro-reviewer-F004`, and `land-F004-retro`.
+- Branches: canonical task `feat/f004-t012-<slug>` or `feat/q007-qt001-<slug>`; retrospective `retro/f004-<slug>`. External-orchestrator physical branches are unique dispatch refs and never replace the canonical remote ref.
+- Preserve every identity digit. Backend physical aliases remain separate and every dispatch gets a new row in `workers.md`.
 
-## Sessions and workers
+## Workers
 
-- One worker per role per task. Reuse `reviewer-1-*` across the plan-review round, its closure check, and any second round, and `worker-*` across steps 4, 6, 7, and 9 when the backend keeps workers alive; on a one-shot backend each round is a respawn that carries the prior report path.
-- Release a task's workers at the end of step 10 and the temper worker at the end of step 11, per the backend; never leave workers running into the next task.
-- Cleanup of workspaces belongs to the backend reference — some backends forbid the foreman from running it.
+- One active worker per named state and target. Every initial dispatch and respawn is fresh. Preserve logical identity across recovery; never reuse the physical worker.
+- A Review worker may handle its scoped closure check and second full round only when the backend keeps it active. A one-shot backend respawns it with the same logical identity and a new physical identity.
+- Release terminal workers after their accepted report. Keep Land active while checks are pending. Never leave a worker active after its target completes.
+- Workspace cleanup belongs to the backend reference.
 
-## Rounds and escalation
+## Review rounds
 
-- One review round per stage by default; a closure check on resolved R-IDs is not a round. A second full round runs only on a trigger in `references/review-round.md`. Two rounds is the cap; the third is an escalation to the human: name the open finding, tell the worker to stop and report. The cap overrides any worker-internal round budget (MSW's fuse does not grant a worker extra rounds).
-- **Two-attempt rule.** Escalate after two failed attempts at anything — an assignment that did not start, a report that stays incomplete, a batch that fails twice, a review round that leaves a material finding open — instead of looping. Authority: the owner's standing orchestrator rules (`orchestrator-template.md` Hygiene, 2026-08-15 revision). Every "once, then escalate" elsewhere in this skill is this rule.
+One full round is the default. Every material-finding remediation receives a closure check. Run a second full round only on a trigger in [`review-round.md`](review-round.md). Two full rounds is the owner-established cap; a third escalates with the open finding.
+
+The owner-established two-attempt rule also covers assignments that fail to start, reports that remain incomplete, backend dispatch recovery, and unresolved batch delivery. Do not invent another retry or round count.
 
 ## Human overrides
 
-`references/approval-modes.md`, "Rules that hold in every mode": "no gates", "confirm picks", and mid-run mode changes.
+Apply [`approval-modes.md`](approval-modes.md) for `no gates`, `confirm picks`, and mid-run mode changes. A human override changes only its named coordination gate. It does not grant another role's mutation authority or waive evidence.

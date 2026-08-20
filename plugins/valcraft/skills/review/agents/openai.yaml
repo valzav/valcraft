@@ -1,4 +1,4 @@
 interface:
   display_name: "Review"
-  short_description: "Review a plan or code change against its Cast contract"
-  default_prompt: "Use $valcraft:review to review this plan or code change against its Cast contract and report an auditable finding table with reproduced evidence."
+  short_description: "Review an exact plan, code, or evidence target"
+  default_prompt: "Use $valcraft:review to review this exact target independently and return an evidence-backed report without modifying it."

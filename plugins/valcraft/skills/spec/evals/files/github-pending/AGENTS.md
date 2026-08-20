@@ -1,7 +1,6 @@
 # Agent instructions
 
-project_tracker: github
-github_repository: TBD
+project_tracker: github github_repository: TBD
 
 ## Orientation
 

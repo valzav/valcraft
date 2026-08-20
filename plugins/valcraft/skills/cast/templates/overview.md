@@ -14,15 +14,12 @@ updated: <YYYY-MM-DD>
 
 ## Components
 
-<One line per component: name — responsibility. Include external dependencies that
-matter architecturally (data store, queue, third-party APIs).>
+<One line per component: name — responsibility. Include external dependencies that matter architecturally (data store, queue, third-party APIs).>
 
 ## Boundaries
 
-<The lines that must not be crossed: process/service boundaries, module layering,
-public contracts. Cite the ADR that established each boundary.>
+<The lines that must not be crossed: process/service boundaries, module layering, public contracts. Cite the ADR that established each boundary.>
 
 ## Data ownership
 
-<Which component owns which data, and who may read or write it. "Shared" is a decision
-to record, not a default.>
+<Which component owns which data, and who may read or write it. "Shared" is a decision to record, not a default.>

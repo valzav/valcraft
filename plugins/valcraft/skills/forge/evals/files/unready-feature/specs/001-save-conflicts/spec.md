@@ -15,8 +15,7 @@ updated: 2026-08-06
 
 ## Summary
 
-Detect that a document changed since the editor loaded it, and tell the member instead of
-overwriting.
+Detect that a document changed since the editor loaded it, and tell the member instead of overwriting.
 
 ## Functional requirements
 
@@ -25,11 +24,9 @@ overwriting.
 
 ## Acceptance criteria
 
-- [ ] AC-001: Saving a document that another member changed since load is refused with a
-      conflict message.
+- [ ] AC-001: Saving a document that another member changed since load is refused with a conflict message.
 - [ ] AC-002: Saving a document nobody else changed succeeds.
 
 ## Open questions
 
-- When a save is refused, do we keep the member's unsaved text for them to re-apply, or
-  discard it and reload the current version?
+- When a save is refused, do we keep the member's unsaved text for them to re-apply, or discard it and reload the current version?

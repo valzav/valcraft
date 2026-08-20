@@ -15,8 +15,7 @@ updated: 2026-08-05
 
 ## Summary
 
-An admin invites a teammate by email address. The teammate accepts and joins the
-workspace.
+An admin invites a teammate by email address. The teammate accepts and joins the workspace.
 
 ## Functional requirements
 
@@ -25,7 +24,5 @@ workspace.
 
 ## Acceptance criteria
 
-- [ ] AC-001: Creating an invitation for a valid email address produces a pending
-      invitation with a single-use token.
-- [ ] AC-002: Accepting a pending invitation adds the person to the workspace and marks
-      the invitation used.
+- [ ] AC-001: Creating an invitation for a valid email address produces a pending invitation with a single-use token.
+- [ ] AC-002: Accepting a pending invitation adds the person to the workspace and marks the invitation used.

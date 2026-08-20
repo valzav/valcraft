@@ -11,14 +11,12 @@ created: 2026-08-10
 
 ## Requirements
 
-- FR-001: The system MUST name a downloaded export `ledger-export-<YYYY-MM-DD>.csv`,
-  using the export's run date.
+- FR-001: The system MUST name a downloaded export `ledger-export-<YYYY-MM-DD>.csv`, using the export's run date.
 - AC-001: Downloading an export run on 2026-08-10 yields `ledger-export-2026-08-10.csv`.
 
 ## Approach
 
-Set the `Content-Disposition` filename in the download handler from the run's stored
-date; the export body and storage path stay untouched.
+Set the `Content-Disposition` filename in the download handler from the run's stored date; the export body and storage path stay untouched.
 
 ## Tasks
 

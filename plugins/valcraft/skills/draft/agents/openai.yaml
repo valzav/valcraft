@@ -1,0 +1,4 @@
+interface:
+  display_name: "Draft"
+  short_description: "Write and revise implementation task plans"
+  default_prompt: "Use $valcraft:draft to write this task plan, apply MSW, and hand its exact commit to Review."
