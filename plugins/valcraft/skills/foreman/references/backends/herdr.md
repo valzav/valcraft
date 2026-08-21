@@ -64,7 +64,7 @@ Derive the agent name from the canonical logical identity and dispatch ordinal, 
 
 Record each transition in `state.md` before attempting the next, so an interrupted call can be reconciled without creating a second worker.
 
-1. **Checkout verified** — the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch. Never clean, stash, reset, switch, or fetch through dirt.
+1. **Checkout verified** — the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch before any worker is spawned. On that stop, record the branch, the exact head, and the staged, unstaged, and untracked state in `state.md`, and preserve them. Known attribution never waives this gate, including dirt left by a worker whose own recovery is already closed. Never clean, stash, reset, switch, or fetch through dirt.
 2. **Report path claimed** — the assigned path is unique and absent.
 3. **Workspace returned** — `herdr workspace create --cwd <checkout> --no-focus`; read `.result.root_pane.pane_id`.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
