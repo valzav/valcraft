@@ -37,12 +37,13 @@
     },
     {
       "name": "foreman",
-      "version": "bf4b7a6ec059b8d8",
+      "version": "21e160b432c157f6",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
         "references/backends/README.md",
         "references/backends/ao.md",
+        "references/backends/herdr.md",
         "references/backends/subagents.md",
         "references/contracts.md",
         "references/hygiene.md",

@@ -40,6 +40,15 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | No-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
 | Every active transport deviation names changed behavior and discriminating eval | 63 |
 
+## Herdr
+
+| Scenario | Eval |
+| --- | --- |
+| Land executes under shared session permission; a blocked agent state is `permission_blocked` and a credential failure stays a Land report | 72 |
+| A successful `agent prompt` return is not delivery; a settled occupant without a working observation or report is `dispatch_error` | 73 |
+| Every role resolves to its mapped harness; a missing mapped harness fails readiness instead of substituting the other | 74 |
+| A dirty shared checkout stops the dispatch; release closes only the Herdr workspace and changes no Git state | 75 |
+
 ## Land boundary
 
 | Scenario | Eval |

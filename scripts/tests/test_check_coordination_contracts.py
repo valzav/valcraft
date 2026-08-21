@@ -256,15 +256,22 @@ class CoordinationContractCheckTests(unittest.TestCase):
         self.assert_check_fails("active transport deviation has no named eval")
 
     def test_transport_deviation_with_unknown_eval_fails(self) -> None:
+        # Anchor on the whole row: "Foreman eval 7" is a prefix of every 7x id, and
+        # replace() takes the first occurrence, so a bare-substring anchor silently
+        # retargets whichever table happens to mention such an id first.
         self.replace(
             BACKENDS,
-            "Foreman eval 7",
-            "Foreman eval 999",
+            "| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 7 |",
+            "| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 999 |",
         )
         self.assert_check_fails("active transport deviation names missing eval")
 
     def test_transport_deviation_with_unrelated_eval_fails(self) -> None:
-        self.replace(BACKENDS, "Foreman eval 7", "Foreman eval 8")
+        self.replace(
+            BACKENDS,
+            "| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 7 |",
+            "| Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 8 |",
+        )
         self.assert_check_fails("does not reciprocally name coverage key")
 
     def test_transport_eval_with_unregistered_coverage_key_fails(self) -> None:

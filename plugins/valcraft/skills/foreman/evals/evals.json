@@ -724,7 +724,7 @@
       "name": "polling-backend-classifies-attributed-active-session",
       "coordination_coverage": "transport:poll-wake",
       "prompt": "$valcraft:foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, and no-git transport workspaces covered by eval 67. Every row and eval shares one unique reciprocal coverage key.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, no-git transport workspaces covered by eval 67, and Herdr's unconfirmed prompt delivery, fixed role-to-harness assignment, and shared checkout covered by evals 73, 74, and 75. Every row and eval shares one unique reciprocal coverage key.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -904,6 +904,90 @@
         "Foreman selects neither merge variant and does not reinterpret the trade-off",
         "Land is not resumed before the owner decision arrives",
         "Both prepared variants and the exact target survive for resumption"
+      ]
+    },
+    {
+      "id": 72,
+      "name": "herdr-land-execution-conformance",
+      "backend_conformance": [
+        "herdr"
+      ],
+      "prompt": "$valcraft:foreman — audit the herdr backend for ordinary unattended Land execution on a GitHub-tracked task. The initial Land worker occupies a recorded pane in the project session, holds shared session permission, and returns a complete prepared authority_required report with no mutation authority. Then classify two later signals: the pane shows a Herdr blocked agent state on a host permission prompt, and, separately, the `gh` call inside Land fails on an expired credential. Do not execute mutations.",
+      "expected_output": "Foreman accepts the prepared report, keeps Landing active, validates every bound field, and dispatches the same logical Land producer under a fresh physical identity — a new pane and agent name in the same session, with a fresh report path — carrying exact target-bound authority. Shared session permission is execution capability only and grants no mutation authority; Land revalidates immediately before acting and owns the merge and closure. The Herdr blocked agent state is backend return permission_blocked, answered only when the committed contract settles it. The expired-credential failure stays inside Land's own report as external_blocked or partial_completion, never a backend return and never synthesized by Foreman. Foreman never merges.",
+      "files": [
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Shared session permission supplies execution capability but no mutation authority",
+        "The prepared authority_required report keeps Landing active and resumes the same logical Land producer under a fresh pane, agent name, and report path",
+        "Land revalidates immediately before mutating and owns merge plus closure",
+        "A Herdr blocked agent state is recorded as permission_blocked, not as a Land report",
+        "The expired-credential failure remains a producer-owned Land report",
+        "Foreman never merges"
+      ]
+    },
+    {
+      "id": 73,
+      "name": "herdr-prompt-success-is-not-delivery",
+      "coordination_coverage": "transport:herdr-unconfirmed-delivery",
+      "prompt": "$valcraft:foreman — on the herdr backend, `herdr agent prompt drafter-f001-t002-d000 \"<envelope>\" --wait` returns agent_prompted and the recorded pane's occupant reports agent_status done, with the assigned report path still absent. The assignment checkpoint records the submission as attempted. Classify this, then classify a second dispatch where the same command returns and the occupant is observed working. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman does not treat the successful return as delivery. With a settled occupant, no observed working state, and no attributed report, it records dispatch_error against the active assignment and reconciles the exact worker and report path before any further submission, under the established two-attempt rule; it never resubmits the envelope on the strength of a missing return alone, because a silently dropped prompt and a delivered-then-completed prompt look identical from the return value. It also does not record idle_without_report, which belongs to an assignment that was delivered. The second dispatch's observed working state confirms delivery, and Foreman continues awaiting that worker's terminal return.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "A successful agent prompt return is not accepted as proof of delivery",
+        "Settled occupant with neither a working observation nor a report is recorded as dispatch_error, not idle_without_report",
+        "Reconciliation against the exact worker and report precedes any resubmission",
+        "The envelope is never resubmitted on a missing return alone",
+        "An observed working state confirms delivery and the await continues"
+      ]
+    },
+    {
+      "id": 74,
+      "name": "herdr-roles-are-pinned-to-fixed-harnesses",
+      "coordination_coverage": "transport:herdr-cross-model-roles",
+      "prompt": "$valcraft:foreman — on the herdr backend, name the harness for each dispatch in one feature task's full path: Draft, PlanReview, Forge, CodeReview, then Land. Then resolve two conditions: the Codex harness cannot be started in the project session, and, separately, a CodeReview worker would be dispatched on the same harness that produced the diff. Do not spawn workers or mutate files.",
+      "expected_output": "Draft runs on Codex, PlanReview on Claude, Forge on Claude, CodeReview on Codex, and Land on Claude, so each Review runs on the model that did not produce its target. When the Codex harness cannot start, Foreman fails readiness naming the missing mapped harness and creates no run or worker; it never substitutes Claude for a Codex role, because that silently removes the cross-model independence the mapping exists to provide. A CodeReview dispatch that would land on the producing harness is rejected for the same reason rather than accepted as merely fresh context.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/hygiene.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Each of the five dispatches names its mapped harness exactly",
+        "Every Review role resolves to the harness that did not produce its target",
+        "A missing mapped harness fails readiness and creates no run or worker",
+        "The other harness is never substituted for a missing one",
+        "Fresh context alone is not accepted as a substitute for the cross-model mapping"
+      ]
+    },
+    {
+      "id": 75,
+      "name": "herdr-shared-checkout-gates-task-start",
+      "coordination_coverage": "transport:herdr-shared-checkout",
+      "prompt": "$valcraft:foreman — on the herdr backend, prepare a new task dispatch when the orchestrator's checkout has one unstaged modification left by a worker that died mid-assignment, and its physical branch is the canonical task branch. Then state what release does after a later worker's report is accepted. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman stops before spawning: the shared checkout is the workspace for every role, so dirt is not an isolated worker's private state. It records the branch, exact head, and staged, unstaged, and untracked state, preserves them, and treats the dead worker's remains as recovery inventory rather than cleaning, stashing, resetting, switching, or fetching through them. Isolation comes from a fresh worker per dispatch and serial execution, not from a worktree or a per-worker physical branch, so no physical branch is created or reclaimed. Release closes only the accepted worker's own Herdr workspace and touches no Git state.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/backends/subagents.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "The dirty shared checkout stops the dispatch before any worker is spawned",
+        "Branch, exact head, and staged, unstaged, and untracked state are recorded and preserved",
+        "Foreman never cleans, stashes, resets, switches, or fetches through the dirt",
+        "No per-worker worktree or physical branch is created or reclaimed",
+        "Release closes only the accepted worker's Herdr workspace and changes no Git state"
       ]
     }
   ]
