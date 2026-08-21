@@ -37,7 +37,7 @@
     },
     {
       "name": "foreman",
-      "version": "ad053da58cb26b6f",
+      "version": "bf4b7a6ec059b8d8",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -77,7 +77,7 @@
     },
     {
       "name": "land",
-      "version": "1f3b13ffc49ef14b",
+      "version": "e36532d32031480e",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -107,7 +107,7 @@
     },
     {
       "name": "spec",
-      "version": "0312bcb60784e29b",
+      "version": "538d6cd4a2689e78",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -123,7 +123,7 @@
     },
     {
       "name": "temper",
-      "version": "e86ca7d1ebfc4a86",
+      "version": "c2e54b70055330b6",
       "files": [
         "SKILL.md",
         "references/process.md",

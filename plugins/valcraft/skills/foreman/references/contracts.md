@@ -95,7 +95,7 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_retro` | `Retrospective` |
 | `evidence_review_required` | `EvidenceReview` |
 | `partial_completion` | `Landing` |
-| `operator_confirmation_required` | `AwaitOwner` |
+| `operator_confirmation_required`, `owner_decision_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 
@@ -130,6 +130,10 @@ Record exactly one return against the active assignment before report validation
 | `wait_timeout` | nonterminal; foreground only | remain in the current named state and re-arm await |
 
 Only `report_available` opens the attributed producer report. A producer's `Status: blocked: <code> — <detail>` is report content under `report_available`; it is never `permission_blocked`. A host permission prompt or host-enforced transport denial is `permission_blocked`, never a synthesized producer report. A tool or credential failure observed inside Land uses Land's `external_blocked` or `partial_completion` report route.
+
+### Evidence outside the enumerated classes
+
+A host or tool may surface an observation that is neither a producer report nor a backend return — an editor diagnostic, a linter panel, a build warning. It is evidence, never a return. When it agrees with the active producer report, record it in `state.md` and continue. When it conflicts, record both, verify only what the coordinator owns — committed state, refs, exact SHAs — and pass the conflict to the next worker whose role covers it as an explicit item to settle. Never let it substitute for a producer's verification, and never treat its silence as confirmation.
 
 ## Validation and rejection
 
