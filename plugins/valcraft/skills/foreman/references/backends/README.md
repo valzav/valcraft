@@ -25,7 +25,7 @@ Backends declare `wake` (`event`, `foreground`, or authorized `poll`), `answer` 
 
 Never poll a report file on event or foreground backends. Never treat absence from a live-only status list as success. A producer's semantic `Status: blocked` arrives under `report_available`, never `permission_blocked`.
 
-A signal from a physical worker whose assignment has already reached a terminal return is not a backend return. It binds to no active assignment, opens no report, and causes no transition. Record it in `state.md` as an observation with the released worker's identity and ignore it. Never re-open a closed row on one, and never treat it as `idle_without_report`; that return applies only to an active assignment.
+A signal from a physical worker whose assignment has already reached a terminal return is not a backend return. Record it in `state.md` as an observation with the released worker's identity and ignore it. Never treat it as `idle_without_report`; that return applies only to an active assignment.
 
 ## Dead-worker recovery
 

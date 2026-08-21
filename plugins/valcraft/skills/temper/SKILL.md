@@ -19,7 +19,7 @@ Read [`references/report-format.md`](references/report-format.md) before writing
 
 ## Ownership
 
-Create exactly one new report under `docs/retro/`. Never overwrite or extend a report. Do not edit `AGENTS.md`, installed plugin files, product artifacts, or another prompt. Route every proposed change inside the report. Applying a proposal is later reviewed work.
+Create exactly one new report under `docs/retro/`. Never overwrite or extend another run's report. Do not edit `AGENTS.md`, installed plugin files, product artifacts, or another prompt. Route every proposed change inside the report. Applying a proposal is later reviewed work.
 
 Temper owns its retrospective branch, report commit, target-bound push, and PR preparation or execution. It invokes neither Review nor Land. It never merges or closes tracker state.
 

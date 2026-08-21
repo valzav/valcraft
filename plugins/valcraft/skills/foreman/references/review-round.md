@@ -6,7 +6,7 @@ Read this after a PlanReview, CodeReview, or RetroReview report returns material
 2. After the producer reports resolutions, send the same logical Review role the resolution report path and R-IDs. Require it to inspect each resolving commit and locator, re-run that R-ID's reproduction, update the resolution column, open no new finding, and emit Review's unchanged report contract. This is a closure check, not a full round.
 3. Run a second full round only when round one or the resolution shows one of the owner-established triggers:
    - three or more P1 findings in round one;
-   - a resolution touches a file, module, or plan step no R-ID evidence cites, or changes the plan's approach — a resolution that edits an adjacent statement solely because the accepted fix would otherwise contradict it still fires this trigger;
+   - a resolution touches a file, module, or plan step no R-ID evidence cites, or changes the plan's approach, including an adjacent statement edited only to stay consistent with the accepted fix;
    - the producer declines or defers a material R-ID;
    - a P1 concerns a trust boundary, security or permission check, data loss, or a migration;
    - the resolution adds a dependency, replaces a test, or changes CI configuration to pass.

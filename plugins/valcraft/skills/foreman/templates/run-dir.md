@@ -26,7 +26,7 @@ Append one row for every physical dispatch:
 
 `assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state`
 
-Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the backend-defined session id, alias, dispatch ordinal, branch, workspace seed SHA, and whether that seed is predecessor or transport-only state. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Live git, tracker, and backend state outranks both files. Workers write only their assigned report path.
+Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the backend-defined session id, alias, dispatch ordinal, branch, workspace seed SHA, and whether that seed is predecessor or transport-only state. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
 
 ## `state.md`
 

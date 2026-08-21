@@ -6,8 +6,8 @@ The single retrospective artifact a Temper run creates. This reference owns its 
 
 - Location: `docs/retro/` in the analyzed project, tracked in git.
 - Name: `YYYY-MM-DD-NNN-<mode>-<scope>.md`, where `<mode>` is `analyze` or `synthesize` and `<scope>` is a short kebab-case name of the corpus or source set (`003-search`, `prs-38-55`, `q3-features`).
-- Allocate `NNN` as one more than the highest number already present for that date in `docs/retro/` (`2026-08-20-001-…`, `2026-08-20-002-…`); an empty date starts at `001`. `NNN` exists to keep same-date filenames unique and ordered; if the computed number is taken by the time of writing (a concurrent run), take the next free one instead of probing repeatedly. Never overwrite or extend an existing report.
-- Reports are append-only history: a report becomes immutable when its run ends — its PR merges or the run otherwise terminates. While the run is in flight, review findings against the report are remediated in the report itself on its own unmerged branch; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
+- Allocate `NNN` as one more than the highest number already present for that date in `docs/retro/` (`2026-08-20-001-…`, `2026-08-20-002-…`); an empty date starts at `001`. `NNN` exists to keep same-date filenames unique and ordered; if the computed number is taken by the time of writing (a concurrent run), take the next free one instead of probing repeatedly. Never overwrite or extend another run's report.
+- Reports are append-only history: a report becomes immutable when its run ends — its PR merges or the run otherwise terminates. While the run is in flight, remediate review findings against the report in the report itself on its own unmerged branch; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
 
 ## Lesson IDs
 

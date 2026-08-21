@@ -133,7 +133,7 @@ Only `report_available` opens the attributed producer report. A producer's `Stat
 
 ### Evidence outside the enumerated classes
 
-A host or tool may surface an observation that is neither a producer report nor a backend return — an editor diagnostic, a linter panel, a build warning. It is evidence, never a return: it opens no report, closes no assignment, and unlocks no transition. When it agrees with the active producer report, record it in `state.md` and continue. When it conflicts, record both, verify only what the coordinator owns — committed state, refs, exact SHAs — judge nothing, and pass the conflict to the next worker whose role covers it as an explicit item to settle. Never let it substitute for a producer's verification, and never treat its silence as confirmation.
+A host or tool may surface an observation that is neither a producer report nor a backend return — an editor diagnostic, a linter panel, a build warning. It is evidence, never a return. When it agrees with the active producer report, record it in `state.md` and continue. When it conflicts, record both, verify only what the coordinator owns — committed state, refs, exact SHAs — and pass the conflict to the next worker whose role covers it as an explicit item to settle. Never let it substitute for a producer's verification, and never treat its silence as confirmation.
 
 ## Validation and rejection
 

@@ -6,7 +6,7 @@ A quick task is a change too small for a feature triplet but still delivered thr
 
 `specs/quick/` is reserved for quick tasks. It is never a feature candidate and never contains `spec.md`, `design.md`, or `tasks.md`.
 
-A change requiring several phases, a separate design artifact, or a tracker issue hierarchy is a feature. A quick task is a change whose requirements a few-line approach can fully specify, not merely summarize. When the approach is short but the requirements imply several independently reviewable areas, it is a feature. Honor an operator-selected shape after stating a clear mismatch. Otherwise propose the shape and wait when attended; bind and record the proposal when unattended. When one source contains independently valuable changes, ask the operator to select one.
+A change requiring several phases, a separate design artifact, a tracker issue hierarchy, or several independently reviewable areas is a feature. A quick task is a change whose requirements a few-line approach fully specifies, not merely summarizes. Honor an operator-selected shape after stating a clear mismatch. Otherwise propose the shape and wait when attended; bind and record the proposal when unattended. When one source contains independently valuable changes, ask the operator to select one.
 
 ## Identity and allocation
 
