@@ -131,6 +131,10 @@ Record exactly one return against the active assignment before report validation
 
 Only `report_available` opens the attributed producer report. A producer's `Status: blocked: <code> — <detail>` is report content under `report_available`; it is never `permission_blocked`. A host permission prompt or host-enforced transport denial is `permission_blocked`, never a synthesized producer report. A tool or credential failure observed inside Land uses Land's `external_blocked` or `partial_completion` report route.
 
+### Evidence outside the enumerated classes
+
+A host or tool may surface an observation that is neither a producer report nor a backend return — an editor diagnostic, a linter panel, a build warning. It is evidence, never a return: it opens no report, closes no assignment, and unlocks no transition. When it agrees with the active producer report, record it in `state.md` and continue. When it conflicts, record both, verify only what the coordinator owns — committed state, refs, exact SHAs — judge nothing, and pass the conflict to the next worker whose role covers it as an explicit item to settle. Never let it substitute for a producer's verification, and never treat its silence as confirmation.
+
 ## Validation and rejection
 
 Require the active assignment id, logical worker, physical worker, backend return, and report path to match `state.md` and `workers.md`. Reject a predecessor's late report after replacement, even when its report contract is complete. A report is complete only when its producer-owned headings are present in order, required exact identities are populated, and exactly one terminal status line is last.

@@ -24,7 +24,7 @@ The native call folds spawn and assign together. The worker's final channel carr
 
 ## Claude Code event wake
 
-Establish the completion notification with dispatch before ending the parent turn. On wake, attribute the return to the dispatched physical worker, record it, and apply the six-return contract. A semantic blocked or question producer report is `report_available`. A delivery failure before the worker acted is `dispatch_error`. Worker death is `dead`.
+Establish the completion notification with dispatch before ending the parent turn. On wake, attribute the return to the dispatched physical worker, record it, and apply the six-return contract. A released worker may still emit a completion or idle event after its terminal return; attribute it to the released physical identity and discard it. A semantic blocked or question producer report is `report_available`. A delivery failure before the worker acted is `dispatch_error`. Worker death is `dead`.
 
 Do not foreground wait, schedule polling, or inspect the report file for completion.
 
