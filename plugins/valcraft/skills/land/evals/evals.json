@@ -237,6 +237,27 @@
         "Both outcomes use the complete producer-owned Land report",
         "Neither outcome becomes backend permission_blocked without a host permission prompt or transport denial"
       ]
+    },
+    {
+      "id": 12,
+      "name": "policy-variant-choice-returns-owner-decision",
+      "prompt": "$valcraft:land — in evals/files/delivery/, run `./prepare-eval.sh`, then finalize task PR 42 for F001 T-002 from its reviewed head. Review covers the exact final head and every required check passed. The root `AGENTS.md` states no merge-strategy policy, and the repository allows both a squash merge and a merge commit for this PR. Trusted authority covers merging PR 42 and closing its task.",
+      "expected_output": "Land classifies the target, reconciles state, and gates on exact-final-head Review coverage and checks. At Prepare it finds that the merge admits two defensible variants whose choice turns on project policy rather than producer judgement, so it prepares both the squash merge and the merge commit, states the trade-off, and returns the choice. It performs no merge and no tracker closure, preserves the exact prepared target and operation set for resumption, and ends Status: question: owner_decision_required. It does not use target_ambiguous, whose target is resolved here, and does not use operator_confirmation_required, which covers feature or PRD closure.",
+      "files": [
+        "evals/files/delivery/prepare-eval.sh",
+        "evals/files/delivery/.gitignore",
+        "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/docs/product-brief.md",
+        "evals/files/delivery/specs/001-report-export/spec.md",
+        "evals/files/delivery/specs/001-report-export/tasks.md"
+      ],
+      "assertions": [
+        "Both merge variants are prepared with their exact operation sets and the trade-off is stated",
+        "Land selects neither variant and performs no merge or tracker closure",
+        "The report ends Status: question: owner_decision_required",
+        "target_ambiguous is not used, because the target resolves uniquely",
+        "operator_confirmation_required is not used, because this is not feature or PRD closure"
+      ]
     }
   ]
 }

@@ -95,7 +95,7 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_retro` | `Retrospective` |
 | `evidence_review_required` | `EvidenceReview` |
 | `partial_completion` | `Landing` |
-| `operator_confirmation_required` | `AwaitOwner` |
+| `operator_confirmation_required`, `owner_decision_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 

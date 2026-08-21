@@ -37,7 +37,7 @@
     },
     {
       "name": "foreman",
-      "version": "beea576844277d64",
+      "version": "bf4b7a6ec059b8d8",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -77,7 +77,7 @@
     },
     {
       "name": "land",
-      "version": "862f066a51aa02b0",
+      "version": "e36532d32031480e",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
