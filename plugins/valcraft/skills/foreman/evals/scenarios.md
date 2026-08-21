@@ -48,6 +48,14 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | A successful `agent prompt` return is not delivery; a settled occupant without a working observation or report is `dispatch_error` | 73 |
 | Every role resolves to its mapped harness; a missing mapped harness fails readiness instead of substituting the other | 74 |
 | A dirty shared checkout stops the dispatch; release closes only the Herdr workspace and changes no Git state | 75 |
+| Seven Herdr observations map to the six returns; `unknown` proves nothing and `done` is not success | 76 |
+| An unknown submission reconciles report, occupant, and state before anything is sent | 77 |
+| A partial spawn resumes its recorded pane instead of creating a second workspace | 78 |
+| A released worker's late signal is an observation and its late report is rejected on attribution | 79 |
+| The controller lease is an atomic claim, owner-bound on release, and reclaimed only from a recorded stale owner | 80 |
+| Every dispatch records the skill's content hash, or says unavailable rather than substituting | 81 |
+| Pending checks hold one Land assignment across foreground re-arms; `owner_decision_required` parks at AwaitOwner | 82 |
+| Retrospective remediation uses a fresh physical worker and report path while editing the same `docs/retro` file | 83 |
 
 ## Land boundary
 
