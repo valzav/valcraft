@@ -136,7 +136,7 @@
       "id": 7,
       "name": "external-completion-fresh-evidence-review",
       "prompt": "$valcraft:land — in evals/files/delivery/, record and close externally completed GitHub task 17. Authoritative probes establish that no branch, PR, commit, or SHA exists. The operator attests that AC-001 and AC-002 are complete. Work through the durable record and fresh Review handoff, but do not mutate the tracker.",
-      "expected_output": "Land resolves every criterion, records criterion-keyed evidence with attribution and durable locators, and does not treat the operator attestation as proof. It emits an exact evidence-mode Review target. A fresh Review context independently evaluates each criterion from the durable record and returns the Evidence-sufficiency report. Land accepts only that exact report and a sufficient verdict covering every criterion before it prepares the serialized tracker close. It invents no git identity, applies checks to their real targets, performs no tracker mutation without exact authority, and does not spawn Review during direct invocation.",
+      "expected_output": "Land resolves every criterion, records criterion-keyed evidence with attribution and durable locators, and does not treat the operator attestation as proof. It emits an exact evidence-mode Review target. It names every criterion that report must cover and blocks pending it, because direct invocation returns handoffs instead of spawning Review. Only a returned sufficiency report for that exact durable record, sufficient across every criterion, would authorize the serialized tracker close. It invents no git identity, applies checks to their real targets, performs no tracker mutation without exact authority, and does not spawn Review during direct invocation.",
       "files": [
         "evals/files/delivery/AGENTS.md",
         "evals/files/delivery/docs/product-brief.md",
@@ -148,7 +148,7 @@
         "Land records one attributed durable evidence row for every owned acceptance criterion",
         "Operator attestation remains attributed evidence and is not promoted to verified fact",
         "Land returns an exact evidence-mode Review handoff and does not self-judge sufficiency",
-        "Fresh Review independently returns a criterion-complete sufficiency report",
+        "Land names every criterion the sufficiency report must cover and blocks pending that report instead of producing it",
         "Land accepts only the report for the exact durable record and prepares closure only when every criterion is sufficient",
         "No git identity is invented and applicable checks use real targets",
         "Direct Land invocation does not spawn Review or mutate the tracker without exact authority"
