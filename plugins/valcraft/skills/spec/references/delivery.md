@@ -122,4 +122,6 @@ Use these stable question codes:
 - `owner_decision_required` — a necessary non-product choice needs an owner answer.
 - `tracker_target_required` — GitHub mode has no selected output repository.
 
+Several conditions can hold at once, and the report carries exactly one terminal line. A blocked code for a stage the invocation requested outranks every question code. Among question codes, report the first that holds in this order: `source_selection_required`, `tracker_target_required`, `owner_decision_required`, `product_decision_required`. An unresolved product or owner question that the artifact preserves under its own open-questions heading never displaces a later stage's code; it is terminal only when no other condition holds.
+
 A complete Spec report is backend return `report_available`, including when its semantic status is blocked or question. `permission_blocked` is a backend return, not a Spec status. A coordinator routes declared codes without interpreting the detail and never synthesizes this report.
