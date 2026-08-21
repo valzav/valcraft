@@ -5,13 +5,13 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:cast — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Cast gathers no redundant facts and proposes local tracker mode because no preference was supplied. It asks no delivery, backend, approval-mode, default-branch, or release-branch question. It presents the exact project-frame scaffold and its baseline commit as one attended mutation and waits for approval. After approval it creates README.md, AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. It stages only the approved frame and commits it as one clean baseline. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
+      "expected_output": "Cast gathers no redundant facts and explicitly asks the operator to choose local or github tracker mode, explaining both in plain language, because no preference was supplied. It proposes no tracker default and does not inspect GitHub readiness to decide. It asks no delivery, backend, approval-mode, default-branch, or release-branch question. It presents the exact project-frame scaffold and its baseline commit as one attended mutation and waits for approval. After approval it creates README.md, AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. It stages only the approved frame and commits it as one clean baseline. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval",
         "Cast creates the approved project frame and a durable specs/ root but no numeric feature directory, feature triplet, or quick file",
         "CLAUDE.md is a relative symlink to AGENTS.md",
-        "AGENTS.md contains exactly project_tracker: local for tracker metadata and omits github_repository",
+        "Cast asks the operator to choose local or github tracker mode before proposing the frame and assumes neither; the answer becomes the single project_tracker declaration in AGENTS.md",
         "Cast asks no delivery or Foreman configuration question when no override was supplied",
         "AGENTS.md contains no foreman_backend, foreman_approval_mode, foreman_default_branch, foreman_release_branch, or other foreman_* declaration because Foreman needs none",
         "Unknown product facts are recorded as assumptions or TBDs rather than invented requirements",
@@ -122,14 +122,14 @@
       "id": 7,
       "name": "make-x-request-scaffolds-and-hands-off",
       "prompt": "/valcraft:cast Make a 3D printer simulator using three.js, with a menu that switches between a basic cube, a sphere, and a rubber duck, and a slider that adjusts the simulation speed. Keep it simple so we can finish it in maybe 15 minutes.",
-      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It gathers only scaffold-changing facts, proposes local tracker mode, and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, AGENTS.md with a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
+      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It gathers only scaffold-changing facts, explicitly asks the operator to choose local or github tracker mode with a plain-language explanation of each, and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, AGENTS.md with a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval despite the \"make it in 15 minutes\" phrasing",
         "Cast writes no application source, installs no dependency, starts no dev server, and ticks no task",
         "Cast creates no numeric feature directory, feature triplet, or quick file and leaves product details in docs/product-brief.md for Spec",
         "Cast commits the exact approved project frame as one clean baseline and does not push without separate authority",
-        "Cast asks no delivery or Foreman configuration question",
+        "Cast asks the operator to choose the tracker mode but asks no delivery or Foreman configuration question",
         "AGENTS.md contains no foreman_* declaration because Foreman works without one",
         "The report hands docs/product-brief.md and the exact baseline head to Spec to create 001-mvp"
       ]
