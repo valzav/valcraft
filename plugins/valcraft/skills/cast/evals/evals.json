@@ -294,9 +294,11 @@
     {
       "id": 18,
       "name": "retrofit-valid-staged-feature-preserves-spec-owned-artifacts",
-      "prompt": "/valcraft:cast — retrofit the project frame at evals/files/staged-feature-unattended/. Preserve its valid staged feature exactly and complete only missing project-frame artifacts. This repository declares cast_approval: unattended.",
+      "prompt": "/valcraft:cast — run `./prepare-eval.sh` in evals/files/staged-feature-unattended/, then retrofit its project frame. Preserve its valid staged feature exactly and complete only missing project-frame artifacts. This repository declares cast_approval: unattended.",
       "expected_output": "Cast reads the tracker and approval declarations, validates the existing spec-only FEAT-001 stage through Spec's feature contract, and treats the unresolved product question as Spec-owned feature state rather than a Cast repair. It records the exact unattended retrofit proposal, merges only missing README, instruction, symlink, gitignore, plan-root, and architecture frame artifacts, and preserves the existing spec.md byte-for-byte. It creates no design.md, tasks.md, quick file, numeric feature, mapping, or projection. Cast stages only the approved frame delta, commits it once, verifies a clean head, and reports docs/product-brief.md plus that exact baseline for Spec to resume FEAT-001.",
       "files": [
+        "evals/files/staged-feature-unattended/.gitignore",
+        "evals/files/staged-feature-unattended/prepare-eval.sh",
         "evals/files/staged-feature-unattended/AGENTS.md",
         "evals/files/staged-feature-unattended/docs/product-brief.md",
         "evals/files/staged-feature-unattended/specs/001-notification-window/spec.md",

@@ -27,9 +27,13 @@
     {
       "id": 2,
       "name": "local-and-quick-tick-exceptions-are-exact",
-      "prompt": "$valcraft:land — compare completion-tick candidates for local feature task F001 T-002 in evals/files/tracker-local/ and quick task Q-007 QT-001 in evals/files/delivery/ from their reviewed heads. For each target, delta A changes only the selected unchecked checkbox to checked; delta B makes the same tick and edits adjacent prose. The assignment permits preparation only. For each accepted delta, state the required commit, authorized push, exact-head reread, and applicable-check reclassification sequence that execution would follow. Do not push or merge.",
+      "prompt": "$valcraft:land — run `./prepare-eval.sh` in both evals/files/tracker-local/ and evals/files/delivery/, then compare completion-tick candidates for local feature task F001 T-002 in evals/files/tracker-local/ and quick task Q-007 QT-001 in evals/files/delivery/ from their reviewed heads. For each target, delta A changes only the selected unchecked checkbox to checked; delta B makes the same tick and edits adjacent prose. The assignment permits preparation only. For each accepted delta, state the required commit, authorized push, exact-head reread, and applicable-check reclassification sequence that execution would follow. Do not push or merge.",
       "expected_output": "Land applies the completion-tick exception to both the selected local feature task and the selected quick task only for their exact delta A. It prepares one task-owned tick commit for each candidate, requires target-bound push authority before pushing it, and re-runs applicable checks against the new head. Each delta B is uncovered and must return to Review because adjacent prose invalidates the exception. No candidate inherits coverage from its earlier head. With preparation-only authority, Land performs no push, merge, or closure and reports the prepared operations.",
       "files": [
+        "evals/files/delivery/.gitignore",
+        "evals/files/delivery/prepare-eval.sh",
+        "evals/files/tracker-local/.gitignore",
+        "evals/files/tracker-local/prepare-eval.sh",
         "evals/files/tracker-local/AGENTS.md",
         "evals/files/tracker-local/specs/001-neutral/tasks.md",
         "evals/files/delivery/AGENTS.md",
