@@ -869,6 +869,24 @@
         "A failure observed inside Land remains a producer-owned Land report",
         "Foreman never merges"
       ]
+    },
+    {
+      "id": 70,
+      "name": "skill-revision-resolves-identically-across-hosts",
+      "prompt": "$valcraft:foreman — record the dispatch checkpoint for a Draft assignment three times over one unchanged Draft snapshot whose `skills/index.json` entry for draft reads `version: 4f2b9c7d1a03e5b6`, and whose plugin manifest release version reads 0.5.0. First on a host whose skill base directory is `.../cache/valcraft/valcraft/1fb6929f55b1/skills/draft`, second on a host whose skill base directory is `.../plugins/cache/valcraft/0.5.0/skills/draft`, and third on a host where `skills/index.json` cannot be read. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records the same canonical revision 4f2b9c7d1a03e5b6 for the first two dispatches because the snapshot is unchanged, carrying release version 0.5.0 as corroborating metadata in both. It never derives the revision from the differing base directories, and never treats 0.5.0 as the revision, since two different snapshots can share it. The third dispatch records the revision as unavailable instead of substituting the base directory or the release version, and says so explicitly rather than omitting the field.",
+      "files": [
+        "templates/run-dir.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Both resolvable dispatches record the identical canonical revision 4f2b9c7d1a03e5b6 despite different base directories",
+        "The release version 0.5.0 is recorded as corroborating metadata, never as the revision itself",
+        "No revision is derived from the skill's base directory path on either host",
+        "The unreadable-index dispatch records the revision as unavailable rather than falling back",
+        "The unavailable state is stated explicitly rather than left absent from the checkpoint"
+      ]
     }
   ]
 }
