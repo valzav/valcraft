@@ -4,11 +4,11 @@
 
 ### Mode and change class
 
-code; code
+Code mode: `example/reports` PR 42, base `main` at `1111111111111111111111111111111111111111`, head `feat/f001-t002-normalize-headers` at `2222222222222222222222222222222222222222`; change class code.
 
 ### Verdict
 
-verdict: pass; open: none; covered: code at `2222222222222222222222222222222222222222`
+verdict: pass; open: none; covered: `example/reports` PR 42 head `2222222222222222222222222222222222222222`
 
 pass
 
