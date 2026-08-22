@@ -54,7 +54,9 @@ Use exactly:
 - **P2** — a reproduced defect or blind spot implied by the contract.
 - **P3** — informational and requires no remediation.
 
-P1 and P2 are material. A plan or code verdict is exactly `pass`, `material findings`, or `blocked`. `pass` requires no open P1 or P2 and evidence that the mode checks ran. `material findings` names the R-IDs to remediate. `blocked` names what prevented a complete review.
+P1 and P2 are material. A plan or code verdict is exactly `pass`, `material findings`, or `blocked`. `pass` requires no open P1 or P2 that this mode owns, and evidence that the mode checks ran. `material findings` names the R-IDs to remediate. `blocked` names what prevented a complete review.
+
+A verdict counts only findings its own mode can close. A finding whose remainder is closable only by the other mode — a code defect surfaced during plan review, or a plan defect surfaced during code review — is recorded with that owner named and does not withhold this mode's `pass`; it stays open against the owning mode's next target. Otherwise the gate deadlocks: a code-owned finding held against the plan verdict blocks the exact head that could close it.
 
 ## Plan mode
 
