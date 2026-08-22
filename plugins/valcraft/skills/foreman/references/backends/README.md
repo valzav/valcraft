@@ -69,11 +69,14 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:poll-wake` | Foreman eval 63 |
 | Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:isolated-branch` | Foreman eval 62 |
 | Agent Orchestrator | a no-git workflow target uses a transport-only branch seeded from the verified default-branch SHA | dispatch/workspace | `transport:no-git-workspace` | Foreman eval 67 |
+| Agent Orchestrator | a Review worker with material findings keeps its session and worktree for its closure check; the follow-up must fetch the canonical ref, because the worktree is stale by construction | dispatch/await | `transport:ao-review-continuity` | Foreman eval 88 |
+| Agent Orchestrator | an escalated permission gate stays under the re-armed poll waiter; an operator answer in the tmux window resolves it through the worker's terminal return | await | `transport:ao-gate-observed-by-poll` | Foreman eval 89 |
 | Herdr | submission can settle without delivering; `agent_prompt_stalled`, or a settled occupant with neither an observed `working` state nor the report, is unconfirmed | dispatch/await | `transport:herdr-unconfirmed-delivery` | Foreman eval 73 |
 | Herdr | the assignment envelope is passed as one argument value, never interpolated into a shell command string | dispatch | `transport:herdr-argv-envelope` | Foreman eval 84 |
 | Herdr | each role is pinned to a fixed harness so every Review runs on the model that did not produce its target | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
 | Herdr | all roles share the orchestrator's checkout and canonical task branch | workspace | `transport:herdr-shared-checkout` | Foreman eval 75 |
 | Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
+| Herdr | an escalated permission gate stays under foreground observation; an operator answer in the worker's pane resolves it through the worker's terminal return | await | `transport:herdr-gate-observed-in-pane` | Foreman eval 87 |
 
 The corresponding backend reference owns commands. Remove a row when the transport no longer deviates; do not preserve historical notes here.
 

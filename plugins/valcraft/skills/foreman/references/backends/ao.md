@@ -10,6 +10,7 @@ Foreman runs in an Agent Orchestrator project. Every worker receives an isolated
 | `answer` | `interactive` through `ao send` |
 | `harnesses` | project-supported harnesses; use a distinct harness for Review when available |
 | `release` | terminate the worker session after its accepted report; never run project-wide cleanup |
+| `review continuity` | kept active — a Review worker with material findings keeps its session and worktree and receives its closure check and any second full round through `ao send`; released after the round's final report |
 | workspace | isolated worktree on the assigned physical branch |
 
 ## Physical identity
@@ -66,23 +67,46 @@ Before arming, read AO status once and consume any already available attributed 
 ```sh
 S="<session-id>"; R="<assigned-report-path>"
 snap() { cksum "$R" 2>/dev/null || echo none; }
-B=$(snap); seen=0
+B=$(snap); seen=${SEEN:-0}; gated=${GATED:-0}
 while :; do
   [ "$(snap)" != "$B" ] && { echo report_available; break; }
   st=$(ao session ls --project <project-id> --json | jq -r --arg s "$S" '.data[]|select(.id==$s)|.status')
   [ -z "$st" ] && { echo dead; break; }
-  [ "$st" = blocked ] && { echo permission_blocked; break; }
+  if [ "$st" = blocked ]; then
+    [ "$gated" = 1 ] || { echo permission_blocked; break; }
+  else
+    gated=0
+  fi
   [ "$st" = working ] && seen=1
   [ "$st" = idle ] && [ "$seen" = 1 ] && { echo idle_without_report; break; }
   sleep 30
 done
 ```
 
-Run the waiter in the background and end the parent turn only after it is armed. On wake, attribute and record its exact return before another action. A command failure before the waiter starts is `dispatch_error`. AO does not emit `wait_timeout`; that return belongs only to foreground backends.
+`GATED=1` arms the waiter over a blocked status that Foreman has already recorded and handled: it suppresses `permission_blocked` for that status and clears the moment the status changes, so a later block is a new gate and returns normally. Arm it only after recording the blocked status. Every fresh assignment arms with the default `GATED=0`.
+
+Run the waiter in the background and end the parent turn only after it is armed. On wake, attribute and record its exact return before another action. A command failure before the waiter starts is `dispatch_error`. AO does not emit `wait_timeout`; that return belongs only to foreground backends. The waiter is a background process, so the controller's own shell command limit does not bound it; never run it in the foreground, where that limit would kill it into a lost handle.
 
 The 30-second interval is the owner's standing orchestrator rule from `orchestrator-template.md` (2026-08-15 revision); it is not a Foreman-derived retry limit.
 
-For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm await. Never write directly to tmux.
+For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm the same waiter with `SEEN=1 GATED=1`. The recorded block is answered, and a default waiter would poll the not-yet-cleared `blocked` status and return it a second time. Never write directly to tmux.
+
+### An escalated gate stays under observation
+
+Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own tmux window, and the worker then finishes with no message to the controller. After escalating, re-arm the same waiter on the same session with `SEEN=1 GATED=1`. `SEEN=1` because delivery was confirmed before the block, and a waiter that starts at `seen=0` never emits `idle_without_report` for a session that leaves `blocked` and settles without the poll observing `working`. `GATED=1` because the blocked status is already recorded and escalated: a default waiter checks it before its first sleep and returns `permission_blocked` again at once, which wakes and re-arms Foreman in a tight loop instead of observing the gate. A `report_available` that arrives while the gate is open resolves it: record the gate as answered in the session, with the status change and the attributed report, and continue under return precedence. A session that left `blocked` and settled `idle` without a report is `idle_without_report`, not a resolved gate. The gated waiter keeps polling while the status stays `blocked`, so an unanswered gate wakes Foreman for nothing. A block observed after the status changed is a different gate: the waiter returns `permission_blocked` for it, and Foreman answers or escalates that prompt on its own terms.
+
+## Review continuity
+
+AO keeps a worker session and its worktree alive after a turn, so this backend keeps a Review worker active for its own round, as [`../hygiene.md`](../hygiene.md#workers) allows.
+
+1. **Who is kept.** Only a Review worker (`r`-alias) whose accepted report returned material findings. A Review report with verdict `pass`, every producer (Draft, Forge, Temper), and Land are released or handled as before: a producer's remediation is always a fresh session, alias, and physical branch.
+2. **What waiting means.** The kept session is `idle` and executes nothing; its worktree stays at the head it reviewed. Do not send to or inspect it while the producer is active.
+3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — session id, alias, and physical branch — is the initial dispatch's, recorded again on the new row and marked continued. The alias keeps its original preimage; only the report path advances.
+4. **Revalidate before the follow-up send.** `ao session ls --project <project-id> --json` must still list the recorded session id, `idle`, under the recorded alias. A missing or replaced session is an observation, not a backend return: the kept worker has no active assignment. Record it with the status evidence, skip the dead-worker inventory, and dispatch the closure check as a fresh physical worker with the same logical identity through the ordinary dispatch steps.
+5. **The worktree is stale by construction.** The kept reviewer's worktree sits at the head it reviewed, and the producer's resolution landed on the canonical ref. The follow-up envelope carries the resolution report path, the R-IDs, and the exact new head, and requires the reviewer to fetch the canonical ref and inspect each resolving commit and locator at that head, re-running the R-ID's reproduction there. Memory of the first review, and the old worktree contents, are not evidence.
+6. **Release.** After the round's final report — a closure check with no open material finding, a second-round closure, or an escalation — terminate the session as usual.
+
+Delivery confirmation and return precedence are unchanged for a follow-up `ao send`.
 
 ## Workspace and recovery
 

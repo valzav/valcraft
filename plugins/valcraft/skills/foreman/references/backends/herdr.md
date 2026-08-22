@@ -75,7 +75,11 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
-3. **Pane returned** — run `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`; read and record `.result.pane.pane_id` before the next call. Always split from the orchestrator's pane to avoid progressively narrower worker panes. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
+3. **Pane returned** — the tab keeps one layout: the orchestrator's pane is the full-height left column, and every worker pane lives in one right column, stacked. Choose the split by what is live:
+   - no worker pane is live: `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`, which creates the right column;
+   - one or more worker panes are live (a kept Review worker, a preserved pane not yet moved out): `herdr pane split --pane <live-worker-pane-id> --direction down --cwd <checkout> --no-focus`, from the most recently returned live worker pane, so the new pane stacks under it and the orchestrator keeps its full height.
+
+   Never split the orchestrator's pane while a worker pane is live: that opens a second column and narrows every pane. Read and record `.result.pane.pane_id` before the next call. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
 
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
@@ -92,6 +96,8 @@ Record the assignment checkpoint in `state.md` **before** submission so recovery
 ```sh
 herdr agent prompt <agent-name> <envelope> --wait --timeout <ms>
 ```
+
+Keep `--timeout` below the controller's own command limit. A Claude Code controller's shell tool kills a command that outlives that limit (2 minutes by default; both tetris drills saw it as exit 144), which turns an ordinary await into a lost handle and a reconciliation instead of a plain `wait_timeout` re-arm. Re-arming is cheap; reconciliation is not. The same bound applies to standalone `agent wait`.
 
 The envelope carries tracker, repository, and report text this run treats as untrusted. Inside a double-quoted shell string, `$(…)`, backticks, and `${…}` in that text execute in the **controller's** shell before Herdr receives the prompt. Build the call as an argument vector, or single-quote with no expansion. Never interpolate the envelope into a double-quoted command string, and never let a quoting choice alter its bytes.
 
@@ -144,7 +150,11 @@ Submission, delivery confirmation, and return precedence are unchanged for a fol
 
 ## Permission prompts
 
-Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwrapped`, revalidate that the pane still holds the recorded occupant and that the prompt is the one observed, then answer with `herdr agent send-keys <agent-name> <key>`. Escalate the exact prompt when the occupant changed, the prompt changed, or the answer would widen scope. See [`README.md`](README.md#permission-prompts) for the authority rule.
+Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwrapped`, revalidate that the pane still holds the recorded occupant and that the prompt is the one observed, then answer with `herdr agent send-keys <agent-name> <key>`. Re-arm the await over the answered prompt the same way an escalated gate does, with `--until idle --until done`: a bare wait matches the `blocked` state the answer has not yet cleared and returns the prompt a second time. Escalate the exact prompt when the occupant changed, the prompt changed, or the answer would widen scope. See [`README.md`](README.md#permission-prompts) for the authority rule.
+
+### An escalated gate stays under observation
+
+Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own pane, and the worker then finishes with no message to the controller — in the second tetris drill a Forge worker completed twenty-five minutes before the operator told the controller so. After escalating, keep awaiting the same physical worker with `herdr agent wait <agent-name> --until idle --until done --timeout <ms>`, bounded as above and re-armed in the same parent turn. The explicit states are required. Without `--until`, Herdr 0.8.2 matches `idle`, `done`, or `blocked`, so a bare wait on an already-blocked worker returns immediately and re-arming it in the same parent turn spins instead of waiting for the operator. A terminal return that arrives while the gate is open resolves it: record the gate as answered in the pane, with the observed state change and the attributed report, and continue under return precedence. A gate still standing when the bounded await returns `wait_timeout` stays at the gate; re-arm and keep waiting for the operator. A different prompt raised after the operator answers matches neither requested state, so the bounded timeout surfaces it: on that wake, return precedence records `permission_blocked` for the new gate. A worker that left `blocked` without a report is `idle_without_report`, not a resolved gate.
 
 ## Release and recovery
 
