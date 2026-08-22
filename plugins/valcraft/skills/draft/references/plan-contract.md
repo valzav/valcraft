@@ -54,7 +54,7 @@ Do not put execution progress in the plan. Do not edit implementation source, fe
 
 After every plan write or revision, invoke `valcraft:msw` on that plan. Read its complete report and verify that the surviving plan still satisfies the task contract. A product decision that MSW exposes reports `product_decision_required`; a necessary limit or other owner choice reports `owner_decision_required`. Do not commit a plan as reviewable while either question remains.
 
-Commit each reviewable plan state. Stage only the plan path and inspect the staged diff. The commit subject cites the feature `T-XXX` or canonical `Q-NNN QT-XXX`; a review remediation subject also cites every resolved `R-NNN`. Record the resulting full commit SHA and verify that the plan blob at that commit matches the reported Review target.
+Commit each reviewable plan state. Stage only the plan path and inspect the staged diff. The commit subject cites the feature `T-XXX` or canonical `Q-NNN QT-XXX`; a review remediation subject also cites every resolved `R-NNN`. Record the resulting full commit SHA and its subject line in the report, and verify that the plan blob at that commit matches the reported Review target. A reader must be able to check the subject's task and R-ID citations from the report alone.
 
 ## Address plan-review findings
 
@@ -97,7 +97,7 @@ Direct and Foreman-dispatched runs emit this same final block. Keep every headin
 ### Plan
 
 <!-- plan path; canonical branch; physical branch or none -->
-<!-- base and exact local head -->
+<!-- base and exact local head, with the head commit's subject line -->
 
 ### MSW
 
@@ -121,7 +121,7 @@ Direct and Foreman-dispatched runs emit this same final block. Keep every headin
 <!-- exact unsettled decision and affected contract IDs, or none -->
 ```
 
-End the report with exactly one terminal line:
+End the report with exactly one terminal line, and write nothing after it — no summary, note, or `Also found` paragraph; a coordinator reads the last line as the status:
 
 - `Status: done`
 - `Status: blocked: <code> — <detail>`
