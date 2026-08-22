@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "04638c01266759d8",
+      "version": "9577c8cfc6583822",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -37,7 +37,7 @@
     },
     {
       "name": "foreman",
-      "version": "6ffb6b42355c89d7",
+      "version": "26728e347ea7b2fc",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",

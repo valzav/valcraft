@@ -64,8 +64,8 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | Release target remains a human gate and Foreman performs no landing mutation | 6 |
 | Unattended local and GitHub landing works under shared native or external execution permission | 60 |
 | Prepared Land authority resumes through a fresh physical dispatch while Landing remains active | 58, 60 |
-| Native subagents and the registered external backend satisfy Land execution conformance | 68, 69 |
-| Future backends require a dedicated registered Land execution eval | 68, 69 |
+| Native subagents, AO, and Herdr each satisfy Land execution conformance | 68, 69, 72 |
+| Future backends require a dedicated registered Land execution eval | 68, 69, 72 |
 | Host permission prompts remain backend `permission_blocked`; Land owns execution failures | 8, 58 |
 | Pending checks keep the same Land assignment active | 66 |
 | External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |

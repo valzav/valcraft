@@ -934,8 +934,8 @@
       "id": 73,
       "name": "herdr-prompt-success-is-not-delivery",
       "coordination_coverage": "transport:herdr-unconfirmed-delivery",
-      "prompt": "$valcraft:foreman — on the herdr backend, `herdr agent prompt drafter-f001-t002-d000 \"<envelope>\" --wait` returns agent_prompted and the recorded pane's occupant reports agent_status done, with the assigned report path still absent. The assignment checkpoint records the submission as attempted. Classify this, then classify a second dispatch where the same command returns and the occupant is observed working. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman does not treat the successful return as delivery. With a settled occupant, no observed working state, and no attributed report, it records dispatch_error against the active assignment and reconciles the exact worker and report path before any further submission, under the established two-attempt rule; it never resubmits the envelope on the strength of a missing return alone, because a silently dropped prompt and a delivered-then-completed prompt look identical from the return value. It also does not record idle_without_report, which belongs to an assignment that was delivered. The second dispatch's observed working state confirms delivery, and Foreman continues awaiting that worker's terminal return.",
+      "prompt": "$valcraft:foreman — on the herdr backend, `herdr agent prompt drafter-f001-t002-d000 <envelope> --wait` returns agent_prompt_stalled and the recorded pane's occupant reports agent_status done, with the assigned report path still absent. The assignment checkpoint recorded the submission before the call. Classify this, then classify a second dispatch where the same command returns normally and the occupant is observed working. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman does not treat the returned call as delivery. agent_prompt_stalled means no state change followed the submission, so with a settled occupant, no observed working state, and no attributed report, delivery is unconfirmed: Foreman records dispatch_error against the active assignment and reconciles the pre-call checkpoint against the exact worker and report path before any further submission, under the established two-attempt rule. It never resubmits the envelope on the strength of a missing return alone, because a silently dropped prompt and a delivered-then-completed prompt are indistinguishable from the return value. It does not record idle_without_report, which applies only after delivery was confirmed. The second dispatch's observed working state confirms delivery, and Foreman continues awaiting that worker's terminal return.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -943,9 +943,9 @@
         "templates/run-dir.md"
       ],
       "assertions": [
-        "A successful agent prompt return is not accepted as proof of delivery",
+        "agent_prompt_stalled is read as unconfirmed delivery, not as a delivered assignment",
         "Settled occupant with neither a working observation nor a report is recorded as dispatch_error, not idle_without_report",
-        "Reconciliation against the exact worker and report precedes any resubmission",
+        "Reconciliation of the pre-call checkpoint against the exact worker and report precedes any resubmission",
         "The envelope is never resubmitted on a missing return alone",
         "An observed working state confirms delivery and the await continues"
       ]
@@ -954,8 +954,8 @@
       "id": 74,
       "name": "herdr-roles-are-pinned-to-fixed-harnesses",
       "coordination_coverage": "transport:herdr-cross-model-roles",
-      "prompt": "$valcraft:foreman — on the herdr backend, name the harness for each dispatch in one feature task's full path: Draft, PlanReview, Forge, CodeReview, then Land. Then resolve two conditions: the Codex harness cannot be started in the project session, and, separately, a CodeReview worker would be dispatched on the same harness that produced the diff. Do not spawn workers or mutate files.",
-      "expected_output": "Draft runs on Codex, PlanReview on Claude, Forge on Claude, CodeReview on Codex, and Land on Claude, so each Review runs on the model that did not produce its target. When the Codex harness cannot start, Foreman fails readiness naming the missing mapped harness and creates no run or worker; it never substitutes Claude for a Codex role, because that silently removes the cross-model independence the mapping exists to provide. A CodeReview dispatch that would land on the producing harness is rejected for the same reason rather than accepted as merely fresh context.",
+      "prompt": "$valcraft:foreman — on the herdr backend, name the harness for each dispatch in one feature task's full path: Draft, PlanReview, Forge, CodeReview, then Land, and for the two remaining Review modes, RetroReview over a Temper report and EvidenceReview over a Land completion record. Then resolve two conditions: the Codex harness cannot be started in the project session, and, separately, a CodeReview worker would be dispatched on the same harness that produced the diff. Do not spawn workers or mutate files.",
+      "expected_output": "Draft runs on Codex, PlanReview on Claude, Forge on Claude, CodeReview on Codex, and Land on Claude. Temper runs on Claude and RetroReview on Codex; EvidenceReview runs on Codex over a Land record produced on Claude. Every Review mode therefore runs on the model that did not produce its target. When the Codex harness cannot start, Foreman fails readiness naming the missing mapped harness and creates no run or worker; it never substitutes Claude for a Codex role, because that silently removes the cross-model independence the mapping exists to provide. A CodeReview dispatch that would land on the producing harness is rejected for the same reason rather than accepted as merely fresh context.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -963,7 +963,7 @@
         "references/loop.md"
       ],
       "assertions": [
-        "Each of the five dispatches names its mapped harness exactly",
+        "Each dispatch in the task path plus RetroReview and EvidenceReview names its mapped harness exactly",
         "Every Review role resolves to the harness that did not produce its target",
         "A missing mapped harness fails readiness and creates no run or worker",
         "The other harness is never substituted for a missing one",
@@ -1138,6 +1138,25 @@
         "A fresh pane, agent name, and absent .foreman report path are assigned",
         "The docs/retro report file is edited in place on the unmerged branch, not recreated",
         "Foreman neither edits the retrospective report nor applies a proposal"
+      ]
+    },
+    {
+      "id": 84,
+      "name": "herdr-envelope-is-argv-not-shell",
+      "coordination_coverage": "transport:herdr-argv-envelope",
+      "prompt": "$valcraft:foreman — on the herdr backend, an assignment envelope quotes a tracker issue title verbatim: Fix $(rm -rf build) and `git push --force` in the \"release\" path. Show how Foreman submits this envelope to a worker and state what the worker receives. Do not spawn workers, run the command, or mutate files.",
+      "expected_output": "Foreman passes the envelope to herdr agent prompt as a single positional argument value, built as an argument vector or single-quoted with no expansion, so the worker receives the title byte-for-byte including $(rm -rf build), the backticks, and the double quotes. It never interpolates the envelope into a double-quoted shell command string, because tracker, repository, and report text is untrusted data and $(…), backticks, and ${…} inside double quotes execute in the controller's own shell before Herdr receives the prompt. A quoting choice that would alter or execute the envelope's bytes stops the dispatch rather than delivering a modified assignment.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The envelope is passed as one argument value, not interpolated into a double-quoted shell string",
+        "The worker receives the substitution, backtick, and quote characters unchanged",
+        "Command substitution in untrusted envelope text is identified as executing in the controller's shell",
+        "No shell expansion of envelope content is treated as acceptable",
+        "A quoting path that would alter the envelope's bytes stops the dispatch"
       ]
     }
   ]

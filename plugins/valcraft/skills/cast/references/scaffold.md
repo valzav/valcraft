@@ -15,7 +15,8 @@ Ask only what changes the frame. Accept `TBD` for the rest. The tracker-mode que
 7. Issue tracker mode: `local` or `github`. Always ask; never assume.
 8. External mutable state that justifies `docs/status.md`.
 
-There are two tracker modes, and Cast has no default. Ask the operator to choose before proposing the frame, and explain both options in plain language:
+There are two tracker modes, and Cast has no default. Ask the operator to choose before proposing the frame, and explain both options in plain language. Two things already are that choice and are never re-asked: a preference the operator stated in the request, and one valid existing `project_tracker` declaration.
+
 
 - `local` — the task list lives in Markdown files inside the repository. Order, dependencies, and completion come from checkboxes in git. Nothing leaves the machine, and no GitHub account, network access, or `gh` is needed.
 - `github` — the same task list also becomes GitHub Issues, so work is visible and assignable in GitHub and to people who do not read the repository. This needs a GitHub repository with Issues enabled and an authenticated `gh`.

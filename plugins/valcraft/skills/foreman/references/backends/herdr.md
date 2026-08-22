@@ -2,6 +2,13 @@
 
 Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches each worker as a fresh coding agent in a pane of one named project session. Require the `herdr` binary, `HERDR_ENV=1`, the project's named session, and both mapped harnesses.
 
+This backend needs one explicit project key in root `AGENTS.md`; no default is derivable, and readiness fails when it is absent:
+
+```yaml
+foreman_backend: herdr
+foreman_herdr_session: <session-name>   # the named Herdr session that owns this project's panes
+```
+
 Workers share Foreman's checkout and canonical task branch. Isolation comes from a fresh worker per dispatch and serial execution, not from a worktree, so the shared-checkout rules in [`subagents.md`](subagents.md#shared-checkout) apply unchanged.
 
 ## Flags
@@ -11,7 +18,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | `wake` | `foreground` — `agent prompt --wait` blocks for the worker's turn; a lost handle re-arms with standalone `agent wait` |
 | `answer` | `interactive` through `agent send-keys` |
 | `harnesses` | Claude and Codex, assigned per role by the table below; a missing mapped harness fails readiness |
-| `release` | close the worker's own workspace; never `session stop`, `session delete`, or any pane the run does not own |
+| `release` | `herdr workspace close <workspace-id>` for the worker's own recorded workspace; never `session stop`, `session delete`, or any pane the run does not own |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
 
 ## Role-to-harness assignment
@@ -31,8 +38,8 @@ Never substitute the other harness for a missing one; that silently removes the 
 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.
 
-1. `HERDR_ENV=1` and `herdr --version` reports the release the project requires.
-2. The project's named session exists and is running.
+1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the two primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, and `herdr workspace close`. Release 0.8.2 is the verified source of both. Stop rather than degrade when either is absent.
+2. The session named by `foreman_herdr_session` exists and is running.
 3. Both mapped harnesses are startable in that session.
 4. This controller holds the project's lease.
 
@@ -41,18 +48,19 @@ Fail before run creation or task selection when any of these does not hold. Neve
 Herdr injects `HERDR_SOCKET_PATH` into every pane, and a socket override outranks `HERDR_SESSION`. An orchestrator that exports only the session name reads **its own** session and receives a plausible, wrong answer with no error. Resolve the path explicitly and confirm the returned `socket:` matches:
 
 ```sh
-export HERDR_SOCKET_PATH="$HOME/.config/herdr/sessions/<project-session>/herdr.sock"
+export HERDR_SOCKET_PATH="$HOME/.config/herdr/sessions/<foreman_herdr_session>/herdr.sock"
 herdr status server        # verify the reported socket is the one just set
 ```
 
 ### Controller lease
 
-One controller per project pool. A readiness check alone cannot enforce this — two controllers pass it simultaneously — so claim atomically:
+One controller per project pool. A readiness check alone cannot enforce this — two controllers pass it simultaneously — so claim atomically. The lock and its owner token are created together, so no interruption can leave an ownerless lock that nothing is entitled to release:
 
-1. `mkdir .foreman/controller.lock` in the project checkout. Failure means another controller holds it.
-2. Write the owner's session, workspace, and pane id into the lock directory.
-3. Release only as the recorded owner, at run end.
-4. A lock whose owner pane is absent from the named session is stale: record the observation and the reclaim in `state.md`, then take it. Never remove a lock whose owner pane is still live.
+1. Create `.foreman/` in the project checkout when absent. Readiness runs before run creation, so the run directory does not yet exist and a claim that presumes it fails on every first run.
+2. Write the owner token — session, workspace id, pane id, and claim time — to `.foreman/controller.owner.<pane-id>`.
+3. Claim with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock`. A hard link fails when the target exists, so the claim is atomic and the lock always carries its owner. Failure means another controller holds it.
+4. Release only as the recorded owner, at run end.
+5. A lock whose owner pane is absent from the named session is stale. Reclaim by compare-and-swap, never by check-then-replace: read the token, then `mv .foreman/controller.lock .foreman/controller.reclaim.<pane-id>`. Exactly one concurrent reclaimer's move succeeds; a controller whose move fails, or whose moved token differs from the one it read, lost the race and stops. The winner records the token read, the move, and the fresh claim in `state.md`, then repeats steps 2 and 3. Never remove a lock whose owner pane is still live.
 
 ## Physical identity
 
@@ -64,9 +72,11 @@ Derive the agent name from the canonical logical identity and dispatch ordinal, 
 
 Record each transition in `state.md` before attempting the next, so an interrupted call can be reconciled without creating a second worker.
 
-1. **Checkout verified** — the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch before any worker is spawned. On that stop, record the branch, the exact head, and the staged, unstaged, and untracked state in `state.md`, and preserve them. Known attribution never waives this gate, including dirt left by a worker whose own recovery is already closed. Never clean, stash, reset, switch, or fetch through dirt.
+1. **Checkout verified** — at a task's start the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch before any worker is spawned. On that stop, record the branch, the exact head, and the staged, unstaged, and untracked state in `state.md`, and preserve them. Known attribution never waives this task-start gate, including dirt left by a worker whose own recovery is already closed. Never clean, stash, reset, switch, or fetch through dirt.
+
+   A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
-3. **Workspace returned** — `herdr workspace create --cwd <checkout> --no-focus`; read `.result.root_pane.pane_id`.
+3. **Workspace returned** — `herdr workspace create --cwd <checkout> --no-focus`; read `.result.root_pane.pane_id` and the workspace id, and record both before the next call. `release` and recovery both address the workspace by that id. An interrupted create can return after its checkpoint is lost: inventory `herdr workspace list` for an unattributed workspace on this checkout and adopt or close it before creating another.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
@@ -74,17 +84,25 @@ A worker that blocks during startup is not a failure. Herdr reports it as `block
 
 ## Assign and await
 
-`agent prompt --wait` carries the assignment and the first foreground await together:
+Record the assignment checkpoint in `state.md` **before** the submitting call. A crash inside `agent prompt` is indistinguishable from one before it unless the intent was already durable, and the no-resubmit rule below has nothing to reconcile against without it.
+
+`agent prompt --wait` then carries the assignment and the first foreground await together. `agent prompt` takes the prompt as a positional argument, so pass the envelope as one argument value:
 
 ```sh
-herdr agent prompt <agent-name> "<envelope>" --wait --timeout <ms>
+herdr agent prompt <agent-name> <envelope> --wait --timeout <ms>
 ```
+
+The envelope carries tracker, repository, and report text this run treats as untrusted. Inside a double-quoted shell string, `$(…)`, backticks, and `${…}` in that text execute in the **controller's** shell before Herdr receives the prompt. Build the call as an argument vector, or single-quote with no expansion. Never interpolate the envelope into a double-quoted command string, and never let a quoting choice alter its bytes.
 
 ### Delivery is not confirmed by a successful return
 
-`agent prompt` can return `agent_prompted` while the text never reaches the agent's composer and the occupant never leaves its settled state. The loss is intermittent and silent, and an identical later prompt may land.
+Submitted text can fail to reach the agent's composer while the occupant never leaves its settled state. The loss is intermittent and silent, and an identical later prompt may land.
 
-After every submission, require one of: an observed `working` state for the exact occupant, or the attributed report. A settled occupant with neither is `dispatch_error` — reconcile against the exact worker and report under the established two-attempt rule. Never resubmit an assignment whose delivery is unknown.
+`--wait` is what distinguishes the two cases: it requires an observed state change after submission before it matches any settled state, and reports `agent_prompt_stalled` when none follows. That window is Herdr's own, not a Foreman-derived limit.
+
+Delivery is confirmed by an observed `working` state for the exact occupant, or by the attributed report. Treat `agent_prompt_stalled`, and any settled occupant with neither, as unconfirmed: record `dispatch_error` and reconcile the pre-call checkpoint against the exact worker and report path under the established two-attempt rule. Never resubmit an assignment whose delivery is unknown. `idle_without_report` applies only after delivery was confirmed.
+
+A submission to an already-blocked agent is rejected with `agent_blocked` before any input is sent. That is not a delivery failure and consumes no attempt: the occupant holds a host prompt, so record `permission_blocked`, answer or escalate under [Permission prompts](#permission-prompts), then submit.
 
 ### Return precedence
 
@@ -92,10 +110,10 @@ On every wake, resolve in this order and record exactly one return:
 
 1. A signal bound to a physical identity whose assignment already reached a terminal return is **not** a return. Record it as an observation against the released worker and continue awaiting the active one.
 2. An attributed change to the assigned report path — `report_available`.
-3. A current host prompt on the recorded pane — `permission_blocked`.
-4. A settled occupant (`idle` or `done`) with no report — `idle_without_report`.
+3. A current host prompt on the recorded pane, or a submission rejected with `agent_blocked` — `permission_blocked`.
+4. A settled occupant (`idle` or `done`) whose delivery was confirmed, with no report — `idle_without_report`.
 5. `agent_not_found`, or a pane whose occupant is not the recorded one — `dead`.
-6. A transport or command failure — `dispatch_error`.
+6. `agent_prompt_stalled`, a settled occupant whose delivery was never confirmed, or a transport or command failure — `dispatch_error`.
 7. The host timeout with the same worker still active — `wait_timeout`, nonterminal; re-arm in the same parent turn.
 
 `working`, `unknown`, and absence from a live-name list never prove completion. `done` is Herdr's word for idle after unseen work, not for success.
@@ -116,9 +134,13 @@ Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwr
 
 ## Release and recovery
 
-Release closes the accepted worker's own workspace and touches no Git state. The shared checkout and canonical branch are the durable record.
+Release runs `herdr workspace close <workspace-id>` for the accepted worker's own recorded workspace and touches no Git state. The shared checkout and canonical branch are the durable record.
 
-A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory, then dispatch the same logical worker under a new pane, agent name, and report path. Reject a predecessor's late report or lifecycle signal after replacement.
+A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory.
+
+Then close the predecessor before the replacement starts. Every role shares one checkout, so a predecessor that is merely unresponsive can still be writing to the files its replacement is about to inventory and change. Close its recorded workspace id, then confirm the recorded pane no longer holds the recorded agent name. A predecessor that cannot be closed as its exact recorded identity blocks replacement and escalates; never start a second worker in the shared checkout while the first may still be live.
+
+Only then dispatch the same logical worker under a new pane, agent name, and report path. Reject a predecessor's late report or lifecycle signal after replacement.
 
 Never run `herdr update`, `herdr server stop`, or `session stop` during a run: an update terminates pane processes, and stopping the session kills every worker including the orchestrator's own pane.
 
