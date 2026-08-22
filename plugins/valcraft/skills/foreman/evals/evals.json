@@ -1180,6 +1180,23 @@
         "The reviewer is released only after the round's final report",
         "A null agent_session on the kept pane is recorded as an observation, not a dead backend return, no recovery inventory is run, and the closure check becomes a fresh physical worker with the same logical identity"
       ]
+    },
+    {
+      "id": 86,
+      "name": "herdr-project-session-is-the-controllers-own",
+      "prompt": "$valcraft:foreman — three readiness checks on the herdr backend, classify each. (a) Root AGENTS.md declares only `foreman_backend: herdr`; the controller's pane has HERDR_SOCKET_PATH=$HOME/.config/herdr/sessions/shop-foreman/herdr.sock, `herdr status server` answers on it, and `herdr session list --json` maps that socket to name `shop-foreman`. (b) Same pane, but AGENTS.md also declares `foreman_herdr_session: shop-foreman-v2`. (c) AGENTS.md declares `foreman_herdr_session: shop-foreman`, but the controller was started from a plain terminal with no HERDR_SOCKET_PATH, and the operator suggests exporting HERDR_SESSION=shop-foreman. State for each whether readiness passes, what session name is recorded, and what is never done. Do not spawn workers or mutate files.",
+      "expected_output": "(a) passes: the key is optional, the project session is the one the controller's pane belongs to, resolved from the inherited HERDR_SOCKET_PATH through `herdr session list --json`, and `shop-foreman` is recorded in state.md; nothing is exported or re-targeted. (b) fails readiness: the key is an assertion and the resolved name `shop-foreman` differs from `shop-foreman-v2`; the failure names both, no run is created, and the controller never switches its socket to the named session. (c) fails readiness: the controller is not inside a Herdr session, and exporting HERDR_SESSION is refused because a socket override outranks it and a controller that re-targets a session reads one session while spawning in another; the operator is told to start Claude Code in a pane of `shop-foreman`. In every case no other backend is selected.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/backends/README.md",
+        "templates/project-block.md"
+      ],
+      "assertions": [
+        "Case (a) passes readiness without foreman_herdr_session and records shop-foreman resolved from the inherited socket",
+        "Case (b) fails readiness naming both shop-foreman and shop-foreman-v2, creates no run, and does not re-target the socket",
+        "Case (c) fails readiness because the controller is outside a Herdr session, and exporting HERDR_SESSION is refused rather than used",
+        "No case falls back to another backend"
+      ]
     }
   ]
 }

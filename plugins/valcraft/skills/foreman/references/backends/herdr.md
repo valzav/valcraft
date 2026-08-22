@@ -2,12 +2,14 @@
 
 Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches workers as fresh coding agents in one named project session. A Review worker with material findings may remain for its closure check under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the named session, and both mapped harnesses.
 
-This backend needs one explicit project key in root `AGENTS.md`; no default is derivable, and readiness fails when it is absent:
+The controller runs inside the project's Herdr session, and that session is the one its own pane belongs to. Root `AGENTS.md` may pin its name; the key is an assertion, not a pointer:
 
 ```yaml
 foreman_backend: herdr
-foreman_herdr_session: <session-name>   # the named Herdr session that owns this project's panes
+foreman_herdr_session: <session-name>   # optional; when set, the controller's own session must carry this name
 ```
+
+Without the key, the project session is whichever session the controller's pane is in — `herdr --session <name>` followed by Claude Code in one of its panes is the whole setup. Set the key when one machine hosts several project sessions and a controller started in the wrong one must stop rather than run.
 
 Workers share Foreman's checkout and canonical task branch. Isolation comes from a fresh worker per dispatch and serial execution, not from a worktree, so the shared-checkout rules in [`subagents.md`](subagents.md#shared-checkout) apply unchanged.
 
@@ -40,18 +42,13 @@ Never substitute the other harness for a missing one; that silently removes the 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.
 
 1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the three primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. Release 0.8.2 is the verified source of all three. Stop rather than degrade when any is absent.
-2. The session named by `foreman_herdr_session` exists and is running.
+2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman_herdr_session` is set, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
 3. Both mapped harnesses are startable in that session.
 4. This controller holds the project's lease.
 
-### Address the session by socket path
+### The inherited socket is the session
 
-Herdr injects `HERDR_SOCKET_PATH` into every pane, and a socket override outranks `HERDR_SESSION`. An orchestrator that exports only the session name reads **its own** session and receives a plausible, wrong answer with no error. Resolve the path explicitly and confirm the returned `socket:` matches:
-
-```sh
-export HERDR_SOCKET_PATH="$HOME/.config/herdr/sessions/<foreman_herdr_session>/herdr.sock"
-herdr status server        # verify the reported socket is the one just set
-```
+Herdr injects `HERDR_SOCKET_PATH` into every pane, and a socket override outranks `HERDR_SESSION`. Because the controller runs inside the project session, the inherited value is already the right one: use it unchanged for every `herdr` call and confirm it once with `herdr status server`. Never export `HERDR_SESSION` or another socket path to reach a different session — a controller that does so reads one session and spawns in another, with no error from either.
 
 ### Controller lease
 
