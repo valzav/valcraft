@@ -461,6 +461,21 @@
         "R-023 is neither dropped nor downgraded to P3",
         "The Verdict section opens with a single line of the form `verdict: pass; open: R-023:P1 <owner>; covered: <target>`, listing R-023 as open even though it did not decide the verdict"
       ]
+    },
+    {
+      "id": 23,
+      "name": "retrospective-report-is-pinned-by-path-and-content-hash",
+      "prompt": "$valcraft:review — the target is a local retrospective report at /work/project/docs/.retro/2026-08-22-001-analyze-001-mvp.md, which is gitignored, with SHA-256 3a7c…e91f supplied by the assignment. Describe which mode applies, how the target is pinned and what the verdict's covered target names, and what happens if the file's hash no longer matches when review starts. Do not edit the file.",
+      "expected_output": "Plan mode applies: a local retrospective report under docs/.retro/ is a plan-mode target. Because the file is not in git, the pin is the exact absolute path plus the SHA-256 content hash, not a commit; the verdict's covered target names that path and hash. If the hash on disk differs from the assigned one, the target is not the one assigned: Review returns blocked naming the mismatch rather than reviewing whatever is there. Review edits nothing and commits nothing.",
+      "files": [
+        "SKILL.md"
+      ],
+      "assertions": [
+        "A docs/.retro report is reviewed in plan mode",
+        "The pin and the covered target are the absolute path plus SHA-256 content hash, not a commit",
+        "A hash mismatch at review start returns blocked instead of reviewing the current file",
+        "Review edits and commits nothing"
+      ]
     }
   ]
 }

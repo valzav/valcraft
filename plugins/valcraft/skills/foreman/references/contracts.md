@@ -20,7 +20,7 @@ Every dated artifact resolves its date from repository policy, then an explicit 
 
 A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, authoritative base, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
-When Draft must publish its exact plan commit for the next Review worker, Forge still reports task PR `none`, Temper still reports retrospective PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
+When Draft must publish its exact plan commit for the next Review worker, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
 
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
@@ -31,7 +31,7 @@ When Draft must publish its exact plan commit for the next Review worker, Forge 
 
 Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge and Temper advance only after their producer reports the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. Structured `authority_required` reports from Temper and Land use this continuation; they do not enter Blocked.
+Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. Structured `authority_required` reports from Temper and Land use this continuation; they do not enter Blocked.
 
 ## Message registry
 
@@ -45,10 +45,10 @@ Draft advances only when the next Review worker can access its exact commit. A n
 | Code verdict | Review | Foreman, Forge or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | CodeReview | `CodeVerdict` |
 | Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../land/SKILL.md#report`](../../land/SKILL.md#report) | Landing or FeatureClose | `LandResult` |
 | Evidence-sufficiency verdict | Review | Foreman, Land | [`../../review/references/evidence-mode.md#evidence-sufficiency-report`](../../review/references/evidence-mode.md#evidence-sufficiency-report) | EvidenceReview | `Landing` |
-| Retrospective report and PR | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `TemperResult` |
-| Retrospective verdict | Review | Foreman, Temper or Land | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
+| Retrospective report | Temper | Foreman, Review | [`../../temper/SKILL.md#report`](../../temper/SKILL.md#report) | Retrospective | `TemperResult` |
+| Retrospective verdict | Review | Foreman, Temper | [`../../review/SKILL.md#reports`](../../review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 
-`DraftResult`, `ForgeResult`, and `TemperResult` first apply the prepared outward continuation above. They advance to PlanReview, CodeReview, or RetroReview only when the next worker can resolve the exact target. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose: pass advances to Implementing, Landing, or Landing respectively; material findings return to Drafting, Implementing, or Retrospective. LandResult uses the reported target kind: a completed task returns Ready, a completed tracker-only feature close enters Retrospective, a completed retrospective PR enters Complete, and completed external closure returns Ready.
+`DraftResult` and `ForgeResult` first apply the prepared outward continuation above; they advance to PlanReview or CodeReview only when the next worker can resolve the exact target. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose: pass advances to Implementing, Landing, or Complete respectively; material findings return to Drafting, Implementing, or Retrospective. LandResult uses the reported target kind: a completed task returns Ready, a completed tracker-only feature close enters Retrospective, and completed external closure returns Ready.
 
 ## Declared outcome routing
 
@@ -92,14 +92,13 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `review_required` | `ReviewByTarget` |
 | `check_failure_task` | `Implementing` |
 | `check_failure_spec` | `ReturnToSpecCaller` |
-| `check_failure_retro` | `Retrospective` |
 | `evidence_review_required` | `EvidenceReview` |
 | `partial_completion` | `Landing` |
 | `operator_confirmation_required`, `owner_decision_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
 
-`ReviewByTarget` means task PR to CodeReview, retrospective PR to RetroReview, and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
+`ReviewByTarget` means task PR to CodeReview and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
 
 ### Spec
 
@@ -112,8 +111,7 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `authority_required` | `ResumeProducer` |
-| `corpus_invalid`, `analysis_blocked`, `git_write_failed`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `corpus_invalid`, `analysis_blocked`, `report_dir_not_ignored`, `report_write_failed` | `Blocked` |
 | `owner_decision_required` | `AwaitOwner` |
 
 ## Backend returns

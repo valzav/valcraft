@@ -3,6 +3,7 @@
 .claude/settings.local.json
 .claude/*.lock
 .foreman/
+docs/.retro/
 
 # Secrets — references only, never values
 .env

@@ -15,7 +15,7 @@ Review one exact target independently and remain report-only. Never edit the tar
 
 The target selects one mode:
 
-- plan, spec, design, tasks, or quick task -> **plan mode**;
+- plan, spec, design, tasks, quick task, or a local retrospective report under `docs/.retro/` -> **plan mode**;
 - diff, PR, branch, or commit range -> **code mode**;
 - Land external-completion record -> **evidence mode**.
 
@@ -36,7 +36,7 @@ For evidence mode, read [evidence-mode.md](references/evidence-mode.md). Use onl
 
 ## Shared rules
 
-1. Pin the exact target before judging it. Plan mode owns an exact path and full commit. Code mode owns an exact repository, base, and exact code head. Evidence mode owns an exact durable record.
+1. Pin the exact target before judging it. Plan mode owns an exact path and full commit, or, for a gitignored retrospective report, an exact absolute path and SHA-256 content hash. Code mode owns an exact repository, base, and exact code head. Evidence mode owns an exact durable record.
 2. Reproduce behavior claims with the smallest discriminating check and cite actual output. Prose is not proof.
 3. Inspect the enforcement point, not only its documentation.
 4. Use one stable finding row per defect: `R-NNN | severity | claim | evidence | resolution`. Preserve IDs across rounds and allocate after the highest existing ID.

@@ -55,7 +55,7 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | The controller lease is an atomic hard-link claim, owner-bound on release, live only while the recorded pane still holds the recorded agent session, and reclaimed by claiming the next generation | 80 |
 | Every dispatch records the skill's content hash, or says unavailable rather than substituting | 81 |
 | Pending checks hold one Land assignment across foreground re-arms; `owner_decision_required` parks at AwaitOwner | 82 |
-| Retrospective remediation uses a fresh physical worker and report path while editing the same `docs/retro` file | 83 |
+| Retrospective remediation uses a fresh physical worker and report path while editing the same gitignored `docs/.retro` file in place | 83 |
 
 ## Land boundary
 

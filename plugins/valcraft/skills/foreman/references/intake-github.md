@@ -28,7 +28,7 @@ Pass authoritative target identity and intermediate state to Land:
 - **Task PR:** Land owns final-head and checks, merge, the closing comment, issue close, and `in-progress` removal.
 - **External completion:** Land writes the attributed criterion evidence comment, returns its exact Review target, consumes fresh evidence sufficiency, checks real targets without inventing git state, and closes only after its gates pass.
 - **Feature or PRD close:** after every child closes and the operator confirms, dispatch tracker-only Land with the quoted confirmation and exact target set. Land owns close execution and partial-failure reconciliation.
-- **Spec or retrospective PR:** Land applies only the closure actions valid for that target kind; no task issue closes from those PRs.
+- **Spec PR:** Land applies only the closure actions valid for that target kind; no task issue closes from it.
 
 Foreman does not build or execute a landing or closing batch, classify checks, merge, or invent a branch, commit, PR, or SHA.
 

@@ -1,7 +1,7 @@
 ---
 name: land
 description: >
-  Finalize reviewed Valcraft work: verify exact final heads and applicable checks, merge an authorized task, spec, or retrospective PR, close the valid tracker targets, reconcile partial completion, or record and close work completed outside git. Use when the operator or Foreman asks to land, merge, finalize, close, mark not planned, resume a partial merge or closure, or assess external-completion evidence. Land never implements or reviews a change and never gives merge authority to Foreman.
+  Finalize reviewed Valcraft work: verify exact final heads and applicable checks, merge an authorized task or spec PR, close the valid tracker targets, reconcile partial completion, or record and close work completed outside git. Use when the operator or Foreman asks to land, merge, finalize, close, mark not planned, resume a partial merge or closure, or assess external-completion evidence. Land never implements or reviews a change and never gives merge authority to Foreman.
 ---
 
 # Land
@@ -16,7 +16,6 @@ Resolve one target:
 
 - task PR;
 - spec PR;
-- retrospective PR;
 - tracker-only feature or PRD closure;
 - `not planned` task closure; or
 - external completion for one open feature or quick task.
@@ -48,7 +47,7 @@ Never broaden, infer, transfer, or retain authority for changed fields. Release-
 Use these codes when the condition applies; never substitute prose for a code:
 
 - `review_required` — the exact current head lacks Review coverage;
-- `check_failure_task`, `check_failure_spec`, `check_failure_retro` — evidence identifies the artifact owner;
+- `check_failure_task`, `check_failure_spec` — evidence identifies the artifact owner;
 - `missing_required_check`, `check_source_unavailable`, `external_blocked` — no artifact owner is proven;
 - `authority_required`, `authority_drift`, `release_authority_required` — exact mutation authority is absent or stale;
 - `evidence_review_required`, `evidence_insufficient` — external-completion evidence needs or fails fresh Review;

@@ -4,10 +4,10 @@ The single retrospective artifact a Temper run creates. This reference owns its 
 
 ## File
 
-- Location: `docs/retro/` in the analyzed project, tracked in git.
+- Location: `docs/.retro/` in the analyzed project, gitignored. Reports are local history on the machine that ran Temper; synthesize mode aggregates them, and only the proposals they produce enter git, through later reviewed work.
 - Name: `YYYY-MM-DD-NNN-<mode>-<scope>.md`, where `<mode>` is `analyze` or `synthesize` and `<scope>` is a short kebab-case name of the corpus or source set (`003-search`, `prs-38-55`, `q3-features`).
-- Allocate `NNN` as one more than the highest number already present for that date in `docs/retro/` (`2026-08-20-001-…`, `2026-08-20-002-…`); an empty date starts at `001`. `NNN` exists to keep same-date filenames unique and ordered; if the computed number is taken by the time of writing (a concurrent run), take the next free one instead of probing repeatedly. Never overwrite or extend another run's report.
-- Reports are append-only history: a report becomes immutable when its run ends — its PR merges or the run otherwise terminates. While the run is in flight, remediate review findings against the report in the report itself on its own unmerged branch; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
+- Allocate `NNN` as one more than the highest number already present for that date in `docs/.retro/` (`2026-08-20-001-…`, `2026-08-20-002-…`); an empty date starts at `001`. `NNN` exists to keep same-date filenames unique and ordered; if the computed number is taken by the time of writing (a concurrent run), take the next free one instead of probing repeatedly. Never overwrite or extend another run's report.
+- Reports are append-only history: a report becomes immutable when its run ends. While the run is in flight, remediate review findings in the report itself and report the new content hash; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
 
 ## Lesson IDs
 
@@ -58,7 +58,8 @@ Stage attribution records the responsible gate's execution as one of:
 3. **Themes** — merged candidates, strongest evidence first. Each theme carries its own `L-NNN`, the merged rule statement, the re-graded evidence level, and every contributing `<report>, L-NNN`.
 4. **Tensions and contradictions** — tensions: both candidates stand, with the boundary between their domains; contradictions: the resolution and which evidence decided it, or an explicit `unresolved` with what would settle it.
 5. **Routing** — the merged themes routed through the three tiers, in the same shapes as analyze sections 5–7, plus proposed retirements: promoted standing rules no surviving evidence supports.
-6. **Not examined** — source reports not fully processed, and corpora deliberately not re-opened.
+6. **Operator selection** — the proposals that met the escalation test in `process.md`, each marked accepted or declined with the operator's recorded choice and, for an accepted one, its application step; `offered, awaiting selection` for an unattended run; `none` when no proposal met the test.
+7. **Not examined** — source reports not fully processed, and corpora deliberately not re-opened.
 
 ## Standing rules in AGENTS.md
 
@@ -68,7 +69,7 @@ The promotion target is a `## Standing rules` section in the project's root `AGE
 ## Standing rules
 
 - Normalize input first, then validate the result, never the reverse.
-  (docs/retro/2026-08-20-001-analyze-003-search.md, L-002)
+  (docs/.retro/2026-08-20-001-analyze-003-search.md, L-002)
 ```
 
 Keep the section small enough to read: propose a merge or retirement when rules overlap, and retire through a later report's routing section, never by silent deletion.

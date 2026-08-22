@@ -122,10 +122,8 @@ REPORT_HEADINGS = {
         "### Retrospective artifact",
         "### Evidence coverage",
         "### Proposal summary",
-        "### Workspace and commit",
-        "### Outward mutations",
+        "### Operator selection",
         "### Review target",
-        "### Land target",
         "### Blockers",
     ),
 }
@@ -163,7 +161,7 @@ MESSAGE_REGISTRY = {
         "Review",
         "plugins/valcraft/skills/review/references/evidence-mode.md#evidence-sufficiency-report",
     ),
-    "Retrospective report and PR": (
+    "Retrospective report": (
         "Temper",
         "plugins/valcraft/skills/temper/SKILL.md#report",
     ),

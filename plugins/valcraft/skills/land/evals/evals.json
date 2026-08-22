@@ -73,8 +73,8 @@
     {
       "id": 4,
       "name": "target-kinds-apply-only-valid-closure",
-      "prompt": "$valcraft:land — in evals/files/delivery/, classify and prepare finalization for the captured task PR, spec PR, retrospective PR, tracker-only PRD close, and a task closed as not planned. Do not execute external mutations.",
-      "expected_output": "Land applies target-specific closure. A task PR may merge and close its task. Spec and retrospective PRs may merge but never close a task merely because they merged. Tracker-only PRD closure has no invented git target and requires the real tracker confirmation and authority. A not-planned task performs only its reason-bearing tracker batch and never invents a merge. Each prepared handoff names its target kind and exact operations.",
+      "prompt": "$valcraft:land — in evals/files/delivery/, classify and prepare finalization for the captured task PR, spec PR, tracker-only PRD close, and a task closed as not planned. Do not execute external mutations.",
+      "expected_output": "Land applies target-specific closure. A task PR may merge and close its task. A spec PR may merge but never closes a task merely because it merged. Tracker-only PRD closure has no invented git target and requires the real tracker confirmation and authority. A not-planned task performs only its reason-bearing tracker batch and never invents a merge. Each prepared handoff names its target kind and exact operations.",
       "files": [
         "evals/files/delivery/AGENTS.md",
         "evals/files/delivery/docs/product-brief.md",
@@ -84,7 +84,7 @@
       ],
       "assertions": [
         "A task PR may pair merge with task closure",
-        "Spec and retrospective PRs merge without task closure",
+        "A spec PR merges without task closure",
         "Tracker-only feature or PRD closure invents no branch, PR, commit, or SHA",
         "Not-planned closure uses only the reason-bearing tracker operation and no merge",
         "Each handoff identifies the target kind and exact valid operation set"

@@ -14,8 +14,7 @@ Create one gitignored directory per Foreman run:
 ├── review-evidence-F004-T012-d000.md
 ├── forge-Q007-QT001-d000.md
 ├── temper-F004-d000.md
-├── retro-reviewer-F004-d000.md
-└── land-F004-retro-d000.md
+└── retro-reviewer-F004-d000.md
 ```
 
 `<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.foreman/`. A run id never supplies an artifact date.

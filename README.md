@@ -32,9 +32,8 @@ new feature or PRD:
       -> forge: implement the task and produce verification evidence
       -> review: pass the change or return reproduced findings
       -> land: finalize the reviewed target and close tracker state
-      -> temper (feature only): produce the retrospective and authorized PR
-        -> review: pass the retrospective change or return findings
-        -> land: finalize the reviewed retrospective
+      -> temper (feature only): write the local retrospective report (docs/.retro/, gitignored)
+        -> review: pass the report or return findings
 ```
 
 `foreman` can coordinate the delivery stages in one loop; the same skills also run individually when a human drives the work.
@@ -55,7 +54,7 @@ new feature or PRD:
 - **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX` decomposition and dependencies. `spec` creates or resumes the complete triplet from one accepted source, including `001-mvp`; `foreman`, `draft`, `forge`, `review`, and `land` deliver against it.
 - **Quick contract:** `specs/quick/NNN-<slug>.md` combines requirements, approach, and `QT-XXX` tasks for a change that does not need a feature triplet. `spec` creates it; the normal delivery and review skills use it as the complete contract.
 - **Delivery plan:** `docs/plans/*-plan.md` records implementation decisions for non-trivial work or remediation decisions for review findings. `draft` writes or revises the plan and applies `msw`; `review` checks its exact commit before `forge` implements it. Progress remains in the tracker rather than in the plan.
-- **Evidence and learning:** `forge` produces a verification handoff; `review` produces stable `R-XXX` findings and reproduced evidence; `land` owns final-head checks, authorized finalization, and tracker closure. `foreman` stores attributed worker reports while coordinating transitions. After feature closure, `temper` writes an append-only report under `docs/retro/` and prepares or creates its authorized PR.
+- **Evidence and learning:** `forge` produces a verification handoff; `review` produces stable `R-XXX` findings and reproduced evidence; `land` owns final-head checks, authorized finalization, and tracker closure. `foreman` stores attributed worker reports while coordinating transitions. After feature closure, `temper` writes an append-only local report under the gitignored `docs/.retro/`; its synthesize mode aggregates those reports and, when evidence is corroborated across reports, offers the proposals to the operator as a selection.
 
 ## Workflows
 

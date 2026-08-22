@@ -4,7 +4,9 @@
 
 Bind the review to a repository-relative plan or feature-artifact path and one full commit SHA before reading content. When the caller supplies both, verify that the commit exists and contains that path. When the caller supplies only a current tracked path, resolve `HEAD^{commit}` and require that path to have no staged, unstaged, or untracked change. Record the resulting path and full commit under `Mode and change class`.
 
-Read the blob at the pinned commit. A newer commit at the same path is not covered; name it under `Not examined`. If the supplied target and observed blob or commit disagree, stop with `review_target_mismatch`. If the path or commit cannot be resolved, stop with `review_blocked`. Never infer coverage from a path, branch name, previous verdict, or mutable working tree.
+A gitignored retrospective report under `docs/.retro/` has no commit: pin it by absolute path and the SHA-256 of its content, hash the file on disk before reading it, and name that pair as the covered target.
+
+Read the blob at the pinned commit, or the file at the pinned hash. A newer commit at the same path is not covered; name it under `Not examined`. If the supplied target and observed blob, commit, or content hash disagree, stop with `review_target_mismatch`. If the path or commit cannot be resolved, stop with `review_blocked`. Never infer coverage from a path, branch name, previous verdict, or mutable working tree.
 
 ## Review the plan
 
