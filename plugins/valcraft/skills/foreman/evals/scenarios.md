@@ -85,3 +85,4 @@ External-completion evals characterize routing ownership: Land records and close
 | Herdr escalated permission gate stays under observation; an operator answer in the pane resolves it; await timeouts stay below the controller's command limit | 87 |
 | AO keeps a Review worker for its closure check and refetches the canonical ref; a missing session falls back to a fresh one | 88 |
 | AO escalated permission gate stays under the re-armed waiter; an operator answer in tmux resolves it | 89 |
+| Herdr worker panes stack in one right column; the orchestrator keeps the full-height left column | 90 |

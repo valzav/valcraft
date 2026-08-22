@@ -75,7 +75,11 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
-3. **Pane returned** — run `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`; read and record `.result.pane.pane_id` before the next call. Always split from the orchestrator's pane to avoid progressively narrower worker panes. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
+3. **Pane returned** — the tab keeps one layout: the orchestrator's pane is the full-height left column, and every worker pane lives in one right column, stacked. Choose the split by what is live:
+   - no worker pane is live: `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`, which creates the right column;
+   - one or more worker panes are live (a kept Review worker, a preserved pane not yet moved out): `herdr pane split --pane <live-worker-pane-id> --direction down --cwd <checkout> --no-focus`, from the most recently returned live worker pane, so the new pane stacks under it and the orchestrator keeps its full height.
+
+   Never split the orchestrator's pane while a worker pane is live: that opens a second column and narrows every pane. Read and record `.result.pane.pane_id` before the next call. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
 
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.

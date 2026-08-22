@@ -1258,6 +1258,22 @@
         "Settling idle without a report is idle_without_report, not a resolved gate",
         "A session still blocked remains at the gate with the waiter re-armed"
       ]
+    },
+    {
+      "id": 90,
+      "name": "herdr-worker-panes-stack-in-one-right-column",
+      "prompt": "$valcraft:foreman — on the herdr backend, the orchestrator runs in pane w1N:p4. Give the exact `herdr pane split` call for each of these dispatches: (a) Draft T-001, with no worker pane live; (b) Draft T-001 remediation, while plan-reviewer-f001-t001-d000 is kept idle in pane w1N:p6 after material findings; (c) Forge T-001 after the reviewer in w1N:p6 was released; (d) Forge T-002 while a preserved dead pane w1N:p9 is still in the tab and has not been moved out. State what the tab looks like after (b). Do not spawn workers or mutate files.",
+      "expected_output": "(a) `herdr pane split --pane w1N:p4 --direction right --cwd <checkout> --no-focus`: no worker pane is live, so the split comes from the orchestrator and creates the right column. (b) `herdr pane split --pane w1N:p6 --direction down --cwd <checkout> --no-focus`: a worker pane is live, so the new pane stacks under the kept reviewer; the orchestrator's pane is never split while a worker pane is live. After (b) the tab is the orchestrator as a full-height left column and a right column holding the reviewer above the drafter. (c) Back to `--pane w1N:p4 --direction right`, because no worker pane is live. (d) Either move the preserved pane out first with `herdr pane move w1N:p9 --new-tab --no-focus` and then split right from w1N:p4, or split down from w1N:p9 while it is still in the tab; in no case split the orchestrator's pane while w1N:p9 is live in the tab.",
+      "files": [
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "With no live worker pane the split comes from the orchestrator pane with --direction right",
+        "With a kept reviewer live the split comes from that worker pane with --direction down, never from the orchestrator",
+        "After (b) the orchestrator is a full-height left column and the workers are stacked in one right column",
+        "After the reviewer is released the next split returns to the orchestrator pane with --direction right",
+        "A preserved pane still in the tab is either moved out first or split down from; the orchestrator pane is not split while it is live"
+      ]
     }
   ]
 }
