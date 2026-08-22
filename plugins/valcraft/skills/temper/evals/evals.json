@@ -139,6 +139,24 @@
         "The menu is one multi-select question naming the rule, its target, grade, and contributing reports",
         "The operator's choice is recorded in Operator selection with an application step for accepted items, and Temper applies and commits nothing"
       ]
+    },
+    {
+      "id": 8,
+      "name": "unattended-synthesis-records-escalated-proposals-as-offered",
+      "prompt": "$valcraft:temper — synthesize two analyze reports under docs/.retro/ (gitignored) in an unattended run with no live operator and no structured question tool. One merged theme is A-grade on two independent root incidents from the two distinct reports; a second theme is B-grade. State exactly what the Operator selection section contains, what the run's final status line is, and what Temper applies.",
+      "expected_output": "The A-grade theme corroborated across two distinct reports meets the escalation test, so Operator selection lists it as `offered, awaiting selection` — not `none`, because a proposal did meet the test, and the unattended run must preserve it for the operator rather than discard it. The B-grade theme stays in the report without a menu entry. Temper never blocks on the menu and never accepts on the operator's behalf, so the run ends `Status: done`. Temper applies nothing and writes no git state. `none` would be correct only in analyze mode, or in a synthesize run where no proposal met the escalation test.",
+      "files": [
+        "SKILL.md",
+        "references/process.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "The escalated A-grade proposal is recorded as `offered, awaiting selection`, not discarded and not `none`",
+        "`none` is reserved for analyze mode or a synthesis where no proposal met the escalation test",
+        "The B-grade theme stays in the report without a menu entry",
+        "The unattended run ends Status: done without blocking on the menu or accepting on the operator's behalf",
+        "Temper applies nothing and writes no git state"
+      ]
     }
   ]
 }

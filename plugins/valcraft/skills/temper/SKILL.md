@@ -76,7 +76,7 @@ Direct and Foreman-dispatched runs end with this same block. Keep headings in or
 ### Blockers
 ```
 
-`Review target` names the absolute report path, its SHA-256 content hash, and the repository head the report describes. `Operator selection` is `none` in analyze mode and in an unattended synthesize run; in an attended synthesize run it lists each offered proposal as accepted or declined, with the application step for every accepted one.
+`Review target` names the absolute report path, its SHA-256 content hash, and the repository head the report describes. `Operator selection` is `none` in analyze mode, and in a synthesize run where no proposal met the escalation test in `process.md`. An unattended synthesize run lists every proposal that met the test as `offered, awaiting selection`. An attended synthesize run lists each offered proposal as accepted or declined, with the application step for every accepted one.
 
 End with exactly one line:
 

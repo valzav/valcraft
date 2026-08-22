@@ -476,6 +476,23 @@
         "A hash mismatch at review start returns blocked instead of reviewing the current file",
         "Review edits and commits nothing"
       ]
+    },
+    {
+      "id": 24,
+      "name": "retrospective-report-is-judged-against-tempers-contract",
+      "prompt": "$valcraft:review — the target is a local retrospective report at /work/project/docs/.retro/2026-08-22-001-synthesize.md with its assignment-supplied SHA-256, and the hash matches. The report grades L-004 as A while citing one root incident quoted from a single analyze report, its L-007 carries no primary tier, and it has no Operator selection section even though L-004 is offered as an AGENTS.md standing rule; the run was unattended. State which authorities you load to judge the report, the verdict, and who remediates each finding. Do not edit the report.",
+      "expected_output": "Review loads Temper's own governing references — references/report-format.md for the required sections, incident record, and evidence grades, and references/process.md for the analysis discipline, routing tiers, and operator escalation — together with root AGENTS.md. Spec's feature and quick references do not govern a retrospective, and the corpus the report cites is evidence to verify rather than an authority. The verdict is material findings, not pass: L-004's A grade is unsupported because an A needs two independent root incidents and one report's evidence is not corroboration; L-007 violates the rule that every candidate carries exactly one primary tier; and the missing Operator selection section is required, and for an unattended run must list the escalated proposal as `offered, awaiting selection`. Every finding routes to valcraft:temper, which edits the same report in place. Review edits nothing.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Review loads Temper's report-format.md and process.md as the report's governing contract, not Spec's feature or quick references",
+        "The unsupported A grade is a material finding because an A needs two independent root incidents",
+        "A candidate with no primary tier is a material finding",
+        "The missing Operator selection section is a material finding, and an unattended run requires `offered, awaiting selection`",
+        "The verdict is material findings and every finding routes to valcraft:temper, which edits the report in place"
+      ]
     }
   ]
 }

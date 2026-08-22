@@ -11,7 +11,7 @@
     {
       "name": "valcraft",
       "source": "./plugins/valcraft",
-      "description": "Reusable agent skills: cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (retrospective production and authorized PRs), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+      "description": "Reusable agent skills: cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
       "category": "productivity",
       "homepage": "https://github.com/valzav/valcraft",
       "tags": ["skills", "sdd", "scaffold", "prompt-engineering"]

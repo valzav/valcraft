@@ -31,7 +31,7 @@ When Draft must publish its exact plan commit for the next Review worker, Forge 
 
 Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. Structured `authority_required` reports from Temper and Land use this continuation; they do not enter Blocked.
+Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
 
 ## Message registry
 

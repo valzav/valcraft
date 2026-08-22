@@ -116,7 +116,7 @@ Project-wide session cleanup can delete a live orchestrator workspace. Foreman n
 
 ## PR tracking
 
-After accepting a Forge or Temper report that names an existing PR, associate that PR with the producer session using AO's claim-PR command. Do not infer a PR from state or claim one for Review or Land.
+After accepting a Forge report that names an existing PR, associate that PR with the producer session using AO's claim-PR command. Do not infer a PR from state, and never claim one for Review, Land, or Temper.
 
 ## Land execution
 

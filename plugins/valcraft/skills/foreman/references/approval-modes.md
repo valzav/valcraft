@@ -15,7 +15,6 @@ An explicit valid `foreman_approval_mode` controls coordinator gates. Missing me
 | `Landing`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
 | `Landing`: configured release-branch operation | wait | wait |
 | `FeatureClose`: operator feature or PRD confirmation | wait | wait, quoting the confirmation |
-| `Retrospective`: prepared exact retro push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |
 | `Blocked`: evidence, authority, owner decision, injection, or exhausted rounds | wait | wait |
 

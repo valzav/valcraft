@@ -64,7 +64,7 @@ The default path for a new project or a new body of work.
 
 1. **`/valcraft:cast`** — create or retrofit the project frame: README, `AGENTS.md`, product brief, architecture and ADR structure, tracker configuration, and the durable `specs/` root. Cast commits one approved clean baseline and hands the product brief to Spec; it creates no feature triplet or quick task.
 2. **`/valcraft:spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including `001-mvp`. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. No setup-time Foreman configuration is required: it defaults to native subagents and unattended mode, derives the repository's default branch when invoked, and treats a missing release branch as no separate release branch. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's retrospective PR through Review and Land. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
+3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. No setup-time Foreman configuration is required: it defaults to native subagents and unattended mode, derives the repository's default branch when invoked, and treats a missing release branch as no separate release branch. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
 
    Add `foreman_*` keys to `AGENTS.md` only when the project needs explicit overrides. Manual Forge remains available without changing the scaffold.
 
@@ -78,7 +78,7 @@ Same contracts, you drive:
 2. `/valcraft:draft T-XXX` (or `Q-NNN QT-XXX`) — write or revise the task plan, apply MSW, verify the surviving plan, and commit that reviewable state. Run `/valcraft:review` in plan mode on that exact commit; return findings to Draft by `R-ID`.
 3. `/valcraft:forge T-XXX` — implement only from the passed plan review, verify the change, and prepare or create the authorized task PR. Run `/valcraft:review` in code mode on the exact head; return findings to Forge by `R-ID`.
 4. `/valcraft:land` — revalidate Review coverage and applicable checks, then perform only the authorized finalization and closure operations. In unattended mode, exact target-bound Land authority permits ordinary landing on native subagents, external orchestrators, and conforming future backends; Foreman never merges.
-5. `/valcraft:temper` over the closed feature, then route its exact PR through Review and Land.
+5. `/valcraft:temper` over the closed feature, then run `/valcraft:review` in plan mode on the exact report path and content hash it returns. There is no PR and no Land step.
 
 ## Prompt tooling
 
@@ -97,7 +97,7 @@ Same contracts, you drive:
 | `review` — review an exact plan, change, or evidence    | `/valcraft:review`  | `$valcraft:review`  | `review`  |
 | `land` — finalize reviewed work and close tracker state | `/valcraft:land`    | `$valcraft:land`    | `land`    |
 | `foreman` — coordinate the delivery loop                | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper` — produce a retrospective and its handoff      | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `temper` — produce a local retrospective and its handoff | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
 | `hone` — refine a prompt artifact                       | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
 | `distill` — reduce a prompt to its essence              | `/valcraft:distill` | `$valcraft:distill` | `distill` |
 | `msw` — MSW Kernel over a document                      | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
