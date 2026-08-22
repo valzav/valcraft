@@ -1197,6 +1197,26 @@
         "Case (c) fails readiness because the controller is outside a Herdr session, and exporting HERDR_SESSION is refused rather than used",
         "No case falls back to another backend"
       ]
+    },
+    {
+      "id": 87,
+      "name": "herdr-escalated-gate-is-resolved-by-the-pane",
+      "coordination_coverage": "transport:herdr-gate-observed-in-pane",
+      "prompt": "$valcraft:foreman — on the herdr backend, forge-f001-t005-d000 on pane w1N:p12 shows a host prompt asking whether to bring the operator's browser window to the front or record a measurement as not obtained; the committed contract does not settle it. Describe what Foreman records and does next, and then what happens in each of three later observations: (a) the pane leaves `blocked`, the assigned report path appears attributed to that worker, and `agent wait` returns settled; (b) the pane leaves `blocked` and settles with no report; (c) the prompt is still standing after the bounded `agent wait` returns. Also state what `--timeout` the awaits use relative to the controller's own command limit. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate because the contract does not settle it and answering would widen scope, and does not answer it. Escalation does not end the await: Foreman keeps observing the same physical worker with standalone `agent wait`, with `--timeout` kept below the controller's own command limit so the host returns `wait_timeout` rather than killing the command into a lost handle, and re-arms in the same parent turn. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the pane with the observed state change, records `report_available` for the attributed path, and continues. (b) A worker that left `blocked` and settled without a report is `idle_without_report`, not a resolved gate. (c) A prompt still standing when the await settles stays at the gate; Foreman re-arms and keeps waiting for the operator.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/herdr.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The unsettled prompt is recorded as permission_blocked and escalated, not answered",
+        "After escalation Foreman keeps awaiting the same physical worker with standalone agent wait, re-armed in the same parent turn",
+        "The await timeout is kept below the controller's own command limit so the host returns wait_timeout instead of a lost handle",
+        "A terminal return with the attributed report while the gate is open resolves the gate and is recorded as report_available",
+        "Leaving blocked without a report is idle_without_report, not a resolved gate",
+        "A prompt still standing after the await settles remains at the gate"
+      ]
     }
   ]
 }

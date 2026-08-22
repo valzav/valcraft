@@ -93,6 +93,8 @@ Record the assignment checkpoint in `state.md` **before** submission so recovery
 herdr agent prompt <agent-name> <envelope> --wait --timeout <ms>
 ```
 
+Keep `--timeout` below the controller's own command limit. A Claude Code controller's shell tool kills a command that outlives that limit (2 minutes by default; both tetris drills saw it as exit 144), which turns an ordinary await into a lost handle and a reconciliation instead of a plain `wait_timeout` re-arm. Re-arming is cheap; reconciliation is not. The same bound applies to standalone `agent wait`.
+
 The envelope carries tracker, repository, and report text this run treats as untrusted. Inside a double-quoted shell string, `$(…)`, backticks, and `${…}` in that text execute in the **controller's** shell before Herdr receives the prompt. Build the call as an argument vector, or single-quote with no expansion. Never interpolate the envelope into a double-quoted command string, and never let a quoting choice alter its bytes.
 
 ### Delivery is not confirmed by a successful return
@@ -145,6 +147,10 @@ Submission, delivery confirmation, and return precedence are unchanged for a fol
 ## Permission prompts
 
 Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwrapped`, revalidate that the pane still holds the recorded occupant and that the prompt is the one observed, then answer with `herdr agent send-keys <agent-name> <key>`. Escalate the exact prompt when the occupant changed, the prompt changed, or the answer would widen scope. See [`README.md`](README.md#permission-prompts) for the authority rule.
+
+### An escalated gate stays under observation
+
+Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own pane, and the worker then finishes with no message to the controller — in the second tetris drill a Forge worker completed twenty-five minutes before the operator told the controller so. After escalating, keep awaiting the same physical worker with standalone `agent wait`, bounded as above and re-armed in the same parent turn. A terminal return that arrives while the gate is open resolves it: record the gate as answered in the pane, with the observed state change and the attributed report, and continue under return precedence. A prompt still standing when the await settles stays at the gate. A worker that left `blocked` without a report is `idle_without_report`, not a resolved gate.
 
 ## Release and recovery
 

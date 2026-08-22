@@ -82,3 +82,4 @@ External-completion evals characterize routing ownership: Land records and close
 | Quick selection, completion, validation, and qualified identities | 12, 13, 15, 16 |
 | Herdr keeps a Review worker with material findings for its closure check; producers stay fresh; a dead kept pane falls back to a fresh physical worker | 85 |
 | Herdr project session is the controller's own pane's session; `foreman_herdr_session` is an optional assertion; no re-targeting | 86 |
+| Herdr escalated permission gate stays under observation; an operator answer in the pane resolves it; await timeouts stay below the controller's command limit | 87 |
