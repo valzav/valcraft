@@ -18,7 +18,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | `wake` | `foreground` — `agent prompt --wait` blocks for the worker's turn; a lost handle re-arms with standalone `agent wait` |
 | `answer` | `interactive` through `agent send-keys` |
 | `harnesses` | Claude and Codex, assigned per role by the table below; a missing mapped harness fails readiness |
-| `release` | `herdr workspace close <workspace-id>` for the worker's own recorded workspace; never `session stop`, `session delete`, or any pane the run does not own |
+| `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
 
 ## Role-to-harness assignment
@@ -76,7 +76,9 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
-3. **Workspace returned** — `herdr workspace create --cwd <checkout> --no-focus`; read `.result.root_pane.pane_id` and the workspace id, and record both before the next call. `release` and recovery both address the workspace by that id. An interrupted create can return after its checkpoint is lost: inventory `herdr workspace list` for an unattributed workspace on this checkout and adopt or close it before creating another.
+3. **Pane returned** — `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`; read `.result.pane.pane_id` and record it before the next call. Split from the orchestrator's own pane every time, never from the previous worker's, so the tab does not degrade into ever-narrower columns. Herdr's own guidance is a sibling pane in the current tab; a workspace per worker isolates only the screen, because every role already shares one checkout. `release` and recovery both address the worker by that pane id. An interrupted split can return after its checkpoint is lost: inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
+
+   A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
@@ -134,11 +136,11 @@ Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwr
 
 ## Release and recovery
 
-Release runs `herdr workspace close <workspace-id>` for the accepted worker's own recorded workspace and touches no Git state. The shared checkout and canonical branch are the durable record.
+Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record.
 
 A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory.
 
-Then close the predecessor before the replacement starts. Every role shares one checkout, so a predecessor that is merely unresponsive can still be writing to the files its replacement is about to inventory and change. Close its recorded workspace id, then confirm the recorded pane no longer holds the recorded agent name. A predecessor that cannot be closed as its exact recorded identity blocks replacement and escalates; never start a second worker in the shared checkout while the first may still be live.
+Then close the predecessor before the replacement starts. Every role shares one checkout, so a predecessor that is merely unresponsive can still be writing to the files its replacement is about to inventory and change. Close its recorded pane id, then confirm that id no longer resolves to the recorded agent name. A predecessor that cannot be closed as its exact recorded identity blocks replacement and escalates; never start a second worker in the shared checkout while the first may still be live.
 
 Only then dispatch the same logical worker under a new pane, agent name, and report path. Reject a predecessor's late report or lifecycle signal after replacement.
 

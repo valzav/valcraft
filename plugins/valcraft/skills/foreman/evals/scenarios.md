@@ -50,7 +50,7 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | A dirty shared checkout stops the dispatch; release closes only the Herdr workspace and changes no Git state | 75 |
 | Seven Herdr observations map to the six returns; `unknown` proves nothing and `done` is not success | 76 |
 | An unknown submission reconciles report, occupant, and state before anything is sent | 77 |
-| A partial spawn resumes its recorded pane instead of creating a second workspace | 78 |
+| A partial spawn resumes its recorded pane instead of splitting a second one | 78 |
 | A released worker's late signal is an observation and its late report is rejected on attribution | 79 |
 | The controller lease is an atomic claim, owner-bound on release, and reclaimed only from a recorded stale owner | 80 |
 | Every dispatch records the skill's content hash, or says unavailable rather than substituting | 81 |

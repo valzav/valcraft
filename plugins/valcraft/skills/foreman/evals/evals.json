@@ -1032,8 +1032,8 @@
     {
       "id": 78,
       "name": "herdr-partial-spawn-recovers-the-exact-resource",
-      "prompt": "$valcraft:foreman — on the herdr backend, `state.md` records a dispatch that reached workspace-returned with pane w3:p1, and the run was interrupted before any agent-ready checkpoint. On resume, `agent list` shows no agent named forge-f001-t002-d000, and pane w3:p1 exists holding an idle shell. The assigned report path is absent. Continue this dispatch. Do not mutate files.",
-      "expected_output": "Foreman resumes the recorded dispatch rather than starting a new one: the checkpoint names pane w3:p1, so it verifies that pane still exists and holds an available shell, then starts the agent there under the same collision-checked name and continues to the assignment. It does not create a second workspace or a second pane, because an unrecorded duplicate would leave an orphan the run cannot attribute. The absent report path is the expected state before submission and confirms the assignment was never delivered, so no reconciliation against a report is required — but the report path must still be unique and absent when the prompt is first submitted. The logical identity is unchanged; no new dispatch ordinal is consumed, since no physical worker was ever ready.",
+      "prompt": "$valcraft:foreman — on the herdr backend, `state.md` records a dispatch that reached pane-returned with pane w1:p4, split from the orchestrator's pane w1:p1, and the run was interrupted before any agent-ready checkpoint. On resume, `agent list` shows no agent named forge-f001-t002-d000, and pane w1:p4 exists holding an idle shell. The assigned report path is absent. Continue this dispatch. Do not mutate files.",
+      "expected_output": "Foreman resumes the recorded dispatch rather than starting a new one: the checkpoint names pane w1:p4, so it verifies that pane still exists and holds an available shell, then starts the agent there under the same collision-checked name and continues to the assignment. It does not split a second pane, because an unrecorded duplicate would leave an orphan the run cannot attribute. The absent report path is the expected state before submission and confirms the assignment was never delivered, so no reconciliation against a report is required — but the report path must still be unique and absent when the prompt is first submitted. The logical identity is unchanged; no new dispatch ordinal is consumed, since no physical worker was ever ready.",
       "files": [
         "references/backends/herdr.md",
         "templates/run-dir.md",
@@ -1041,7 +1041,7 @@
       ],
       "assertions": [
         "The recorded pane from the checkpoint is verified and reused rather than replaced",
-        "No second workspace or pane is created",
+        "No second pane is split",
         "The agent is started under the same collision-checked name and the dispatch continues",
         "The absent report path is read as pre-submission state, not as a failure",
         "The logical identity is preserved and no new dispatch ordinal is consumed"
