@@ -449,6 +449,8 @@
         "evals/files/cross-mode-finding/AGENTS.md",
         "evals/files/cross-mode-finding/specs/001-console-guard/spec.md",
         "evals/files/cross-mode-finding/specs/001-console-guard/tasks.md",
+        "evals/files/cross-mode-finding/docs/product-brief.md",
+        "evals/files/cross-mode-finding/docs/console-guard-prd.md",
         "evals/files/cross-mode-finding/docs/plans/2026-08-21-001-feat-t-005-live-verification-plan.md"
       ],
       "assertions": [

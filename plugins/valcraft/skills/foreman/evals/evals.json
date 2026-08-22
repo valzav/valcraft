@@ -975,7 +975,7 @@
       "name": "herdr-shared-checkout-gates-task-start",
       "coordination_coverage": "transport:herdr-shared-checkout",
       "prompt": "$valcraft:foreman — on the herdr backend, Foreman is at Ready and about to select the next task. The previous assignment already reached a terminal return: its worker died, was inventoried, and was released, and its recovery is closed. One unstaged modification that worker made is still in the orchestrator's checkout, which is on the canonical task branch. Prepare the next task's dispatch from this state. Name the physical workspace and the branch the new worker receives, and say whether the dispatch creates or reclaims any worktree or physical branch. Then state what release does after that worker's report is accepted. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman stops before spawning. The shared checkout is the workspace for every role, so leftover dirt is not an isolated worker's private state, and a closed recovery does not waive the task-start gate: known attribution never excuses it. Foreman records the branch, exact head, and staged, unstaged, and untracked state, preserves them, and never cleans, stashes, resets, switches, or fetches through them. Had it proceeded, the new worker would receive the orchestrator's own checkout on the canonical task branch, because isolation comes from a fresh worker per dispatch and serial execution rather than a worktree — no worktree and no per-worker physical branch is created or reclaimed. Release closes only the accepted worker's own Herdr workspace and touches no Git state.",
+      "expected_output": "Foreman stops before spawning. The shared checkout is the workspace for every role, so leftover dirt is not an isolated worker's private state, and a closed recovery does not waive the task-start gate: known attribution never excuses it. Foreman records the branch, exact head, and staged, unstaged, and untracked state, preserves them, and never cleans, stashes, resets, switches, or fetches through them. Had it proceeded, the new worker would receive the orchestrator's own checkout on the canonical task branch, because isolation comes from a fresh worker per dispatch and serial execution rather than a worktree — no worktree and no per-worker physical branch is created or reclaimed. Release runs herdr pane close on the accepted worker's own recorded pane id and touches no Git state.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -987,7 +987,7 @@
         "Branch, exact head, and staged, unstaged, and untracked state are recorded and preserved",
         "Foreman never cleans, stashes, resets, switches, or fetches through the dirt",
         "No per-worker worktree or physical branch is created or reclaimed",
-        "Release closes only the accepted worker's Herdr workspace and changes no Git state"
+        "Release closes only the accepted worker's own recorded Herdr pane and changes no Git state"
       ]
     },
     {
@@ -1069,19 +1069,19 @@
     {
       "id": 80,
       "name": "herdr-controller-lease-is-atomic-and-owner-bound",
-      "prompt": "$valcraft:foreman — on the herdr backend, two controllers start for the same project pool within the same second, and both observe the same session and pass every other readiness condition. State what decides which one proceeds and why an observational readiness check is not enough. Then resolve two later states: a lock whose recorded owner pane is still live in the named session, and a lock whose recorded owner pane no longer exists. Do not spawn workers or mutate files.",
-      "expected_output": "The atomic claim decides it: each controller attempts mkdir of .foreman/controller.lock, exactly one succeeds, and the loser fails readiness naming the recorded owner. An observational check cannot decide it because both controllers can observe an unheld pool simultaneously and both pass, so two runs would dispatch into the same pool and the same shared checkout. The winner writes its session, workspace, and pane id into the lock and releases it only as the recorded owner at run end. A lock whose owner pane is still live is held: never remove it, and fail readiness. A lock whose owner pane is absent from the named session is stale: record the observation and the reclaim in state.md, then take it — a reclaim without that record leaves no way to explain which controller owned the pool.",
+      "prompt": "$valcraft:foreman — on the herdr backend, two controllers start for the same project pool within the same second, and both observe the same session and pass every other readiness condition. State what decides which one proceeds and why an observational readiness check is not enough. Then resolve two later states: a lock whose recorded owner pane still holds the recorded controller, and a lock whose recorded owner pane is still present in the named session but no longer holds it, because that controller exited and left the pane at an ordinary shell. Do not spawn workers or mutate files.",
+      "expected_output": "The atomic claim decides it: each controller writes its owner token to .foreman/controller.owner.<pane-id> and hard-links it to .foreman/controller.lock.1; ln fails when the name exists, so exactly one succeeds and the loser fails readiness naming the recorded owner. An observational check cannot decide it because both controllers can observe an unheld pool simultaneously and both pass, so two runs would dispatch into the same pool and the same shared checkout. The token carries session, workspace id, pane id, and the pane's agent_session value, and the winner releases that generation only as the recorded owner at run end. A holder whose recorded pane still reports the recorded agent_session value is live: never remove its generation, and fail readiness. A holder whose pane no longer reports that agent_session value is dead, and a pane test alone would never say so, because a pane outlives its agent and reports a null agent_session at an ordinary shell. Reclaim by hard-linking the next generation, .foreman/controller.lock.<n+1>, never by removing or moving generation n: no shell primitive removes a lock conditionally on it still being the one just read, so a remove-or-move reclaimer can delete the fresh lease a faster reclaimer already created and leave the pool claimable while that winner is running. The controller whose link to n+1 fails lost the race and stops. The winner then removes every lower generation and records the dead-owner observation, the superseded generation, and its own claim in state.md — a reclaim without that record leaves no way to explain which controller owned the pool.",
       "files": [
         "references/backends/herdr.md",
         "references/loop.md",
         "templates/run-dir.md"
       ],
       "assertions": [
-        "The atomic mkdir claim, not the readiness observation, decides which controller proceeds",
+        "The atomic hard-link claim of a controller.lock generation, not the readiness observation, decides which controller proceeds",
         "The reason an observational check is insufficient is stated as simultaneous passing",
-        "The lock records owner session, workspace, and pane id and is released only by that owner",
-        "A live owner pane means the lock is held and readiness fails without removing it",
-        "A stale lock is reclaimed only after the observation and reclaim are recorded in state.md"
+        "The owner token records session, workspace id, pane id, and the pane's agent_session value, and the claimed generation is released only by that owner",
+        "Liveness is decided by the recorded agent_session value rather than pane existence alone, because a pane outlives its agent; a live holder means the pool is held and readiness fails without removing it",
+        "A dead holder is reclaimed by hard-linking the next generation rather than removing or moving the observed one, and only after the observation and reclaim are recorded in state.md"
       ]
     },
     {

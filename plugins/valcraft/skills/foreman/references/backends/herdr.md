@@ -38,7 +38,7 @@ Never substitute the other harness for a missing one; that silently removes the 
 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.
 
-1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the two primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, and `herdr workspace close`. Release 0.8.2 is the verified source of both. Stop rather than degrade when either is absent.
+1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the three primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. Release 0.8.2 is the verified source of all three. Stop rather than degrade when any is absent.
 2. The session named by `foreman_herdr_session` exists and is running.
 3. Both mapped harnesses are startable in that session.
 4. This controller holds the project's lease.
@@ -57,10 +57,11 @@ herdr status server        # verify the reported socket is the one just set
 One controller per project pool. A readiness check alone cannot enforce this — two controllers pass it simultaneously — so claim atomically. The lock and its owner token are created together, so no interruption can leave an ownerless lock that nothing is entitled to release:
 
 1. Create `.foreman/` in the project checkout when absent. Readiness runs before run creation, so the run directory does not yet exist and a claim that presumes it fails on every first run.
-2. Write the owner token — session, workspace id, pane id, and claim time — to `.foreman/controller.owner.<pane-id>`.
-3. Claim with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock`. A hard link fails when the target exists, so the claim is atomic and the lock always carries its owner. Failure means another controller holds it.
-4. Release only as the recorded owner, at run end.
-5. A lock whose owner pane is absent from the named session is stale. Reclaim by compare-and-swap, never by check-then-replace: read the token, then `mv .foreman/controller.lock .foreman/controller.reclaim.<pane-id>`. Exactly one concurrent reclaimer's move succeeds; a controller whose move fails, or whose moved token differs from the one it read, lost the race and stops. The winner records the token read, the move, and the fresh claim in `state.md`, then repeats steps 2 and 3. Never remove a lock whose owner pane is still live.
+2. Read this controller's own identity with `herdr pane current` and write the owner token — session, workspace id, pane id, the pane's `agent_session` value, and claim time — to `.foreman/controller.owner.<pane-id>`. A controller that cannot resolve its own `agent_session` value fails readiness; a lease nothing can prove it holds is not a lease.
+3. Claim generation 1 with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.1`. A hard link fails when the target exists, so the claim is atomic and the lock always carries its owner. Failure means the pool already has a generation; resolve it by step 5.
+4. Release only as the recorded owner, at run end: confirm the highest generation's token carries this controller's pane id and `agent_session` value, then remove that generation.
+5. The pool's holder is the highest-numbered `.foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` still resolves the recorded pane **and** reports the recorded `agent_session` value. Pane existence alone never proves liveness: a pane outlives its agent and reports a null `agent_session` at an ordinary shell, so a pane-only test holds a dead controller's lease forever and blocks every later run. A live holder means the pool is held — fail readiness naming the owner, and remove nothing.
+6. When the holder is dead, claim the next generation with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.<n+1>`. Never remove or move generation `n` to take the pool: no shell primitive removes a lock conditionally on it still being the one just read, so a reclaimer that removes or moves it deletes the fresh lease a faster reclaimer already created, and a third controller then claims a pool that is live. The link to generation `n+1` fails when another reclaimer took it first; that controller lost the race and stops. The winner holds the pool alone, so it then removes every lower generation and records the dead-owner observation, the superseded generation, and its own claim in `state.md`.
 
 ## Physical identity
 

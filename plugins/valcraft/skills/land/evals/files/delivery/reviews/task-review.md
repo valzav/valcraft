@@ -8,6 +8,8 @@ code; code
 
 ### Verdict
 
+verdict: pass; open: none; covered: code at `2222222222222222222222222222222222222222`
+
 pass
 
 ### Findings

@@ -21,7 +21,7 @@ There are two tracker modes, and Cast has no default. Ask the operator to choose
 - `local` — the task list lives in Markdown files inside the repository. Order, dependencies, and completion come from checkboxes in git. Nothing leaves the machine, and no GitHub account, network access, or `gh` is needed.
 - `github` — the same task list also becomes GitHub Issues, so work is visible and assignable in GitHub and to people who do not read the repository. This needs a GitHub repository with Issues enabled and an authenticated `gh`.
 
-State that either mode can be changed later by editing the `project_tracker` declaration, and that local mode is the smaller commitment.
+State that local mode is the smaller commitment, and that changing mode later is not a one-line edit once features exist: every `spec.md` carries a mapping that must be valid for the selected mode, and Spec stops on a project whose mappings do not match its declaration. Cast does not migrate those mappings.
 
 Ask before checking whether GitHub is usable; resolve the preference independently of GitHub readiness. Never infer the mode from the presence of a remote, a `gh` login, or the phrasing of the request.
 
