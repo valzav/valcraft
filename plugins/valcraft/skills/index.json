@@ -38,7 +38,7 @@
     },
     {
       "name": "foreman",
-      "version": "0273a48337c08003",
+      "version": "63c3e269750d8bfa",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",

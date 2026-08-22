@@ -1202,8 +1202,8 @@
       "id": 87,
       "name": "herdr-escalated-gate-is-resolved-by-the-pane",
       "coordination_coverage": "transport:herdr-gate-observed-in-pane",
-      "prompt": "$valcraft:foreman — on the herdr backend, forge-f001-t005-d000 on pane w1N:p12 shows a host prompt asking whether to bring the operator's browser window to the front or record a measurement as not obtained; the committed contract does not settle it. Describe what Foreman records and does next, and then what happens in each of three later observations: (a) the pane leaves `blocked`, the assigned report path appears attributed to that worker, and `agent wait` returns settled; (b) the pane leaves `blocked` and settles with no report; (c) the prompt is still standing after the bounded `agent wait` returns. Also state what `--timeout` the awaits use relative to the controller's own command limit. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate because the contract does not settle it and answering would widen scope, and does not answer it. Escalation does not end the await: Foreman keeps observing the same physical worker with standalone `agent wait`, with `--timeout` kept below the controller's own command limit so the host returns `wait_timeout` rather than killing the command into a lost handle, and re-arms in the same parent turn. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the pane with the observed state change, records `report_available` for the attributed path, and continues. (b) A worker that left `blocked` and settled without a report is `idle_without_report`, not a resolved gate. (c) A prompt still standing when the await settles stays at the gate; Foreman re-arms and keeps waiting for the operator.",
+      "prompt": "$valcraft:foreman — on the herdr backend, forge-f001-t005-d000 on pane w1N:p12 shows a host prompt asking whether to bring the operator's browser window to the front or record a measurement as not obtained; the committed contract does not settle it. Describe what Foreman records and does next, and then what happens in each of three later observations: (a) the pane leaves `blocked`, the assigned report path appears attributed to that worker, and `agent wait` returns settled; (b) the pane leaves `blocked` and settles with no report; (c) the bounded await returns `wait_timeout` with the prompt still standing. Also state the exact `agent wait` invocation Foreman uses while the gate is open, including which states it matches and what `--timeout` it uses relative to the controller's own command limit. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate because the contract does not settle it and answering would widen scope, and does not answer it. Escalation does not end the await: Foreman keeps observing the same physical worker with `herdr agent wait <agent-name> --until idle --until done --timeout <ms>`, and re-arms in the same parent turn. The states are explicit because a bare `agent wait` also matches `blocked` and would return immediately on the already-blocked worker, spinning instead of waiting for the operator. `--timeout` stays below the controller's own command limit so the host returns `wait_timeout` rather than killing the command into a lost handle. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the pane with the observed state change, records `report_available` for the attributed path, and continues. (b) A worker that left `blocked` and settled without a report is `idle_without_report`, not a resolved gate. (c) A gate still standing when the bounded await returns `wait_timeout` stays at the gate; Foreman re-arms and keeps waiting for the operator.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -1211,11 +1211,12 @@
       ],
       "assertions": [
         "The unsettled prompt is recorded as permission_blocked and escalated, not answered",
-        "After escalation Foreman keeps awaiting the same physical worker with standalone agent wait, re-armed in the same parent turn",
+        "After escalation Foreman keeps awaiting the same physical worker with agent wait --until idle --until done, re-armed in the same parent turn",
+        "The explicit --until states are justified because a bare agent wait also matches blocked and would return at once on the already-blocked worker",
         "The await timeout is kept below the controller's own command limit so the host returns wait_timeout instead of a lost handle",
         "A terminal return with the attributed report while the gate is open resolves the gate and is recorded as report_available",
         "Leaving blocked without a report is idle_without_report, not a resolved gate",
-        "A prompt still standing after the await settles remains at the gate"
+        "A gate still standing when the bounded await returns wait_timeout remains at the gate"
       ]
     },
     {
@@ -1244,8 +1245,8 @@
       "id": 89,
       "name": "ao-escalated-gate-is-resolved-by-the-session",
       "coordination_coverage": "transport:ao-gate-observed-by-poll",
-      "prompt": "$valcraft:foreman — on the ao backend, the background waiter for Forge session `f-8b21d0` returns `permission_blocked`; the tmux window shows a prompt the committed contract does not settle (whether to raise the operator's browser window or record a measurement as not obtained). Describe what Foreman records and does next, and then what happens in each of three later waiter returns: (a) `report_available` attributed to that session; (b) the session settled idle with no report; (c) the session still blocked. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate, and does not answer it. Escalation does not end the await: Foreman re-arms the same background waiter on the same session and ends its turn only after the waiter is armed. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the session with the status change, records `report_available` for the attributed path, and continues. (b) A session that left blocked and settled idle without a report is `idle_without_report`, not a resolved gate. (c) A session still blocked stays at the gate; Foreman re-arms and keeps waiting for the operator, never asking for a status or continue prompt.",
+      "prompt": "$valcraft:foreman — on the ao backend, the background waiter for Forge session `f-8b21d0` returns `permission_blocked`; the tmux window shows a prompt the committed contract does not settle (whether to raise the operator's browser window or record a measurement as not obtained). Describe what Foreman records and does next, including the exact environment the re-armed waiter is given, and then what happens in each of three later observations: (a) the waiter returns `report_available` attributed to that session; (b) the waiter returns the session settled idle with no report; (c) the waiter polls and the session is still blocked at the same gate. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate, and does not answer it. Escalation does not end the await: Foreman re-arms the same background waiter on the same session with `SEEN=1 GATED=1` and ends its turn only after the waiter is armed. `SEEN=1` preserves the delivery confirmed before the block; `GATED=1` suppresses the return for the blocked status already recorded, because a default waiter checks that status before its first sleep and would emit `permission_blocked` again at once, waking and re-arming Foreman in a tight loop. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the session with the status change, records `report_available` for the attributed path, and continues. (b) A session that left blocked and settled idle without a report is `idle_without_report`, not a resolved gate. (c) The gated waiter does not return for the already-recorded blocked status: it keeps polling and Foreman is not woken, never asking for a status or continue prompt. A block observed after the status changed is a different gate, which the waiter returns as `permission_blocked` for Foreman to answer or escalate on its own terms.",
       "files": [
         "references/backends/README.md",
         "references/backends/ao.md",
@@ -1253,10 +1254,11 @@
       ],
       "assertions": [
         "The unsettled prompt is recorded as permission_blocked and escalated, not answered",
-        "After escalation the same background waiter is re-armed on the same session before the turn ends",
+        "After escalation the same background waiter is re-armed on the same session with SEEN=1 GATED=1 before the turn ends",
+        "GATED=1 is justified because a default waiter re-checks the recorded blocked status before its first sleep and would return permission_blocked again immediately",
         "report_available while the gate is open resolves the gate and is recorded as such",
         "Settling idle without a report is idle_without_report, not a resolved gate",
-        "A session still blocked remains at the gate with the waiter re-armed"
+        "A session still blocked at the recorded gate produces no waiter return; the gated waiter keeps polling instead of waking Foreman"
       ]
     },
     {

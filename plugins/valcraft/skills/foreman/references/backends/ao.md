@@ -67,27 +67,33 @@ Before arming, read AO status once and consume any already available attributed 
 ```sh
 S="<session-id>"; R="<assigned-report-path>"
 snap() { cksum "$R" 2>/dev/null || echo none; }
-B=$(snap); seen=${SEEN:-0}
+B=$(snap); seen=${SEEN:-0}; gated=${GATED:-0}
 while :; do
   [ "$(snap)" != "$B" ] && { echo report_available; break; }
   st=$(ao session ls --project <project-id> --json | jq -r --arg s "$S" '.data[]|select(.id==$s)|.status')
   [ -z "$st" ] && { echo dead; break; }
-  [ "$st" = blocked ] && { echo permission_blocked; break; }
+  if [ "$st" = blocked ]; then
+    [ "$gated" = 1 ] || { echo permission_blocked; break; }
+  else
+    gated=0
+  fi
   [ "$st" = working ] && seen=1
   [ "$st" = idle ] && [ "$seen" = 1 ] && { echo idle_without_report; break; }
   sleep 30
 done
 ```
 
+`GATED=1` arms the waiter over a blocked status that Foreman has already recorded and handled: it suppresses `permission_blocked` for that status and clears the moment the status changes, so a later block is a new gate and returns normally. Arm it only after recording the blocked status. Every fresh assignment arms with the default `GATED=0`.
+
 Run the waiter in the background and end the parent turn only after it is armed. On wake, attribute and record its exact return before another action. A command failure before the waiter starts is `dispatch_error`. AO does not emit `wait_timeout`; that return belongs only to foreground backends. The waiter is a background process, so the controller's own shell command limit does not bound it; never run it in the foreground, where that limit would kill it into a lost handle.
 
 The 30-second interval is the owner's standing orchestrator rule from `orchestrator-template.md` (2026-08-15 revision); it is not a Foreman-derived retry limit.
 
-For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm await. Never write directly to tmux.
+For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm the same waiter with `SEEN=1 GATED=1`. The recorded block is answered, and a default waiter would poll the not-yet-cleared `blocked` status and return it a second time. Never write directly to tmux.
 
 ### An escalated gate stays under observation
 
-Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own tmux window, and the worker then finishes with no message to the controller. After escalating, re-arm the same waiter on the same session with `SEEN=1`: delivery was confirmed before the block, and a waiter that starts at `seen=0` never emits `idle_without_report` for a session that leaves `blocked` and settles without the poll observing `working`. A `report_available` that arrives while the gate is open resolves it: record the gate as answered in the session, with the status change and the attributed report, and continue under return precedence. A session that left `blocked` and settled `idle` without a report is `idle_without_report`, not a resolved gate. A session still `blocked` when the waiter next wakes stays at the gate; re-arm and keep waiting for the operator.
+Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own tmux window, and the worker then finishes with no message to the controller. After escalating, re-arm the same waiter on the same session with `SEEN=1 GATED=1`. `SEEN=1` because delivery was confirmed before the block, and a waiter that starts at `seen=0` never emits `idle_without_report` for a session that leaves `blocked` and settles without the poll observing `working`. `GATED=1` because the blocked status is already recorded and escalated: a default waiter checks it before its first sleep and returns `permission_blocked` again at once, which wakes and re-arms Foreman in a tight loop instead of observing the gate. A `report_available` that arrives while the gate is open resolves it: record the gate as answered in the session, with the status change and the attributed report, and continue under return precedence. A session that left `blocked` and settled `idle` without a report is `idle_without_report`, not a resolved gate. The gated waiter keeps polling while the status stays `blocked`, so an unanswered gate wakes Foreman for nothing. A block observed after the status changed is a different gate: the waiter returns `permission_blocked` for it, and Foreman answers or escalates that prompt on its own terms.
 
 ## Review continuity
 
