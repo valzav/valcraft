@@ -8,9 +8,7 @@ Code mode: `example/reports` PR 42, base `main` at `1111111111111111111111111111
 
 ### Verdict
 
-verdict: pass; open: none; covered: `example/reports` PR 42 head `2222222222222222222222222222222222222222`
-
-pass
+verdict: pass; open: none; covered: `example/reports` PR 42, base `main` at `1111111111111111111111111111111111111111`, head `feat/f001-t002-normalize-headers` at `2222222222222222222222222222222222222222`
 
 ### Findings
 

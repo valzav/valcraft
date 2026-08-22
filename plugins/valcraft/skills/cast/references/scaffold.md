@@ -4,7 +4,7 @@ This reference owns project fact gathering, tracker-mode resolution, approval, p
 
 ## Gather project facts
 
-Ask only what changes the frame. Accept `TBD` for the rest. The tracker-mode question is the one exception: ask it explicitly whenever Cast must resolve the mode, even when the operator supplied no preference and every other fact is known.
+Ask only what changes the frame. Accept `TBD` for the rest. Ask the tracker-mode question explicitly whenever Cast must resolve the mode, even when every other fact is known.
 
 1. Project name and one-sentence description.
 2. Primary user and problem.
@@ -12,20 +12,19 @@ Ask only what changes the frame. Accept `TBD` for the rest. The tracker-mode que
 4. Stack: language, framework, data store, and deploy target.
 5. Machine interfaces that justify `contracts/`.
 6. Domain vocabulary that justifies `docs/glossary.md`.
-7. Issue tracker mode: `local` or `github`. Always ask; never assume.
+7. Issue tracker mode: `local` or `github`.
 8. External mutable state that justifies `docs/status.md`.
 
-There are two tracker modes, and Cast has no default. Ask the operator to choose before proposing the frame, and explain both options in plain language. Two things already are that choice and are never re-asked: a preference the operator stated in the request, and one valid existing `project_tracker` declaration.
-
+There are two tracker modes, and Cast has no default. Ask the operator to choose before proposing the frame, and explain both options in plain language. An operator-stated preference or one valid existing `project_tracker` declaration settles the choice and is not re-asked.
 
 - `local` — the task list lives in Markdown files inside the repository. Order, dependencies, and completion come from checkboxes in git. Nothing leaves the machine, and no GitHub account, network access, or `gh` is needed.
 - `github` — the same task list also becomes GitHub Issues, so work is visible and assignable in GitHub and to people who do not read the repository. This needs a GitHub repository with Issues enabled and an authenticated `gh`.
 
-State that local mode is the smaller commitment, and that changing mode later is not a one-line edit once features exist: every `spec.md` carries a mapping that must be valid for the selected mode, and Spec stops on a project whose mappings do not match its declaration. Cast does not migrate those mappings.
+State that local mode is the smaller commitment. Changing mode after features exist also requires migrating every `spec.md` mapping; Cast does not migrate those mappings, and Spec stops when they do not match the project declaration.
 
 Ask before checking whether GitHub is usable; resolve the preference independently of GitHub readiness. Never infer the mode from the presence of a remote, a `gh` login, or the phrasing of the request.
 
-For a retrofit, read root `AGENTS.md` before inspecting remotes. Preserve exactly one valid `project_tracker` declaration without asking again — a valid existing declaration is the operator's earlier answer, not a mode Cast is resolving. Ask when the declaration is absent, duplicated, or invalid.
+For a retrofit, read root `AGENTS.md` before inspecting remotes. Preserve one valid `project_tracker` declaration. Ask when it is absent, duplicated, or invalid.
 
 Once local mode is selected, do not inspect remotes, `gh`, authentication, or GitHub readiness. Those facts cannot change the selected mode.
 

@@ -33,7 +33,7 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 - Accept only the active assignment's attributed report path and logical and physical worker identity. Reject stale, late, missing, or unattributed reports.
 - Validate the producer-owned report contract mechanically. Route declared codes with the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.
-- End only at completion or a named human gate. Every backend follows its own declared wake contract on every host: an `event` backend ends the turn and wakes on the completion event, a `foreground` backend keeps its wait active in the same turn, and an authorized `poll` backend arms its waiter before the turn ends. Never ask the operator for a status or a continue prompt.
+- End only at completion or a named human gate. Follow the selected backend's wake contract: `event` ends the turn and wakes on completion, `foreground` keeps waiting in the same turn, and authorized `poll` arms its waiter before the turn ends. Never ask the operator for a status or continue prompt.
 - Never author or revise a plan, implement, review, create an artifact or PR, record or judge external evidence, merge, tick completion, close tracker state, or apply a retrospective proposal.
 
 ## Roles

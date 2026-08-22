@@ -32,7 +32,7 @@ Preserve prior rows and report paths after respawn. Use the dispatch discriminat
 
 Append checkpoints with:
 
-- a wall-clock timestamp on every checkpoint heading (`## CP-NNN 2026-08-21T17:19:05-04:00 <title>`), and on every backend return and dispatch. Without it the run cannot be measured afterwards: the tetris drill's timing had to be reconstructed from report-file mtimes;
+- a wall-clock timestamp on every checkpoint heading (`## CP-NNN 2026-08-21T17:19:05-04:00 <title>`), backend return, and dispatch, so run timing does not depend on report-file mtimes;
 - active named state, target kind, canonical task identity, tracker reference, and authoritative contract paths;
 - active assignment id, logical and physical worker identities, physical branch, attributed report path, and predecessor target;
 - the plugin revision of each dispatched skill at every dispatch, as that skill's `version` content hash from the plugin's `skills/index.json` together with the plugin manifest's release version string. The content hash is the canonical revision because it distinguishes snapshots that share a release version; the release version string is corroborating metadata and never substitutes for it. Record the revision as unavailable when `skills/index.json` cannot be read, rather than falling back to the base directory or the release version;

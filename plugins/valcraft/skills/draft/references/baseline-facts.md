@@ -1,6 +1,6 @@
 # Baseline facts before planning
 
-Read this before writing or revising a plan. A plan that asserts something about the repository the baseline commit already settles costs a full review round: the tetris drill's R-001 scheduled a `.gitignore` edit the base already contained, and R-002 derived README commands from a `package.json` that did not yet exist while the README already listed all six. Both were true findings and both were avoidable before review.
+Read this before writing or revising a plan. Baseline inspection prevents plans from scheduling work that already exists or naming commands the repository does not define.
 
 Inspect, at the exact baseline SHA and never from memory or the working tree, every file or surface the plan will touch or rely on. Record what is there, then write the plan against that record.
 
@@ -19,4 +19,4 @@ For each path the plan names as touched, created, or consumed:
 - A documented command binds to the committed name. When the documentation and the source of truth disagree, the plan names which one changes and why.
 - A verification step names what it discriminates. An exit status alone does not prove a linter inspected any file, a test ran any case, or a build emitted any artifact; state the observable that would differ if the step were vacuous.
 
-Record the inspected paths, the baseline SHA, and the command used (`git cat-file -p <sha>:<path>`) in the plan's workspace section, so the record shows the facts came from the commit and not the working tree. A reviewer will re-run the same inspection; findings that the inspection would have prevented are the plan's defect, not the reviewer's.
+Record the inspected paths, baseline SHA, and command used (`git cat-file -p <sha>:<path>`) in the plan's workspace section to prove the facts came from the commit rather than the working tree.

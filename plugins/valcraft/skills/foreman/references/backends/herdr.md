@@ -1,6 +1,6 @@
 # Backend: `herdr`
 
-Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches each worker as a fresh coding agent in a pane of one named project session. A Review worker whose report returns material findings is the one exception: it stays in its pane for its closure check, under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the project's named session, and both mapped harnesses.
+Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches workers as fresh coding agents in one named project session. A Review worker with material findings may remain for its closure check under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the named session, and both mapped harnesses.
 
 This backend needs one explicit project key in root `AGENTS.md`; no default is derivable, and readiness fails when it is absent:
 
@@ -55,14 +55,14 @@ herdr status server        # verify the reported socket is the one just set
 
 ### Controller lease
 
-One controller per project pool. A readiness check alone cannot enforce this — two controllers pass it simultaneously — so claim atomically. The lock and its owner token are created together, so no interruption can leave an ownerless lock that nothing is entitled to release:
+Allow one controller per project pool. Claim atomically because two controllers can pass a readiness check simultaneously. Create the lock from its owner token so an interruption cannot leave an ownerless lock:
 
-1. Create `.foreman/` in the project checkout when absent. Readiness runs before run creation, so the run directory does not yet exist and a claim that presumes it fails on every first run.
-2. Read this controller's own identity with `herdr pane current` and write the owner token — session, workspace id, pane id, the pane's `agent_session` value, and claim time — to `.foreman/controller.owner.<pane-id>`. A controller that cannot resolve its own `agent_session` value fails readiness; a lease nothing can prove it holds is not a lease.
-3. Claim generation 1 with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.1`. A hard link fails when the target exists, so the claim is atomic and the lock always carries its owner. Failure means the pool already has a generation; resolve it by step 5.
+1. Create `.foreman/` in the project checkout when absent. Readiness precedes run-directory creation.
+2. Read this controller's identity with `herdr pane current`. Write session, workspace id, pane id, the pane's `agent_session` value, and claim time to `.foreman/controller.owner.<pane-id>`. Fail readiness when `agent_session` cannot be resolved.
+3. Claim generation 1 with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.1`. The hard link fails atomically when the target exists. On failure, resolve the existing generation through step 5.
 4. Release only as the recorded owner, at run end: confirm the highest generation's token carries this controller's pane id and `agent_session` value, then remove that generation.
-5. The pool's holder is the highest-numbered `.foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` still resolves the recorded pane **and** reports the recorded `agent_session` value. Pane existence alone never proves liveness: a pane outlives its agent and reports a null `agent_session` at an ordinary shell, so a pane-only test holds a dead controller's lease forever and blocks every later run. A live holder means the pool is held — fail readiness naming the owner, and remove nothing.
-6. When the holder is dead, claim the next generation with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.<n+1>`. Never remove or move generation `n` to take the pool: no shell primitive removes a lock conditionally on it still being the one just read, so a reclaimer that removes or moves it deletes the fresh lease a faster reclaimer already created, and a third controller then claims a pool that is live. The link to generation `n+1` fails when another reclaimer took it first; that controller lost the race and stops. The winner holds the pool alone, so it then removes every lower generation and records the dead-owner observation, the superseded generation, and its own claim in `state.md`.
+5. The holder is the highest-numbered `.foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` resolves the recorded pane and reports the recorded `agent_session` value. Pane existence alone is insufficient because an ordinary shell can remain after its agent exits. For a live holder, fail readiness naming the owner and remove nothing.
+6. For a dead holder, claim generation `n+1` with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.<n+1>`. Never remove or move generation `n` before claiming; another reclaimer may already hold a newer live generation. A failed link loses the race and stops. The winner removes lower generations and records the dead-owner observation, superseded generation, and new claim in `state.md`.
 
 ## Physical identity
 
@@ -78,7 +78,7 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
-3. **Pane returned** — `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`; read `.result.pane.pane_id` and record it before the next call. Split from the orchestrator's own pane every time, never from the previous worker's, so the tab does not degrade into ever-narrower columns. Herdr's own guidance is a sibling pane in the current tab; a workspace per worker isolates only the screen, because every role already shares one checkout. `release` and recovery both address the worker by that pane id. An interrupted split can return after its checkpoint is lost: inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
+3. **Pane returned** — run `herdr pane split --pane <orchestrator-pane-id> --direction right --cwd <checkout> --no-focus`; read and record `.result.pane.pane_id` before the next call. Always split from the orchestrator's pane to avoid progressively narrower worker panes. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
 
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
@@ -88,7 +88,7 @@ A worker that blocks during startup is not a failure. Herdr reports it as `block
 
 ## Assign and await
 
-Record the assignment checkpoint in `state.md` **before** the submitting call. A crash inside `agent prompt` is indistinguishable from one before it unless the intent was already durable, and the no-resubmit rule below has nothing to reconcile against without it.
+Record the assignment checkpoint in `state.md` **before** submission so recovery can distinguish submitted intent without resending unknown work.
 
 `agent prompt --wait` then carries the assignment and the first foreground await together. `agent prompt` takes the prompt as a positional argument, so pass the envelope as one argument value:
 
@@ -100,9 +100,9 @@ The envelope carries tracker, repository, and report text this run treats as unt
 
 ### Delivery is not confirmed by a successful return
 
-Submitted text can fail to reach the agent's composer while the occupant never leaves its settled state. The loss is intermittent and silent, and an identical later prompt may land.
+Submitted text can fail to reach the agent while its occupant remains settled, even though an identical later prompt may succeed.
 
-`--wait` is what distinguishes the two cases: it requires an observed state change after submission before it matches any settled state, and reports `agent_prompt_stalled` when none follows. That window is Herdr's own, not a Foreman-derived limit.
+`--wait` requires an observed state change after submission before matching a settled state and reports `agent_prompt_stalled` when none follows. Herdr owns that window.
 
 Delivery is confirmed by an observed `working` state for the exact occupant, or by the attributed report. Treat `agent_prompt_stalled`, and any settled occupant with neither, as unconfirmed: record `dispatch_error` and reconcile the pre-call checkpoint against the exact worker and report path under the established two-attempt rule. Never resubmit an assignment whose delivery is unknown. `idle_without_report` applies only after delivery was confirmed.
 
@@ -134,12 +134,12 @@ Reconcile the recorded assignment checkpoint against the report and the exact oc
 
 ## Review continuity
 
-Herdr keeps a pane's agent and its conversation alive after a turn, so this backend keeps a Review worker active for its own round, as [`../hygiene.md`](../hygiene.md#workers) allows. The saving is the cold start the drill paid on every closure check; the discipline below is what keeps the saving from costing independence or the shared checkout.
+Herdr keeps a pane's agent and conversation alive after a turn, so this backend keeps a Review worker for its own round as [`../hygiene.md`](../hygiene.md#workers) allows. Preserve Review independence and shared-checkout serialization as follows.
 
-1. **Who is kept.** Only a Review worker (`plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. A Review report with verdict `pass`, every producer (Draft, Forge, Temper), and Land are released or handled as before: a producer's remediation is always a fresh physical worker, because a producer defending its own prior choice is the anchoring the fresh-dispatch rule exists to prevent.
+1. **Who is kept.** Keep only a Review worker (`plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
 2. **What waiting means.** The kept worker is settled (`idle` or `done`) and executes nothing. Between its report and its next prompt it touches no Git state, so the producer's remediation still runs alone in the shared checkout. Do not read from, prompt, or `send-keys` the waiting worker while the producer is active.
 3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — pane id and agent name — is the initial dispatch's, recorded again on the new row and marked continued. The agent name keeps its original ordinal; only the report path advances.
-4. **Revalidate before the follow-up prompt.** `herdr pane get <pane-id>` must still resolve the recorded pane with the recorded `agent_session` value and a settled occupant. A missing pane, another occupant, or a null session means the kept worker is gone. That is not a backend return: the worker has no active assignment, its round-one assignment already reached `report_available`, and a return needs an assignment to bind to. Record it in `state.md` as an observation against the kept worker with the `pane get` evidence, and skip the dead-worker inventory — a settled worker that touched no Git state left nothing to inventory, and the producer's commits are already on the record. Close the recorded pane id if it still exists and confirm it no longer resolves to the recorded name, then dispatch the closure check as a fresh physical worker with the same logical identity through the ordinary [Spawn](#spawn) steps; the task-start gate does not apply, because the task is mid-round and the producer's head is the checkout's expected state. Continuity is a saving, never a requirement.
+4. **Revalidate before the follow-up prompt.** Require `herdr pane get <pane-id>` to resolve the recorded pane, `agent_session`, and settled occupant. A missing pane, different occupant, or null session means the kept worker is gone. Record that as an observation rather than a backend return because no assignment is active. Skip dead-worker inventory because the settled reviewer touched no Git state and the producer's commits are already recorded. Close the pane if it still exists and confirm it no longer resolves to the recorded name. Dispatch the closure check as a fresh physical worker with the same logical identity through [Spawn](#spawn), without the task-start gate because the producer's head is the expected mid-round state. Continuity is optional.
 5. **Memory is not evidence.** The follow-up envelope carries the resolution report path, the R-IDs, and the exact new head, and requires the inspection [`../review-round.md`](../review-round.md) names: each resolving commit and locator, and that R-ID's reproduction re-run against the new head. A closure that cites only its earlier reading of the finding is incomplete.
 6. **Release.** After the round's final report — a closure check with no open material finding, a second-round closure, or an escalation — release the pane as usual. A kept worker whose round ends in escalation is released with the escalation, not held for an owner decision.
 
