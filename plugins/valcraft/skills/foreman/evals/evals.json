@@ -1217,6 +1217,47 @@
         "Leaving blocked without a report is idle_without_report, not a resolved gate",
         "A prompt still standing after the await settles remains at the gate"
       ]
+    },
+    {
+      "id": 88,
+      "name": "ao-closure-check-reuses-the-kept-reviewer-and-refetches",
+      "coordination_coverage": "transport:ao-review-continuity",
+      "prompt": "$valcraft:foreman — on the ao backend, the code reviewer session `r-3f9a1c` (alias for code-reviewer-F001-T003, physical branch seeded at c73b721) returned material finding R-015 (P1). Forge remediated as a fresh session and its report names head 0a907d0 on the canonical task ref. Describe exactly how the closure check for R-015 is dispatched: which session it uses, what is checked before `ao send`, what assignment id, ordinal, and report path it receives, what the envelope must require given where the reviewer's worktree sits, and when the session is terminated. Then describe the same closure check when `ao session ls` no longer lists `r-3f9a1c`. Do not spawn workers or mutate files.",
+      "expected_output": "The closure check goes to the kept session `r-3f9a1c` through `ao send`, with no new spawn, alias, or physical branch, because AO keeps a Review worker with material findings active. Before sending, Foreman confirms `ao session ls --project <id> --json` still lists that session id, idle, under the recorded alias, and that Forge's session is released. The follow-up is a new assignment: next assignment id and ordinal, a fresh absent report path, a new workers.md row carrying the same session id, alias, and physical branch marked continued; the alias keeps its original preimage. Because the reviewer's worktree still sits at c73b721, the envelope carries the resolution report path, R-015, and head 0a907d0, and requires the reviewer to fetch the canonical ref and inspect the resolving commit and locator at 0a907d0, re-running R-015's reproduction there; the old worktree contents and the first review's memory are not evidence. The session is terminated after the round's final report. When the session is no longer listed, that is an observation, not a dead return: the kept worker had no active assignment. Foreman records it with the status evidence, runs no dead-worker inventory, and dispatches the closure check as a fresh session with a new alias and physical branch seeded at 0a907d0 under the same logical identity.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/ao.md",
+        "references/review-round.md",
+        "references/hygiene.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The closure check is sent to the same session and alias with no new spawn or physical branch",
+        "Before sending, the session is revalidated as listed and idle under the recorded alias, and the producer's session is already released",
+        "The follow-up is a new assignment with the next id and ordinal, a fresh absent report path, and a new workers.md row carrying the same physical identity",
+        "The envelope requires fetching the canonical ref and inspecting the resolving commit at the new head because the kept worktree is stale",
+        "The session is terminated only after the round's final report",
+        "A session missing from ao session ls is recorded as an observation, no inventory is run, and the closure check becomes a fresh session with the same logical identity"
+      ]
+    },
+    {
+      "id": 89,
+      "name": "ao-escalated-gate-is-resolved-by-the-session",
+      "coordination_coverage": "transport:ao-gate-observed-by-poll",
+      "prompt": "$valcraft:foreman — on the ao backend, the background waiter for Forge session `f-8b21d0` returns `permission_blocked`; the tmux window shows a prompt the committed contract does not settle (whether to raise the operator's browser window or record a measurement as not obtained). Describe what Foreman records and does next, and then what happens in each of three later waiter returns: (a) `report_available` attributed to that session; (b) the session settled idle with no report; (c) the session still blocked. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman records `permission_blocked`, escalates the exact prompt as a named human gate, and does not answer it. Escalation does not end the await: Foreman re-arms the same background waiter on the same session and ends its turn only after the waiter is armed. (a) The worker's terminal return resolves the gate: Foreman records the gate as answered in the session with the status change, records `report_available` for the attributed path, and continues. (b) A session that left blocked and settled idle without a report is `idle_without_report`, not a resolved gate. (c) A session still blocked stays at the gate; Foreman re-arms and keeps waiting for the operator, never asking for a status or continue prompt.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/ao.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The unsettled prompt is recorded as permission_blocked and escalated, not answered",
+        "After escalation the same background waiter is re-armed on the same session before the turn ends",
+        "report_available while the gate is open resolves the gate and is recorded as such",
+        "Settling idle without a report is idle_without_report, not a resolved gate",
+        "A session still blocked remains at the gate with the waiter re-armed"
+      ]
     }
   ]
 }
