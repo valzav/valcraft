@@ -78,6 +78,8 @@ Read [evidence-mode.md](references/evidence-mode.md). Begin with no recorder con
 
 End with this block, headings verbatim and ordered. `Mode and change class` must state the exact covered target. Use `none` for an empty section.
 
+`Verdict` opens with one machine-readable line before any prose, so a coordinator can route without reading the rest of the report: `verdict: <pass|material findings|blocked>; open: <R-ID:P1|P2 owner, ...|none>; covered: <exact target>`. `open` lists every P1 and P2 still open after this review, including one carried to the other mode — it is the coordinator's routing list, not the set that decided the verdict. The sections below carry the evidence for the producer who remediates.
+
 ```markdown
 ## Review report
 

@@ -28,16 +28,17 @@
     },
     {
       "name": "draft",
-      "version": "12a2d51688150451",
+      "version": "9624342e018e2b9e",
       "files": [
         "SKILL.md",
+        "references/baseline-facts.md",
         "references/plan-contract.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "foreman",
-      "version": "32b818935548e49b",
+      "version": "eb6fcecce8dc6734",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -97,7 +98,7 @@
     },
     {
       "name": "review",
-      "version": "f36d22083e01ce94",
+      "version": "f00f75cda7c40612",
       "files": [
         "SKILL.md",
         "references/code-mode.md",

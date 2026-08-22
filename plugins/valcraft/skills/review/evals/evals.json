@@ -456,7 +456,8 @@
         "R-023 stays recorded as open with code mode named as its owner",
         "R-023 is stated not to withhold the plan gate because plan mode cannot close it",
         "The deadlock that the alternative would cause is named",
-        "R-023 is neither dropped nor downgraded to P3"
+        "R-023 is neither dropped nor downgraded to P3",
+        "The Verdict section opens with a single line of the form `verdict: pass; open: R-023:P1 <owner>; covered: <target>`, listing R-023 as open even though it did not decide the verdict"
       ]
     }
   ]
