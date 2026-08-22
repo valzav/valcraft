@@ -45,7 +45,7 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 - `land-<identity>` runs `valcraft:land` for finalization or external completion.
 - `review-evidence-<identity>` runs `valcraft:review` in evidence mode.
 - `temper-<feature>` runs `valcraft:temper` once after confirmed feature closure.
-- `retro-reviewer-<feature>` runs `valcraft:review` on the retrospective PR.
+- `retro-reviewer-<feature>` runs `valcraft:review` in plan mode on the local retrospective report.
 
 Use a second harness for Review when the backend offers one. Fresh context supplies independence otherwise. See [`references/hygiene.md`](references/hygiene.md).
 
@@ -55,7 +55,7 @@ Use a second harness for Review when the backend offers one. Fresh context suppl
 
 `Ready -> Drafting -> PlanReview -> Implementing -> CodeReview -> Landing -> Ready` delivers one task. Findings return plan work to Draft and code work to Forge. Land owns stale-review, checks-pending, remediation-owner, merge, and closure results.
 
-After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Landing -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority, or owner decision.
+After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority, or owner decision.
 
 ## Trust boundary
 

@@ -170,7 +170,7 @@ Never run `herdr update`, `herdr server stop`, or `session stop` during a run: a
 
 ## PR tracking
 
-None. Forge owns task-PR creation, Temper owns retrospective-PR creation, and Review and Land receive exact targets through their assignments.
+None. Forge owns task-PR creation, Temper creates no PR because its retrospective is a local gitignored report, and Review and Land receive exact targets through their assignments.
 
 ## Land execution
 

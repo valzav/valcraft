@@ -238,7 +238,7 @@
       "id": 11,
       "name": "temper-runs-once-at-feature-close",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .foreman/run-feature-closed/ and take the next loop step.",
-      "expected_output": "Foreman verifies tracker-only Land completed the operator-confirmed feature close, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft:temper on the exact feature corpus, supplies the default-branch base and any exact target-bound retro push and PR authority, forbids proposal application, and names the assigned report path. Temper owns its report commit and PR. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
+      "expected_output": "Foreman verifies tracker-only Land completed the operator-confirmed feature close, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft:temper in analyze mode on the exact feature corpus and the repository head it describes, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
       "files": [
         "evals/files/loop-done/AGENTS.md",
         "evals/files/loop-done/.gitignore",
@@ -253,7 +253,7 @@
       "assertions": [
         "Foreman spawns exactly one fresh temper worker named temper-F001, not a fork",
         "The assignment runs valcraft:temper in analyze mode on the feature directory specs/001-invite-links/",
-        "The assignment gives Temper the exact retro branch and target-bound push and PR authority when granted, and forbids applying proposals",
+        "The assignment grants no push or PR authority and forbids applying proposals; the report is a local file under docs/.retro/",
         "Foreman does not run temper itself and does not edit AGENTS.md or another prompt artifact",
         "Foreman records Retrospective in state.md; Codex awaits in the active turn and Claude Code relies on the established completion notification"
       ]
@@ -745,9 +745,9 @@
     },
     {
       "id": 64,
-      "name": "feature-confirmation-routes-land-temper-review-land",
-      "prompt": "$valcraft:foreman — every feature task is done and the operator confirms closure. Describe the remaining state transitions through the retrospective PR. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman dispatches tracker-only Land to close the confirmed feature, then Temper to produce and prepare or create the retrospective PR, Review to cover its exact head, and Land to land it. Foreman only validates reports and routes transitions; it never closes the tracker, creates the report or PR, reviews, or merges.",
+      "name": "feature-confirmation-routes-land-temper-review-complete",
+      "prompt": "$valcraft:foreman — every feature task is done and the operator confirms closure. Describe the remaining state transitions through the retrospective. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman dispatches tracker-only Land to close the confirmed feature, then Temper to write one local retrospective report under the gitignored docs/.retro/ (no branch, commit, push, or PR), then Review in plan mode on the report's exact path and content hash. A pass enters Complete directly; nothing is merged because the report is not in git. Material findings return to Retrospective and Temper edits the same file. Foreman only validates reports and routes transitions; it never closes the tracker, creates the report, reviews, or applies a proposal.",
       "files": [
         "references/loop.md",
         "references/contracts.md",
@@ -756,15 +756,16 @@
       ],
       "assertions": [
         "Feature confirmation routes tracker-only Land before Temper",
-        "Temper then Review then Land handle the retrospective PR",
-        "Foreman performs no tracker closure, report creation, PR creation, review, or merge"
+        "Temper writes a local gitignored report with no branch, commit, push, or PR",
+        "Review covers the report by exact path and content hash and a pass enters Complete with no Land step",
+        "Foreman performs no tracker closure, report creation, review, or proposal application"
       ]
     },
     {
       "id": 65,
       "name": "prepared-producer-head-resumes-before-review",
-      "prompt": "$valcraft:foreman — compare three complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an `ao` external-orchestrator Draft plan commit that is not on its canonical remote ref, a Forge implementation head with PR none, and a Temper retrospective head with PR none and authority_required. Explain attended and unattended continuation. Do not execute any outward mutation.",
-      "expected_output": "Foreman keeps Drafting, Implementing, or Retrospective active instead of advancing to Review or Blocked. It records the prepared target, applies that named state's approval gate, and resumes the same logical producer under a fresh physical identity with newly attributed exact target-bound authority. Attended waits unless the live operator already granted the exact operation. Unattended may issue the exact Foreman authority after validating the prepared fields. Draft enters PlanReview only when its exact commit is accessible to the Review worker; Forge and Temper enter CodeReview or RetroReview only after the exact PR exists. Foreman executes no push or PR operation.",
+      "prompt": "$valcraft:foreman — compare two complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an `ao` external-orchestrator Draft plan commit that is not on its canonical remote ref, and a Forge implementation head with PR none. Then state why a Temper report never enters this path. Explain attended and unattended continuation. Do not execute any outward mutation.",
+      "expected_output": "Foreman keeps Drafting or Implementing active instead of advancing to Review or Blocked. It records the prepared target, applies that named state's approval gate, and resumes the same logical producer under a fresh physical identity with newly attributed exact target-bound authority. Attended waits unless the live operator already granted the exact operation. Unattended may issue the exact Foreman authority after validating the prepared fields. Draft enters PlanReview only when its exact commit is accessible to the Review worker; Forge enters CodeReview only after the exact PR exists. Temper has no outward handoff at all: its report is a local gitignored file pinned by path and content hash, so a complete Temper report goes straight to RetroReview. Foreman executes no push or PR operation.",
       "files": [
         "references/loop.md",
         "references/contracts.md",
@@ -773,11 +774,12 @@
         "templates/run-dir.md"
       ],
       "assertions": [
-        "A prepared Draft, Forge, or Temper outward handoff keeps its current producer state active",
+        "A prepared Draft or Forge outward handoff keeps its current producer state active",
         "The same logical producer resumes under a fresh physical identity and report path",
         "Fresh authority is attributed and bound to the exact prepared repository, remote, base, head, ref, PR target, and operation set",
         "Attended waits without existing explicit authority; unattended may issue exact Foreman authority only after validating every prepared field",
-        "Draft advances only when Review can access its exact commit, and Forge or Temper advances only after the exact PR exists",
+        "Draft advances only when Review can access its exact commit, and Forge advances only after the exact PR exists",
+        "Temper never enters the prepared-continuation path because its report has no git target",
         "Foreman performs no push or PR mutation"
       ]
     },
@@ -1124,8 +1126,8 @@
     {
       "id": 83,
       "name": "herdr-retrospective-remediation-separates-the-two-reports",
-      "prompt": "$valcraft:foreman — on the herdr backend, RetroReview returns material findings R-001 and R-002 against Temper's retrospective PR. Dispatch the remediation. State which harness the remediating worker runs on, what physical identity and `.foreman` report path it receives, and which retrospective artifact it edits and where. Do not spawn workers or mutate files.",
-      "expected_output": "The remediating worker keeps the logical Temper identity and runs on Claude, the harness mapped to Temper, while RetroReview's closure check runs on Codex — the two never collapse onto one harness. It is a fresh physical worker: a new pane, a new agent name derived from the logical identity and the next dispatch ordinal, and a fresh, absent `.foreman` report path, because every dispatch gets a new physical identity and a predecessor must not be able to append to its replacement's active path. The retrospective artifact is the opposite case: Temper edits its existing report file under docs/retro/ in place, on its own unmerged branch, because a report becomes immutable only when its run ends. Foreman itself neither edits the report nor applies any proposal, and the two must not be confused — one is Foreman's coordination surface, the other is Temper's product.",
+      "prompt": "$valcraft:foreman — on the herdr backend, RetroReview returns material findings R-001 and R-002 against Temper's local retrospective report. Dispatch the remediation. State which harness the remediating worker runs on, what physical identity and `.foreman` report path it receives, and which retrospective artifact it edits and where. Do not spawn workers or mutate files.",
+      "expected_output": "The remediating worker keeps the logical Temper identity and runs on Claude, the harness mapped to Temper, while RetroReview's closure check runs on Codex — the two never collapse onto one harness. It is a fresh physical worker: a new pane, a new agent name derived from the logical identity and the next dispatch ordinal, and a fresh, absent `.foreman` report path, because every producer dispatch gets a new physical identity and a predecessor must not be able to append to its replacement's active path. The retrospective artifact is the opposite case: Temper edits its existing report file under the gitignored docs/.retro/ in place and reports the new content hash, because a report becomes immutable only when its run ends; there is no branch or commit. Foreman itself neither edits the report nor applies any proposal, and the two must not be confused — one is Foreman's coordination surface, the other is Temper's product.",
       "files": [
         "references/backends/herdr.md",
         "references/contracts.md",
@@ -1136,7 +1138,7 @@
         "The remediating worker keeps the Temper logical identity and runs on Claude",
         "RetroReview's closure check stays on Codex rather than collapsing onto one harness",
         "A fresh pane, agent name, and absent .foreman report path are assigned",
-        "The docs/retro report file is edited in place on the unmerged branch, not recreated",
+        "The docs/.retro report file is edited in place with a new content hash, not recreated and not committed",
         "Foreman neither edits the retrospective report nor applies a proposal"
       ]
     },

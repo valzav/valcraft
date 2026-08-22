@@ -1,6 +1,6 @@
 # Final head and checks
 
-Use this gate for every task, spec, and retrospective PR. It controls both merge and any closure that depends on a merge.
+Use this gate for every task and spec PR. It controls both merge and any closure that depends on a merge.
 
 ## Exact Review coverage
 
@@ -42,7 +42,6 @@ For a failed or missing check, record target kind, evidence, causal owner, and r
 
 - task PR → `check_failure_task` for Forge;
 - spec PR → `check_failure_spec` for Spec or its direct caller;
-- retrospective PR → `check_failure_retro` for Temper.
 
 External, configuration, and unresolved failures return `external_blocked`. Never infer an artifact owner from the target kind alone.
 

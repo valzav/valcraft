@@ -40,9 +40,8 @@ Route only from verified producer reports and exact targets:
 | passing code verdict covering the current PR head | `Landing` |
 | Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
 | confirmed feature not yet closed by Land | `FeatureClose` |
-| feature closure complete without a retrospective PR | `Retrospective` |
-| Temper report head with required retrospective PR still prepared | `Retrospective` |
-| Temper retrospective PR without an exact verdict | `RetroReview` |
+| feature closure complete without a retrospective report | `Retrospective` |
+| Temper report without an exact verdict | `RetroReview` |
 
 Never restart Draft when a current committed plan exists. Never infer Review coverage from a branch, PR number, or earlier verdict.
 
@@ -82,9 +81,8 @@ Dispatch `land-<identity>` with `valcraft:land`, the target kind, exact current 
 
 Route the Land report exactly:
 
-- `review_required`: task PR to CodeReview, retrospective PR to RetroReview, spec PR to Spec's direct caller;
+- `review_required`: task PR to CodeReview, spec PR to Spec's direct caller;
 - `check_failure_task`: Implementing;
-- `check_failure_retro`: Retrospective;
 - `check_failure_spec`: Spec's direct caller;
 - `evidence_review_required`: EvidenceReview;
 - `partial_completion`: Landing with only remaining operations;
@@ -93,7 +91,7 @@ Route the Land report exactly:
 
 When checks are pending, keep Foreman and the active Land worker alive. Continue the backend's await discipline against the same assignment. Do not turn a pending check into a user-status prompt, new worker, or Foreman-owned classifier. A missing required check routes to an artifact owner only after Land's authoritative evidence proves that owner; otherwise it remains Blocked.
 
-A completed task target returns to Ready. A completed external closure returns to Ready. A completed feature-close target enters Retrospective. A completed retrospective PR enters Complete.
+A completed task target returns to Ready. A completed external closure returns to Ready. A completed feature-close target enters Retrospective.
 
 ## `EvidenceReview`
 
@@ -105,13 +103,13 @@ Dispatch tracker-only Land with the exact feature or PRD target and the operator
 
 ## `Retrospective`
 
-Dispatch `temper-<feature>` with `valcraft:temper` in analyze mode on the exact closed feature corpus. Include the exact default-branch base and target-bound authority for the retrospective branch push and PR only when the live operator or Foreman assignment grants it. Temper owns the report commit, push, and PR preparation or execution.
+Dispatch `temper-<feature>` with `valcraft:temper` in analyze mode on the exact closed feature corpus and the repository head it describes. Temper writes one local report under the gitignored `docs/.retro/` and no git state; the assignment grants no outward authority because none is needed.
 
-A complete Temper report whose retrospective PR is still `none`, including `authority_required` with an exact prepared handoff, applies the prepared outward continuation in `contracts.md` and remains in `Retrospective`. Enter `RetroReview` only after Temper reports one exact retrospective PR and its exact Review target. Material retrospective findings return here by R-ID. Foreman never creates the report, branch, commit, or PR and never applies proposals.
+Enter `RetroReview` when Temper reports its exact Review target: the absolute report path, its content hash, and the described head. Material retrospective findings return here by R-ID, and Temper edits the same report in place. `report_dir_not_ignored` is Blocked: the project frame owns `.gitignore`. Foreman never creates the report and never applies proposals; an unattended run leaves Temper's escalated proposals as `offered, awaiting selection` for the operator.
 
 ## `RetroReview`
 
-Dispatch a fresh `retro-reviewer-<feature>` with `valcraft:review` in code mode on the exact Temper PR head. A pass enters Landing with target kind retrospective PR. Material findings return to Retrospective. Foreman never reviews or merges the PR.
+Dispatch a fresh `retro-reviewer-<feature>` with `valcraft:review` in plan mode on the exact report path and content hash. A pass enters Complete; nothing is merged, because the report is not in git. Material findings return to Retrospective. Foreman never reviews the report.
 
 ## `Blocked` and recovery
 

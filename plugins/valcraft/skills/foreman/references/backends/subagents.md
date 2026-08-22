@@ -60,4 +60,4 @@ Apply the shared authority rule in [`README.md`](README.md#permission-prompts) w
 
 ## PR tracking
 
-None. Forge owns task-PR creation. Temper owns retrospective-PR creation. Review and Land receive exact targets through their assignments.
+None. Forge owns task-PR creation. Temper creates no PR: its retrospective is a local gitignored report. Review and Land receive exact targets through their assignments.

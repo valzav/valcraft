@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "9cc71ea86ed08a4e",
+      "version": "14d0a07afffde931",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -38,7 +38,7 @@
     },
     {
       "name": "foreman",
-      "version": "63c3e269750d8bfa",
+      "version": "e7c1db72ef696393",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -79,7 +79,7 @@
     },
     {
       "name": "land",
-      "version": "e36532d32031480e",
+      "version": "22f9b26895f31894",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -98,7 +98,7 @@
     },
     {
       "name": "review",
-      "version": "a62d50e4b7bc5148",
+      "version": "b2ecc64a82261ab5",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -125,7 +125,7 @@
     },
     {
       "name": "temper",
-      "version": "c2e54b70055330b6",
+      "version": "91a857049aca2b9b",
       "files": [
         "SKILL.md",
         "references/process.md",
