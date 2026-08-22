@@ -1,6 +1,6 @@
 # Backend: `herdr`
 
-Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches each worker as a fresh coding agent in a pane of one named project session. Require the `herdr` binary, `HERDR_ENV=1`, the project's named session, and both mapped harnesses.
+Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches each worker as a fresh coding agent in a pane of one named project session. A Review worker whose report returns material findings is the one exception: it stays in its pane for its closure check, under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the project's named session, and both mapped harnesses.
 
 This backend needs one explicit project key in root `AGENTS.md`; no default is derivable, and readiness fails when it is absent:
 
@@ -19,6 +19,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | `answer` | `interactive` through `agent send-keys` |
 | `harnesses` | Claude and Codex, assigned per role by the table below; a missing mapped harness fails readiness |
 | `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
+| `review continuity` | kept active — a Review worker with material findings waits in its pane and receives its closure check and any second full round as follow-up prompts; released after the round's final report |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
 
 ## Role-to-harness assignment
@@ -130,6 +131,19 @@ herdr agent wait <agent-name> --timeout <ms>
 ```
 
 Reconcile the recorded assignment checkpoint against the report and the exact occupant first. An assignment recorded as submitted is never submitted again on the strength of a missing return alone.
+
+## Review continuity
+
+Herdr keeps a pane's agent and its conversation alive after a turn, so this backend keeps a Review worker active for its own round, as [`../hygiene.md`](../hygiene.md#workers) allows. The saving is the cold start the drill paid on every closure check; the discipline below is what keeps the saving from costing independence or the shared checkout.
+
+1. **Who is kept.** Only a Review worker (`plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. A Review report with verdict `pass`, every producer (Draft, Forge, Temper), and Land are released or handled as before: a producer's remediation is always a fresh physical worker, because a producer defending its own prior choice is the anchoring the fresh-dispatch rule exists to prevent.
+2. **What waiting means.** The kept worker is settled (`idle` or `done`) and executes nothing. Between its report and its next prompt it touches no Git state, so the producer's remediation still runs alone in the shared checkout. Do not read from, prompt, or `send-keys` the waiting worker while the producer is active.
+3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — pane id and agent name — is the initial dispatch's, recorded again on the new row and marked continued. The agent name keeps its original ordinal; only the report path advances.
+4. **Revalidate before the follow-up prompt.** `herdr pane get <pane-id>` must still resolve the recorded pane with the recorded `agent_session` value and a settled occupant. A missing pane, another occupant, or a null session is `dead`: release the name under [Release and recovery](#release-and-recovery) and dispatch the closure check as a fresh physical worker with the same logical identity. Continuity is a saving, never a requirement.
+5. **Memory is not evidence.** The follow-up envelope carries the resolution report path, the R-IDs, and the exact new head, and requires the inspection [`../review-round.md`](../review-round.md) names: each resolving commit and locator, and that R-ID's reproduction re-run against the new head. A closure that cites only its earlier reading of the finding is incomplete.
+6. **Release.** After the round's final report — a closure check with no open material finding, a second-round closure, or an escalation — release the pane as usual. A kept worker whose round ends in escalation is released with the escalation, not held for an owner decision.
+
+Submission, delivery confirmation, and return precedence are unchanged for a follow-up prompt; `agent prompt --wait` to the kept name is the same call with the same unconfirmed-delivery rule.
 
 ## Permission prompts
 
