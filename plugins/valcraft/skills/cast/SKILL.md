@@ -39,7 +39,7 @@ Read the applicable files under `templates/` directly. Do not reconstruct them f
 ## Workflow
 
 1. **Route the request.** Accept a new-project frame, project-frame retrofit, or tracker-configuration request. If the request is only for a feature, PRD, staged feature, feature projection, or quick task, write nothing and return an exact Spec handoff. A request phrased as "make X" or "start building X" still authorizes only the project frame when no frame exists.
-2. **Gather facts.** Follow `references/scaffold.md`. Ask only for facts that change the frame. Resolve `project_tracker` independently of GitHub readiness.
+2. **Gather facts.** Follow `references/scaffold.md`. Ask only for facts that change the frame. Resolve `project_tracker` as that contract requires, independently of GitHub readiness.
 3. **Preflight the workspace.** Inspect project-frame paths, git state, and existing instructions before proposing a mutation. On retrofit, validate existing `specs/` artifacts through Spec's contracts. Stop instead of repairing malformed or incomplete feature or quick artifacts.
 4. **Prepare the exact frame.** Present the paths, preserved content, assumptions, tracker declarations, symlink operation, opt-in artifacts, and one baseline commit as one exact mutation. A fresh scaffold always waits for live operator approval. Apply the configured retrofit approval mode from `scaffold.md`.
 5. **Create or merge the frame.** Write only the approved project-frame delta. Create no numeric directory under `specs/` and no feature or quick artifact. Preserve unrelated work and every existing feature artifact byte-for-byte.

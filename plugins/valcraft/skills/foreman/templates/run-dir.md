@@ -26,12 +26,13 @@ Append one row for every physical dispatch:
 
 `assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state`
 
-Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the backend-defined session id, alias, dispatch ordinal, branch, workspace seed SHA, and whether that seed is predecessor or transport-only state. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
+Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the dispatch ordinal plus the exact physical fields its backend reference declares, which differ per backend: AO records session id, alias, branch, workspace seed SHA, and whether that seed is predecessor or transport-only state; Herdr records session, workspace id, tab, pane, and agent name. A backend whose workers share the orchestrator's checkout records `none` for the physical branch. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
 
 ## `state.md`
 
 Append checkpoints with:
 
+- a wall-clock timestamp on every checkpoint heading (`## CP-NNN 2026-08-21T17:19:05-04:00 <title>`), backend return, and dispatch, so run timing does not depend on report-file mtimes;
 - active named state, target kind, canonical task identity, tracker reference, and authoritative contract paths;
 - active assignment id, logical and physical worker identities, physical branch, attributed report path, and predecessor target;
 - the plugin revision of each dispatched skill at every dispatch, as that skill's `version` content hash from the plugin's `skills/index.json` together with the plugin manifest's release version string. The content hash is the canonical revision because it distinguishes snapshots that share a release version; the release version string is corroborating metadata and never substitutes for it. Record the revision as unavailable when `skills/index.json` cannot be read, rather than falling back to the base directory or the release version;

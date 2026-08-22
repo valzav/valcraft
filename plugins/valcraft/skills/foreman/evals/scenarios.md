@@ -40,6 +40,23 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | No-git external completion uses a transport-only default-branch seed without inventing target git identity | 67 |
 | Every active transport deviation names changed behavior and discriminating eval | 63 |
 
+## Herdr
+
+| Scenario | Eval |
+| --- | --- |
+| Land executes under shared session permission; a blocked agent state is `permission_blocked` and a credential failure stays a Land report | 72 |
+| A successful `agent prompt` return is not delivery; a settled occupant without a working observation or report is `dispatch_error` | 73 |
+| Every role resolves to its mapped harness; a missing mapped harness fails readiness instead of substituting the other | 74 |
+| A dirty shared checkout stops the dispatch; release closes only the worker's own Herdr pane and changes no Git state | 75 |
+| Seven Herdr observations map to the six returns; `unknown` proves nothing and `done` is not success | 76 |
+| An unknown submission reconciles report, occupant, and state before anything is sent | 77 |
+| A partial spawn resumes its recorded pane instead of splitting a second one | 78 |
+| A released worker's late signal is an observation and its late report is rejected on attribution | 79 |
+| The controller lease is an atomic hard-link claim, owner-bound on release, live only while the recorded pane still holds the recorded agent session, and reclaimed by claiming the next generation | 80 |
+| Every dispatch records the skill's content hash, or says unavailable rather than substituting | 81 |
+| Pending checks hold one Land assignment across foreground re-arms; `owner_decision_required` parks at AwaitOwner | 82 |
+| Retrospective remediation uses a fresh physical worker and report path while editing the same `docs/retro` file | 83 |
+
 ## Land boundary
 
 | Scenario | Eval |
@@ -47,8 +64,8 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | Release target remains a human gate and Foreman performs no landing mutation | 6 |
 | Unattended local and GitHub landing works under shared native or external execution permission | 60 |
 | Prepared Land authority resumes through a fresh physical dispatch while Landing remains active | 58, 60 |
-| Native subagents and the registered external backend satisfy Land execution conformance | 68, 69 |
-| Future backends require a dedicated registered Land execution eval | 68, 69 |
+| Native subagents, AO, and Herdr each satisfy Land execution conformance | 68, 69, 72 |
+| Future backends require a dedicated registered Land execution eval | 68, 69, 72 |
 | Host permission prompts remain backend `permission_blocked`; Land owns execution failures | 8, 58 |
 | Pending checks keep the same Land assignment active | 66 |
 | External completion routes Land evidence to fresh Review and back to Land | 44, 45, 46, 47 |
@@ -63,3 +80,5 @@ External-completion evals characterize routing ownership: Land records and close
 | Live default-branch authorities and stop conditions | 54 |
 | Missing release branch disables release-only flows without changing ordinary delivery | 55 |
 | Quick selection, completion, validation, and qualified identities | 12, 13, 15, 16 |
+| Herdr keeps a Review worker with material findings for its closure check; producers stay fresh; a dead kept pane falls back to a fresh physical worker | 85 |
+| Herdr project session is the controller's own pane's session; `foreman_herdr_session` is an optional assertion; no re-targeting | 86 |

@@ -55,6 +55,7 @@ Every concrete backend declares Land execution and names an eval that reads that
 | --- | --- | --- |
 | `subagents` | [`subagents.md`](subagents.md) | Foreman eval 68 |
 | `ao` | [`ao.md`](ao.md) | Foreman eval 69 |
+| `herdr` | [`herdr.md`](herdr.md) | Foreman eval 72 |
 
 ## Active transport deviations
 
@@ -68,6 +69,11 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:poll-wake` | Foreman eval 63 |
 | Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:isolated-branch` | Foreman eval 62 |
 | Agent Orchestrator | a no-git workflow target uses a transport-only branch seeded from the verified default-branch SHA | dispatch/workspace | `transport:no-git-workspace` | Foreman eval 67 |
+| Herdr | submission can settle without delivering; `agent_prompt_stalled`, or a settled occupant with neither an observed `working` state nor the report, is unconfirmed | dispatch/await | `transport:herdr-unconfirmed-delivery` | Foreman eval 73 |
+| Herdr | the assignment envelope is passed as one argument value, never interpolated into a shell command string | dispatch | `transport:herdr-argv-envelope` | Foreman eval 84 |
+| Herdr | each role is pinned to a fixed harness so every Review runs on the model that did not produce its target | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
+| Herdr | all roles share the orchestrator's checkout and canonical task branch | workspace | `transport:herdr-shared-checkout` | Foreman eval 75 |
+| Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
 
 The corresponding backend reference owns commands. Remove a row when the transport no longer deviates; do not preserve historical notes here.
 

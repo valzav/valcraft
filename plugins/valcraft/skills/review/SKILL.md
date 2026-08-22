@@ -54,7 +54,9 @@ Use exactly:
 - **P2** — a reproduced defect or blind spot implied by the contract.
 - **P3** — informational and requires no remediation.
 
-P1 and P2 are material. A plan or code verdict is exactly `pass`, `material findings`, or `blocked`. `pass` requires no open P1 or P2 and evidence that the mode checks ran. `material findings` names the R-IDs to remediate. `blocked` names what prevented a complete review.
+P1 and P2 are material. A plan or code verdict is exactly `pass`, `material findings`, or `blocked`. `pass` requires evidence that the mode checks ran and no open P1 or P2 that the mode counts. `material findings` names the R-IDs to remediate. `blocked` names what prevented a complete review.
+
+Only plan mode may pass with an open material finding: record a code-owned finding and its owner, then carry it to the implementation head that can close it. Code mode returns `material findings` for every open P1 or P2, including Draft-owned findings, because a code pass routes directly to Landing. Name Draft as owner so Forge returns `draft_required` before merge.
 
 ## Plan mode
 
@@ -75,6 +77,8 @@ Read [evidence-mode.md](references/evidence-mode.md). Begin with no recorder con
 ### Plan and code
 
 End with this block, headings verbatim and ordered. `Mode and change class` must state the exact covered target. Use `none` for an empty section.
+
+`Verdict` opens with this machine-readable line before any prose: `verdict: <pass|material findings|blocked>; open: <R-ID:P1|P2 owner, ...|none>; covered: <exact target>`. `open` lists every unresolved P1 and P2, including cross-mode findings. The verdict word alone controls routing; the remaining sections provide remediation evidence.
 
 ```markdown
 ## Review report

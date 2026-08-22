@@ -35,6 +35,8 @@ Plan mode: docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md at $pla
 
 ### Verdict
 
+verdict: pass; open: none; covered: docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md at $plan_sha
+
 pass
 
 ### Findings

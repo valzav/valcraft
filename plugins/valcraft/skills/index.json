@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "805dbb681ccc06c3",
+      "version": "9cc71ea86ed08a4e",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -28,21 +28,23 @@
     },
     {
       "name": "draft",
-      "version": "12a2d51688150451",
+      "version": "240f625b5aa4634f",
       "files": [
         "SKILL.md",
+        "references/baseline-facts.md",
         "references/plan-contract.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "foreman",
-      "version": "bf4b7a6ec059b8d8",
+      "version": "f2592d8d212658bc",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
         "references/backends/README.md",
         "references/backends/ao.md",
+        "references/backends/herdr.md",
         "references/backends/subagents.md",
         "references/contracts.md",
         "references/hygiene.md",
@@ -57,7 +59,7 @@
     },
     {
       "name": "forge",
-      "version": "7dcbc48ac97cb0a8",
+      "version": "6efd8fccef9423d7",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -96,7 +98,7 @@
     },
     {
       "name": "review",
-      "version": "4508b0dca8c72067",
+      "version": "a62d50e4b7bc5148",
       "files": [
         "SKILL.md",
         "references/code-mode.md",

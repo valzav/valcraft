@@ -435,6 +435,32 @@
         "Completed plan or code review, including material findings, ends exactly `Status: done`",
         "A complete semantic Review report is backend return report_available even when its Status is blocked; permission_blocked remains transport-only"
       ]
+    },
+    {
+      "id": 22,
+      "name": "plan-verdict-counts-only-plan-owned-findings",
+      "prompt": "$valcraft:review — in evals/files/cross-mode-finding/, run `./prepare-eval.sh` and take the printed plan_head as the exact plan commit. Then do a plan-mode closure check on task T-005's plan at that head. The round-one resolution report states every plan-owned R-ID closed; confirm that against the plan file itself. One finding remains, R-023 (P1): it was opened during plan review, but its remainder is a runtime console error that only an implementation head can exhibit and only a code review can verify closed. No plan edit can close it. State the verdict and where R-023 goes. Do not edit files.",
+      "expected_output": "The plan verdict is pass, not material findings. The review records R-023 as open with its owner named — code mode, against the next implementation head — and states that it does not withhold the plan gate, because a verdict counts only findings its own mode can close. It explains the alternative concretely: holding a code-owned finding against the plan verdict would block the exact head that could close it, deadlocking the gate. The report keeps R-023 visible rather than dropping or silently downgrading it, and the verdict line is exactly pass.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "evals/files/cross-mode-finding/prepare-eval.sh",
+        "evals/files/cross-mode-finding/.gitignore",
+        "evals/files/cross-mode-finding/AGENTS.md",
+        "evals/files/cross-mode-finding/specs/001-console-guard/spec.md",
+        "evals/files/cross-mode-finding/specs/001-console-guard/tasks.md",
+        "evals/files/cross-mode-finding/docs/product-brief.md",
+        "evals/files/cross-mode-finding/docs/console-guard-prd.md",
+        "evals/files/cross-mode-finding/docs/plans/2026-08-21-001-feat-t-005-live-verification-plan.md"
+      ],
+      "assertions": [
+        "The plan verdict is exactly pass",
+        "R-023 stays recorded as open with code mode named as its owner",
+        "R-023 is stated not to withhold the plan gate because plan mode cannot close it",
+        "The deadlock that the alternative would cause is named",
+        "R-023 is neither dropped nor downgraded to P3",
+        "The Verdict section opens with a single line of the form `verdict: pass; open: R-023:P1 <owner>; covered: <target>`, listing R-023 as open even though it did not decide the verdict"
+      ]
     }
   ]
 }

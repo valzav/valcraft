@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+case "${1:-} ${2:-}" in
+  "pr list")
+    printf '[]\n'
+    ;;
+  "pr create")
+    printf '%s\n' "$*" >> .eval/pr-calls.log
+    printf 'https://example.test/example/retention/pull/1\n'
+    ;;
+  "pr view")
+    head_sha=$(git rev-parse HEAD)
+    printf '{"number":1,"url":"https://example.test/example/retention/pull/1","baseRefName":"main","headRefName":"feat/f001-t001-retention-window","headRefOid":"%s"}\n' "$head_sha"
+    ;;
+  *)
+    printf 'unsupported gh shim call: %s\n' "$*" >&2
+    exit 2
+    ;;
+esac

@@ -7,6 +7,7 @@ Read this reference before editing code. It owns Forge's verification, outward-m
 Run the repository's real tests, typecheck, lint, and applicable integration checks. Cite command output. For every new or changed test, state the defect that could still pass it.
 
 - Test negative and invariant claims by attempting to violate them.
+- Before relying on a negative result, inject a known-present condition and prove the same instrument detects it. Record that calibration beside the check; reversing a fix does not calibrate the instrument.
 - Characterize uncovered behavior before changing it.
 - Mutation-check a non-trivial fix by reversibly restoring the unfixed behavior, observing the focused regression test fail, restoring the fix, and rerunning green.
 - Reproduce a review finding's failure mode in disposable state.

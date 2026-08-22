@@ -378,6 +378,34 @@
         "No push or PR operation occurs because the initial request cannot authorize the previously unknown result head",
         "The report prepares exact target-bound push and PR fields with PR none and ends Status: done"
       ]
+    },
+    {
+      "id": 19,
+      "name": "negative-check-needs-an-instrument-firing-proof",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/negative-check/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.foreman/plan-review.md`. The plan's AC-004 check collects warnings with `warnings.catch_warnings(record=True)` and asserts the list is empty. Run the documented tests and mutation check, commit on the current external-orchestrator physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
+      "expected_output": "Forge implements T-001 with the AC-004 no-warning test, and because that test relies on a negative result (an empty warning collector), it first proves in the same environment that the collector fires: it injects a known warning (for example `warnings.warn` inside the same `catch_warnings(record=True)` block, or a temporary warn in the parser) and observes it recorded, then restores the clean state and reruns green. The Forge report records that firing proof beside the AC-004 check as its own evidence item, distinct from the reversible mutation check for AC-002, and does not present the empty collector alone as proof of NFR-001. No push or PR mutation occurs; the report ends `Status: done`.",
+      "files": [
+        "evals/files/negative-check/.gitignore",
+        "evals/files/negative-check/AGENTS.md",
+        "evals/files/negative-check/bin/gh",
+        "evals/files/negative-check/docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md",
+        "evals/files/negative-check/docs/product-brief.md",
+        "evals/files/negative-check/docs/retention-windows-prd.md",
+        "evals/files/negative-check/prepare-eval.sh",
+        "evals/files/negative-check/specs/001-retention-windows/design.md",
+        "evals/files/negative-check/specs/001-retention-windows/spec.md",
+        "evals/files/negative-check/specs/001-retention-windows/tasks.md",
+        "evals/files/negative-check/src/validation.py",
+        "evals/files/negative-check/tests/test_validation.py"
+      ],
+      "assertions": [
+        "Forge adds a test that parses every AC-001 form under warnings.catch_warnings(record=True) and asserts no warning was recorded",
+        "Before relying on the empty collector, Forge proves the collector fires: an injected warning in the same environment is observed in the recorded list, and the injection is then removed",
+        "The firing proof is recorded in the Forge report's Verification evidence beside the AC-004 check, as a separate item from the AC-002 mutation check",
+        "Forge does not cite an empty warning list alone as evidence that NFR-001 holds",
+        "The documented unittest command passes at the committed head with no injected warning remaining in source or tests",
+        "No push or PR operation occurs and the report ends Status: done"
+      ]
     }
   ]
 }
