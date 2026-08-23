@@ -493,6 +493,40 @@
         "The missing Operator selection section is a material finding, and an unattended run requires `offered, awaiting selection`",
         "The verdict is material findings and every finding routes to valcraft:temper, which edits the report in place"
       ]
+    },
+    {
+      "id": 25,
+      "name": "plan-mode-scope-omits-contradicted-document",
+      "prompt": "/valcraft:review — in the Cast project at evals/files/scope-omission/, review docs/plans/2026-08-13-001-feat-t-001-request-timeout-plan.md before implementation.",
+      "expected_output": "Review selects plan mode, loads root AGENTS.md, Spec's feature-contract reference, and the cited FEAT-002 spec.md, design.md, and tasks.md, and reports material findings. The plan declares an exclusive five-path scope and marks every other path deliberately untouched. The completed feature specs/001-model-reference/design.md describes the model reference as the tuple {provider, model, base_url, api_key_env}, states that the tuple carries nothing else, and never names the ModelRef symbol; the FEAT-002 triplet the plan cites is internally consistent and does not mention that document. Adding timeout_seconds makes the 001 description false, and AGENTS.md requires affected specs and docs to change in the same change as the code. Review resolves the affected document from the contract it describes, not from a search for the ModelRef identifier or from the plan's cited authorities alone, and reports the omission of specs/001-model-reference/design.md from the declared scope as a material finding routed to Draft. The plan's verification maps to every FR and AC and is otherwise accepted. No file is edited and no review record is written into the repository.",
+      "files": [
+        "evals/files/scope-omission/AGENTS.md",
+        "evals/files/scope-omission/docs/configuration.md",
+        "evals/files/scope-omission/docs/model-reference-prd.md",
+        "evals/files/scope-omission/docs/plans/2026-08-13-001-feat-t-001-request-timeout-plan.md",
+        "evals/files/scope-omission/docs/product-brief.md",
+        "evals/files/scope-omission/docs/request-timeout-prd.md",
+        "evals/files/scope-omission/specs/001-model-reference/design.md",
+        "evals/files/scope-omission/specs/001-model-reference/spec.md",
+        "evals/files/scope-omission/specs/001-model-reference/tasks.md",
+        "evals/files/scope-omission/specs/002-request-timeout/design.md",
+        "evals/files/scope-omission/specs/002-request-timeout/spec.md",
+        "evals/files/scope-omission/specs/002-request-timeout/tasks.md",
+        "evals/files/scope-omission/src/config/loader.py",
+        "evals/files/scope-omission/src/config/model_ref.py",
+        "evals/files/scope-omission/src/providers/client.py",
+        "evals/files/scope-omission/tests/test_model_ref.py"
+      ],
+      "assertions": [
+        "Review selects plan mode and reads root AGENTS.md, ../spec/references/feature-contract.md, and the cited FEAT-002 spec.md, design.md, and tasks.md before judging the plan",
+        "A material finding reports that the plan's exclusive scope omits specs/001-model-reference/design.md, whose Data shape section contradicts the reference once timeout_seconds is added",
+        "The finding is grounded in the four-field tuple that specs/001-model-reference/design.md describes, and the report does not rely on that document naming the ModelRef identifier, which it never does",
+        "The finding cites the project rule that affected specs and docs change in the same change as the code",
+        "The omission finding is routed to Draft as the plan owner rather than to Forge or Spec",
+        "The verdict is material findings, and the report names the R-ID a remediation plan must cite",
+        "The plan's verification is accepted as mapping to FR-001, FR-002, and AC-001 through AC-003 and is not reported as a material finding",
+        "No file in the fixture is edited, no fix is applied or committed, and no raw review record is written into the repository"
+      ]
     }
   ]
 }
