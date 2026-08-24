@@ -1,0 +1,15 @@
+tracker:
+  mode: github
+  github_repository: github.com/example/loop-github
+cast:
+  approval_mode: attended
+foreman:
+  backend: subagents
+  approval_mode: unattended
+  default_branch: dev
+  release_branch: main
+  clarification_assignees:
+    product: null
+    default: null
+pull_requests:
+  merge_strategy: squash

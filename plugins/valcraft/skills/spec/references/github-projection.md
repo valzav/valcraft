@@ -1,10 +1,10 @@
 # GitHub projection
 
-Use this reference only for a complete feature triplet in `project_tracker: github`. Git owns feature and task definitions, order, and hard dependencies. GitHub owns discussion and task status. Spec owns projection and reconciliation; it never treats tracker content as authority.
+Use this reference only for a complete feature triplet when `.valcraft/config.yaml` sets `tracker.mode: github`. Git owns feature and task definitions, order, and hard dependencies. GitHub owns discussion and task status. Spec owns projection and reconciliation; it never treats tracker content as authority.
 
 ## Identity and target
 
-Resolve the target only from the root `AGENTS.md` declaration. Never infer it from a source issue or a git remote. If `github_repository: TBD`, prepare target activation and wait for explicit target selection; do not choose or write one.
+Resolve the target only from `.valcraft/config.yaml`. Never infer it from a source issue or a git remote. If `tracker.github_repository` is `TBD`, invoke Setup for the tracker section and wait for explicit target selection; do not choose or write one directly.
 
 Resolve these values from trusted declarations and git-owned files:
 

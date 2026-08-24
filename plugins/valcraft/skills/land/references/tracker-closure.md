@@ -16,7 +16,7 @@ A closed-unmerged PR never proves task completion. A spec merge never closes an 
 
 ## Tracker-mode closure
 
-Resolve the tracker mode from the root `AGENTS.md` before preparing closure:
+Resolve the tracker mode from `.valcraft/config.yaml` before preparing closure:
 
 - In `local` mode, a selected feature task closes through its exact unchecked-to-checked transition in `tasks.md`. Apply the exception in `final-head-and-checks.md`. Do not prepare a hosted tracker batch.
 - In `github` mode, a selected feature task closes through the serialized hosted tracker batch. Do not tick the feature task in `tasks.md`.
@@ -34,7 +34,9 @@ Feature or PRD closure requires authoritative proof that its children meet the t
 
 ## Merge and recovery
 
-Immediately before merge, re-read the PR identity, base, head, state, merge method, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
+Use `pull_requests.merge_strategy` from `.valcraft/config.yaml` for task and spec PRs. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Setup for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
+
+Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 
 After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure.
 

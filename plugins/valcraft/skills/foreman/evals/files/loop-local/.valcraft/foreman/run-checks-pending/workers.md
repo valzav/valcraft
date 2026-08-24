@@ -1,0 +1,3 @@
+| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rp-land-d000 | Landing | PR #15 head 3333333333333333333333333333333333333333 | land-F001-T002 | subagents | Codex | Codex task land-F001-T002 agent agent-rp-land-000 | none | .valcraft/foreman/run-checks-pending/land-F001-T002-d000.md | 3333333333333333333333333333333333333333 | wait_timeout | active; checks pending; await re-armed |

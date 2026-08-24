@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "14d0a07afffde931",
+      "version": "328885187340e295",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -38,7 +38,7 @@
     },
     {
       "name": "foreman",
-      "version": "d517d3dca8f8ac26",
+      "version": "5bfe983ea2b5ab04",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -59,7 +59,7 @@
     },
     {
       "name": "forge",
-      "version": "6efd8fccef9423d7",
+      "version": "f04847d990b9b957",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -79,7 +79,7 @@
     },
     {
       "name": "land",
-      "version": "22f9b26895f31894",
+      "version": "0a07832a82feefb1",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -108,8 +108,16 @@
       ]
     },
     {
+      "name": "setup",
+      "version": "c257ddcf06426e02",
+      "files": [
+        "SKILL.md",
+        "references/config.md"
+      ]
+    },
+    {
       "name": "spec",
-      "version": "538d6cd4a2689e78",
+      "version": "ec977b3303d0d88b",
       "files": [
         "SKILL.md",
         "references/delivery.md",

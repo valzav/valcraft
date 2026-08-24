@@ -2,7 +2,7 @@
 .codebase-memory/
 .claude/settings.local.json
 .claude/*.lock
-.foreman/
+/.valcraft/
 docs/.retro/
 
 # Secrets — references only, never values

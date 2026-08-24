@@ -10,7 +10,7 @@ Coordinate delivery. Never perform a worker skill's work.
 
 ## Resolve the run
 
-Read the root `AGENTS.md`. Resolve runtime keys with [`templates/project-block.md`](templates/project-block.md). Missing backend means native subagents. Missing approval mode means unattended. Missing release branch means no separate release branch. Resolve a missing default branch only from unambiguous live repository authorities.
+Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from `.valcraft/config.yaml` with [`templates/project-block.md`](templates/project-block.md). If the configuration is missing or invalid, invoke `valcraft:setup` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
 
 Load these contracts before dispatch:
 
@@ -21,7 +21,7 @@ Load these contracts before dispatch:
 - [`references/loop.md`](references/loop.md);
 - [`references/hygiene.md`](references/hygiene.md).
 
-Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.foreman/` is ignored. Create or resume the run directory from [`templates/run-dir.md`](templates/run-dir.md).
+Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/` is ignored. Create or resume the run directory from [`templates/run-dir.md`](templates/run-dir.md).
 
 `new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft:spec`; create no Foreman run.
 

@@ -17,7 +17,7 @@ git add .gitignore AGENTS.md bin docs prepare-eval.sh specs src tests
 GIT_AUTHOR_DATE=2031-04-08T12:00:00Z GIT_COMMITTER_DATE=2031-04-08T12:00:00Z \
   git commit -q -m "docs(plan): define T-001 retention parser"
 
-mkdir -p .eval .foreman
+mkdir -p .eval .valcraft/foreman
 git init -q --bare .eval/remote.git
 git remote add origin "$PWD/.eval/remote.git"
 git push -q origin main
@@ -25,7 +25,7 @@ plan_sha=$(git rev-parse HEAD)
 git push -q origin "$plan_sha:refs/heads/feat/f001-t001-retention-window"
 git switch -q -c external/forge-f001-t001-eval
 
-cat > .foreman/plan-review.md <<EOF
+cat > .valcraft/foreman/plan-review.md <<EOF
 ## Review report
 
 ### Mode and change class

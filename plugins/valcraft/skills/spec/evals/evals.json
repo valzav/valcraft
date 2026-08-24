@@ -10,6 +10,7 @@
         "evals/files/local-prd/.gitignore",
         "evals/files/local-prd/prepare-eval.sh",
         "evals/files/local-prd/AGENTS.md",
+        "evals/files/local-prd/.valcraft/config.yaml",
         "evals/files/local-prd/docs/product-brief.md",
         "evals/files/local-prd/docs/scheduled-exports-prd.md",
         "evals/files/local-prd/specs/.gitkeep"
@@ -33,6 +34,7 @@
         "evals/files/github-source-local/.gitignore",
         "evals/files/github-source-local/prepare-eval.sh",
         "evals/files/github-source-local/AGENTS.md",
+        "evals/files/github-source-local/.valcraft/config.yaml",
         "evals/files/github-source-local/docs/product-brief.md",
         "evals/files/github-source-local/specs/.gitkeep"
       ],
@@ -51,6 +53,7 @@
       "expected_output": "Spec validates the complete existing FEAT-001 triplet, leaves it byte-for-byte unchanged, allocates FEAT-002 from the new source, and creates and commits all three FEAT-002 artifacts.",
       "files": [
         "evals/files/next-feature/AGENTS.md",
+        "evals/files/next-feature/.valcraft/config.yaml",
         "evals/files/next-feature/docs/product-brief.md",
         "evals/files/next-feature/docs/comment-digest-prd.md",
         "evals/files/next-feature/specs/001-export-history/spec.md",
@@ -73,6 +76,7 @@
         "evals/files/repeated-source/.gitignore",
         "evals/files/repeated-source/prepare-eval.sh",
         "evals/files/repeated-source/AGENTS.md",
+        "evals/files/repeated-source/.valcraft/config.yaml",
         "evals/files/repeated-source/docs/product-brief.md",
         "evals/files/repeated-source/docs/recurring-report-prd.md",
         "evals/files/repeated-source/specs/001-recurring-report/spec.md"
@@ -94,6 +98,7 @@
         "evals/files/repeated-complete/.gitignore",
         "evals/files/repeated-complete/prepare-eval.sh",
         "evals/files/repeated-complete/AGENTS.md",
+        "evals/files/repeated-complete/.valcraft/config.yaml",
         "evals/files/repeated-complete/docs/product-brief.md",
         "evals/files/repeated-complete/docs/audit-export-prd.md",
         "evals/files/repeated-complete/specs/001-audit-export/spec.md",
@@ -115,6 +120,7 @@
         "evals/files/multiple-staged/.gitignore",
         "evals/files/multiple-staged/prepare-eval.sh",
         "evals/files/multiple-staged/AGENTS.md",
+        "evals/files/multiple-staged/.valcraft/config.yaml",
         "evals/files/multiple-staged/docs/product-brief.md",
         "evals/files/multiple-staged/specs/001-sharing/spec.md",
         "evals/files/multiple-staged/specs/002-retention/spec.md",
@@ -130,11 +136,12 @@
       "id": 7,
       "name": "github-target-pending-keeps-artifact-local",
       "prompt": "/valcraft:spec — in evals/files/github-pending/, run `./prepare-eval.sh`, then create the feature contract from docs/bookmark-import-prd.md. Do not select a GitHub target or authorize any outward mutation.",
-      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet with pending mappings. Because github_repository is TBD, it does not infer a target, inspect a remote, project tracker state, push, or create a PR. It reports the exact activation and outward handoff.",
+      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet with pending mappings. Because `.valcraft/config.yaml` sets `tracker.github_repository: TBD`, it does not infer a target, inspect a remote, project tracker state, push, or create a PR. It delegates concrete target selection to Setup and reports the exact activation and outward handoff.",
       "files": [
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",
         "evals/files/github-pending/AGENTS.md",
+        "evals/files/github-pending/.valcraft/config.yaml",
         "evals/files/github-pending/docs/product-brief.md",
         "evals/files/github-pending/docs/bookmark-import-prd.md",
         "evals/files/github-pending/specs/.gitkeep"
@@ -156,6 +163,7 @@
         "evals/files/github-sync-preview/.gitignore",
         "evals/files/github-sync-preview/prepare-eval.sh",
         "evals/files/github-sync-preview/AGENTS.md",
+        "evals/files/github-sync-preview/.valcraft/config.yaml",
         "evals/files/github-sync-preview/docs/product-brief.md",
         "evals/files/github-sync-preview/docs/data-retention-notice-prd.md",
         "evals/files/github-sync-preview/specs/.gitkeep"
@@ -175,6 +183,7 @@
       "expected_output": "Spec reconciles marked issues and current relationships before executing the exact authorized missing projection operations. It reuses #18 and #31, creates only T-002, writes verified mappings, commits the mapping delta, performs no unapproved push or PR operation, and reports exact completed and remaining mutations.",
       "files": [
         "evals/files/projection-partial/AGENTS.md",
+        "evals/files/projection-partial/.valcraft/config.yaml",
         "evals/files/projection-partial/docs/product-brief.md",
         "evals/files/projection-partial/docs/saved-filters-prd.md",
         "evals/files/projection-partial/specs/001-saved-filters/spec.md",
@@ -197,6 +206,7 @@
       "expected_output": "Spec verifies Review coverage, revises the triplet, reconciles and updates only the affected projection, commits any mapping delta, pushes the same canonical branch without force, updates PR #44 instead of opening another, and reports a new exact Review and Land target. It invokes neither Review nor Land.",
       "files": [
         "evals/files/review-revision/AGENTS.md",
+        "evals/files/review-revision/.valcraft/config.yaml",
         "evals/files/review-revision/docs/product-brief.md",
         "evals/files/review-revision/docs/session-export-prd.md",
         "evals/files/review-revision/specs/001-session-export/spec.md",
@@ -219,6 +229,7 @@
       "expected_output": "Spec revalidates every bound field, detects branch and tracker drift, performs no outward mutation, discards the old authority, and returns a new prepared handoff with live values and authority_drift.",
       "files": [
         "evals/files/review-revision/AGENTS.md",
+        "evals/files/review-revision/.valcraft/config.yaml",
         "evals/files/review-revision/docs/product-brief.md",
         "evals/files/review-revision/docs/session-export-prd.md",
         "evals/files/review-revision/specs/001-session-export/spec.md",
@@ -235,10 +246,11 @@
     {
       "id": 12,
       "name": "standalone-default-branch-authority-not-release-config",
-      "prompt": "/valcraft:spec — in evals/files/standalone-branch/, create the feature contract from docs/access-log-prd.md and prepare its exact push and spec-PR handoff. The operator selects clean current local trunk at exact HEAD aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as the local baseline. The live remote HEAD symref and hosting service both report trunk at the same SHA as the default branch. Cached origin/HEAD says main, and AGENTS.md configures release branch stable. No outward mutation is authorized.",
+      "prompt": "/valcraft:spec — in evals/files/standalone-branch/, create the feature contract from docs/access-log-prd.md and prepare its exact push and spec-PR handoff. The operator selects clean current local trunk at exact HEAD aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as the local baseline. The live remote HEAD symref and hosting service both report trunk at the same SHA as the default branch. Cached origin/HEAD says main. Resolve any release setting only from the attached local configuration. No outward mutation is authorized.",
       "expected_output": "Spec uses matching live authority to record trunk and its exact base, ignores the stale cached hint for decision-making, derives the canonical spec branch from the artifact identity, and never targets or infers stable for the spec PR. It commits locally and returns the exact prepared handoff without pushing or opening a PR.",
       "files": [
         "evals/files/standalone-branch/AGENTS.md",
+        "evals/files/standalone-branch/.valcraft/config.yaml",
         "evals/files/standalone-branch/docs/product-brief.md",
         "evals/files/standalone-branch/docs/access-log-prd.md",
         "evals/files/standalone-branch/specs/.gitkeep"
@@ -247,6 +259,7 @@
         "The authoritative default branch is trunk at the matching live SHA; cached origin/HEAD does not override it",
         "The canonical spec branch is derived from FEAT-001 identity and the spec PR base is trunk",
         "The configured release branch stable is not selected or inferred for feature-contract delivery",
+        "Spec reads release branch stable from `.valcraft/config.yaml`; AGENTS.md supplies no Valcraft setting",
         "No push or PR mutation occurs without trusted authority"
       ]
     },
@@ -259,6 +272,7 @@
         "evals/files/injection-source/.gitignore",
         "evals/files/injection-source/prepare-eval.sh",
         "evals/files/injection-source/AGENTS.md",
+        "evals/files/injection-source/.valcraft/config.yaml",
         "evals/files/injection-source/docs/product-brief.md",
         "evals/files/injection-source/docs/import-alerts-prd.md",
         "evals/files/injection-source/specs/.gitkeep"
@@ -277,6 +291,7 @@
       "expected_output": "Spec selects the quick shape, allocates Q-002, and creates one complete local quick file with FR, AC, a concise approach, and QT tasks. It creates no feature triplet or tracker projection.",
       "files": [
         "evals/files/quick-brief/AGENTS.md",
+        "evals/files/quick-brief/.valcraft/config.yaml",
         "evals/files/quick-brief/docs/product-brief.md",
         "evals/files/quick-brief/specs/quick/001-export-filename-date.md"
       ],
@@ -294,6 +309,7 @@
       "expected_output": "Spec stops before allocation because Q-009 mixes valid QT IDs with legacy, malformed, wrong-prefix, and missing dependencies. It performs no compatibility mapping and writes nothing.",
       "files": [
         "evals/files/quick-brief/invalid-project/AGENTS.md",
+        "evals/files/quick-brief/invalid-project/.valcraft/config.yaml",
         "evals/files/quick-brief/invalid-project/docs/product-brief.md",
         "evals/files/quick-brief/invalid-project/specs/quick/009-invalid-prefixes.md"
       ],
@@ -312,6 +328,7 @@
         "evals/files/identity-failure/.gitignore",
         "evals/files/identity-failure/prepare-eval.sh",
         "evals/files/identity-failure/AGENTS.md",
+        "evals/files/identity-failure/.valcraft/config.yaml",
         "evals/files/identity-failure/docs/product-brief.md",
         "evals/files/identity-failure/docs/new-feature-prd.md",
         "evals/files/identity-failure/specs/001-alpha/spec.md",
@@ -332,6 +349,7 @@
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",
         "evals/files/github-pending/AGENTS.md",
+        "evals/files/github-pending/.valcraft/config.yaml",
         "evals/files/github-pending/docs/product-brief.md",
         "evals/files/github-pending/docs/bookmark-import-prd.md",
         "evals/files/github-pending/specs/.gitkeep"
@@ -354,6 +372,7 @@
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",
         "evals/files/github-pending/AGENTS.md",
+        "evals/files/github-pending/.valcraft/config.yaml",
         "evals/files/github-pending/docs/product-brief.md",
         "evals/files/github-pending/docs/bookmark-import-prd.md",
         "evals/files/github-pending/specs/.gitkeep"

@@ -8,6 +8,7 @@
       "expected_output": "Land classifies the target as a task PR and stops before checks or mutation because the current PR head differs from the Review-covered head. It returns the exact 2222...3333 delta as a fresh Review target. Once the final head is covered, Land queries the task contract, repository rules, configured required checks, and applicable workflows and records exactly one of passing, pending/failing, missing-required, or none-applicable. Passing and none-applicable satisfy the check gate. Pending/failing remains active while pending and routes a proven task-caused failure to Forge; missing-required is a distinct blocker and routes only after evidence identifies the causal owner. An unavailable source prevents classification. Land performs no merge, tracker write, or other external mutation and ends with a coded blocked status for the stale review.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -35,8 +36,10 @@
         "evals/files/tracker-local/.gitignore",
         "evals/files/tracker-local/prepare-eval.sh",
         "evals/files/tracker-local/AGENTS.md",
+        "evals/files/tracker-local/.valcraft/config.yaml",
         "evals/files/tracker-local/specs/001-neutral/tasks.md",
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/quick/007-normalize-export-headers.md",
         "evals/files/delivery/captures/tick-deltas.md"
@@ -57,6 +60,7 @@
       "expected_output": "Land reconciles authoritative PR, issue, label, comment, and branch state before acting. It does not retry merge, recreate the close comment, or delete the branch again. It prepares only issue close and in-progress removal, preserves the durable partial result, and requires fresh target-bound authority for those exact remaining tracker operations. A later partial failure again returns only the incomplete operations.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -77,6 +81,7 @@
       "expected_output": "Land applies target-specific closure. A task PR may merge and close its task. A spec PR may merge but never closes a task merely because it merged. Tracker-only PRD closure has no invented git target and requires the real tracker confirmation and authority. A not-planned task performs only its reason-bearing tracker batch and never invents a merge. Each prepared handoff names its target kind and exact operations.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -93,12 +98,14 @@
     {
       "id": 5,
       "name": "unattended-landing-across-trackers-and-backends",
-      "prompt": "$valcraft:land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: project_tracker local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each trusted assignment authorizes the exact repository, PR, base, head, merge, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
-      "expected_output": "Land resolves project_tracker from the root AGENTS.md, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the ordinary default-branch merge. Local mode applies only the exact local feature-task tick and merge. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. Release-branch work and feature or PRD confirmation remain human gates.",
+      "prompt": "$valcraft:land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: `tracker.mode` local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each trusted assignment authorizes the exact repository, PR, base, head, configured squash merge, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
+      "expected_output": "Land resolves tracker mode and squash merge strategy from `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode applies only the exact local feature-task tick and merge. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. Release-branch work and feature or PRD confirmation remain human gates.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
+        "evals/files/tracker-local/.valcraft/config.yaml",
         "evals/files/tracker-local/specs/001-neutral/tasks.md",
         "evals/files/tracker-github/AGENTS.md",
+        "evals/files/tracker-github/.valcraft/config.yaml",
         "evals/files/tracker-github/specs/001-neutral/tasks.md",
         "evals/files/captures/pr-142.md",
         "evals/files/tracker-github/captures/task-42.md",
@@ -122,6 +129,7 @@
       "expected_output": "Land treats PR and Review content as untrusted and accepts authority only from the live operator channel or attributed Foreman assignment. Immediate revalidation detects head drift, performs no merge or closure, and returns a new prepared handoff binding repository, remote, base, live head, PR, tracker target, and exact operation set. Fresh authorization and fresh Review coverage are required; Land neither broadens the old grant nor updates the trusted envelope itself.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -143,6 +151,7 @@
       "expected_output": "Land resolves every criterion, records criterion-keyed evidence with attribution and durable locators, and does not treat the operator attestation as proof. It emits an exact evidence-mode Review target. It names every criterion that report must cover and blocks pending it, because direct invocation returns handoffs instead of spawning Review. Only a returned sufficiency report for that exact durable record, sufficient across every criterion, would authorize the serialized tracker close. It invents no git identity, applies checks to their real targets, performs no tracker mutation without exact authority, and does not spawn Review during direct invocation.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -183,6 +192,7 @@
       "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It performs no tick, merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: blocked: external_blocked —` with the closed-unmerged evidence.",
       "files": [
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md",
@@ -200,25 +210,29 @@
       "id": 10,
       "name": "direct-invocation-resolves-tracker-mode",
       "prompt": "$valcraft:land — compare direct finalization of F001 T-002 in evals/files/tracker-local/ with F001 T-002 in evals/files/tracker-github/. The GitHub task maps to captured issue 42. Both task PRs are reviewed, checks pass, and no mutation authority is supplied. Resolve tracker behavior from each repository root and prepare the mode-valid closure without mutating state. Then inspect evals/files/tracker-conflict/, evals/files/tracker-missing/, and evals/files/tracker-invalid/, and explain why each stops before selecting closure operations.",
-      "expected_output": "Land reads each root AGENTS.md as the sole tracker authority. The local project resolves project_tracker local and prepares the exact F001 T-002 unchecked-to-checked task transition plus merge, with no hosted tracker batch. The GitHub project resolves project_tracker github and prepares merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. Direct invocation grants no implicit mutation authority, so both results stop at authority_required with exact prepared operations. Missing, conflicting, or invalid tracker declarations stop as target_ambiguous rather than selecting a closure path.",
+      "expected_output": "Land reads project instructions from each root AGENTS.md and reads Setup's complete closed configuration contract before accepting `.valcraft/config.yaml`. The local project resolves `tracker.mode: local` and prepares the exact F001 T-002 unchecked-to-checked task transition plus the configured squash merge, with no hosted tracker batch. The GitHub project resolves `tracker.mode: github` and prepares the configured squash merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. Direct invocation grants no implicit mutation authority, so both valid results stop at authority_required with exact prepared operations. For the duplicate-key, missing-file, and unknown-foreman-key cases, Land rejects the complete snapshot, invokes Setup for the affected section, and selects no closure path. With no interactive repair answers, Setup preserves the existing bytes and returns configuration_required.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
+        "evals/files/tracker-local/.valcraft/config.yaml",
         "evals/files/tracker-local/specs/001-neutral/tasks.md",
         "evals/files/tracker-github/AGENTS.md",
+        "evals/files/tracker-github/.valcraft/config.yaml",
         "evals/files/tracker-github/specs/001-neutral/tasks.md",
         "evals/files/tracker-github/captures/task-42.md",
         "evals/files/tracker-conflict/AGENTS.md",
+        "evals/files/tracker-conflict/.valcraft/config.yaml",
         "evals/files/tracker-missing/AGENTS.md",
-        "evals/files/tracker-invalid/AGENTS.md"
+        "evals/files/tracker-invalid/AGENTS.md",
+        "evals/files/tracker-invalid/.valcraft/config.yaml"
       ],
       "assertions": [
-        "Land resolves project_tracker only from the repository root AGENTS.md on direct invocation",
+        "Land reads Setup's complete closed configuration contract, then resolves tracker mode and merge strategy only from `.valcraft/config.yaml`",
         "Local mode prepares the exact feature-task checkbox transition and no hosted tracker batch",
         "GitHub mode prepares the serialized hosted tracker-close batch and does not tick the feature task",
         "Direct invocation supplies no implicit mutation authority",
-        "A conflicting tracker declaration stops before selecting closure operations with target_ambiguous",
-        "A missing tracker declaration stops before selecting closure operations with target_ambiguous",
-        "An invalid tracker value stops before selecting closure operations with target_ambiguous"
+        "A duplicate YAML key delegates complete repair to Setup before closure selection",
+        "A missing configuration delegates the tracker section to Setup before closure selection",
+        "A valid tracker section cannot mask an unknown Foreman key; complete repair delegates to Setup and headless execution preserves the file"
       ]
     },
     {
@@ -240,23 +254,24 @@
     },
     {
       "id": 12,
-      "name": "policy-variant-choice-returns-owner-decision",
-      "prompt": "$valcraft:land — in evals/files/delivery/, run `./prepare-eval.sh`, then finalize task PR 42 for F001 T-002 from its reviewed head. Review covers the exact final head and every required check passed. The root `AGENTS.md` states no merge-strategy policy, and the repository allows both a squash merge and a merge commit for this PR. Trusted authority covers merging PR 42 and closing its task.",
-      "expected_output": "Land classifies the target, reconciles state, and gates on exact-final-head Review coverage and checks. At Prepare it finds that the merge admits two defensible variants whose choice turns on project policy rather than producer judgement, so it prepares both the squash merge and the merge commit, states the trade-off, and returns the choice. It performs no merge and no tracker closure, preserves the exact prepared target and operation set for resumption, and ends Status: question: owner_decision_required. It does not use target_ambiguous, whose target is resolved here, and does not use operator_confirmation_required, which covers feature or PRD closure.",
+      "name": "configured-merge-strategy-and-host-support",
+      "prompt": "$valcraft:land — in evals/files/delivery/, run `./prepare-eval.sh`, then prepare task PR 42 finalization for F001 T-002 from its reviewed head without mutation authority. Review covers the exact final head and every required check passed. `.valcraft/config.yaml` selects squash. Compare (A) the repository allows squash and merge-commit methods and (B) the host reports squash unavailable while merge commit remains enabled.",
+      "expected_output": "Land classifies the target, reconciles state, and gates on exact-final-head Review coverage and checks. In case A it selects only the configured squash strategy, binds it in the prepared authorization fields, and stops at authority_required; it never offers a policy variant. In case B it does not fall back to merge commit. It invokes Setup with the pull-request section first and resumes only after Setup saves a supported strategy with Status: done. Without that interactive reconfiguration, it performs no merge or tracker closure and preserves the existing configuration.",
       "files": [
         "evals/files/delivery/prepare-eval.sh",
         "evals/files/delivery/.gitignore",
         "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/001-report-export/spec.md",
         "evals/files/delivery/specs/001-report-export/tasks.md"
       ],
       "assertions": [
-        "Both merge variants are prepared with their exact operation sets and the trade-off is stated",
-        "Land selects neither variant and performs no merge or tracker closure",
-        "The report ends Status: question: owner_decision_required",
-        "target_ambiguous is not used, because the target resolves uniquely",
-        "operator_confirmation_required is not used, because this is not feature or PRD closure"
+        "When squash is supported, Land prepares only the configured squash merge and binds the strategy in its authorization fields",
+        "Land does not offer another defensible merge method as an owner-decision variant",
+        "Without mutation authority, the supported case ends authority_required",
+        "When squash is unavailable, Land invokes Setup with the pull-request section first",
+        "Land never falls back to merge commit and performs no merge or tracker closure before Setup returns Status: done"
       ]
     }
   ]

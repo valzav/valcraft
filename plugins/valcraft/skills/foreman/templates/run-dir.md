@@ -3,7 +3,7 @@
 Create one gitignored directory per Foreman run:
 
 ```text
-.foreman/<run-id>/
+.valcraft/foreman/<run-id>/
 ├── state.md
 ├── workers.md
 ├── drafter-F004-T012-d000.md
@@ -17,7 +17,7 @@ Create one gitignored directory per Foreman run:
 └── retro-reviewer-F004-d000.md
 ```
 
-`<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.foreman/`. A run id never supplies an artifact date.
+`<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.valcraft/foreman/`. A run id never supplies an artifact date.
 
 ## `workers.md`
 
@@ -48,3 +48,4 @@ Append checkpoints with:
 This checkpoint is not an authority. Re-read every referenced git, tracker, report, and backend fact before transition. Preserve prior checkpoints so resume can explain the state that produced each decision.
 
 The run directory is the audit and resume surface. Nothing in it is committed or pasted into a producer artifact.
+Ignore runtime state outside `.valcraft/foreman/`. Never migrate it into the current runtime contract.

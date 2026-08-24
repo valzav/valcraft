@@ -1,4 +1,0 @@
-| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| rp-code-review-d000 | CodeReview | PR #15 head 2222222222222222222222222222222222222222 | code-reviewer-F001-T002 | subagents | Codex | Codex task code-reviewer-F001-T002 agent agent-rp-review-000 | none | .foreman/run-partial-batch/code-reviewer-F001-T002-d000.md | 2222222222222222222222222222222222222222 | report_available | accepted and released |
-| rp-land-d000 | Landing | PR #15 and issue #42 | land-F001-T002 | subagents | Codex | Codex task land-F001-T002 agent agent-rp-land-000 | none | .foreman/run-partial-batch/land-F001-T002-d000.md | 2222222222222222222222222222222222222222 | report_available | accepted; partial completion |

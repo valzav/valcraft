@@ -28,6 +28,8 @@ Omit both the bullet and this instruction when the snapshot is absent. -->
 
 Start with the project frame and product brief created by Cast. Run `valcraft:spec` to create `001-mvp`, a later feature triplet, or a quick task. For task delivery, use Draft, Review, Forge, Review, and Land directly, or let Foreman coordinate those stages.
 
+Valcraft's user-local settings live in the ignored `.valcraft/config.yaml`. Run `valcraft:setup` to change tracker, approval, Foreman, branch, Herdr worker, or pull-request choices.
+
 ### Prerequisites
 
 <Runtimes, package managers, databases, external tools.>

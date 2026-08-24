@@ -10,7 +10,7 @@ Send every worker these fields in order:
 2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
 3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
 4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, and operation set.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 

@@ -5,9 +5,10 @@
       "id": 1,
       "name": "blocked-dependency-stops-before-coding",
       "prompt": "/valcraft:forge — in the Cast project at evals/files/blocked-task/, implement T-002 of specs/001-workspace-invites/.",
-      "expected_output": "Forge loads the Spec-owned feature contract, resolves project_tracker: local from the root AGENTS.md, and gates the assignment before coding. T-002 declares `blocked by T-001`, and T-001's checkbox in tasks.md is unchecked, so the dependency is not complete and forge stops and reports the blocker. It writes no implementation code, creates no test, makes no commit, and does not mark or unmark any checkbox. It does not implement T-001 on its own initiative to unblock itself, and it does not reinterpret the dependency as advisory ordering. The report names T-001 as the incomplete dependency and states that the local checkbox is the status authority in this mode.",
+      "expected_output": "Forge loads the Spec-owned feature contract, reads project instructions from root AGENTS.md, resolves `tracker.mode: local` from `.valcraft/config.yaml`, and gates the assignment before coding. T-002 declares `blocked by T-001`, and T-001's checkbox in tasks.md is unchecked, so the dependency is not complete and Forge stops and reports the blocker. It writes no implementation code, creates no test, makes no commit, and does not mark or unmark any checkbox. It does not implement T-001 on its own initiative to unblock itself, and it does not reinterpret the dependency as advisory ordering. The report names T-001 as the incomplete dependency and states that the local checkbox is the status authority in this mode.",
       "files": [
         "evals/files/blocked-task/AGENTS.md",
+        "evals/files/blocked-task/.valcraft/config.yaml",
         "evals/files/blocked-task/docs/workspace-invites-prd.md",
         "evals/files/blocked-task/docs/product-brief.md",
         "evals/files/blocked-task/specs/001-workspace-invites/spec.md",
@@ -15,7 +16,7 @@
         "evals/files/blocked-task/specs/001-workspace-invites/tasks.md"
       ],
       "assertions": [
-        "Forge reads the root AGENTS.md and resolves project_tracker: local before task work",
+        "Forge reads project instructions from root AGENTS.md and resolves `tracker.mode: local` only from `.valcraft/config.yaml` before task work",
         "Forge checks T-002's `blocked by T-001` annotation against T-001's status in tasks.md",
         "Forge stops because T-001 is unchecked, and names T-001 as the incomplete dependency",
         "No implementation file, test file, or commit is produced",
@@ -30,6 +31,7 @@
       "expected_output": "Forge loads the git-owned feature contract and applies the implementation-readiness gate from Spec's feature-contract reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior for AC-001. Forge stops, names both blockers, and routes the feature to Spec, the feature-artifact producer. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
       "files": [
         "evals/files/unready-feature/AGENTS.md",
+        "evals/files/unready-feature/.valcraft/config.yaml",
         "evals/files/unready-feature/docs/save-conflicts-prd.md",
         "evals/files/unready-feature/docs/product-brief.md",
         "evals/files/unready-feature/specs/001-save-conflicts/spec.md",
@@ -52,6 +54,7 @@
       "expected_output": "Forge resolves T-001 and confirms that implementing the new parser is non-trivial. No committed task plan and no passing Review report tied to that plan commit exist. Forge changes no source, test, task, branch, or plan; it does not author the missing plan. It returns the exact Draft handoff for T-001 and ends its producer-owned Forge report with `Status: blocked: draft_required —` followed by the missing-plan detail.",
       "files": [
         "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/.valcraft/config.yaml",
         "evals/files/implement-local/docs/retention-windows-prd.md",
         "evals/files/implement-local/docs/product-brief.md",
         "evals/files/implement-local/specs/001-retention-windows/spec.md",
@@ -75,6 +78,7 @@
       "expected_output": "Forge resolves the assignment and finds T-001 complete, so the dependency gate passes and the triplet is substantive. While preparing T-002 it finds that no authority states the allowance a workspace may consume in a window, nor what a refused request returns to the caller. The spec, design, tasks, and product brief are all silent, there is no ADR, and the canonical source docs/api-rate-limits-prd.md explicitly defers both decisions to pricing work that has not concluded. Forge does not invent a numeric allowance, a status code, or a response body, and does not copy a value from a comparable product. Because the run is unattended, it reports the blocker rather than asking, names the exact undefined decisions, and records them as open questions for the operator. It writes no implementation of the refusal path that depends on the undefined values and makes no commit claiming FR-002 or AC-002 is satisfied.",
       "files": [
         "evals/files/missing-requirement/AGENTS.md",
+        "evals/files/missing-requirement/.valcraft/config.yaml",
         "evals/files/missing-requirement/docs/api-rate-limits-prd.md",
         "evals/files/missing-requirement/docs/product-brief.md",
         "evals/files/missing-requirement/specs/001-api-rate-limits/spec.md",
@@ -100,6 +104,7 @@
       "expected_output": "Forge loads the git-owned contracts, including accepted ADR-0001, and finds that design.md directs local wall-clock storage while ADR-0001 requires UTC plus a separate timezone. Authority precedence resolves the contract: the ADR controls and the timezone remains required. T-001 is non-trivial and has no committed passing task plan, so Forge performs no implementation. It reports the resolvable authority conflict as Draft input, routes T-001 to Draft with `draft_required`, and leaves task state unchanged.",
       "files": [
         "evals/files/adr-precedence/AGENTS.md",
+        "evals/files/adr-precedence/.valcraft/config.yaml",
         "evals/files/adr-precedence/docs/daily-digest-prd.md",
         "evals/files/adr-precedence/docs/product-brief.md",
         "evals/files/adr-precedence/docs/architecture/adr/README.md",
@@ -125,6 +130,7 @@
       "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and QT-001 through the cast quick reference, then applies quick.md's grammar and readiness rule. The quick file itself is a complete single-step implementation and verification contract, so no separate plan is required. Forge states scope, implements the two criteria, runs the documented tests, and cites real output. QT-001 stays unchecked; nothing is declared shipped or merged. Any commit and Changed (IDs) use Q-001 QT-001. The run ends with the complete producer-owned Forge report and exact code Review target.",
       "files": [
         "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/.valcraft/config.yaml",
         "evals/files/quick-task/docs/product-brief.md",
         "evals/files/quick-task/specs/quick/001-trim-before-validate.md",
         "evals/files/quick-task/src/validation.py",
@@ -149,6 +155,7 @@
       "expected_output": "Forge resolves bare Q-001 through quick.md: QT-001 is checked, so next eligible QT-002 has its local dependency satisfied. Even in github mode dependency status comes only from that checkbox and no gh call runs. The quick file supplies a complete single-step implementation and verification contract, so Forge implements AC-002 while preserving AC-003 without a separate plan, runs the documented tests, and stops at Review: no checkbox ticked, label, merge, or closure. Commits and Changed (IDs) cite Q-001 QT-002; the producer-owned Forge report is last.",
       "files": [
         "evals/files/quick-multi/AGENTS.md",
+        "evals/files/quick-multi/.valcraft/config.yaml",
         "evals/files/quick-multi/docs/product-brief.md",
         "evals/files/quick-multi/specs/quick/001-validation-hardening.md",
         "evals/files/quick-multi/src/validation.py",
@@ -174,6 +181,7 @@
       "expected_output": "Forge validates the pool, resolves Q-002 QT-001, then stops before workspace or code changes because its cross-file target Q-001 QT-001 exists but is unchecked. GitHub mode does not cause any issue lookup. The blocker is the canonical target identity.",
       "files": [
         "evals/files/quick-multi/blocked-project/AGENTS.md",
+        "evals/files/quick-multi/blocked-project/.valcraft/config.yaml",
         "evals/files/quick-multi/blocked-project/docs/product-brief.md",
         "evals/files/quick-multi/blocked-project/specs/quick/001-foundation.md",
         "evals/files/quick-multi/blocked-project/specs/quick/002-dependent.md"
@@ -191,6 +199,7 @@
       "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with legacy T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map legacy IDs, or change the workspace.",
       "files": [
         "evals/files/quick-multi/invalid-project/AGENTS.md",
+        "evals/files/quick-multi/invalid-project/.valcraft/config.yaml",
         "evals/files/quick-multi/invalid-project/docs/product-brief.md",
         "evals/files/quick-multi/invalid-project/specs/quick/009-invalid.md"
       ],
@@ -207,6 +216,7 @@
       "expected_output": "Forge enumerates valid quick files, finds exactly one QT-001 in Q-001, resolves canonical Q-001 QT-001, and stops where requested. It does not search feature tasks or drop the Q qualifier from durable identity.",
       "files": [
         "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/.valcraft/config.yaml",
         "evals/files/quick-task/docs/product-brief.md",
         "evals/files/quick-task/specs/quick/001-trim-before-validate.md"
       ],
@@ -223,6 +233,7 @@
       "expected_output": "Forge searches feature tasks.md only, finds no feature T-001, and stops as unresolved. It never interprets the quick file's QT-001 or historical quick T-001 as a match.",
       "files": [
         "evals/files/quick-task/AGENTS.md",
+        "evals/files/quick-task/.valcraft/config.yaml",
         "evals/files/quick-task/docs/product-brief.md",
         "evals/files/quick-task/specs/quick/001-trim-before-validate.md"
       ],
@@ -239,6 +250,7 @@
       "expected_output": "Forge validates both files, resolves Q-002 QT-001, resolves its cross-file dependency Q-001 QT-001, and finds the target checked. The gate passes using only the quick-file checkbox despite github mode; no issue lookup runs. Forge stops where requested without implementation.",
       "files": [
         "evals/files/quick-multi/AGENTS.md",
+        "evals/files/quick-multi/.valcraft/config.yaml",
         "evals/files/quick-multi/docs/product-brief.md",
         "evals/files/quick-multi/specs/quick/001-validation-hardening.md",
         "evals/files/quick-multi/specs/quick/002-cross-file-dependent.md"
@@ -253,11 +265,12 @@
     {
       "id": 13,
       "name": "resumed-authority-executes-isolated-task-pr",
-      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.foreman/forge-assignment.md`. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.valcraft/foreman/forge-assignment.md`. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
       "expected_output": "Forge verifies the passing Review report covers the exact plan commit and that the external-orchestrator physical branch contains the prepared implementation head. It accepts only the resumed attributed authority generated for that exact head, revalidates every bound field, runs the real tests, non-force pushes physical HEAD to the canonical ref, and invokes the PR shim exactly once to create the task PR. The canonical remote ref equals the local head, `.eval/pr-calls.log` contains one create call, and the report pins the exact repository, base, head, canonical branch, physical branch, and PR before ending `Status: done`.",
       "files": [
         "evals/files/implement-local/.gitignore",
         "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/.valcraft/config.yaml",
         "evals/files/implement-local/bin/gh",
         "evals/files/implement-local/prepare-eval.sh",
         "evals/files/implement-local/docs/product-brief.md",
@@ -353,11 +366,12 @@
     {
       "id": 18,
       "name": "reviewed-plan-executes-local-implementation",
-      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.foreman/plan-review.md`. Run the documented tests and mutation check, commit the implementation on the current external-orchestrator physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.valcraft/foreman/plan-review.md`. Run the documented tests and mutation check, commit the implementation on the current external-orchestrator physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
       "expected_output": "Forge verifies the plan Review covers the exact generated plan commit, starts from that commit on the clean external-orchestrator physical branch, implements only T-001, adds focused tests for AC-001 and AC-002, runs the real test command and a discriminating mutation check, and commits the implementation. Because no exact result-head authority exists, it performs no push or PR mutation. The complete Forge report names the passed plan SHA, actual implementation SHA, verification evidence, canonical and physical branches, PR none, and the exact prepared handoff before ending `Status: done`.",
       "files": [
         "evals/files/implement-local/.gitignore",
         "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/.valcraft/config.yaml",
         "evals/files/implement-local/bin/gh",
         "evals/files/implement-local/prepare-eval.sh",
         "evals/files/implement-local/docs/product-brief.md",
@@ -382,11 +396,12 @@
     {
       "id": 19,
       "name": "negative-check-needs-an-instrument-firing-proof",
-      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/negative-check/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.foreman/plan-review.md`. The plan's AC-004 check collects warnings with `warnings.catch_warnings(record=True)` and asserts the list is empty. Run the documented tests and mutation check, commit on the current external-orchestrator physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
+      "prompt": "/valcraft:forge — in the isolated fixture at evals/files/negative-check/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.valcraft/foreman/plan-review.md`. The plan's AC-004 check collects warnings with `warnings.catch_warnings(record=True)` and asserts the list is empty. Run the documented tests and mutation check, commit on the current external-orchestrator physical branch, and return the prepared outward handoff. This invocation grants no push or PR authority.",
       "expected_output": "Forge implements T-001 with the AC-004 no-warning test, and because that test relies on a negative result (an empty warning collector), it first proves in the same environment that the collector fires: it injects a known warning (for example `warnings.warn` inside the same `catch_warnings(record=True)` block, or a temporary warn in the parser) and observes it recorded, then restores the clean state and reruns green. The Forge report records that firing proof beside the AC-004 check as its own evidence item, distinct from the reversible mutation check for AC-002, and does not present the empty collector alone as proof of NFR-001. No push or PR mutation occurs; the report ends `Status: done`.",
       "files": [
         "evals/files/negative-check/.gitignore",
         "evals/files/negative-check/AGENTS.md",
+        "evals/files/negative-check/.valcraft/config.yaml",
         "evals/files/negative-check/bin/gh",
         "evals/files/negative-check/docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md",
         "evals/files/negative-check/docs/product-brief.md",

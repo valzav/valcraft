@@ -1,5 +1,1 @@
-.foreman/*
-!.foreman/run-quick-close/
-.foreman/run-quick-close/*
-!.foreman/run-quick-close/state.md
-!.foreman/run-quick-close/workers.md
+/.valcraft/

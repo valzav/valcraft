@@ -1,10 +1,10 @@
 # Scaffold and retrofit rules
 
-This reference owns project fact gathering, tracker-mode resolution, approval, project-frame paths, the clean baseline commit, opt-in artifacts, and retrofit behavior. Resolve template paths from the Cast skill directory.
+This reference owns project fact gathering, approval, project-frame paths, the clean baseline commit, opt-in artifacts, and retrofit behavior. Setup owns configuration and tracker-mode resolution. Resolve template paths from the Cast skill directory.
 
 ## Gather project facts
 
-Ask only what changes the frame. Accept `TBD` for the rest. Ask the tracker-mode question explicitly whenever Cast must resolve the mode, even when every other fact is known.
+Ask only what changes the frame. Accept `TBD` for the rest. Setup has already resolved configuration; do not repeat its questions.
 
 1. Project name and one-sentence description.
 2. Primary user and problem.
@@ -12,37 +12,19 @@ Ask only what changes the frame. Accept `TBD` for the rest. Ask the tracker-mode
 4. Stack: language, framework, data store, and deploy target.
 5. Machine interfaces that justify `contracts/`.
 6. Domain vocabulary that justifies `docs/glossary.md`.
-7. Issue tracker mode: `local` or `github`.
-8. External mutable state that justifies `docs/status.md`.
+7. External mutable state that justifies `docs/status.md`.
 
-There are two tracker modes, and Cast has no default. Ask the operator to choose before proposing the frame, and explain both options in plain language. An operator-stated preference or one valid existing `project_tracker` declaration settles the choice and is not re-asked.
-
-- `local` — the task list lives in Markdown files inside the repository. Order, dependencies, and completion come from checkboxes in git. Nothing leaves the machine, and no GitHub account, network access, or `gh` is needed.
-- `github` — the same task list also becomes GitHub Issues, so work is visible and assignable in GitHub and to people who do not read the repository. This needs a GitHub repository with Issues enabled and an authenticated `gh`.
-
-State that local mode is the smaller commitment. Changing mode after features exist also requires migrating every `spec.md` mapping; Cast does not migrate those mappings, and Spec stops when they do not match the project declaration.
-
-Ask before checking whether GitHub is usable; resolve the preference independently of GitHub readiness. Never infer the mode from the presence of a remote, a `gh` login, or the phrasing of the request.
-
-For a retrofit, read root `AGENTS.md` before inspecting remotes. Preserve one valid `project_tracker` declaration. Ask when it is absent, duplicated, or invalid.
-
-Once local mode is selected, do not inspect remotes, `gh`, authentication, or GitHub readiness. Those facts cannot change the selected mode.
+Read tracker mode from `.valcraft/config.yaml` only after Setup returns `Status: done`. Once local mode is configured, do not inspect remotes, `gh`, authentication, or GitHub readiness. Those facts cannot change the configured mode.
 
 ## Approval mode
 
-Root `AGENTS.md` may declare `cast_approval: attended` or `cast_approval: unattended`. Missing means `attended`. A fresh scaffold always waits for live operator approval. For a retrofit, attended waits for the exact proposal; unattended records it and proceeds. Both modes stop when a proposal would change product intent, invent a requirement, remove distinct instructions, activate a `TBD` GitHub target, or hit a stop condition.
+Read `cast.approval_mode` from a valid saved `.valcraft/config.yaml`. A fresh scaffold always waits for live operator approval. For a retrofit, `attended` waits for the exact proposal; `unattended` records it and proceeds. When Setup has confirmed a candidate but is waiting for the ignore rule, use live attended approval because no saved approval mode is valid yet. All cases stop when a proposal would change product intent, invent a requirement, remove distinct instructions, activate a `TBD` GitHub target, or hit a stop condition.
 
 The proposal binds the exact frame paths and one baseline commit. Approval of only file writes without the baseline commit is incomplete. Write nothing until the run can produce the approved delta and clean commit together.
 
-## Delivery configuration
-
-Do not ask the operator to choose between Foreman and manual skills. Foreman defaults to native subagents and unattended mode, derives the default branch from authoritative repository state, and treats a missing release branch as no separate release branch.
-
-When the operator supplies a Foreman override, read `../../foreman/templates/project-block.md` and propose only supplied valid keys. Do not write runtime defaults. Reject an invalid explicit value instead of substituting a default. Resolve `cast_approval` independently.
-
 ## Prepare the project frame
 
-Present the paths, assumptions, unresolved `TBD`s, tracker configuration, symlink, opt-in artifacts, preserved content, and baseline commit before writing. Treat the approved set as exact. A changed path or mutation requires a new proposal.
+Present the paths, assumptions, unresolved `TBD`s, symlink, opt-in artifacts, preserved content, and baseline commit before writing. Treat the approved set as exact. A changed path or mutation requires a new proposal.
 
 Create this fresh frame:
 
@@ -64,7 +46,7 @@ Populate the named files from their Cast templates. Create `CLAUDE.md` with `ln 
 
 Create no numeric directory under `specs/`. Create no `spec.md`, `design.md`, `tasks.md`, or quick-task file. Spec owns those artifacts. The `.gitkeep` carries no contract and does not affect feature allocation.
 
-The selected tracker mode appears once in generated `AGENTS.md`. Local mode omits `github_repository`. GitHub mode uses the approved target or `TBD`. Do not create feature mappings; no feature exists yet.
+Do not write Valcraft configuration into generated `AGENTS.md`. Setup owns `.valcraft/config.yaml`. Do not create feature mappings; no feature exists yet.
 
 Add an optional artifact only when its trigger is real:
 
@@ -91,9 +73,9 @@ If approval or commit readiness is absent, apply nothing. If an attributable wri
 Derive facts from the repository before asking questions. Merge frame content instead of overwriting it:
 
 - preserve existing README and instruction content;
-- add missing project metadata, product-brief, architecture, plan-root, and tracker declarations;
+- add missing project metadata, product-brief, architecture, and plan-root;
 - merge binding rules from a distinct `CLAUDE.md` into `AGENTS.md`, and replace it with the relative symlink only after explicit removal approval;
-- add only missing `.gitignore` entries, including `.foreman/`; and
+- add only missing `.gitignore` entries, including `/.valcraft/`; and
 - record as-built architecture from repository evidence and accepted decisions.
 
 Before proposing a frame mutation, validate every existing numeric feature and quick file through Spec's contracts. Do not create missing feature artifacts, repair metadata, complete a staged feature, allocate another feature, or project tracker state. Preserve valid feature artifacts byte-for-byte. Report an invalid artifact with its exact path and violated Spec clause before any frame write.
@@ -104,7 +86,7 @@ Offer optional `valcraft:hone` for pre-existing agent instructions and `valcraft
 
 Stop before mutation when:
 
-- project tracker or approval declarations are missing, duplicated, or invalid;
+- `.valcraft/config.yaml` is missing or invalid after Setup returns;
 - existing feature or quick artifacts fail a Spec-owned identity, stage, metadata, provenance, or dependency rule;
 - the worktree contains unattributed changes;
 - the exact frame delta and baseline commit are not both approved or executable;

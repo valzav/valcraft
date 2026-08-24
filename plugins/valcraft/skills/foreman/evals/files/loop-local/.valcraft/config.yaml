@@ -1,0 +1,11 @@
+tracker:
+  mode: local
+cast:
+  approval_mode: attended
+foreman:
+  backend: subagents
+  approval_mode: unattended
+  default_branch: dev
+  release_branch: main
+pull_requests:
+  merge_strategy: squash

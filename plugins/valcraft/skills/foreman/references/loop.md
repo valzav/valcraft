@@ -21,7 +21,7 @@ Before a new pick, reconcile the clean local default branch with its live remote
 - local ahead: wait for an operator instruction that names the exact push;
 - diverged: stop without merge, rebase, reset, force push, or task-branch creation.
 
-An absent release branch means no separate release branch. Fast-track and direct release-only paths are unavailable. Any configured release-branch write remains a human gate.
+`foreman.release_branch: null` means no separate release branch. Fast-track and direct release-only paths are unavailable. An omitted key invalidates the snapshot and delegates repair to Setup. Any configured release-branch write remains a human gate.
 
 Apply Spec's readiness contract. An unready feature routes to Spec's direct caller; Foreman never repairs feature artifacts. Never interleave feature and quick pools.
 

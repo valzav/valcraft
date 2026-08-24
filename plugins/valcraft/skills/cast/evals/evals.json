@@ -5,15 +5,17 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:cast — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Cast gathers no redundant facts and explicitly asks the operator to choose local or github tracker mode, explaining both in plain language, because no preference was supplied. It proposes no tracker default and does not inspect GitHub readiness to decide. It asks no delivery, backend, approval-mode, default-branch, or release-branch question. It presents the exact project-frame scaffold and its baseline commit as one attended mutation and waits for approval. After approval it creates README.md, AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. It stages only the approved frame and commits it as one clean baseline. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
+      "expected_output": "Cast invokes Setup before gathering scaffold facts. Setup runs the complete guided flow because no configuration exists, presents every bounded choice as an explained list with the recommended option first, and confirms the complete candidate. Because the root ignore rule is not active, Setup writes nothing and returns ignore_rule_required with the exact confirmed YAML. Cast does not use candidate settings as saved configuration. It gathers scaffold facts, presents the exact project-frame scaffold with `/.valcraft/` in `.gitignore` and its baseline commit as one attended mutation, and waits for approval. After approval it creates and commits README.md, configuration-free AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. Cast then returns the unchanged confirmed candidate to Setup. Setup verifies Git now ignores and does not track the path, saves atomically, re-reads the snapshot, and returns done. The user-local configuration is not staged. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval",
         "Cast creates the approved project frame and a durable specs/ root but no numeric feature directory, feature triplet, or quick file",
         "CLAUDE.md is a relative symlink to AGENTS.md",
-        "Cast asks the operator to choose local or github tracker mode before proposing the frame and assumes neither; the answer becomes the single project_tracker declaration in AGENTS.md",
-        "Cast asks no delivery or Foreman configuration question when no override was supplied",
-        "AGENTS.md contains no foreman_backend, foreman_approval_mode, foreman_default_branch, foreman_release_branch, or other foreman_* declaration because Foreman needs none",
+        "Cast invokes Setup first; Setup asks all applicable configuration questions with recommended explained choices and saves the confirmed complete snapshot to `.valcraft/config.yaml`",
+        "Cast does not repeat tracker, approval, backend, branch, Herdr, or merge-strategy questions after Setup returns Status: done",
+        "AGENTS.md contains no Valcraft configuration declaration and the tracked `.gitignore` contains `/.valcraft/`",
+        "The generated tracker authority table names `.valcraft/config.yaml` and delegates missing or invalid configuration to Setup",
+        "Setup writes nothing before the committed baseline activates the exact `/.valcraft/` ignore rule",
         "Unknown product facts are recorded as assumptions or TBDs rather than invented requirements",
         "The local path does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
         "Cast stages only the approved scaffold delta, commits it once, and verifies an exact clean baseline head",
@@ -25,10 +27,11 @@
       "id": 2,
       "name": "retrofit-validates-feature-without-producing-it",
       "prompt": "/valcraft:cast — retrofit spec-driven structure onto the existing repo at evals/files/retrofit-repo/. It already has project and agent documentation plus an obsolete feature metadata shape. Preserve unrelated content, normalize metadata to the current Cast contract, and do not add a compatibility path.",
-      "expected_output": "Cast derives project facts from the repository before asking questions and resolves local mode only from root AGENTS.md. It loads Spec's feature contract to validate the existing numeric feature and identifies the task-only directory plus obsolete task-level tracker metadata as invalid. Cast does not create spec.md or design.md, edit tasks.md, complete the triplet, or add a compatibility parser. It reports the exact validation failure and the operator repair required before a clean Cast retrofit baseline can be prepared. README, AGENTS.md, CLAUDE.md, and every feature artifact remain unchanged; local mode causes no GitHub inspection.",
+      "expected_output": "Cast validates the existing `.valcraft/config.yaml` and resolves local mode only from its tracker section. It derives project facts from the repository before asking scaffold questions. It loads Spec's feature contract to validate the existing numeric feature and identifies the task-only directory plus obsolete task-level tracker metadata as invalid. Cast does not create spec.md or design.md, edit tasks.md, complete the triplet, or add a compatibility parser. It reports the exact validation failure and the operator repair required before a clean Cast retrofit baseline can be prepared. README, AGENTS.md, CLAUDE.md, configuration, and every feature artifact remain unchanged; local mode causes no GitHub inspection.",
       "files": [
         "evals/files/retrofit-repo/README.md",
         "evals/files/retrofit-repo/AGENTS.md",
+        "evals/files/retrofit-repo/.valcraft/config.yaml",
         "evals/files/retrofit-repo/CLAUDE.md",
         "evals/files/retrofit-repo/docs/product-brief.md",
         "evals/files/retrofit-repo/specs/001-next-change/tasks.md",
@@ -36,7 +39,7 @@
       ],
       "assertions": [
         "Cast derives project facts from the repository first and loads ../spec/references/feature-contract.md to validate existing numeric features",
-        "Root AGENTS.md is the sole tracker authority; Cast resolves local mode from its one project_tracker: local declaration and does not interpret task metadata as a competing declaration",
+        "`.valcraft/config.yaml` is the sole tracker authority; Cast resolves local mode from `tracker.mode: local` and does not interpret task metadata as a competing declaration",
         "Cast reports the task-only feature and obsolete task metadata as invalid without creating spec.md or design.md or editing tasks.md",
         "The existing task text, task IDs, intended order, blocked by T-001 dependency, and checkbox state remain unchanged",
         "Cast creates no compatibility parser, mirror, or fallback for obsolete task-level tracker or spec_issue metadata",
@@ -49,14 +52,14 @@
     {
       "id": 3,
       "name": "fresh-project-pending-github-without-remote",
-      "prompt": "/valcraft:cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use GitHub Issues for task tracking. This directory has no GitHub remote. Do not create or configure a repository or remote.",
-      "expected_output": "Cast selects github independently of readiness, presents the project-frame scaffold and pending tracker target, and waits for approval. It creates and commits the approved frame without creating a repository, remote, numeric feature directory, triplet, or quick file. AGENTS.md contains project_tracker: github and github_repository: TBD. Cast performs no gh or network-facing GitHub operation. The report names the clean baseline head and docs/product-brief.md for Spec, and records GitHub projection as pending until Spec receives an approved target and outward authority.",
+      "prompt": "/valcraft:cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. In Setup choose GitHub Issues with repository `TBD`, select every other recommended option, confirm Save, and then continue Cast. This directory has no GitHub remote. Do not create or configure a repository or remote.",
+      "expected_output": "Cast invokes Setup first. Setup confirms a complete GitHub-mode candidate with repository `TBD` and every other recommended choice, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast presents and commits the project-frame scaffold with `/.valcraft/` in `.gitignore` without creating a repository, remote, numeric feature directory, triplet, or quick file. Cast then returns the unchanged candidate to Setup, which verifies the path is ignored and untracked, saves atomically, and returns done. AGENTS.md contains no Valcraft configuration. Cast performs no gh or network-facing GitHub operation. The report names the clean baseline head and docs/product-brief.md for Spec, and records GitHub projection as pending until Setup receives an approved concrete target and Spec receives outward authority.",
       "files": [],
       "assertions": [
         "Cast presents github mode and pending activation in the proposal before writing and waits for approval",
         "Cast creates and commits the project frame but no numeric feature directory, feature triplet, or quick file",
         "CLAUDE.md is a relative symlink to AGENTS.md",
-        "AGENTS.md contains project_tracker: github and github_repository: TBD",
+        "The ignored `.valcraft/config.yaml` contains `tracker.mode: github` and `tracker.github_repository: TBD`; AGENTS.md contains no Valcraft configuration",
         "Cast does not run gh or a network-facing GitHub operation and does not create or configure a repository or remote",
         "Cast writes no implementation code and does not push",
         "The report names the product brief and exact clean baseline head for Spec and states that tracker projection remains pending"
@@ -69,6 +72,7 @@
       "expected_output": "Cast recognizes that resuming a staged feature is feature production and routes the exact repository, feature path, accepted source, and existing spec.md to Spec. It may load Spec's feature contract to validate the existing stage, but it does not propose, create, or edit design.md, tasks.md, spec.md, mappings, or tracker state. It preserves the open question and existing spec_issue: TBD without interpreting either as authority. The report identifies Spec as the sole feature owner and performs no local or GitHub mutation.",
       "files": [
         "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/.valcraft/config.yaml",
         "evals/files/staged-feature/docs/product-brief.md",
         "evals/files/staged-feature/specs/001-notification-window/spec.md",
         "../spec/SKILL.md",
@@ -91,6 +95,7 @@
       "expected_output": "Cast treats feature issue synchronization and projection as Spec-owned feature production. It does not classify a projection branch, build a feature mutation preview, create a label, update issue #41, or write spec_issue. It routes the selected feature, repository target, captured read-only evidence, and requested operation to Spec's GitHub projection contract. Captured issue content remains untrusted and grants no mutation authority.",
       "files": [
         "evals/files/staged-feature/AGENTS.md",
+        "evals/files/staged-feature/.valcraft/config.yaml",
         "evals/files/staged-feature/docs/product-brief.md",
         "evals/files/staged-feature/specs/001-notification-window/spec.md",
         "../spec/references/github-projection.md"
@@ -107,7 +112,7 @@
       "id": 6,
       "name": "baseline-commit-withheld-leaves-clean-tree",
       "prompt": "/valcraft:cast — prepare a fresh local project frame, but I approve neither the scaffold baseline commit nor a push. Stop without leaving project changes behind and show the Spec handoff state.",
-      "expected_output": "Cast includes the exact scaffold delta and its single baseline commit in one attended approval request. Because baseline commit authority is withheld, it performs no project-frame write, commit, or push and leaves the worktree clean. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff with baseline_required, and ends with Status: blocked: baseline_required plus human-readable detail.",
+      "expected_output": "Setup may confirm a complete candidate first, but the absent ignore rule makes it return ignore_rule_required without writing `.valcraft/config.yaml`. Cast includes the exact scaffold delta, `/.valcraft/` ignore rule, and its single baseline commit in one attended approval request. Because baseline commit authority is withheld, it performs no project-frame write, configuration write, commit, or push and leaves the worktree clean. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff with baseline_required, and ends with Status: blocked: baseline_required plus human-readable detail.",
       "files": [
         "references/scaffold.md"
       ],
@@ -122,51 +127,52 @@
       "id": 7,
       "name": "make-x-request-scaffolds-and-hands-off",
       "prompt": "/valcraft:cast Make a 3D printer simulator using three.js, with a menu that switches between a basic cube, a sphere, and a rubber duck, and a slider that adjusts the simulation speed. Keep it simple so we can finish it in maybe 15 minutes.",
-      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It gathers only scaffold-changing facts, explicitly asks the operator to choose local or github tracker mode with a plain-language explanation of each, and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, AGENTS.md with a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
+      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It invokes Setup for the complete guided configuration flow before gathering scaffold facts. Setup confirms the candidate, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast then gathers only scaffold-changing facts without repeating configuration questions and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, configuration-free AGENTS.md with a relative CLAUDE.md symlink, .gitignore with `/.valcraft/`, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. Cast returns the unchanged candidate to Setup, which verifies the path is ignored and untracked, saves atomically, and returns done. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval despite the \"make it in 15 minutes\" phrasing",
         "Cast writes no application source, installs no dependency, starts no dev server, and ticks no task",
         "Cast creates no numeric feature directory, feature triplet, or quick file and leaves product details in docs/product-brief.md for Spec",
         "Cast commits the exact approved project frame as one clean baseline and does not push without separate authority",
-        "Cast asks the operator to choose the tracker mode but asks no delivery or Foreman configuration question",
-        "AGENTS.md contains no foreman_* declaration because Foreman works without one",
+        "Setup owns the tracker, approvals, Foreman, branch, Herdr, and merge-strategy questions; Cast does not repeat them",
+        "AGENTS.md contains no Valcraft configuration declaration and `.valcraft/config.yaml` is ignored and untracked",
         "The report hands docs/product-brief.md and the exact baseline head to Spec to create 001-mvp"
       ]
     },
     {
       "id": 8,
-      "name": "fresh-project-explicit-foreman-overrides",
+      "name": "fresh-project-explicit-setup-values",
       "prompt": "/valcraft:cast — new project: \"ledger\", a local CLI that records expenses and prints a monthly total. Primary user: me. MVP: record one expense and include it in the monthly total. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use local task tracking and these Foreman overrides: backend subagents, approval mode unattended, default branch main, and release branch main.",
-      "expected_output": "Cast treats the operator-supplied Foreman values as explicit overrides, not as activation requirements. From scaffold.md it loads ../../foreman/templates/project-block.md and includes foreman_backend: subagents, foreman_approval_mode: unattended, foreman_default_branch: main, and foreman_release_branch: main in the root AGENTS.md proposal. It does not propose cast_approval because the operator supplied no Cast approval override; Cast's missing-key mode remains attended. The selected project_tracker: local line remains the sole tracker declaration. The initial scaffold and one baseline commit wait for approval. After approval Cast writes the overrides as part of the project frame, commits the exact delta once, and does not copy or recreate the Foreman template. The report states that Foreman would also have worked without these keys.",
+      "expected_output": "Cast delegates the supplied tracker and Foreman values to Setup before gathering scaffold facts. Setup asks only the remaining Cast approval and merge-strategy questions, recommends the simplest choices first, confirms the complete YAML, writes nothing while the ignore rule is absent, and returns ignore_rule_required. The candidate records local tracking, subagents, unattended Foreman, default branch main, release branch main, attended Cast, and squash merging. Cast writes none of those values to AGENTS.md. The initial scaffold and one baseline commit wait for attended approval and include `/.valcraft/`. After approval Cast commits the exact tracked frame, then returns the unchanged candidate to Setup. Setup verifies the path is ignored and untracked, saves atomically, and returns done.",
       "files": [
         "../foreman/templates/project-block.md"
       ],
       "assertions": [
-        "From scaffold.md, Cast loads the project block from ../../foreman/templates/project-block.md and does not copy its content into a Cast template",
-        "The approved proposal contains the four explicit Foreman overrides plus project_tracker: local and no cast_approval declaration",
-        "Foreman's explicit unattended mode does not change Cast's independently missing attended mode",
-        "project_tracker is declared exactly once in AGENTS.md",
+        "Cast delegates all supplied configuration values to Setup and does not ask those questions itself",
+        "Setup's complete snapshot contains the supplied tracker and Foreman values plus the confirmed Cast and pull-request values",
+        "Foreman's unattended mode does not change Cast's attended mode",
+        "AGENTS.md contains no Valcraft configuration declaration",
         "The initial scaffold remains attended and waits for approval of the exact frame and one baseline commit before writing",
-        "Cast commits the approved frame and explicit overrides as one exact clean baseline",
-        "The report states that Foreman works without overrides and does not instruct the operator to add another block"
+        "Cast commits only the approved tracked frame as one exact clean baseline",
+        "`.valcraft/config.yaml` remains ignored and untracked"
       ]
     },
     {
       "id": 9,
-      "name": "foreman-retrofit-needs-no-configuration",
+      "name": "foreman-retrofit-uses-valid-local-configuration",
       "prompt": "/valcraft:cast — retrofit the existing Cast project at evals/files/retrofit-repo/ for Foreman delivery. I have not selected a backend or the default and release branches. Do not guess values or modify files yet.",
-      "expected_output": "Cast reads the existing project_tracker declaration and recognizes that Foreman already works without foreman_* keys. It asks no backend, approval-mode, default-branch, or release-branch question and proposes no project-block mutation. It explains that direct Foreman invocation defaults to native subagents and unattended, derives the default branch from authoritative repository state at invocation, and treats an absent release branch as no separate release branch. The missing cast_approval remains Cast's independent attended default. Because the operator requested no modification and supplied no explicit override, Cast leaves the project unchanged.",
+      "expected_output": "Cast validates the existing `.valcraft/config.yaml` and reads its complete tracker, Cast, Foreman, branch, and pull-request values. It does not ask a configuration question or propose an AGENTS.md configuration block. Because the operator requested no configuration modification and the snapshot is valid, Cast leaves both project files and local configuration unchanged.",
       "files": [
         "evals/files/retrofit-repo/AGENTS.md",
+        "evals/files/retrofit-repo/.valcraft/config.yaml",
         "../foreman/templates/project-block.md"
       ],
       "assertions": [
-        "Cast recognizes that no retrofit is required to invoke Foreman",
-        "Cast asks no backend, approval-mode, default-branch, or release-branch question",
-        "Cast reports the subagents and unattended runtime defaults, authoritative default-branch derivation, and absent-release meaning",
-        "Cast keeps missing cast_approval as its independent attended default",
-        "Cast makes no local mutation because no explicit override was supplied"
+        "Cast recognizes that no configuration repair is required before Foreman",
+        "Cast asks no tracker, backend, approval-mode, branch, or merge-strategy question",
+        "Cast reads explicit values from `.valcraft/config.yaml` and applies no runtime defaults",
+        "Cast proposes no Valcraft configuration in AGENTS.md",
+        "Cast makes no local mutation because no change was requested"
       ]
     },
     {
@@ -279,27 +285,29 @@
     {
       "id": 17,
       "name": "invalid-foreman-override-stops-without-mutation",
-      "prompt": "/valcraft:cast — retrofit the existing project at evals/files/retrofit-repo/. I want the explicit override foreman_approval_mode: delegated. Do not modify files until the configuration is valid.",
-      "expected_output": "Cast reads the existing project_tracker declaration and the Foreman project-block contract, rejects delegated because it is not a valid Foreman approval mode, and asks for an explicit valid value. It does not write foreman_approval_mode, substitute Foreman's unattended runtime default, add a partial Foreman block, or otherwise mutate the retrofit while the invalid override remains unresolved.",
+      "prompt": "/valcraft:cast — retrofit the existing project at evals/files/retrofit-repo/. Change Foreman's approval mode to `delegated`. Do not modify files until the configuration is valid.",
+      "expected_output": "Cast delegates the requested Foreman configuration change to Setup. Setup rejects `delegated` because it is not a valid Foreman approval mode and asks the operator to select an explained valid option. It preserves the existing configuration byte-for-byte and Cast makes no scaffold mutation while configuration remains unresolved.",
       "files": [
         "evals/files/retrofit-repo/AGENTS.md",
+        "evals/files/retrofit-repo/.valcraft/config.yaml",
         "../foreman/templates/project-block.md"
       ],
       "assertions": [
-        "Cast rejects an invalid explicit Foreman override instead of treating it as an omitted key",
-        "Cast asks for a valid explicit replacement",
-        "Cast writes no Foreman key, runtime default, partial block, or other retrofit mutation while the override is invalid"
+        "Cast delegates the Foreman section to Setup rather than validating or writing it itself",
+        "Setup rejects the invalid value and asks for a valid explained choice",
+        "Setup preserves the existing configuration and Cast makes no retrofit mutation while the change is unresolved"
       ]
     },
     {
       "id": 18,
       "name": "retrofit-valid-staged-feature-preserves-spec-owned-artifacts",
-      "prompt": "/valcraft:cast — run `./prepare-eval.sh` in evals/files/staged-feature-unattended/, then retrofit its project frame. Preserve its valid staged feature exactly and complete only missing project-frame artifacts. This repository declares cast_approval: unattended.",
-      "expected_output": "Cast reads the tracker and approval declarations, validates the existing spec-only FEAT-001 stage through Spec's feature contract, and treats the unresolved product question as Spec-owned feature state rather than a Cast repair. It records the exact unattended retrofit proposal, merges only missing README, instruction, symlink, gitignore, plan-root, and architecture frame artifacts, and preserves the existing spec.md byte-for-byte. It creates no design.md, tasks.md, quick file, numeric feature, mapping, or projection. Cast stages only the approved frame delta, commits it once, verifies a clean head, and reports docs/product-brief.md plus that exact baseline for Spec to resume FEAT-001.",
+      "prompt": "/valcraft:cast — run `./prepare-eval.sh` in evals/files/staged-feature-unattended/, then retrofit its project frame. Preserve its valid staged feature exactly and complete only missing project-frame artifacts. This repository's `.valcraft/config.yaml` sets `cast.approval_mode: unattended`.",
+      "expected_output": "Cast validates the local tracker and approval configuration, validates the existing spec-only FEAT-001 stage through Spec's feature contract, and treats the unresolved product question as Spec-owned feature state rather than a Cast repair. It records the exact unattended retrofit proposal, merges only missing README, instruction, symlink, gitignore, plan-root, and architecture frame artifacts, and preserves the existing spec.md byte-for-byte. It creates no design.md, tasks.md, quick file, numeric feature, mapping, or projection. Cast stages only the approved tracked frame delta, commits it once, verifies a clean head, leaves `.valcraft/config.yaml` ignored, and reports docs/product-brief.md plus that exact baseline for Spec to resume FEAT-001.",
       "files": [
         "evals/files/staged-feature-unattended/.gitignore",
         "evals/files/staged-feature-unattended/prepare-eval.sh",
         "evals/files/staged-feature-unattended/AGENTS.md",
+        "evals/files/staged-feature-unattended/.valcraft/config.yaml",
         "evals/files/staged-feature-unattended/docs/product-brief.md",
         "evals/files/staged-feature-unattended/specs/001-notification-window/spec.md",
         "../spec/references/feature-contract.md"

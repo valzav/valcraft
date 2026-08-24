@@ -1,0 +1,13 @@
+tracker:
+  mode: local
+  # yamllint disable-line rule:key-duplicates
+  mode: github
+cast:
+  approval_mode: attended
+foreman:
+  backend: subagents
+  approval_mode: unattended
+  default_branch: main
+  release_branch: null
+pull_requests:
+  merge_strategy: squash

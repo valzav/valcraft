@@ -1,26 +1,5 @@
 # Agent instructions
 
-## Project metadata
-
-Render one tracker shape when Cast creates or retrofits the project.
-
-Local:
-
-```yaml
-project_tracker: local
-```
-
-GitHub:
-
-```yaml
-project_tracker: github
-github_repository: <host>/<owner>/<repository> | TBD
-```
-
-In GitHub mode, keep `github_repository: TBD` until the operator selects the exact target. Omit `github_repository` in local mode.
-
-Optionally render `cast_approval: unattended` when the operator selects it. Missing means attended. Cast always requires attended approval for a fresh project frame.
-
 ## Orientation
 
 - `docs/` — product brief, working plans, architecture, and ADRs.
@@ -56,7 +35,7 @@ Read the documents relevant to a change before modifying code or specifications.
 
 | Data | Authority | Rule |
 | --- | --- | --- |
-| Project tracker and target repository | `AGENTS.md` | Keep one valid tracker declaration. Resolve it before inspecting GitHub. |
+| Project tracker and target repository | `.valcraft/config.yaml` | Require one complete valid tracker section. Delegate missing or invalid configuration to `valcraft:setup` before inspecting GitHub. |
 | Feature ID and feature-issue mapping | `spec.md` | Use one mode-valid `spec_issue` value. |
 | Feature, design, task text, order, and dependency intent | Git | Treat committed Spec artifacts as canonical definitions. |
 | T-ID to issue-number mapping | `tasks.md` | Preserve stable T-IDs and verified mappings. |
@@ -66,11 +45,11 @@ Read the documents relevant to a change before modifying code or specifications.
 
 ## Task workflow
 
-Resolve `project_tracker` before task work.
+Read `.valcraft/config.yaml` before Valcraft task work. Invoke `valcraft:setup` when required configuration is missing or invalid.
 
 In local mode, use feature `tasks.md` checkboxes as status. Resolve hard dependencies only from `blocked by T-XXX`. Require no GitHub remote, CLI, or authentication.
 
-In GitHub mode, use checkbox-free feature tasks as git-owned definitions and GitHub issue state as completion status. Use only explicit `blocked by T-XXX` annotations as dependencies. Treat unresolved `github_repository`, feature mappings, or task mappings as pending Spec projection.
+When `tracker.mode` is `github`, use checkbox-free feature tasks as git-owned definitions and GitHub issue state as completion status. Use only explicit `blocked by T-XXX` annotations as dependencies. Treat an unresolved tracker target, feature mapping, or task mapping as pending Spec projection.
 
 Quick tasks track locally in both modes. Use `blocked by QT-XXX` within one file and `blocked by Q-NNN QT-XXX` across quick files.
 

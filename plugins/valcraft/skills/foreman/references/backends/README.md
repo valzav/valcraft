@@ -1,6 +1,6 @@
 # Backends
 
-A backend runs fresh workers; it never changes skill ownership. Missing `foreman_backend` selects native `subagents`.
+A backend runs fresh workers; it never changes skill ownership. Read the selected backend from `foreman.backend` in `.valcraft/config.yaml`.
 
 ## Primitives and flags
 
@@ -73,7 +73,7 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Agent Orchestrator | an escalated permission gate stays under the re-armed poll waiter; an operator answer in the tmux window resolves it through the worker's terminal return | await | `transport:ao-gate-observed-by-poll` | Foreman eval 89 |
 | Herdr | submission can settle without delivering; `agent_prompt_stalled`, or a settled occupant with neither an observed `working` state nor the report, is unconfirmed | dispatch/await | `transport:herdr-unconfirmed-delivery` | Foreman eval 73 |
 | Herdr | the assignment envelope is passed as one argument value, never interpolated into a shell command string | dispatch | `transport:herdr-argv-envelope` | Foreman eval 84 |
-| Herdr | each role is pinned to a fixed harness so every Review runs on the model that did not produce its target | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
+| Herdr | each role uses its configured harness, model, and effort while every Review uses a different harness from its producer | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
 | Herdr | all roles share the orchestrator's checkout and canonical task branch | workspace | `transport:herdr-shared-checkout` | Foreman eval 75 |
 | Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
 | Herdr | an escalated permission gate stays under foreground observation; an operator answer in the worker's pane resolves it through the worker's terminal return | await | `transport:herdr-gate-observed-in-pane` | Foreman eval 87 |
