@@ -19,7 +19,7 @@ Read `references/verification-and-handoff.md` before editing. It owns verificati
 
 ## Load the contract
 
-Read root `AGENTS.md` for project instructions. Read `../tune/references/config.md` completely, then validate the resolved configuration — the committed `.valcraft/config.yaml` plus any `.valcraft/config.local.yaml` overlay — against that contract. If the configuration is missing or invalid, invoke `valcraft:tune` for the tracker section and resume only after `Status: done`. Read `../spec/references/feature-contract.md` for feature identity and readiness. For a quick task, also read `../spec/references/quick.md`.
+Read root `AGENTS.md` for project instructions. Read `../tune/references/config.md` completely, then validate the resolved configuration — the committed `.valcraft/config.yaml` plus any `.valcraft/config.local.yaml` overlay — against that contract. If the configuration is missing or invalid, invoke `valcraft:tune` for the affected section and resume only after `Status: done`. Read `../spec/references/feature-contract.md` for feature identity and readiness. For a quick task, also read `../spec/references/quick.md`.
 
 The git-owned contract is the feature's `spec.md`, `design.md`, `tasks.md`, accepted ADRs, and passed task plan, or the quick task's one file and passed plan. Accepted ADRs outrank `specs/`, which outrank derived `docs/`. Stop on an unresolved conflict or missing behavior-changing decision. Ask when attended; otherwise report the question. Never invent the answer.
 

@@ -19,7 +19,9 @@ The target selects one mode:
 - diff, PR, branch, or commit range -> **code mode**;
 - Land external-completion record -> **evidence mode**.
 
-Ask about an ambiguous target when attended. Otherwise return a blocked report. Skill names use `valcraft:<name>` in namespaced hosts and `<name>` in OpenCode.
+Ask about an ambiguous target when attended. Otherwise return a blocked report.
+
+Skill names use `valcraft:<name>` in namespaced hosts and `<name>` in OpenCode.
 
 ## Load the contract
 

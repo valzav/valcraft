@@ -1,8 +1,8 @@
 # Named-state delivery loop
 
-This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Every await first records one backend return, then opens a producer report only for `report_available`. After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
+This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
 
-Only an explicit delivery command enters the loop. `new PRD`, feature-contract creation, and quick-task creation route directly to `valcraft:spec` outside Foreman.
+Only an explicit delivery command enters the loop.
 
 ## Quick tasks
 

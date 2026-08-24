@@ -141,8 +141,6 @@ Show each section with its current resolved value summary.
 
 Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`; moving to Herdr asks the complete Herdr flow.
 
-## Report and noninteractive use
-
-Write immediately after the last answer; an interactive answer authorizes the write it configures, so ask no confirmation question. In the report, show the complete canonical YAML of every written file, and the resolved configuration whenever an overlay exists. After a base write outside an active Cast invocation, stage and commit only `.valcraft/config.yaml` and report the commit.
+## Noninteractive use
 
 In a headless or noninteractive run, return `configuration_required` with the unresolved fields and make no write. Do not select recommended answers, convert an invalid partial document, or treat `foreman.approval_mode: unattended` as authority to answer questions.

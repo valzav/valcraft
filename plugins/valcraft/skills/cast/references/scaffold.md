@@ -20,9 +20,9 @@ Read tracker mode from the resolved configuration only after Tune returns `Statu
 
 Every scaffold records its exact proposal — the frame paths, preserved content, assumptions, unresolved `TBD`s, symlink operation, triggered opt-in artifacts, and one baseline commit — in the report, then proceeds without waiting for approval. Recovery from an unwanted frame is reverting the single baseline commit. Treat the recorded set as exact: a changed path or mutation requires a new recorded proposal.
 
-Stop instead of proceeding when the proposal would change product intent, invent a requirement, remove distinct instructions, activate a `TBD` GitHub target, or hit a stop condition below.
+Stop instead of proceeding on any stop condition below.
 
-The proposal binds the exact frame paths and one baseline commit together. Write nothing until the run can produce the recorded delta and clean commit together.
+The proposal binds the exact frame paths and one baseline commit together.
 
 ## Prepare the project frame
 
@@ -89,6 +89,7 @@ Offer optional `valcraft:hone` for pre-existing agent instructions and `valcraft
 
 Stop before mutation when:
 
+- the proposal would change product intent or invent a requirement;
 - the resolved configuration is missing or invalid after Tune returns;
 - existing feature or quick artifacts fail a Spec-owned identity, stage, metadata, provenance, or dependency rule;
 - the worktree contains unattributed changes beyond Tune's written base file and Cast's own ignore-rule repair;

@@ -23,7 +23,7 @@ Backends declare `wake` (`event`, `foreground`, or authorized `poll`), `answer` 
 
 `report_available`, `idle_without_report`, `dispatch_error`, and `dead` end the current await. `permission_blocked` waits for an allowed answer or escalation. `wait_timeout` is nonterminal and valid only for foreground waiting; if the worker remains active, re-arm await in the same parent turn.
 
-Never poll a report file on event or foreground backends. Never treat absence from a live-only status list as success. A producer's semantic `Status: blocked` arrives under `report_available`, never `permission_blocked`.
+Never poll a report file on event or foreground backends. Never treat absence from a live-only status list as success.
 
 A signal from a physical worker whose assignment has already reached a terminal return is not a backend return. Record it in `state.md` as an observation with the released worker's identity and ignore it. Never treat it as `idle_without_report`; that return applies only to an active assignment.
 
