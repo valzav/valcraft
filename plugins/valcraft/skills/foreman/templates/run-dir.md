@@ -48,4 +48,5 @@ Append checkpoints with:
 This checkpoint is not an authority. Re-read every referenced git, tracker, report, and backend fact before transition. Preserve prior checkpoints so resume can explain the state that produced each decision.
 
 The run directory is the audit and resume surface. Nothing in it is committed or pasted into a producer artifact.
+
 Ignore runtime state outside `.valcraft/foreman/`. Never migrate it into the current runtime contract.

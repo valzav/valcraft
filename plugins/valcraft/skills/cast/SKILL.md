@@ -51,7 +51,7 @@ Read the applicable files under `templates/` directly. Do not reconstruct them f
 10. **Handle an optional push.** A local baseline never implies push authority. Apply the prepare-authorize-execute contract below. The Spec handoff remains usable at its local commit when no push is authorized.
 11. **Report.** Emit the producer-owned Cast report below. Direct and dispatched invocation use the same headings and terminal status grammar.
 
-With a harness task tool, mirror these workflow stages. Treat the display as progress only; git and the final report remain authoritative.
+Mirror these workflow stages with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex). Treat the display as progress only; git and the final report remain authoritative.
 
 ## Outward-mutation authority
 

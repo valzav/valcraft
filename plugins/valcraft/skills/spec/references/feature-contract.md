@@ -11,7 +11,7 @@ Require all of the following before feature work:
 - a readable `specs/` directory; and
 - exactly one mode-valid `spec_issue` mapping in every existing `spec.md`.
 
-Read tracker mode and target from `.valcraft/config.yaml` before inspecting remotes or GitHub. Local mode performs no output-tracker discovery or readiness check. Delegate a missing or invalid tracker section to Setup and resume only after `Status: done`.
+Read tracker mode and target from `.valcraft/config.yaml` before inspecting remotes or GitHub. Local mode performs no output-tracker discovery or readiness check. A producer skill delegates a missing or invalid tracker section to Setup and resumes only after `Status: done`; report-only Review instead reports it as blocking.
 
 A local mapping is exactly `spec_issue: null`. A GitHub mapping is `spec_issue: TBD` or one positive issue number. Reject a `tracker` or `spec_issue` field in `tasks.md`. Setup owns tracker mode and target in `.valcraft/config.yaml`; `spec.md` owns the feature-issue mapping; `tasks.md` owns only T-ID-to-task-issue mappings.
 

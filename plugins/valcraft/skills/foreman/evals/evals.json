@@ -168,6 +168,7 @@
       "assertions": [
         "Foreman picks T-002 from tasks.md order and dependency state",
         "Foreman creates a run directory with state.md and workers.md before dispatching",
+        "After the pick, Foreman mirrors the loop in the host todo-list tool: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
         "The drafter is a fresh general-purpose worker, not a fork, with canonical logical identity drafter-F001-T002",
         "The Draft assignment contains the cold-start reading order, report path, Status line instruction, exact predecessor, and trust-boundary paragraph",
         "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending",
@@ -595,7 +596,7 @@
       "expected_output": "Foreman invokes Setup for the Foreman section and performs no branch derivation itself. Setup treats the invalid document as a complete repair. For A it offers trunk first as the recommended branch and explains both agreeing sources. For B it offers develop first from the authoritative host source. For C it offers main as the documented recommended simple option plus entry of another branch; it does not infer from cached origin/HEAD or the current checkout. For D it explains the conflict and asks the operator to select or enter a branch. Nothing is saved without complete YAML preview and confirmation, and Foreman creates no run or worker before Setup returns Status: done.",
       "files": [
         "SKILL.md",
-        "templates/project-block.md",
+        "references/configuration.md",
         "../setup/references/config.md"
       ],
       "assertions": [
@@ -613,7 +614,7 @@
       "expected_output": "The explicit null means no separate release branch; main remains the default. For A, the ordinary Landing approval row applies: attended waits and unattended may pass exact authority to Land only after Review and Land's gates. Fast-track and direct release writes are unavailable for B and C. Foreman never infers a release branch or executes a landing mutation.",
       "files": [
         "SKILL.md",
-        "templates/project-block.md",
+        "references/configuration.md",
         "references/approval-modes.md",
         "references/intake-github.md"
       ],
@@ -1209,7 +1210,7 @@
       "files": [
         "references/backends/herdr.md",
         "references/backends/README.md",
-        "templates/project-block.md"
+        "references/configuration.md"
       ],
       "assertions": [
         "Case (a) passes readiness with a null configured session and records shop-foreman resolved from the inherited socket",

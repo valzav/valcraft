@@ -10,7 +10,7 @@ Coordinate delivery. Never perform a worker skill's work.
 
 ## Resolve the run
 
-Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from `.valcraft/config.yaml` with [`templates/project-block.md`](templates/project-block.md). If the configuration is missing or invalid, invoke `valcraft:setup` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
+Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from `.valcraft/config.yaml` with [`references/configuration.md`](references/configuration.md). If the configuration is missing or invalid, invoke `valcraft:setup` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
 
 Load these contracts before dispatch:
 
@@ -57,7 +57,7 @@ Use a second harness for Review when the backend offers one. Fresh context suppl
 
 After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority, or owner decision.
 
-With a harness task tool, mirror the loop for the current task: one item per named state on its path, titled `<task identity> — <state>`, one `in_progress` at a time, `completed` when `state.md` records the transition out of it. Add the feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
+Mirror the loop with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex): at task pick, create one item per named state on the task's path, titled `<task identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add the feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
 
 ## Trust boundary
 

@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "328885187340e295",
+      "version": "daa22e9cf73cc4fa",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -38,7 +38,7 @@
     },
     {
       "name": "foreman",
-      "version": "5bfe983ea2b5ab04",
+      "version": "6adee19208cf8f1e",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -46,13 +46,13 @@
         "references/backends/ao.md",
         "references/backends/herdr.md",
         "references/backends/subagents.md",
+        "references/configuration.md",
         "references/contracts.md",
         "references/hygiene.md",
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
         "references/review-round.md",
-        "templates/project-block.md",
         "templates/run-dir.md",
         "agents/openai.yaml"
       ]
@@ -98,7 +98,7 @@
     },
     {
       "name": "review",
-      "version": "da3e87f07ab29c45",
+      "version": "882b9174e3095536",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -109,7 +109,7 @@
     },
     {
       "name": "setup",
-      "version": "c257ddcf06426e02",
+      "version": "4eab1643368b0647",
       "files": [
         "SKILL.md",
         "references/config.md"
@@ -117,7 +117,7 @@
     },
     {
       "name": "spec",
-      "version": "ec977b3303d0d88b",
+      "version": "54ddff4172f2f466",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -133,7 +133,7 @@
     },
     {
       "name": "temper",
-      "version": "91a857049aca2b9b",
+      "version": "4016ab6605bd7142",
       "files": [
         "SKILL.md",
         "references/process.md",

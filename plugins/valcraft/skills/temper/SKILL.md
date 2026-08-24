@@ -52,7 +52,7 @@ Remediating Review findings edits the same report file in place and returns the 
 
 ## Progress
 
-With a task tool, mirror the applicable phases from `process.md` with one current phase. The retrospective report, not the progress list, is the durable record.
+Mirror the applicable phases from `process.md` with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex), keeping one current phase. The retrospective report, not the progress list, is the durable record.
 
 ## Report
 

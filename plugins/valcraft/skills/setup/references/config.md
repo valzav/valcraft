@@ -28,7 +28,7 @@ The root requires exactly `tracker`, `cast`, `foreman`, and `pull_requests`.
 `tracker.mode` is `local` or `github`.
 
 - `local` permits only `mode`.
-- `github` requires `github_repository`, a repository identifier accepted as free-form input and stored as a string. Do not probe or mutate the host merely to validate configuration.
+- `github` requires `github_repository`: either one repository identifier accepted as free-form input and stored as a string, or the literal placeholder `TBD` recording that the operator has not selected the target yet. `TBD` is never an identifier: a skill that needs a concrete target treats it as pending activation and routes target selection back to Setup. Do not probe or mutate the host merely to validate configuration.
 
 ### Cast
 
@@ -72,7 +72,7 @@ Ask only questions whose answers are not already supplied by the operator in the
 
 Ask in this order. Every quoted choice is a list item with its explanation, not an inferred default.
 
-1. **Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input.
+1. **Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
 2. **Cast approval:** `Attended (Recommended)` — confirm Cast's exact scaffold before it writes; `Unattended` — let Cast apply an already-defined scaffold without that gate.
 3. **Foreman backend:** `Subagents (Recommended)` — use workers provided by the active coding session; `AO` — dispatch through the external AO orchestrator; `Herdr` — dispatch roles through a Herdr session with configured models.
 4. **Foreman approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
@@ -97,16 +97,16 @@ Then show this preset list:
 
 All three presets use this harness split:
 
-| Role | Harness |
-| --- | --- |
-| `draft` | Codex |
-| `plan_review` | Claude |
-| `forge` | Claude |
-| `code_review` | Codex |
-| `land` | Claude |
-| `temper` | Claude |
-| `retro_review` | Codex |
-| `evidence_review` | Codex |
+| Role              | Harness |
+| ----------------- | ------- |
+| `draft`           | Codex   |
+| `plan_review`     | Claude  |
+| `forge`           | Claude  |
+| `code_review`     | Codex   |
+| `land`            | Claude  |
+| `temper`          | Claude  |
+| `retro_review`    | Codex   |
+| `evidence_review` | Codex   |
 
 For Custom, ask each role in the table order. Put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models with the balanced alias first and marked recommended, followed by the other known aliases and `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort supported by the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all four independence pairs after the last role; do not silently change a conflicting answer.
 

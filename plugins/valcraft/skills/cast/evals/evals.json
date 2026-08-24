@@ -145,7 +145,7 @@
       "prompt": "/valcraft:cast — new project: \"ledger\", a local CLI that records expenses and prints a monthly total. Primary user: me. MVP: record one expense and include it in the monthly total. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use local task tracking and these Foreman overrides: backend subagents, approval mode unattended, default branch main, and release branch main.",
       "expected_output": "Cast delegates the supplied tracker and Foreman values to Setup before gathering scaffold facts. Setup asks only the remaining Cast approval and merge-strategy questions, recommends the simplest choices first, confirms the complete YAML, writes nothing while the ignore rule is absent, and returns ignore_rule_required. The candidate records local tracking, subagents, unattended Foreman, default branch main, release branch main, attended Cast, and squash merging. Cast writes none of those values to AGENTS.md. The initial scaffold and one baseline commit wait for attended approval and include `/.valcraft/`. After approval Cast commits the exact tracked frame, then returns the unchanged candidate to Setup. Setup verifies the path is ignored and untracked, saves atomically, and returns done.",
       "files": [
-        "../foreman/templates/project-block.md"
+        "../foreman/references/configuration.md"
       ],
       "assertions": [
         "Cast delegates all supplied configuration values to Setup and does not ask those questions itself",
@@ -165,7 +165,7 @@
       "files": [
         "evals/files/retrofit-repo/AGENTS.md",
         "evals/files/retrofit-repo/.valcraft/config.yaml",
-        "../foreman/templates/project-block.md"
+        "../foreman/references/configuration.md"
       ],
       "assertions": [
         "Cast recognizes that no configuration repair is required before Foreman",
@@ -290,7 +290,7 @@
       "files": [
         "evals/files/retrofit-repo/AGENTS.md",
         "evals/files/retrofit-repo/.valcraft/config.yaml",
-        "../foreman/templates/project-block.md"
+        "../foreman/references/configuration.md"
       ],
       "assertions": [
         "Cast delegates the Foreman section to Setup rather than validating or writing it itself",

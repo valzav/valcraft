@@ -1,6 +1,6 @@
 # Named-state delivery loop
 
-This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Every await first records one backend return, then opens a producer report only for `report_available`.
+This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Every await first records one backend return, then opens a producer report only for `report_available`. After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
 
 Only an explicit delivery command enters the loop. `new PRD`, feature-contract creation, and quick-task creation route directly to `valcraft:spec` outside Foreman.
 
@@ -29,19 +29,19 @@ Apply Spec's readiness contract. An unready feature routes to Spec's direct call
 
 Route only from verified producer reports and exact targets:
 
-| Durable evidence | Named state |
-| --- | --- |
-| selected eligible task with no plan | `Drafting` |
-| committed Draft plan not yet accessible to the next Review worker | `Drafting` |
-| committed Draft plan without an exact plan verdict | `PlanReview` |
-| exact passing plan verdict without Forge output | `Implementing` |
-| Forge implementation head with required task PR still prepared | `Implementing` |
-| Forge task PR head without an exact code verdict | `CodeReview` |
-| passing code verdict covering the current PR head | `Landing` |
-| Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
-| confirmed feature not yet closed by Land | `FeatureClose` |
-| feature closure complete without a retrospective report | `Retrospective` |
-| Temper report without an exact verdict | `RetroReview` |
+| Durable evidence                                                  | Named state      |
+| ----------------------------------------------------------------- | ---------------- |
+| selected eligible task with no plan                               | `Drafting`       |
+| committed Draft plan not yet accessible to the next Review worker | `Drafting`       |
+| committed Draft plan without an exact plan verdict                | `PlanReview`     |
+| exact passing plan verdict without Forge output                   | `Implementing`   |
+| Forge implementation head with required task PR still prepared    | `Implementing`   |
+| Forge task PR head without an exact code verdict                  | `CodeReview`     |
+| passing code verdict covering the current PR head                 | `Landing`        |
+| Land evidence record without fresh sufficiency verdict            | `EvidenceReview` |
+| confirmed feature not yet closed by Land                          | `FeatureClose`   |
+| feature closure complete without a retrospective report           | `Retrospective`  |
+| Temper report without an exact verdict                            | `RetroReview`    |
 
 Never restart Draft when a current committed plan exists. Never infer Review coverage from a branch, PR number, or earlier verdict.
 

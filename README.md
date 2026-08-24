@@ -6,15 +6,15 @@ Status: alpha.
 
 ## Problems it addresses
 
-| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                                  |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code.                 |
-| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                                      |
-| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                                |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                              |
-| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                                |
-| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
-| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
+| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                  |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code. |
+| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                      |
+| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                              |
+| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                |
+| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                            |
+| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                 |
 
 ## Valcraft's SDD at a glance
 
@@ -99,7 +99,7 @@ Same contracts, you drive:
 | `review` — review an exact plan, change, or evidence    | `/valcraft:review`  | `$valcraft:review`  | `review`  |
 | `land` — finalize reviewed work and close tracker state | `/valcraft:land`    | `$valcraft:land`    | `land`    |
 | `foreman` — coordinate the delivery loop                | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper` — produce a local retrospective and its handoff | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `temper` — produce a local retrospective and handoff    | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
 | `hone` — refine a prompt artifact                       | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
 | `distill` — reduce a prompt to its essence              | `/valcraft:distill` | `$valcraft:distill` | `distill` |
 | `msw` — MSW Kernel over a document                      | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
