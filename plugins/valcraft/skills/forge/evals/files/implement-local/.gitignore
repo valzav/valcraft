@@ -1,3 +1,4 @@
 .eval/
-/.valcraft/
+/.valcraft/*
+!/.valcraft/config.yaml
 eval-tools/

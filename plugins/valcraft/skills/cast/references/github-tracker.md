@@ -1,10 +1,10 @@
 # GitHub tracker configuration
 
-Use this reference only when `.valcraft/config.yaml` sets `tracker.mode: github`. Tune owns the tracker mode and target. Spec owns feature and task projection, mappings, generated labels, hierarchy, dependencies, and projection reconciliation.
+Use this reference only when the committed `.valcraft/config.yaml` sets `tracker.mode: github`. Tune owns the tracker mode and target. Spec owns feature and task projection, mappings, generated labels, hierarchy, dependencies, and projection reconciliation.
 
 ## Resolve the target
 
-Read `tracker.mode` and `tracker.github_repository` from `.valcraft/config.yaml`. If the mode is local, stop this workflow without inspecting remotes, `gh`, authentication, or GitHub readiness. Delegate a missing or invalid tracker section to Tune and resume only after `Status: done`.
+Read `tracker.mode` and `tracker.github_repository` from the committed `.valcraft/config.yaml`. If the mode is local, stop this workflow without inspecting remotes, `gh`, authentication, or GitHub readiness. Delegate a missing or invalid tracker section to Tune and resume only after `Status: done`.
 
 In GitHub mode, preserve a concrete configured target unchanged. When the configured target is `TBD`, inspect configured remotes only to present candidates; never choose between different plausible repositories. Recognize SSH and HTTPS remotes and normalize them to host, owner, and repository. Route the operator's exact `HOST/OWNER/REPOSITORY` selection through Tune; no remote leaves the target `TBD`.
 

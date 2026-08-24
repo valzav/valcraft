@@ -31,6 +31,11 @@ For instructions, prompts, safety rules, and error messages:
 - Name the actor when it is not clear.
 - Prefer direct commands and simple sentence structures.
 
+## Skill interaction design
+
+- Minimize operator questions. Resolve a value from existing configuration, repository state, or history when one authoritative source exists, and apply it without asking. Ask only when the choice is genuinely open or authoritative sources conflict.
+- Do not ask the operator to confirm answers they just gave. An interactive answer authorizes the write it configures; show the exact result in the report instead of a confirmation question.
+
 ## Commands
 
 There is no application build or dependency install. The shipped plugin is Markdown, JSON, and YAML; standard-library Python scripts validate repository contracts and generated metadata.

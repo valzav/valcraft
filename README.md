@@ -22,7 +22,7 @@ Valcraft treats spec-driven development as a repository data model, not a sessio
 
 ```text
 product idea:
-  -> cast: ensure local setup, then create the SDD project frame
+  -> cast: ensure configuration, then create the SDD project frame
     -> spec: create the first feature contract
 new feature or PRD:
   -> spec: create a feature contract or quick task
@@ -49,7 +49,7 @@ new feature or PRD:
 
 ### Artifacts and skill ownership
 
-- **Local configuration:** `.valcraft/config.yaml` is an ignored, user-local snapshot of tracker, approval, Foreman, Herdr worker, branch, and pull-request choices. `tune` is its sole writer and can reconfigure one section at any time. Collaborators may keep different settings in the same repository.
+- **Configuration:** the committed `.valcraft/config.yaml` is the repository's shared base — tracker, Foreman, branch, Herdr worker, and pull-request settings. The optional gitignored `.valcraft/config.local.yaml` overlay overrides the user-scoped keys (`foreman.approval_mode`, `foreman.backend`, `foreman.herdr`), so collaborators can keep personal approval and backend choices without touching the shared file. `tune` is the sole writer of both and can reconfigure one section at any time.
 - **Project frame:** `AGENTS.md` records standing development rules; `docs/product-brief.md` records product intent and boundaries. `cast` creates or retrofits them, and every delivery skill reads the applicable rules.
 - **Decision record:** `docs/architecture/adr/NNNN-*.md` captures consequential technical decisions and their consequences. `cast` establishes the ADR structure; `forge` and `review` treat accepted ADRs as the highest project authority.
 - **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX` decomposition and dependencies. `spec` creates or resumes the complete triplet from one accepted source, including `001-mvp`; `foreman`, `draft`, `forge`, `review`, and `land` deliver against it.
@@ -63,11 +63,11 @@ new feature or PRD:
 
 The default path for a new project or a new body of work.
 
-1. **`/valcraft:cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast ensures `/.valcraft/` is ignored and invokes `tune` when `.valcraft/config.yaml` is missing or invalid. Cast commits one approved clean baseline and hands the product brief to Spec; it creates no feature triplet or quick task.
+1. **`/valcraft:cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
 2. **`/valcraft:spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including `001-mvp`. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from `.valcraft/config.yaml`; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
+3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
 
-   Run `/valcraft:tune` at any time to reconfigure one section. Tune presents explained choices with the recommended simple option first, previews the complete YAML, and writes only after confirmation. Manual Forge remains available without changing the scaffold.
+   Run `/valcraft:tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
    `foreman` can use native subagents on either host. Claude Code wakes the parent turn when a worker completes; Codex keeps the parent turn active and waits for the worker in the foreground. External orchestrators integrate through registered Foreman backends.
 
@@ -91,7 +91,7 @@ Same contracts, you drive:
 
 | Skill                                                   | Claude Code         | Codex               | OpenCode  |
 | ------------------------------------------------------- | ------------------- | ------------------- | --------- |
-| `tune` — configure user-local Valcraft settings        | `/valcraft:tune`   | `$valcraft:tune`   | `tune`   |
+| `tune` — adjust the shared configuration or your local overlay | `/valcraft:tune` | `$valcraft:tune` | `tune` |
 | `cast` — create or retrofit the project frame           | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
 | `spec` — create a feature or quick contract             | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
 | `draft` — write a task plan and apply MSW               | `/valcraft:draft`   | `$valcraft:draft`   | `draft`   |
@@ -110,7 +110,7 @@ Skills also trigger from natural requests ("new project", "review this PR", "ret
 
 | Elsewhere                                                                                    | In valcraft                                                                                                                                                                                                                                                |
 | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin and no runtime dependency. `cast` writes the tracked project frame; `tune` writes one ignored local configuration file.                                                                                       |
+| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin and no runtime dependency. `cast` writes the tracked project frame; `tune` writes the committed configuration and an optional ignored overlay.                                                                                       |
 | Specs and tasks live in the framework's own folders and formats.                             | Specs are ordinary files under `specs/`, tasks are checkboxes or GitHub Issues you already use, decisions are ADRs — readable and editable without the tool.                                                                                               |
 | SDD is a session ritual, not a project rule; work done outside it drifts from the specs.     | `cast` writes the discipline into `AGENTS.md`, so every agent session — inside the loop or not — cites IDs, updates the affected spec or ADR in the same change, and reviews against the same contract; `cast` retrofits an existing project the same way. |
 | Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | Valcraft's roles are skills with contracts (`spec`, `draft`, `forge`, `review`, `land`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                                |

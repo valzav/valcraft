@@ -1,0 +1,2 @@
+# Stale blanket rule left from an older scaffold: it ignores the committed base file.
+/.valcraft/

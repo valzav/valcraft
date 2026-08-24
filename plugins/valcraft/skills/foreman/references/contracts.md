@@ -58,7 +58,6 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `scaffold_approval_required` | `AwaitOwner` |
 | `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `authority_drift`, `push_failed` | `StopProducer` |
 
 ### Draft

@@ -1,6 +1,6 @@
 # Backends
 
-A backend runs fresh workers; it never changes skill ownership. Read the selected backend from `foreman.backend` in `.valcraft/config.yaml`.
+A backend runs fresh workers; it never changes skill ownership. Read the selected backend from `foreman.backend` in the resolved configuration.
 
 ## Primitives and flags
 

@@ -1,8 +1,6 @@
 tracker:
   mode: github
   github_repository: github.example.test/example/records
-cast:
-  approval_mode: attended
 foreman:
   backend: subagents
   approval_mode: unattended

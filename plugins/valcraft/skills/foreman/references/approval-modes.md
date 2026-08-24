@@ -1,6 +1,6 @@
 # Approval modes
 
-The valid `foreman.approval_mode` in `.valcraft/config.yaml` controls coordinator gates. A mode never grants a worker outward-mutation authority by itself. Every push, PR, merge, or tracker-close execution still needs a trusted authorization bound to its exact target and operation set.
+The valid `foreman.approval_mode` in the resolved configuration controls coordinator gates. A mode never grants a worker outward-mutation authority by itself. Every push, PR, merge, or tracker-close execution still needs a trusted authorization bound to its exact target and operation set.
 
 ## Named-state gates
 

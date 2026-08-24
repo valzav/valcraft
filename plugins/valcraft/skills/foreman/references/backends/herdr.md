@@ -2,7 +2,7 @@
 
 Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches workers as fresh coding agents in one named project session. A Review worker with material findings may remain for its closure check under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the configured session constraint, and every configured harness.
 
-The controller runs inside the project's Herdr session, and that session is the one its own pane belongs to. Read `foreman.herdr.session` and the complete `foreman.herdr.workers` map from `.valcraft/config.yaml`. A non-null session is an assertion, not a pointer. When it is null, use whichever session contains the controller's pane. A controller started in a different session stops instead of retargeting another socket.
+The controller runs inside the project's Herdr session, and that session is the one its own pane belongs to. Read `foreman.herdr.session` and the complete `foreman.herdr.workers` map from the resolved configuration. A non-null session is an assertion, not a pointer. When it is null, use whichever session contains the controller's pane. A controller started in a different session stops instead of retargeting another socket.
 
 Workers share Foreman's checkout and canonical task branch. Isolation comes from a fresh worker per dispatch and serial execution, not from a worktree, so the shared-checkout rules in [`subagents.md`](subagents.md#shared-checkout) apply unchanged.
 

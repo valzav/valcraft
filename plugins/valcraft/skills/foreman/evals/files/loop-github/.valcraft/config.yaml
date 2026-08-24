@@ -1,8 +1,6 @@
 tracker:
   mode: github
   github_repository: github.com/example/loop-github
-cast:
-  approval_mode: attended
 foreman:
   backend: subagents
   approval_mode: unattended

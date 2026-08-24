@@ -1,15 +1,36 @@
 # Configuration contract
 
-`.valcraft/config.yaml` is a complete user-local snapshot. Every mapping is closed: reject unknown keys at every level. Reject duplicate YAML keys, non-string mapping keys, and values of the wrong YAML type. Strings required below must be nonempty after trimming. The file contains no schema version and has no defaults at read time.
+Valcraft configuration lives in two files under `.valcraft/`:
+
+- `.valcraft/config.yaml` — the committed base. It is tracked in git, shared by every collaborator, and standalone-valid: it holds the complete configuration and passes validation on its own.
+- `.valcraft/config.local.yaml` — the optional user-local overlay. It is gitignored, never committed, and may set only user-scoped keys.
+
+The **resolved configuration** is the base with each overlay key applied. Readers validate and use the resolved configuration. Tune is the sole writer of both files.
+
+Every mapping in either file is closed: reject unknown keys at every level. Reject duplicate YAML keys, non-string mapping keys, and values of the wrong YAML type. Strings required below must be nonempty after trimming. Neither file contains a schema version, and no value has a read-time default.
+
+## Scope split
+
+Repo-scoped settings live only in the base: the whole `tracker` section, `foreman.default_branch`, `foreman.release_branch`, `foreman.clarification_assignees`, and `pull_requests.merge_strategy`. A repo-scoped key in the overlay is a validation error.
+
+User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.backend`, and `foreman.herdr`.
+
+## Resolution
+
+Each overlay key replaces the corresponding base value atomically; nothing merges deeper.
+
+- An overlay `foreman.approval_mode` replaces the base value.
+- `foreman.backend` and `foreman.herdr` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping. An overlay backend other than `herdr` masks any base `herdr` mapping entirely. An overlay `herdr` without an overlay `backend` is valid only when the resolved backend is `herdr`, and it replaces the whole base `herdr` mapping.
+
+Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys; the resolved configuration against the shape below, including reviewer independence.
 
 ## Shape
+
+The base takes this shape and the root requires exactly `tracker`, `foreman`, and `pull_requests`:
 
 ```yaml
 tracker:
   mode: local
-
-cast:
-  approval_mode: attended
 
 foreman:
   backend: subagents
@@ -21,8 +42,6 @@ pull_requests:
   merge_strategy: squash
 ```
 
-The root requires exactly `tracker`, `cast`, `foreman`, and `pull_requests`.
-
 ### Tracker
 
 `tracker.mode` is `local` or `github`.
@@ -30,9 +49,7 @@ The root requires exactly `tracker`, `cast`, `foreman`, and `pull_requests`.
 - `local` permits only `mode`.
 - `github` requires `github_repository`: either one repository identifier accepted as free-form input and stored as a string, or the literal placeholder `TBD` recording that the operator has not selected the target yet. `TBD` is never an identifier: a skill that needs a concrete target treats it as pending activation and routes target selection back to Tune. Do not probe or mutate the host merely to validate configuration.
 
-### Cast
-
-`cast` requires only `approval_mode`, either `attended` or `unattended`.
+Changing `tracker.mode` when committed feature artifacts exist is blocked: every committed mapping would need migration, and Tune performs no migration.
 
 ### Foreman
 
@@ -45,7 +62,7 @@ The root requires exactly `tracker`, `cast`, `foreman`, and `pull_requests`.
 
 When `tracker.mode` is `github`, `foreman` also requires `clarification_assignees` with exactly `product` and `default`. Each value is an assignee identifier string or YAML `null`. Omit this mapping in local mode.
 
-When `foreman.backend` is `herdr`, `foreman` also requires `herdr`. Omit it for `subagents` and `ao`.
+When the resolved `foreman.backend` is `herdr`, the resolved configuration also requires `foreman.herdr`. Omit it for `subagents` and `ao`.
 
 `foreman.herdr` requires:
 
@@ -58,7 +75,7 @@ Each worker requires exactly `harness`, `model`, and `effort`.
 - Codex workers use `harness: codex`; known model aliases are `gpt-5.6-terra`, `gpt-5.6-sol`, and `gpt-5.6-luna`. Terra and Sol allow `low`, `medium`, `high`, `xhigh`, `max`, or `ultra`. Luna allows `low`, `medium`, `high`, `xhigh`, or `max`.
 - A nonempty, single-line model alias without control characters and whose first character is not `-` is valid as a free-form model value. Keep it as data and do not infer its provider or availability. For a free-form Codex model, allow `low`, `medium`, `high`, `xhigh`, `max`, or `ultra`; runtime readiness still verifies model availability. A free-form Claude model uses the Claude effort set.
 
-Reviewer independence is structural. Require different harnesses for each pair: `plan_review` and `draft`, `code_review` and `forge`, `retro_review` and `temper`, and `evidence_review` and `land`. Reject the complete candidate if any pair uses the same harness.
+Reviewer independence is structural. On the resolved configuration, require different harnesses for each pair: `plan_review` and `draft`, `code_review` and `forge`, `retro_review` and `temper`, and `evidence_review` and `land`. Reject the complete candidate if any pair uses the same harness.
 
 ### Pull requests
 
@@ -66,23 +83,20 @@ Reviewer independence is structural. Require different harnesses for each pair: 
 
 ## Question flow
 
-Ask only questions whose answers are not already supplied by the operator in the current interactive exchange. Still show and confirm the complete resulting YAML before writing.
+Ask only questions whose answers are genuinely open. Apply a value without asking when one authoritative source resolves it: an answer the operator already supplied in the current exchange, a valid existing value the operator did not ask to change, or unambiguous repository evidence. Ask when authoritative sources conflict or none exists.
 
 ### First run or full repair
 
-Ask in this order. Every quoted choice is a list item with its explanation, not an inferred default.
+Walk this order. Every quoted choice is a list item with its explanation, not an inferred default. Skip a step whose value is already resolved by an authoritative source.
 
-1. **Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
-2. **Cast approval:** `Attended (Recommended)` — confirm Cast's exact scaffold before it writes; `Unattended` — let Cast apply an already-defined scaffold without that gate.
-3. **Foreman backend:** `Subagents (Recommended)` — use workers provided by the active coding session; `AO` — dispatch through the external AO orchestrator; `Herdr` — dispatch roles through a Herdr session with configured models.
-4. **Foreman approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
-5. **Default branch:** inspect authoritative repository metadata first. Offer the detected branch as `(Recommended)` and explain its source. If no authoritative branch is available, offer `main (Recommended)` and `Enter another branch`. Store an explicit value in either case.
-6. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
-7. **Clarification assignees, GitHub only:** `No default assignees (Recommended)` — store both values as YAML `null`; `Configure assignees` — ask separately for optional product and default assignee identifiers, with `None (Recommended)` first for each.
-8. **Herdr, only when selected:** ask the session and worker questions below.
-9. **Pull-request merge strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
-
-Detect the default branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. If authoritative sources disagree, explain the conflict and ask the operator to select or enter the branch.
+1. **Tasks/Issue Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
+2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively.
+3. **Foreman Loop — approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
+4. **Default branch:** detect the branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. Store an unambiguous detected branch silently. Ask only when authoritative sources disagree — explain the conflict — or when none exists, offering `main (Recommended)` and `Enter another branch`. Store an explicit value in every case.
+5. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
+6. **Clarification assignees, GitHub only:** `No default assignees (Recommended)` — store both values as YAML `null`; `Configure assignees` — ask separately for optional product and default assignee identifiers, with `None (Recommended)` first for each.
+7. **Herdr, only when selected:** ask the session and worker questions below.
+8. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
 
 ### Herdr
 
@@ -112,24 +126,21 @@ For Custom, ask each role in the table order. Put the preset harness for that ro
 
 ## Reconfiguration
 
-For an existing valid file, the first question is a list of sections. When the caller or operator named a section, put that section first and mark it recommended; this focuses delegation without accepting answers from the caller. Otherwise use this order:
+For an existing valid resolved configuration, reconfigure only when the caller or operator asks for it. The first question is a list of sections. When the caller or operator named a section, put that section first and mark it recommended; this focuses delegation without accepting answers from the caller. Otherwise use this order:
 
-1. `Tracker (Recommended)` — change local or GitHub tracking and its dependent assignees.
-2. `Cast` — change Cast's approval mode.
-3. `Foreman` — change backend, approval mode, branches, and backend-dependent settings.
-4. `Herdr workers` — change session, preset, or role settings; show only when Herdr is the current backend.
-5. `Pull requests` — change merge strategy.
+1. `Tasks/Issue Tracker (Recommended)` — change local or GitHub tracking and its dependent assignees.
+2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers.
+3. `Herdr workers` — change session, preset, or role settings; show only when the resolved backend is Herdr.
+4. `Pull request strategy` — change the merge strategy.
 
-After one section, offer `Review and save (Recommended)` and `Change another section`. Always confirm the complete candidate, not only the changed fragment.
+Show each section with its current resolved value summary.
 
-Changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`. Changing to GitHub asks for both. Changing Foreman away from Herdr removes `foreman.herdr`; changing to Herdr asks the complete Herdr flow. Never retain an inapplicable block as dormant configuration.
+**Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
 
-## Confirmation and noninteractive use
+Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`; moving to Herdr asks the complete Herdr flow.
 
-Display the complete canonical YAML. Ask with this list:
+## Report and noninteractive use
 
-1. `Save configuration (Recommended)` — atomically replace the file.
-2. `Change another section` — return to the section menu or the relevant first-run question.
-3. `Cancel` — preserve the existing file or leave it absent.
+Write immediately after the last answer; an interactive answer authorizes the write it configures, so ask no confirmation question. In the report, show the complete canonical YAML of every written file, and the resolved configuration whenever an overlay exists. After a base write outside an active Cast invocation, stage and commit only `.valcraft/config.yaml` and report the commit.
 
-In a headless or noninteractive run, return `configuration_required` with the unresolved fields and make no write. Do not select recommended answers, convert an invalid partial document, or treat `foreman.approval_mode: unattended` as setup authority.
+In a headless or noninteractive run, return `configuration_required` with the unresolved fields and make no write. Do not select recommended answers, convert an invalid partial document, or treat `foreman.approval_mode: unattended` as authority to answer questions.

@@ -3,9 +3,9 @@
   "evals": [
     {
       "id": 1,
-      "name": "first-run-local-recommended-flow",
-      "prompt": "$valcraft:tune — initialize configuration in a git repository where `git check-ignore .valcraft/config.yaml` confirms the path is ignored. No config exists. I select each recommended option and confirm Save. The remote symbolic HEAD authoritatively identifies `trunk` as the default branch.",
-      "expected_output": "Tune asks every applicable first-run question as an explained list with the recommended choice first. It stores local tracking, attended Cast, subagents Foreman, unattended Foreman, explicit default branch trunk, null release branch, and squash merging. It asks no GitHub or Herdr-only questions. It displays the complete YAML, receives confirmation, writes through a validated same-directory temporary file, atomically replaces `.valcraft/config.yaml`, re-reads the destination, and reports done only after complete validation.",
+      "name": "first-run-writes-and-commits-base",
+      "prompt": "$valcraft:tune — initialize configuration in a git repository whose `.gitignore` carries `/.valcraft/*` and `!/.valcraft/config.yaml`. No configuration exists. I select each recommended option. The remote symbolic HEAD authoritatively identifies `trunk` as the default branch.",
+      "expected_output": "Tune asks only the genuinely open first-run questions as explained lists with the recommended choice first: Tasks/Issue Tracker, the Foreman Loop backend and approval, release branch, and pull request strategy. It stores the authoritatively detected default branch trunk without asking, asks no Cast, GitHub-only, or Herdr-only question, and offers only Subagents and Herdr as backends. It writes immediately after the last answer with no confirmation question: a validated same-directory temporary file atomically replaces `.valcraft/config.yaml`, the destination is re-read and revalidated, and Tune stages and commits only that path. The report shows the exact saved YAML and the commit before `Status: done`.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -13,18 +13,18 @@
       ],
       "assertions": [
         "Every bounded first-run question is a list whose first option is labeled Recommended and whose options have plain-language explanations",
-        "The saved snapshot contains tracker local, Cast attended, Foreman subagents and unattended, explicit default_branch trunk, null release_branch, and pull-request squash",
-        "GitHub-only and Herdr-only mappings and questions are omitted",
-        "The complete YAML is displayed and confirmed before any write",
-        "The file is validated before atomic replacement and re-read after replacement",
-        "The terminal line is Status: done only after destination validation"
+        "The saved base root is exactly tracker, foreman, and pull_requests, with tracker local, Foreman subagents and unattended, explicit default_branch trunk, null release_branch, and pull-request squash",
+        "The authoritatively detected default branch is stored without a question",
+        "The backend list offers only Subagents and Herdr",
+        "No confirmation question follows the last answer; the exact saved YAML appears in the report instead",
+        "Tune stages and commits only .valcraft/config.yaml and reports Status: done only after destination revalidation"
       ]
     },
     {
       "id": 2,
       "name": "github-section-reconfiguration-removes-conditionals",
-      "prompt": "$valcraft:tune — `.valcraft/config.yaml` is valid and ignored. It uses GitHub repository `github.example/acme/widget`, has product assignee `product-owner` and default assignee null, and otherwise uses the recommended non-Herdr values. Reconfigure it to local tracking, then save.",
-      "expected_output": "Tune begins with the section list rather than replaying first-run questions. After Tracker is selected and Local is chosen, it removes both `tracker.github_repository` and `foreman.clarification_assignees`. It offers review-and-save before another-section, displays the complete candidate, confirms it, atomically replaces only `.valcraft/config.yaml`, and reports done after revalidation.",
+      "prompt": "$valcraft:tune — the committed `.valcraft/config.yaml` is valid. It uses GitHub repository `github.example/acme/widget`, has product assignee `product-owner` and default assignee null, and otherwise uses the recommended non-Herdr values. No feature artifacts are committed yet. Reconfigure it to local tracking.",
+      "expected_output": "Tune begins with the section menu — Tasks/Issue Tracker, Foreman Loop with a one-sentence description of Foreman, Herdr workers only when Herdr is the resolved backend, and Pull request strategy — rather than replaying first-run questions. Tracker is repo-scoped, so no overlay layer question appears. After Local is chosen, Tune removes both `tracker.github_repository` and `foreman.clarification_assignees`, writes the base immediately after the last answer, commits only `.valcraft/config.yaml`, and reports the exact YAML with `Status: done`.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -32,18 +32,18 @@
         "evals/files/valid-config/.valcraft/config.yaml"
       ],
       "assertions": [
-        "A valid existing file starts with section selection",
+        "A valid existing configuration starts with the section menu using the titles Tasks/Issue Tracker, Foreman Loop, and Pull request strategy",
+        "A repo-scoped section never offers the config.local.yaml overlay",
         "Switching to local removes github_repository and the complete clarification_assignees mapping",
-        "No unrelated configuration value changes",
-        "Review and save is the first recommended post-section choice",
-        "Tune writes no AGENTS.md, ignore rule, tracker state, or Foreman runtime state"
+        "No unrelated configuration value changes and no confirmation question follows the last answer",
+        "Tune commits only .valcraft/config.yaml and writes no AGENTS.md, ignore rule, tracker state, or Foreman runtime state"
       ]
     },
     {
       "id": 3,
-      "name": "herdr-balanced-and-backend-removal",
-      "prompt": "$valcraft:tune — in an ignored config, change Foreman from subagents to Herdr. Choose active session and Balanced, confirm the result, then describe a later reconfiguration back to AO.",
-      "expected_output": "Tune stores a null Herdr session and all eight workers. Balanced maps Draft to Codex Terra medium, Plan Review to Claude Sonnet medium, Forge to Claude Sonnet medium, Code Review to Codex Terra medium, Land and Temper to Claude Sonnet medium, and Retro Review and Evidence Review to Codex Terra medium. Quality keeps that split with Claude Opus and Codex Sol at high effort; Economy keeps it with Claude Fable and Codex Luna at low effort. Every reviewer harness differs from its producer. A later change to AO removes the entire `foreman.herdr` mapping rather than retaining dormant values.",
+      "name": "herdr-balanced-overlay-layer-choice",
+      "prompt": "$valcraft:tune — change Foreman from subagents to Herdr just for me, without touching my collaborators' settings. Choose the active session and the Balanced preset. Then describe a later personal reconfiguration back to subagents.",
+      "expected_output": "Because backend and Herdr workers are user-scoped, Tune asks the layer question — `For everyone (Recommended)` writing the committed base, `Just for you` writing the gitignored overlay — and the request selects the overlay. It writes `foreman.backend: herdr` and the complete eight-worker `foreman.herdr` mapping into `.valcraft/config.local.yaml` as one unit, leaves the committed base byte-for-byte unchanged, creates no commit, and reports both the overlay YAML and the resolved configuration. Balanced maps Draft to Codex Terra medium, Plan Review to Claude Sonnet medium, Forge to Claude Sonnet medium, Code Review to Codex Terra medium, Land and Temper to Claude Sonnet medium, and Retro Review and Evidence Review to Codex Terra medium; every reviewer harness differs from its producer in the resolved configuration. A later personal change back to subagents removes the overlay's entire `foreman.herdr` mapping rather than retaining dormant values.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -51,18 +51,19 @@
         "evals/files/valid-config/.valcraft/config.yaml"
       ],
       "assertions": [
-        "The Herdr preset list puts Balanced first and explains Balanced, Quality, Economy, and Custom",
-        "Balanced serializes the exact eight-role Claude Sonnet and Codex Terra medium mapping, Quality uses Claude Opus and Codex Sol high, and Economy uses Claude Fable and Codex Luna low",
-        "plan_review differs from draft, code_review from forge, retro_review from temper, and evidence_review from land",
-        "Active session serializes as YAML null",
-        "Changing to AO removes the full Herdr mapping"
+        "A user-scoped-only change asks the layer question with For everyone recommended first",
+        "Choosing Just for you writes backend and the complete Herdr mapping into config.local.yaml as a unit and leaves the base byte-for-byte unchanged",
+        "An overlay write creates no commit",
+        "Balanced serializes the exact eight-role Claude Sonnet and Codex Terra medium mapping and every reviewer differs from its producer in the resolved configuration",
+        "The report shows the overlay YAML and the resolved configuration",
+        "Changing the personal backend away from Herdr removes the overlay's full Herdr mapping"
       ]
     },
     {
       "id": 4,
       "name": "custom-herdr-validation-and-free-form-model",
-      "prompt": "$valcraft:tune — configure Custom Herdr workers. First choose Claude for both Forge and Code Review. After validation rejects that pairing, change Code Review to Codex with free-form model alias `codex-lab-preview` and effort xhigh. Keep every other producer/reviewer pair independent and confirm Save.",
-      "expected_output": "Tune asks harness, model, and effort for every worker through explained lists, using free-form input only for the model alias. It rejects the first complete candidate because Code Review uses Forge's harness and does not silently repair or save it. It accepts the safe single-line model alias as data after Code Review changes to Codex, validates xhigh for Codex and all independence pairs, then displays and saves the complete valid candidate.",
+      "prompt": "$valcraft:tune — configure Custom Herdr workers for everyone. First choose Claude for both Forge and Code Review. After validation rejects that pairing, change Code Review to Codex with free-form model alias `codex-lab-preview` and effort xhigh. Keep every other producer/reviewer pair independent.",
+      "expected_output": "Tune asks harness, model, and effort for every worker through explained lists, using free-form input only for the model alias. It rejects the first complete candidate because Code Review uses Forge's harness and does not silently repair or save it. It accepts the safe single-line model alias as data after Code Review changes to Codex, validates xhigh for Codex and all independence pairs on the resolved configuration, then writes the valid candidate immediately and shows its exact YAML in the report.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -74,13 +75,13 @@
         "A same-harness producer and reviewer pair is rejected before writing",
         "Tune does not silently switch a harness or model to repair independence",
         "The safe free-form model alias is preserved as data and never interpolated into shell text",
-        "Codex xhigh is accepted and the complete repaired candidate is validated before save"
+        "Codex xhigh is accepted and the complete repaired candidate is validated before the immediate write"
       ]
     },
     {
       "id": 5,
       "name": "invalid-and-headless-configuration-never-guesses",
-      "prompt": "$valcraft:tune — compare two headless runs on ignored files. Run A has malformed YAML. Run B parses but contains unknown key `foreman.retries`, omits `pull_requests`, and sets backend to `herdr` without workers. Repair anything you can automatically.",
+      "prompt": "$valcraft:tune — compare two headless runs on committed base files. Run A has malformed YAML. Run B parses but contains unknown key `foreman.retries`, omits `pull_requests`, and sets backend to `herdr` without workers. Repair anything you can automatically.",
       "expected_output": "Tune rejects each document as a complete configuration. It reports Run A's parse failure. For Run B it does not preserve the unknown key, infer missing values, choose recommended answers, or write a partial repair. Because both runs are headless, it lists the unresolved configuration needs, leaves each original byte sequence unchanged, and ends with configuration_required rather than done.",
       "files": [
         "SKILL.md",
@@ -88,7 +89,7 @@
       ],
       "assertions": [
         "Malformed YAML fails parsing; unknown keys, a missing required root section, and incomplete conditional Herdr configuration each fail validation",
-        "An invalid existing document triggers complete repair rather than the section menu",
+        "An invalid existing base triggers complete repair rather than the section menu",
         "Headless execution selects no defaults and makes no write",
         "The original file remains byte-for-byte unchanged",
         "The terminal status is question: configuration_required and never Status: done"
@@ -96,40 +97,45 @@
     },
     {
       "id": 6,
-      "name": "missing-ignore-and-cancel-preserve-state",
-      "prompt": "$valcraft:tune — compare two runs. In run A, `.valcraft/config.yaml` is neither tracked nor ignored and Tune was invoked directly outside Cast. In run B, the path is ignored and the existing config is valid, but I cancel at final confirmation after changing merge strategy.",
-      "expected_output": "Run A writes nothing, does not edit `.gitignore`, and returns project_frame_required so Cast can establish the project frame. Run B preserves the existing file byte-for-byte, removes any temporary file, and returns configuration_cancelled. Neither run reports done or changes another path.",
+      "name": "stale-ignore-and-cancel-preserve-state",
+      "prompt": "$valcraft:tune — compare two runs. In run A, `.gitignore` still carries a blanket `/.valcraft/` rule from an older scaffold, so git ignores `.valcraft/config.yaml`. In run B, the committed configuration is valid, but I cancel mid-questionnaire after changing merge strategy.",
+      "expected_output": "Run A writes nothing, does not edit `.gitignore`, and returns project_frame_required so Cast can replace the stale rule with the `/.valcraft/*` and `!/.valcraft/config.yaml` pair. Run B preserves the existing file byte-for-byte, removes any temporary file, creates no commit, and returns configuration_cancelled. Neither run reports done or changes another path.",
       "files": [
         "SKILL.md",
         "references/config.md",
-        "evals/files/unignored/.gitignore",
+        "evals/files/stale-ignore/.gitignore",
         "evals/files/valid-config/.gitignore",
         "evals/files/valid-config/.valcraft/config.yaml"
       ],
       "assertions": [
-        "A direct run on a non-ignored configuration path returns project_frame_required before asking or writing",
+        "A base ignored by a stale blanket rule returns project_frame_required before asking or writing",
         "Tune never edits .gitignore or claims Cast's scaffold ownership",
-        "Cancel preserves a valid existing file byte-for-byte",
+        "Cancel preserves a valid existing file byte-for-byte and creates no commit",
         "No same-directory temporary file remains after cancellation or failure",
         "Neither path ends Status: done"
       ]
     },
     {
       "id": 7,
-      "name": "cast-defers-save-until-ignore-is-active",
-      "prompt": "$valcraft:tune — Cast invoked Tune in a fresh repository where `.valcraft/config.yaml` is untracked but not ignored. I confirm the complete recommended candidate. Compare the first Tune return with Cast's re-entry after its approved baseline commits the exact `/.valcraft/` root ignore rule.",
-      "expected_output": "On the first pass Tune confirms the exact complete YAML, writes no file or temporary file, and returns ignore_rule_required because Git does not yet ignore the destination. Cast may use that return only to establish its already approved tracked frame. On re-entry with the unchanged confirmed candidate, Tune verifies the committed ignore rule with Git semantics, verifies the destination is untracked, writes through a validated same-directory temporary file, atomically replaces the destination, re-reads and revalidates it, and only then reports done.",
+      "name": "overlay-whitelist-and-precedence",
+      "prompt": "$valcraft:tune — compare two repositories. In repo A, `.valcraft/config.local.yaml` sets `foreman.approval_mode: attended` and `pull_requests.merge_strategy: rebase` over a valid committed base. In repo B, the overlay sets only `foreman.approval_mode: attended` over the same base, whose approval mode is unattended. State each repo's resolved configuration.",
+      "expected_output": "Repo A's overlay is invalid: `pull_requests` is repo-scoped, so its presence in the overlay is a validation error, and Tune reports the invalid configuration for repair without writing or silently dropping the key. Repo B's overlay is valid: the resolved configuration takes `foreman.approval_mode: attended` from the overlay and every other value from the base, each whitelisted key replacing its base value atomically. The overlay stays untracked and ignored, and the base remains standalone-valid.",
       "files": [
         "SKILL.md",
         "references/config.md",
-        "evals/files/unignored/.gitignore"
+        "evals/files/overlay-invalid/.gitignore",
+        "evals/files/overlay-invalid/.valcraft/config.yaml",
+        "evals/files/overlay-invalid/.valcraft/config.local.yaml",
+        "evals/files/overlay/.gitignore",
+        "evals/files/overlay/.valcraft/config.yaml",
+        "evals/files/overlay/.valcraft/config.local.yaml"
       ],
       "assertions": [
-        "The first pass asks and confirms the complete candidate but writes nothing while Git does not ignore the path",
-        "The first terminal status is question: ignore_rule_required",
-        "Cast may act on that status only to establish the approved tracked frame and must return control to Tune",
-        "The second pass accepts only the unchanged operator-confirmed candidate after Git ignore semantics succeed",
-        "Status: done requires the saved destination to be untracked, ignored, re-read, and completely valid"
+        "A repo-scoped key in the overlay is a validation error, not a silently ignored value",
+        "The overlay permits only foreman.approval_mode, foreman.backend, and foreman.herdr",
+        "A valid overlay key replaces its base value atomically in the resolved configuration",
+        "Base values without an overlay override survive unchanged in the resolved configuration",
+        "The invalid overlay triggers repair and no write"
       ]
     },
     {
