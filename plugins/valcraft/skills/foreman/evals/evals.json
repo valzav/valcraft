@@ -594,7 +594,7 @@
       "id": 54,
       "name": "missing-default-branch-delegates-detection-to-tune",
       "prompt": "$valcraft:foreman — `.valcraft/config.yaml` is invalid because `foreman.default_branch` is absent. Compare four attended Tune repairs: (A) the live origin HEAD symref and hosting service both name trunk; (B) the live symref is unavailable and the host reports develop; (C) both are unavailable; (D) the live symref names trunk while the host reports develop. Stop before saving or spawning workers.",
-      "expected_output": "Foreman invokes Tune for the Foreman section and performs no branch derivation itself. Tune treats the invalid document as a complete repair. For A it offers trunk first as the recommended branch and explains both agreeing sources. For B it offers develop first from the authoritative host source. For C it offers main as the documented recommended simple option plus entry of another branch; it does not infer from cached origin/HEAD or the current checkout. For D it explains the conflict and asks the operator to select or enter a branch. Nothing is saved without complete YAML preview and confirmation, and Foreman creates no run or worker before Tune returns Status: done.",
+      "expected_output": "Foreman invokes Tune for the Foreman section and performs no branch derivation itself. Tune treats the invalid document as a complete repair. For A the agreeing symref and host resolve trunk, an unambiguous authoritative branch that is stored silently without a question. For B the sole authoritative host source resolves develop, also stored silently. For C no authoritative source exists, so Tune asks, offering main as the documented recommended simple option plus entry of another branch; it does not infer from cached origin/HEAD or the current checkout. For D the authoritative sources disagree, so Tune explains the conflict and asks the operator to select or enter a branch. Tune writes immediately after the last open answer with no confirmation question and shows the exact YAML in its report, and Foreman creates no run or worker before Tune returns Status: done.",
       "files": [
         "SKILL.md",
         "references/configuration.md",
@@ -602,10 +602,10 @@
       ],
       "assertions": [
         "Foreman delegates the missing branch to Tune and performs no independent resolution",
-        "Tune recommends an agreeing remote and host branch or the sole authoritative host branch",
-        "When authoritative metadata is unavailable, Tune offers main as its documented recommended option rather than deriving it from cached or checkout state",
+        "An unambiguous authoritative branch — agreeing sources, or a sole authoritative host source — is stored silently without a question",
+        "When authoritative metadata is unavailable, Tune asks and offers main as its documented recommended option rather than deriving it from cached or checkout state",
         "Disagreeing authoritative sources are explained and require an operator selection",
-        "No configuration is saved and no Foreman run starts without complete preview and confirmation"
+        "Tune asks no confirmation question after the last answer, and no Foreman run starts before Status: done"
       ]
     },
     {

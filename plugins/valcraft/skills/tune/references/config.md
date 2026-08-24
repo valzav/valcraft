@@ -13,14 +13,14 @@ Every mapping in either file is closed: reject unknown keys at every level. Reje
 
 Repo-scoped settings live only in the base: the whole `tracker` section, `foreman.default_branch`, `foreman.release_branch`, `foreman.clarification_assignees`, and `pull_requests.merge_strategy`. A repo-scoped key in the overlay is a validation error.
 
-User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.backend`, and `foreman.herdr`.
+User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`.
 
 ## Resolution
 
 Each overlay key replaces the corresponding base value atomically; nothing merges deeper.
 
 - An overlay `foreman.approval_mode` replaces the base value.
-- `foreman.backend` and `foreman.herdr` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping. An overlay backend other than `herdr` masks any base `herdr` mapping entirely. An overlay `herdr` without an overlay `backend` is valid only when the resolved backend is `herdr`, and it replaces the whole base `herdr` mapping.
+- `foreman.backend` and the backend-specific mappings `foreman.herdr` and `foreman.ao` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping, and an overlay backend of `ao` requires a complete overlay `ao` mapping; an overlay `backend` masks every base backend-specific mapping. An overlay `herdr` or `ao` mapping without an overlay `backend` is valid only when the resolved backend matches it, and it replaces the whole base mapping.
 
 Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys; the resolved configuration against the shape below, including reviewer independence.
 
@@ -64,6 +64,8 @@ When `tracker.mode` is `github`, `foreman` also requires `clarification_assignee
 
 When the resolved `foreman.backend` is `herdr`, the resolved configuration also requires `foreman.herdr`. Omit it for `subagents` and `ao`.
 
+When the resolved `foreman.backend` is `ao`, the resolved configuration also requires `foreman.ao` with exactly `project_id`: the exact Agent Orchestrator project identifier stored as a nonempty string, passed only as an argument value. Omit `foreman.ao` for `subagents` and `herdr`.
+
 `foreman.herdr` requires:
 
 - `session`: a Herdr session identifier string or YAML `null` to use the active controller session; and
@@ -90,7 +92,7 @@ Ask only questions whose answers are genuinely open. Apply a value without askin
 Walk this order. Every quoted choice is a list item with its explanation, not an inferred default. Skip a step whose value is already resolved by an authoritative source.
 
 1. **Tasks/Issue Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
-2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively.
+2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively; when the operator explicitly configures `ao`, ask for `foreman.ao.project_id` as free-form input.
 3. **Foreman Loop — approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
 4. **Default branch:** detect the branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. Store an unambiguous detected branch silently. Ask only when authoritative sources disagree — explain the conflict — or when none exists, offering `main (Recommended)` and `Enter another branch`. Store an explicit value in every case.
 5. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.

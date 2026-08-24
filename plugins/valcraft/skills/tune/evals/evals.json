@@ -97,9 +97,9 @@
     },
     {
       "id": 6,
-      "name": "stale-ignore-and-cancel-preserve-state",
-      "prompt": "$valcraft:tune — compare two runs. In run A, `.gitignore` still carries a blanket `/.valcraft/` rule from an older scaffold, so git ignores `.valcraft/config.yaml`. In run B, the committed configuration is valid, but I cancel mid-questionnaire after changing merge strategy.",
-      "expected_output": "Run A writes nothing, does not edit `.gitignore`, and returns project_frame_required so Cast can replace the stale rule with the `/.valcraft/*` and `!/.valcraft/config.yaml` pair. Run B preserves the existing file byte-for-byte, removes any temporary file, creates no commit, and returns configuration_cancelled. Neither run reports done or changes another path.",
+      "name": "stale-ignore-cancel-and-failed-write-preserve-state",
+      "prompt": "$valcraft:tune — compare three runs. In run A, `.gitignore` still carries a blanket `/.valcraft/` rule from an older scaffold, so git ignores `.valcraft/config.yaml`. In run B, the committed configuration is valid, but I cancel mid-questionnaire after changing merge strategy. In run C, a reconfiguration writes both the base and the overlay, and the overlay replacement fails after the base was already replaced.",
+      "expected_output": "Run A writes nothing, does not edit `.gitignore`, and returns project_frame_required; a direct invocation routes the operator to Cast, and in an active Cast invocation Cast repairs the stale rule to the `/.valcraft/*` and `!/.valcraft/config.yaml` pair and re-enters Tune. Run B preserves the existing file byte-for-byte, removes any temporary file, creates no commit, and returns configuration_cancelled. Run C validates both temporary files before replacing anything, and when the second replacement fails it restores the already-replaced base to its pre-run bytes, removes both temporary files, and returns configuration_write_failed. No run reports done or changes another path.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -109,17 +109,18 @@
       ],
       "assertions": [
         "A base ignored by a stale blanket rule returns project_frame_required before asking or writing",
-        "Tune never edits .gitignore or claims Cast's scaffold ownership",
+        "Tune never edits .gitignore or claims Cast's scaffold ownership; the Cast-owned repair route is named for the stale rule",
         "Cancel preserves a valid existing file byte-for-byte and creates no commit",
-        "No same-directory temporary file remains after cancellation or failure",
-        "Neither path ends Status: done"
+        "Both temporary files are validated before either destination is replaced",
+        "A failure between two replacements restores every already-replaced destination byte-for-byte and returns configuration_write_failed",
+        "No same-directory temporary file remains after cancellation or failure, and no path ends Status: done"
       ]
     },
     {
       "id": 7,
       "name": "overlay-whitelist-and-precedence",
-      "prompt": "$valcraft:tune — compare two repositories. In repo A, `.valcraft/config.local.yaml` sets `foreman.approval_mode: attended` and `pull_requests.merge_strategy: rebase` over a valid committed base. In repo B, the overlay sets only `foreman.approval_mode: attended` over the same base, whose approval mode is unattended. State each repo's resolved configuration.",
-      "expected_output": "Repo A's overlay is invalid: `pull_requests` is repo-scoped, so its presence in the overlay is a validation error, and Tune reports the invalid configuration for repair without writing or silently dropping the key. Repo B's overlay is valid: the resolved configuration takes `foreman.approval_mode: attended` from the overlay and every other value from the base, each whitelisted key replacing its base value atomically. The overlay stays untracked and ignored, and the base remains standalone-valid.",
+      "prompt": "$valcraft:tune — compare two repositories. In repo A, `.valcraft/config.local.yaml` sets `foreman.approval_mode: attended` and `pull_requests.merge_strategy: rebase` over a valid committed base; when offered repair, I choose to remove the overlay. In repo B, the overlay sets only `foreman.approval_mode: attended` over the same base, whose approval mode is unattended. State each repo's resolved configuration and terminal status.",
+      "expected_output": "Repo A's overlay is invalid: `pull_requests` is repo-scoped, so its presence in the overlay is a validation error. With a valid base, Tune runs overlay repair — replace the overlay or remove it — without writing around or silently dropping the key; after the operator chooses removal it deletes the overlay, revalidates the resolved configuration as the base alone, and reports `Status: done`. A headless run on repo A would instead return configuration_required and write nothing. Repo B's overlay is valid: the resolved configuration takes `foreman.approval_mode: attended` from the overlay and every other value from the base, each whitelisted key replacing its base value atomically. The overlay stays untracked and ignored, and the base remains standalone-valid.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -132,10 +133,10 @@
       ],
       "assertions": [
         "A repo-scoped key in the overlay is a validation error, not a silently ignored value",
-        "The overlay permits only foreman.approval_mode, foreman.backend, and foreman.herdr",
-        "A valid overlay key replaces its base value atomically in the resolved configuration",
-        "Base values without an overlay override survive unchanged in the resolved configuration",
-        "The invalid overlay triggers repair and no write"
+        "The overlay permits only foreman.approval_mode, foreman.backend, foreman.herdr, and foreman.ao",
+        "A valid base with an invalid overlay triggers overlay repair — replace or remove — and removal ends Status: done with the base as the resolved configuration",
+        "A headless run on the invalid overlay returns configuration_required and writes nothing",
+        "A valid overlay key replaces its base value atomically and base values without an override survive unchanged"
       ]
     },
     {

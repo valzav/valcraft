@@ -63,7 +63,7 @@ Create `docs/status.md` only from `templates/status.md`. Render its conditional 
 
 ## Commit the clean baseline
 
-Before applying the recorded frame, require attributable worktree state and available commit identity. For a fresh directory, initialize a repository only when repository creation is part of the recorded frame. For a retrofit, require the existing worktree to be clean apart from Tune's written base file and preserve its current branch and history.
+Before applying the recorded frame, require attributable worktree state and available commit identity. For a fresh directory, initialize a repository only when repository creation is part of the recorded frame. For a retrofit, require the existing worktree to be clean apart from Tune's written base file and Cast's own ignore-rule repair, and preserve its current branch and history.
 
 Prepare generated content outside the target paths. Apply the exact delta, stage only recorded paths, inspect the staged diff, and create one baseline commit. Resolve its full SHA and require no staged, unstaged, or untracked file. Empty directories and ignored runtime state do not count as a handoff artifact.
 
@@ -79,6 +79,8 @@ Derive facts from the repository before asking questions. Merge frame content in
 - add only missing `.gitignore` entries, including the pair `/.valcraft/*` and `!/.valcraft/config.yaml`, and replace an existing blanket `/.valcraft/` rule with that pair; and
 - record as-built architecture from repository evidence and accepted decisions.
 
+When the stale blanket rule blocks Tune with `project_frame_required`, apply the `.gitignore` repair immediately, record it in the proposal, and re-enter Tune; the repair is part of the frame delta and its baseline commit.
+
 Before proposing a frame mutation, validate every existing numeric feature and quick file through Spec's contracts. Do not create missing feature artifacts, repair metadata, complete a staged feature, allocate another feature, or project tracker state. Preserve valid feature artifacts byte-for-byte. Report an invalid artifact with its exact path and violated Spec clause before any frame write.
 
 Offer optional `valcraft:hone` for pre-existing agent instructions and `valcraft:msw` for imported planning documents only after the clean baseline.
@@ -89,7 +91,7 @@ Stop before mutation when:
 
 - the resolved configuration is missing or invalid after Tune returns;
 - existing feature or quick artifacts fail a Spec-owned identity, stage, metadata, provenance, or dependency rule;
-- the worktree contains unattributed changes beyond Tune's written base file;
+- the worktree contains unattributed changes beyond Tune's written base file and Cast's own ignore-rule repair;
 - the exact frame delta and baseline commit are not executable together;
 - replacing a distinct instruction file lacks explicit removal approval;
 - GitHub target identity is ambiguous or activation remains unapproved;

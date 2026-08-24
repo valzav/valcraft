@@ -335,6 +335,25 @@
         "Remote-head drift causes no push and returns a new prepared handoff for fresh authority",
         "The report ends with Status: blocked: authority_drift"
       ]
+    },
+    {
+      "id": 20,
+      "name": "retrofit-stale-ignore-repairs-pair-before-tune-completes",
+      "prompt": "/valcraft:cast — retrofit an existing project whose `.gitignore` still carries the legacy blanket `/.valcraft/` rule, as in evals/files/stale-ignore/.gitignore, and which has no `.valcraft/config.yaml`. Walk the configuration and repair flow through the baseline commit; use recommended answers for the open questions.",
+      "expected_output": "Cast invokes Tune, which finds the base path ignored by the stale blanket rule and returns project_frame_required without asking or writing. Cast owns `.gitignore`: it repairs the rule to the exact pair `/.valcraft/*` and `!/.valcraft/config.yaml` as a Cast-owned frame write, records the repair in the proposal, and re-enters Tune. Tune's predicates now pass, so it runs the first-run flow, writes the base `.valcraft/config.yaml`, and returns done. Cast completes the retrofit and commits one baseline that includes the repaired `.gitignore` and `.valcraft/config.yaml`. Neither skill loops on the other or waits indefinitely.",
+      "files": [
+        "SKILL.md",
+        "references/scaffold.md",
+        "evals/files/stale-ignore/.gitignore",
+        "../tune/SKILL.md"
+      ],
+      "assertions": [
+        "Tune returns project_frame_required for the stale blanket rule without asking or writing",
+        "Cast repairs .gitignore to the exact /.valcraft/* and !/.valcraft/config.yaml pair as its own recorded frame write and re-enters Tune",
+        "Tune never edits .gitignore itself",
+        "The re-entered Tune completes the first-run flow and writes the base file before Cast reads tracker mode",
+        "The single baseline commit includes both the repaired .gitignore and .valcraft/config.yaml"
+      ]
     }
   ]
 }

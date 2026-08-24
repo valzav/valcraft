@@ -1,6 +1,6 @@
 # Backend: `ao`
 
-Foreman runs in an Agent Orchestrator project. Every worker receives an isolated worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and an exact project id.
+Foreman runs in an Agent Orchestrator project. Every worker receives an isolated worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and the exact project id from `foreman.ao.project_id` in the resolved configuration.
 
 ## Flags
 
