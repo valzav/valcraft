@@ -20,7 +20,7 @@ Resolve one target:
 - `not planned` task closure; or
 - external completion for one open feature or quick task.
 
-Read the repository's root `AGENTS.md` for project instructions. Read `../setup/references/config.md` completely, then validate `.valcraft/config.yaml` as one complete snapshot. Read the target's committed contract, the exact Review report or evidence record, and only the live sources needed to verify current state. If the configuration is missing or invalid, invoke `valcraft:setup` for the affected section and resume only after `Status: done`. Read [final-head-and-checks.md](references/final-head-and-checks.md) for every PR. Read [tracker-closure.md](references/tracker-closure.md) for every tracker mutation. Read [record-and-close.md](references/record-and-close.md) for external completion.
+Read the repository's root `AGENTS.md` for project instructions. Read `../tune/references/config.md` completely, then validate `.valcraft/config.yaml` as one complete snapshot. Read the target's committed contract, the exact Review report or evidence record, and only the live sources needed to verify current state. If the configuration is missing or invalid, invoke `valcraft:tune` for the affected section and resume only after `Status: done`. Read [final-head-and-checks.md](references/final-head-and-checks.md) for every PR. Read [tracker-closure.md](references/tracker-closure.md) for every tracker mutation. Read [record-and-close.md](references/record-and-close.md) for external completion.
 
 An orchestration envelope may name the target and attribute authority. Direct invocation uses the same workflow and report, but has no implicit authority to push, create or update a PR, merge, or mutate tracker state.
 
@@ -30,7 +30,7 @@ Accept mutation authority only from the live operator-message channel or an attr
 
 Bind every authorization to the repository and remote, base and head when applicable, PR or tracker target, configured merge strategy when applicable, and exact operation set. Prepare unknown values before seeking authority. Immediately before each mutation, re-read those fields from authoritative sources. On drift, do nothing and return a replacement handoff with `Status: blocked: authority_drift — <detail>`.
 
-Never broaden, infer, transfer, or retain authority for changed fields. Release-branch work requires authority that names the configured release branch. `foreman.release_branch: null` means no separate release branch. An omitted key invalidates the snapshot and delegates repair to Setup.
+Never broaden, infer, transfer, or retain authority for changed fields. Release-branch work requires authority that names the configured release branch. `foreman.release_branch: null` means no separate release branch. An omitted key invalidates the snapshot and delegates repair to Tune.
 
 ## Workflow
 

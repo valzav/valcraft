@@ -10,7 +10,7 @@ Coordinate delivery. Never perform a worker skill's work.
 
 ## Resolve the run
 
-Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from `.valcraft/config.yaml` with [`references/configuration.md`](references/configuration.md). If the configuration is missing or invalid, invoke `valcraft:setup` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
+Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from `.valcraft/config.yaml` with [`references/configuration.md`](references/configuration.md). If the configuration is missing or invalid, invoke `valcraft:tune` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
 
 Load these contracts before dispatch:
 

@@ -1,10 +1,10 @@
 # Scaffold and retrofit rules
 
-This reference owns project fact gathering, approval, project-frame paths, the clean baseline commit, opt-in artifacts, and retrofit behavior. Setup owns configuration and tracker-mode resolution. Resolve template paths from the Cast skill directory.
+This reference owns project fact gathering, approval, project-frame paths, the clean baseline commit, opt-in artifacts, and retrofit behavior. Tune owns configuration and tracker-mode resolution. Resolve template paths from the Cast skill directory.
 
 ## Gather project facts
 
-Ask only what changes the frame. Accept `TBD` for the rest. Setup has already resolved configuration; do not repeat its questions.
+Ask only what changes the frame. Accept `TBD` for the rest. Tune has already resolved configuration; do not repeat its questions.
 
 1. Project name and one-sentence description.
 2. Primary user and problem.
@@ -14,11 +14,11 @@ Ask only what changes the frame. Accept `TBD` for the rest. Setup has already re
 6. Domain vocabulary that justifies `docs/glossary.md`.
 7. External mutable state that justifies `docs/status.md`.
 
-Read tracker mode from `.valcraft/config.yaml` only after Setup returns `Status: done`. Once local mode is configured, do not inspect remotes, `gh`, authentication, or GitHub readiness. Those facts cannot change the configured mode.
+Read tracker mode from `.valcraft/config.yaml` only after Tune returns `Status: done`. Once local mode is configured, do not inspect remotes, `gh`, authentication, or GitHub readiness. Those facts cannot change the configured mode.
 
 ## Approval mode
 
-Read `cast.approval_mode` from a valid saved `.valcraft/config.yaml`. A fresh scaffold always waits for live operator approval. For a retrofit, `attended` waits for the exact proposal; `unattended` records it and proceeds. When Setup has confirmed a candidate but is waiting for the ignore rule, use live attended approval because no saved approval mode is valid yet. All cases stop when a proposal would change product intent, invent a requirement, remove distinct instructions, activate a `TBD` GitHub target, or hit a stop condition.
+Read `cast.approval_mode` from a valid saved `.valcraft/config.yaml`. A fresh scaffold always waits for live operator approval. For a retrofit, `attended` waits for the exact proposal; `unattended` records it and proceeds. When Tune has confirmed a candidate but is waiting for the ignore rule, use live attended approval because no saved approval mode is valid yet. All cases stop when a proposal would change product intent, invent a requirement, remove distinct instructions, activate a `TBD` GitHub target, or hit a stop condition.
 
 The proposal binds the exact frame paths and one baseline commit. Approval of only file writes without the baseline commit is incomplete. Write nothing until the run can produce the approved delta and clean commit together.
 
@@ -46,7 +46,7 @@ Populate the named files from their Cast templates. Create `CLAUDE.md` with `ln 
 
 Create no numeric directory under `specs/`. Create no `spec.md`, `design.md`, `tasks.md`, or quick-task file. Spec owns those artifacts. The `.gitkeep` carries no contract and does not affect feature allocation.
 
-Do not write Valcraft configuration into generated `AGENTS.md`. Setup owns `.valcraft/config.yaml`. Do not create feature mappings; no feature exists yet.
+Do not write Valcraft configuration into generated `AGENTS.md`. Tune owns `.valcraft/config.yaml`. Do not create feature mappings; no feature exists yet.
 
 Add an optional artifact only when its trigger is real:
 
@@ -86,7 +86,7 @@ Offer optional `valcraft:hone` for pre-existing agent instructions and `valcraft
 
 Stop before mutation when:
 
-- `.valcraft/config.yaml` is missing or invalid after Setup returns;
+- `.valcraft/config.yaml` is missing or invalid after Tune returns;
 - existing feature or quick artifacts fail a Spec-owned identity, stage, metadata, provenance, or dependency rule;
 - the worktree contains unattributed changes;
 - the exact frame delta and baseline commit are not both approved or executable;

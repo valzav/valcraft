@@ -5,17 +5,17 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:cast — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Cast invokes Setup before gathering scaffold facts. Setup runs the complete guided flow because no configuration exists, presents every bounded choice as an explained list with the recommended option first, and confirms the complete candidate. Because the root ignore rule is not active, Setup writes nothing and returns ignore_rule_required with the exact confirmed YAML. Cast does not use candidate settings as saved configuration. It gathers scaffold facts, presents the exact project-frame scaffold with `/.valcraft/` in `.gitignore` and its baseline commit as one attended mutation, and waits for approval. After approval it creates and commits README.md, configuration-free AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. Cast then returns the unchanged confirmed candidate to Setup. Setup verifies Git now ignores and does not track the path, saves atomically, re-reads the snapshot, and returns done. The user-local configuration is not staged. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
+      "expected_output": "Cast invokes Tune before gathering scaffold facts. Tune runs the complete guided flow because no configuration exists, presents every bounded choice as an explained list with the recommended option first, and confirms the complete candidate. Because the root ignore rule is not active, Tune writes nothing and returns ignore_rule_required with the exact confirmed YAML. Cast does not use candidate settings as saved configuration. It gathers scaffold facts, presents the exact project-frame scaffold with `/.valcraft/` in `.gitignore` and its baseline commit as one attended mutation, and waits for approval. After approval it creates and commits README.md, configuration-free AGENTS.md, a relative CLAUDE.md symlink, .gitignore, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. Cast then returns the unchanged confirmed candidate to Tune. Tune verifies Git now ignores and does not track the path, saves atomically, re-reads the snapshot, and returns done. The user-local configuration is not staged. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval",
         "Cast creates the approved project frame and a durable specs/ root but no numeric feature directory, feature triplet, or quick file",
         "CLAUDE.md is a relative symlink to AGENTS.md",
-        "Cast invokes Setup first; Setup asks all applicable configuration questions with recommended explained choices and saves the confirmed complete snapshot to `.valcraft/config.yaml`",
-        "Cast does not repeat tracker, approval, backend, branch, Herdr, or merge-strategy questions after Setup returns Status: done",
+        "Cast invokes Tune first; Tune asks all applicable configuration questions with recommended explained choices and saves the confirmed complete snapshot to `.valcraft/config.yaml`",
+        "Cast does not repeat tracker, approval, backend, branch, Herdr, or merge-strategy questions after Tune returns Status: done",
         "AGENTS.md contains no Valcraft configuration declaration and the tracked `.gitignore` contains `/.valcraft/`",
-        "The generated tracker authority table names `.valcraft/config.yaml` and delegates missing or invalid configuration to Setup",
-        "Setup writes nothing before the committed baseline activates the exact `/.valcraft/` ignore rule",
+        "The generated tracker authority table names `.valcraft/config.yaml` and delegates missing or invalid configuration to Tune",
+        "Tune writes nothing before the committed baseline activates the exact `/.valcraft/` ignore rule",
         "Unknown product facts are recorded as assumptions or TBDs rather than invented requirements",
         "The local path does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
         "Cast stages only the approved scaffold delta, commits it once, and verifies an exact clean baseline head",
@@ -52,8 +52,8 @@
     {
       "id": 3,
       "name": "fresh-project-pending-github-without-remote",
-      "prompt": "/valcraft:cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. In Setup choose GitHub Issues with repository `TBD`, select every other recommended option, confirm Save, and then continue Cast. This directory has no GitHub remote. Do not create or configure a repository or remote.",
-      "expected_output": "Cast invokes Setup first. Setup confirms a complete GitHub-mode candidate with repository `TBD` and every other recommended choice, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast presents and commits the project-frame scaffold with `/.valcraft/` in `.gitignore` without creating a repository, remote, numeric feature directory, triplet, or quick file. Cast then returns the unchanged candidate to Setup, which verifies the path is ignored and untracked, saves atomically, and returns done. AGENTS.md contains no Valcraft configuration. Cast performs no gh or network-facing GitHub operation. The report names the clean baseline head and docs/product-brief.md for Spec, and records GitHub projection as pending until Setup receives an approved concrete target and Spec receives outward authority.",
+      "prompt": "/valcraft:cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. In Tune choose GitHub Issues with repository `TBD`, select every other recommended option, confirm Save, and then continue Cast. This directory has no GitHub remote. Do not create or configure a repository or remote.",
+      "expected_output": "Cast invokes Tune first. Tune confirms a complete GitHub-mode candidate with repository `TBD` and every other recommended choice, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast presents and commits the project-frame scaffold with `/.valcraft/` in `.gitignore` without creating a repository, remote, numeric feature directory, triplet, or quick file. Cast then returns the unchanged candidate to Tune, which verifies the path is ignored and untracked, saves atomically, and returns done. AGENTS.md contains no Valcraft configuration. Cast performs no gh or network-facing GitHub operation. The report names the clean baseline head and docs/product-brief.md for Spec, and records GitHub projection as pending until Tune receives an approved concrete target and Spec receives outward authority.",
       "files": [],
       "assertions": [
         "Cast presents github mode and pending activation in the proposal before writing and waits for approval",
@@ -112,7 +112,7 @@
       "id": 6,
       "name": "baseline-commit-withheld-leaves-clean-tree",
       "prompt": "/valcraft:cast — prepare a fresh local project frame, but I approve neither the scaffold baseline commit nor a push. Stop without leaving project changes behind and show the Spec handoff state.",
-      "expected_output": "Setup may confirm a complete candidate first, but the absent ignore rule makes it return ignore_rule_required without writing `.valcraft/config.yaml`. Cast includes the exact scaffold delta, `/.valcraft/` ignore rule, and its single baseline commit in one attended approval request. Because baseline commit authority is withheld, it performs no project-frame write, configuration write, commit, or push and leaves the worktree clean. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff with baseline_required, and ends with Status: blocked: baseline_required plus human-readable detail.",
+      "expected_output": "Tune may confirm a complete candidate first, but the absent ignore rule makes it return ignore_rule_required without writing `.valcraft/config.yaml`. Cast includes the exact scaffold delta, `/.valcraft/` ignore rule, and its single baseline commit in one attended approval request. Because baseline commit authority is withheld, it performs no project-frame write, configuration write, commit, or push and leaves the worktree clean. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff with baseline_required, and ends with Status: blocked: baseline_required plus human-readable detail.",
       "files": [
         "references/scaffold.md"
       ],
@@ -127,29 +127,29 @@
       "id": 7,
       "name": "make-x-request-scaffolds-and-hands-off",
       "prompt": "/valcraft:cast Make a 3D printer simulator using three.js, with a menu that switches between a basic cube, a sphere, and a rubber duck, and a slider that adjusts the simulation speed. Keep it simple so we can finish it in maybe 15 minutes.",
-      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It invokes Setup for the complete guided configuration flow before gathering scaffold facts. Setup confirms the candidate, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast then gathers only scaffold-changing facts without repeating configuration questions and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, configuration-free AGENTS.md with a relative CLAUDE.md symlink, .gitignore with `/.valcraft/`, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. Cast returns the unchanged candidate to Setup, which verifies the path is ignored and untracked, saves atomically, and returns done. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
+      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It invokes Tune for the complete guided configuration flow before gathering scaffold facts. Tune confirms the candidate, writes nothing while the ignore rule is absent, and returns ignore_rule_required. Cast then gathers only scaffold-changing facts without repeating configuration questions and presents the exact frame plus baseline commit for attended approval. After approval it commits README.md, configuration-free AGENTS.md with a relative CLAUDE.md symlink, .gitignore with `/.valcraft/`, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. Cast returns the unchanged candidate to Tune, which verifies the path is ignored and untracked, saves atomically, and returns done. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
       "files": [],
       "assertions": [
         "Cast presents the proposed scaffold, assumptions, and TBDs before writing and waits for approval despite the \"make it in 15 minutes\" phrasing",
         "Cast writes no application source, installs no dependency, starts no dev server, and ticks no task",
         "Cast creates no numeric feature directory, feature triplet, or quick file and leaves product details in docs/product-brief.md for Spec",
         "Cast commits the exact approved project frame as one clean baseline and does not push without separate authority",
-        "Setup owns the tracker, approvals, Foreman, branch, Herdr, and merge-strategy questions; Cast does not repeat them",
+        "Tune owns the tracker, approvals, Foreman, branch, Herdr, and merge-strategy questions; Cast does not repeat them",
         "AGENTS.md contains no Valcraft configuration declaration and `.valcraft/config.yaml` is ignored and untracked",
         "The report hands docs/product-brief.md and the exact baseline head to Spec to create 001-mvp"
       ]
     },
     {
       "id": 8,
-      "name": "fresh-project-explicit-setup-values",
+      "name": "fresh-project-explicit-config-values",
       "prompt": "/valcraft:cast — new project: \"ledger\", a local CLI that records expenses and prints a monthly total. Primary user: me. MVP: record one expense and include it in the monthly total. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. Use local task tracking and these Foreman overrides: backend subagents, approval mode unattended, default branch main, and release branch main.",
-      "expected_output": "Cast delegates the supplied tracker and Foreman values to Setup before gathering scaffold facts. Setup asks only the remaining Cast approval and merge-strategy questions, recommends the simplest choices first, confirms the complete YAML, writes nothing while the ignore rule is absent, and returns ignore_rule_required. The candidate records local tracking, subagents, unattended Foreman, default branch main, release branch main, attended Cast, and squash merging. Cast writes none of those values to AGENTS.md. The initial scaffold and one baseline commit wait for attended approval and include `/.valcraft/`. After approval Cast commits the exact tracked frame, then returns the unchanged candidate to Setup. Setup verifies the path is ignored and untracked, saves atomically, and returns done.",
+      "expected_output": "Cast delegates the supplied tracker and Foreman values to Tune before gathering scaffold facts. Tune asks only the remaining Cast approval and merge-strategy questions, recommends the simplest choices first, confirms the complete YAML, writes nothing while the ignore rule is absent, and returns ignore_rule_required. The candidate records local tracking, subagents, unattended Foreman, default branch main, release branch main, attended Cast, and squash merging. Cast writes none of those values to AGENTS.md. The initial scaffold and one baseline commit wait for attended approval and include `/.valcraft/`. After approval Cast commits the exact tracked frame, then returns the unchanged candidate to Tune. Tune verifies the path is ignored and untracked, saves atomically, and returns done.",
       "files": [
         "../foreman/references/configuration.md"
       ],
       "assertions": [
-        "Cast delegates all supplied configuration values to Setup and does not ask those questions itself",
-        "Setup's complete snapshot contains the supplied tracker and Foreman values plus the confirmed Cast and pull-request values",
+        "Cast delegates all supplied configuration values to Tune and does not ask those questions itself",
+        "Tune's complete snapshot contains the supplied tracker and Foreman values plus the confirmed Cast and pull-request values",
         "Foreman's unattended mode does not change Cast's attended mode",
         "AGENTS.md contains no Valcraft configuration declaration",
         "The initial scaffold remains attended and waits for approval of the exact frame and one baseline commit before writing",
@@ -286,16 +286,16 @@
       "id": 17,
       "name": "invalid-foreman-override-stops-without-mutation",
       "prompt": "/valcraft:cast — retrofit the existing project at evals/files/retrofit-repo/. Change Foreman's approval mode to `delegated`. Do not modify files until the configuration is valid.",
-      "expected_output": "Cast delegates the requested Foreman configuration change to Setup. Setup rejects `delegated` because it is not a valid Foreman approval mode and asks the operator to select an explained valid option. It preserves the existing configuration byte-for-byte and Cast makes no scaffold mutation while configuration remains unresolved.",
+      "expected_output": "Cast delegates the requested Foreman configuration change to Tune. Tune rejects `delegated` because it is not a valid Foreman approval mode and asks the operator to select an explained valid option. It preserves the existing configuration byte-for-byte and Cast makes no scaffold mutation while configuration remains unresolved.",
       "files": [
         "evals/files/retrofit-repo/AGENTS.md",
         "evals/files/retrofit-repo/.valcraft/config.yaml",
         "../foreman/references/configuration.md"
       ],
       "assertions": [
-        "Cast delegates the Foreman section to Setup rather than validating or writing it itself",
-        "Setup rejects the invalid value and asks for a valid explained choice",
-        "Setup preserves the existing configuration and Cast makes no retrofit mutation while the change is unresolved"
+        "Cast delegates the Foreman section to Tune rather than validating or writing it itself",
+        "Tune rejects the invalid value and asks for a valid explained choice",
+        "Tune preserves the existing configuration and Cast makes no retrofit mutation while the change is unresolved"
       ]
     },
     {

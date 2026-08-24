@@ -32,7 +32,7 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 | Temper | `temper` | `retro_review` |
 | RetroReview | `retro_review` | `temper` |
 
-The Setup contract guarantees each reviewer uses a different harness from its producer. Revalidate those four pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Setup and resume only after `Status: done`.
+The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those four pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
 
 ## Readiness
 

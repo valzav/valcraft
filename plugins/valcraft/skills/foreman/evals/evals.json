@@ -3,20 +3,20 @@
   "evals": [
     {
       "id": 1,
-      "name": "missing-configuration-delegates-to-setup",
+      "name": "missing-configuration-delegates-to-tune",
       "prompt": "/valcraft:foreman — in the Cast project at evals/files/no-block/, resolve Foreman's startup configuration. `.valcraft/config.yaml` is missing, `/.valcraft/` is ignored, and the run is headless. A live remote HEAD symref for origin and the hosting service both identify main. Stop after reporting the configuration gate; do not mutate files.",
-      "expected_output": "Foreman reads root AGENTS.md only for project instructions, finds `.valcraft/config.yaml` missing, and invokes Setup before tracker access, run creation, or worker dispatch. Setup does not infer a partial runtime snapshot or select recommended answers in the headless run. It reports all unresolved first-run configuration fields and returns `Status: question: configuration_required`. Foreman does not read legacy declarations, derive its own backend or approval defaults, write AGENTS.md, create `.valcraft/foreman/`, or enter the delivery loop.",
+      "expected_output": "Foreman reads root AGENTS.md only for project instructions, finds `.valcraft/config.yaml` missing, and invokes Tune before tracker access, run creation, or worker dispatch. Tune does not infer a partial runtime snapshot or select recommended answers in the headless run. It reports all unresolved first-run configuration fields and returns `Status: question: configuration_required`. Foreman does not read legacy declarations, derive its own backend or approval defaults, write AGENTS.md, create `.valcraft/foreman/`, or enter the delivery loop.",
       "files": [
         "evals/files/no-block/AGENTS.md",
         "evals/files/no-block/.gitignore",
-        "../setup/SKILL.md",
-        "../setup/references/config.md"
+        "../tune/SKILL.md",
+        "../tune/references/config.md"
       ],
       "assertions": [
-        "Foreman invokes Setup when `.valcraft/config.yaml` is missing",
-        "Headless Setup chooses no recommended answer and returns configuration_required with unresolved fields",
+        "Foreman invokes Tune when `.valcraft/config.yaml` is missing",
+        "Headless Tune chooses no recommended answer and returns configuration_required with unresolved fields",
         "Foreman applies no backend, approval, branch, tracker, or merge-strategy read-time default",
-        "Foreman creates no run directory and dispatches no worker before Setup returns Status: done",
+        "Foreman creates no run directory and dispatches no worker before Tune returns Status: done",
         "Neither skill writes Valcraft configuration to AGENTS.md"
       ]
     },
@@ -591,18 +591,18 @@
     },
     {
       "id": 54,
-      "name": "missing-default-branch-delegates-detection-to-setup",
-      "prompt": "$valcraft:foreman — `.valcraft/config.yaml` is invalid because `foreman.default_branch` is absent. Compare four attended Setup repairs: (A) the live origin HEAD symref and hosting service both name trunk; (B) the live symref is unavailable and the host reports develop; (C) both are unavailable; (D) the live symref names trunk while the host reports develop. Stop before saving or spawning workers.",
-      "expected_output": "Foreman invokes Setup for the Foreman section and performs no branch derivation itself. Setup treats the invalid document as a complete repair. For A it offers trunk first as the recommended branch and explains both agreeing sources. For B it offers develop first from the authoritative host source. For C it offers main as the documented recommended simple option plus entry of another branch; it does not infer from cached origin/HEAD or the current checkout. For D it explains the conflict and asks the operator to select or enter a branch. Nothing is saved without complete YAML preview and confirmation, and Foreman creates no run or worker before Setup returns Status: done.",
+      "name": "missing-default-branch-delegates-detection-to-tune",
+      "prompt": "$valcraft:foreman — `.valcraft/config.yaml` is invalid because `foreman.default_branch` is absent. Compare four attended Tune repairs: (A) the live origin HEAD symref and hosting service both name trunk; (B) the live symref is unavailable and the host reports develop; (C) both are unavailable; (D) the live symref names trunk while the host reports develop. Stop before saving or spawning workers.",
+      "expected_output": "Foreman invokes Tune for the Foreman section and performs no branch derivation itself. Tune treats the invalid document as a complete repair. For A it offers trunk first as the recommended branch and explains both agreeing sources. For B it offers develop first from the authoritative host source. For C it offers main as the documented recommended simple option plus entry of another branch; it does not infer from cached origin/HEAD or the current checkout. For D it explains the conflict and asks the operator to select or enter a branch. Nothing is saved without complete YAML preview and confirmation, and Foreman creates no run or worker before Tune returns Status: done.",
       "files": [
         "SKILL.md",
         "references/configuration.md",
-        "../setup/references/config.md"
+        "../tune/references/config.md"
       ],
       "assertions": [
-        "Foreman delegates the missing branch to Setup and performs no independent resolution",
-        "Setup recommends an agreeing remote and host branch or the sole authoritative host branch",
-        "When authoritative metadata is unavailable, Setup offers main as its documented recommended option rather than deriving it from cached or checkout state",
+        "Foreman delegates the missing branch to Tune and performs no independent resolution",
+        "Tune recommends an agreeing remote and host branch or the sole authoritative host branch",
+        "When authoritative metadata is unavailable, Tune offers main as its documented recommended option rather than deriving it from cached or checkout state",
         "Disagreeing authoritative sources are explained and require an operator selection",
         "No configuration is saved and no Foreman run starts without complete preview and confirmation"
       ]
@@ -630,7 +630,7 @@
       "id": 56,
       "name": "feature-intake-bypasses-foreman",
       "prompt": "$valcraft:foreman — the operator supplies a local PRD in a project where `.valcraft/config.yaml` is missing. Resolve the route without calling tools or mutating files.",
-      "expected_output": "Feature-contract intake is outside the delivery loop. Foreman routes the readable PRD directly to valcraft:spec and creates no run, worker, plan, artifact, review, PR, approval relay, runtime default, or compatibility path. Foreman does not need delivery configuration to identify the owning skill. The handoff leaves Spec to apply its own configuration gate and invoke Setup before feature work.",
+      "expected_output": "Feature-contract intake is outside the delivery loop. Foreman routes the readable PRD directly to valcraft:spec and creates no run, worker, plan, artifact, review, PR, approval relay, runtime default, or compatibility path. Foreman does not need delivery configuration to identify the owning skill. The handoff leaves Spec to apply its own configuration gate and invoke Tune before feature work.",
       "files": [
         "SKILL.md",
         "references/loop.md"
@@ -975,20 +975,20 @@
       "name": "herdr-roles-use-configured-native-arguments",
       "coordination_coverage": "transport:herdr-cross-model-roles",
       "prompt": "$valcraft:foreman — on the herdr backend, use this valid configured worker map: Draft Codex Terra medium; PlanReview Claude Opus high; Forge Claude Sonnet medium; CodeReview Codex Sol xhigh; Land Claude Fable low; EvidenceReview Codex Luna none; Temper Claude Opus high; RetroReview Codex Terra medium. Show each start translation. Then classify a missing Codex harness and, separately, an invalid reconfiguration that assigns CodeReview to Claude like Forge. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman reads each role's harness, model, and effort from `.valcraft/config.yaml`. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`. Every value is a distinct argument, never interpolated shell text, and the physical identity records all three. The four reviewer-producer pairs use different harnesses. When Codex cannot start, readiness fails naming the configured harness and creates no run or worker; Claude is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Setup and does not dispatch until Setup returns Status: done.",
+      "expected_output": "Foreman reads each role's harness, model, and effort from `.valcraft/config.yaml`. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`. Every value is a distinct argument, never interpolated shell text, and the physical identity records all three. The four reviewer-producer pairs use different harnesses. When Codex cannot start, readiness fails naming the configured harness and creates no run or worker; Claude is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Tune and does not dispatch until Tune returns Status: done.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
         "references/hygiene.md",
         "references/loop.md",
-        "../setup/references/config.md"
+        "../tune/references/config.md"
       ],
       "assertions": [
         "Each dispatch uses the configured harness, model, and effort for its worker key",
         "Claude and Codex settings translate to their native argument forms after Herdr's argument separator",
         "Configured values are passed as distinct arguments and recorded with physical identity",
         "A missing configured harness fails readiness without substitution",
-        "A same-harness producer-reviewer pair delegates repair to Setup and dispatches no worker"
+        "A same-harness producer-reviewer pair delegates repair to Tune and dispatches no worker"
       ]
     },
     {

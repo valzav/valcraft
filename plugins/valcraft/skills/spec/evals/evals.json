@@ -136,7 +136,7 @@
       "id": 7,
       "name": "github-target-pending-keeps-artifact-local",
       "prompt": "/valcraft:spec — in evals/files/github-pending/, run `./prepare-eval.sh`, then create the feature contract from docs/bookmark-import-prd.md. Do not select a GitHub target or authorize any outward mutation.",
-      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet with pending mappings. Because `.valcraft/config.yaml` sets `tracker.github_repository: TBD`, it does not infer a target, inspect a remote, project tracker state, push, or create a PR. It delegates concrete target selection to Setup and reports the exact activation and outward handoff.",
+      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet with pending mappings. Because `.valcraft/config.yaml` sets `tracker.github_repository: TBD`, it does not infer a target, inspect a remote, project tracker state, push, or create a PR. It delegates concrete target selection to Tune and reports the exact activation and outward handoff.",
       "files": [
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",

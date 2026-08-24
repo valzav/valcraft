@@ -35,7 +35,7 @@ Read the documents relevant to a change before modifying code or specifications.
 
 | Data | Authority | Rule |
 | --- | --- | --- |
-| Project tracker and target repository | `.valcraft/config.yaml` | Require one complete valid tracker section. Delegate missing or invalid configuration to `valcraft:setup` before inspecting GitHub. |
+| Project tracker and target repository | `.valcraft/config.yaml` | Require one complete valid tracker section. Delegate missing or invalid configuration to `valcraft:tune` before inspecting GitHub. |
 | Feature ID and feature-issue mapping | `spec.md` | Use one mode-valid `spec_issue` value. |
 | Feature, design, task text, order, and dependency intent | Git | Treat committed Spec artifacts as canonical definitions. |
 | T-ID to issue-number mapping | `tasks.md` | Preserve stable T-IDs and verified mappings. |
@@ -45,7 +45,7 @@ Read the documents relevant to a change before modifying code or specifications.
 
 ## Task workflow
 
-Read `.valcraft/config.yaml` before Valcraft task work. Invoke `valcraft:setup` when required configuration is missing or invalid.
+Read `.valcraft/config.yaml` before Valcraft task work. Invoke `valcraft:tune` when required configuration is missing or invalid.
 
 In local mode, use feature `tasks.md` checkboxes as status. Resolve hard dependencies only from `blocked by T-XXX`. Require no GitHub remote, CLI, or authentication.
 

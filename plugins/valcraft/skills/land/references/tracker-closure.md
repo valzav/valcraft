@@ -34,7 +34,7 @@ Feature or PRD closure requires authoritative proof that its children meet the t
 
 ## Merge and recovery
 
-Use `pull_requests.merge_strategy` from `.valcraft/config.yaml` for task and spec PRs. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Setup for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
+Use `pull_requests.merge_strategy` from `.valcraft/config.yaml` for task and spec PRs. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Tune for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
 
 Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 

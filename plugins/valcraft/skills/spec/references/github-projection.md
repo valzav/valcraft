@@ -4,7 +4,7 @@ Use this reference only for a complete feature triplet when `.valcraft/config.ya
 
 ## Identity and target
 
-Resolve the target only from `.valcraft/config.yaml`. Never infer it from a source issue or a git remote. If `tracker.github_repository` is `TBD`, invoke Setup for the tracker section and wait for explicit target selection; do not choose or write one directly.
+Resolve the target only from `.valcraft/config.yaml`. Never infer it from a source issue or a git remote. If `tracker.github_repository` is `TBD`, invoke Tune for the tracker section and wait for explicit target selection; do not choose or write one directly.
 
 Resolve these values from trusted declarations and git-owned files:
 

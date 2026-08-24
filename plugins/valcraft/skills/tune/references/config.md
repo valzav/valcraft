@@ -28,7 +28,7 @@ The root requires exactly `tracker`, `cast`, `foreman`, and `pull_requests`.
 `tracker.mode` is `local` or `github`.
 
 - `local` permits only `mode`.
-- `github` requires `github_repository`: either one repository identifier accepted as free-form input and stored as a string, or the literal placeholder `TBD` recording that the operator has not selected the target yet. `TBD` is never an identifier: a skill that needs a concrete target treats it as pending activation and routes target selection back to Setup. Do not probe or mutate the host merely to validate configuration.
+- `github` requires `github_repository`: either one repository identifier accepted as free-form input and stored as a string, or the literal placeholder `TBD` recording that the operator has not selected the target yet. `TBD` is never an identifier: a skill that needs a concrete target treats it as pending activation and routes target selection back to Tune. Do not probe or mutate the host merely to validate configuration.
 
 ### Cast
 
