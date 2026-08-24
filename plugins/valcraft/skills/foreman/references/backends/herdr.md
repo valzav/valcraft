@@ -52,7 +52,7 @@ Herdr injects `HERDR_SOCKET_PATH` into every pane, and a socket override outrank
 Allow one controller per project pool. Claim atomically because two controllers can pass a readiness check simultaneously. Create the lock from its owner token so an interruption cannot leave an ownerless lock:
 
 1. Create `.valcraft/foreman/` in the project checkout when absent. Readiness precedes run-directory creation.
-2. Read this controller's identity with `herdr pane current`. Write session, workspace id, pane id, the pane's `agent_session` value, and claim time to `.valcraft/foreman/controller.owner.<pane-id>`. Fail readiness when `agent_session` cannot be resolved.
+2. Read this controller's identity with `herdr pane current`. Write session, workspace id, pane id, the pane's `agent_session` value, and claim time to `.valcraft/foreman/controller.owner.<pane-id>`. Fail readiness when `agent_session` cannot be resolved. Title this pane `herdr pane report-metadata <pane-id> --source valcraft-foreman --title 'foreman · <project>'` so the orchestrator column is identifiable beside its workers.
 3. Claim generation 1 with `ln .valcraft/foreman/controller.owner.<pane-id> .valcraft/foreman/controller.lock.1`. The hard link fails atomically when the target exists. On failure, resolve the existing generation through step 5.
 4. Release only as the recorded owner, at run end: confirm the highest generation's token carries this controller's pane id and `agent_session` value, then remove that generation.
 5. The holder is the highest-numbered `.valcraft/foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` resolves the recorded pane and reports the recorded `agent_session` value. Pane existence alone is insufficient because an ordinary shell can remain after its agent exits. For a live holder, fail readiness naming the owner and remove nothing.
@@ -77,6 +77,8 @@ Record each transition in `state.md` before attempting the next, so an interrupt
    - one or more worker panes are live (a kept Review worker, a preserved pane not yet moved out): `herdr pane split --pane <live-worker-pane-id> --direction down --cwd <checkout> --no-focus`, from the most recently returned live worker pane, so the new pane stacks under it and the orchestrator keeps its full height.
 
    Never split the orchestrator's pane while a worker pane is live: that opens a second column and narrows every pane. Read and record `.result.pane.pane_id` before the next call. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
+
+   Title the returned pane so the operator can read the layout: `herdr pane report-metadata <pane-id> --source valcraft-foreman --title '<role> · <task> · <harness>'`, with `<role>` the logical worker name and the Review role distinguished by mode as `review:plan` or `review:code`. A reported title outranks a manual pane name in the split border, so it is the field that is actually read; `--source` scopes it to this controller, which alone can clear it. The title is display-only and never a gate: record a failed report as an observation and continue the dispatch. It survives `pane move --new-tab`, so a preserved pane keeps its title under its new id.
 
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
@@ -159,7 +161,7 @@ Escalation names the gate; it does not end the await. The operator can answer th
 
 ## Release and recovery
 
-Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record.
+Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record. A worker's reported pane title needs no cleanup because it dies with the pane. The orchestrator's own title outlives the run: clear it at run end with `herdr pane report-metadata <pane-id> --source valcraft-foreman --clear-title`, which is honored only from this source.
 
 A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory.
 
