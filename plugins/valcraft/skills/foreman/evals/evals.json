@@ -24,9 +24,10 @@
     {
       "id": 2,
       "name": "verdict-only-report-rejected",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-verdict-only` from its run directory .valcraft/foreman/run-verdict-only/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-verdict-only` from its run directory .valcraft/foreman/run-verdict-only/ and take the next loop step.",
       "expected_output": "Foreman attributes the stored Review report to the active PlanReview assignment and rejects it as incomplete because Review's finding table, checks-performed record, and reproductions are absent. It remains in PlanReview and reassigns a fresh physical plan-reviewer with the same logical identity and report path. Foreman does not reconstruct the report or review the plan. Codex keeps foreground waiting active; Claude Code uses its established completion event.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -50,9 +51,10 @@
     {
       "id": 3,
       "name": "two-round-cap-escalates",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-two-rounds` from .valcraft/foreman/run-two-rounds/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-two-rounds` from .valcraft/foreman/run-two-rounds/ and take the next loop step.",
       "expected_output": "Foreman verifies that the second PlanReview round ran because Draft declined material R-002 and that Review upheld it. The established two-round cap stops another dispatch. Foreman enters Blocked, names R-002 and the disagreement, and waits for the operator even in unattended mode. It neither decides the finding nor advances to Implementing.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -78,9 +80,10 @@
     {
       "id": 4,
       "name": "producer-question-routes-by-code",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-question` from .valcraft/foreman/run-question/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-question` from .valcraft/foreman/run-question/ and take the next loop step.",
       "expected_output": "Foreman records report_available, validates the attributed Forge report, and routes product_decision_required to AwaitOwner. It does not reinterpret the prose detail, answer the question from its own reading, or respawn Forge before the owner decision. Foreman writes no code.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -103,9 +106,10 @@
     {
       "id": 5,
       "name": "permission-prompt-escalates",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-blocked` from .valcraft/foreman/run-blocked/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-blocked` from .valcraft/foreman/run-blocked/ and take the next loop step.",
       "expected_output": "Foreman records backend return permission_blocked, then reads the active Forge prompt through backend status. Recursive deletion outside the checkout exceeds the assignment, so Foreman neither answers nor respawns Forge with permission. It enters Blocked, names the exact action and reason, and waits. No producer report is opened or synthesized.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -128,9 +132,10 @@
     {
       "id": 6,
       "name": "release-branch-merge-waits-in-unattended-mode",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-release` from .valcraft/foreman/run-release/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-release` from .valcraft/foreman/run-release/ and take the next loop step.",
       "expected_output": "Foreman verifies that PR #14 targets configured release branch main rather than default branch dev. It enters the Landing human gate and passes no execution authority to Land until the operator chooses the exact target. Foreman does not merge, tick T-002, retarget, or run a substitute command. Its summary names the PR, exact Review verdict, branch mismatch, and required operator decision.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -155,9 +160,10 @@
       "id": 7,
       "name": "cold-start-drafter-and-small-context",
       "coordination_coverage": "transport:claude-event-wake",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
       "expected_output": "Foreman resolves runtime, creates state.md and workers.md, reconciles readiness, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft:draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event. Foreman does not read the artifacts to plan or run MSW itself.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
@@ -223,9 +229,10 @@
     {
       "id": 10,
       "name": "closure-check-not-second-round",
-      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, resume run `run-closure-check` from .valcraft/foreman/run-closure-check/ and take the next loop step.",
+      "prompt": "/valcraft:foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-closure-check` from .valcraft/foreman/run-closure-check/ and take the next loop step.",
       "expected_output": "In PlanReview, Foreman verifies that Draft resolved R-001 within the evidence-cited plan scope and that no second-round trigger fires. It dispatches the same logical plan-reviewer under a fresh physical identity for a closure check limited to R-001. It remains in PlanReview until the report returns and records the branch and trigger evidence.",
       "files": [
+        "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
         "evals/files/loop-local/.valcraft/config.yaml",
         "evals/files/loop-local/.gitignore",
