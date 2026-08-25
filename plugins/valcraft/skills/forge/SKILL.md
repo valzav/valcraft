@@ -40,7 +40,13 @@ State touched files and tasks and deliberately untouched adjacent scope. Do not 
 
 ## Require the passed plan
 
-Draft is the sole task-plan producer. Treat a feature or quick task as non-trivial unless its git-owned task is itself a complete, single-step implementation and verification contract. Non-trivial work requires:
+Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full, names the files and the exact change, and names the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
+
+A task is also non-trivial whenever reaching an implementation needs a decision rather than a transcription: contracts that conflict, an approach the artifacts leave open, or scope wider than the named change. Precedence settling which contract wins does not make the task trivial — knowing that an accepted ADR outranks `design.md` identifies the authority, not the plan it implies. Carry the resolved conflict to Draft as input.
+
+Route to Draft whenever both readings are arguable. An unnecessary plan costs one cycle; unplanned work costs an unreviewed change to code and to contracts Forge does not own.
+
+Non-trivial work requires:
 
 - one committed semantic task plan produced by `valcraft:draft`;
 - a Review report whose plan verdict is `pass` for that exact repository, plan path, and full plan commit SHA; and
