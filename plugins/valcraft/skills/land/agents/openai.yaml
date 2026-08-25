@@ -1,4 +1,0 @@
-interface:
-  display_name: "Land"
-  short_description: "Finalize reviewed work and close trackers"
-  default_prompt: "Use $valcraft:land to finalize reviewed work safely."

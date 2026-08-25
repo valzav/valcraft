@@ -1,0 +1,4 @@
+interface:
+  display_name: "Foreman"
+  short_description: "Coordinate the named-state delivery loop"
+  default_prompt: "Use $valcraft:valcraft-foreman to coordinate the next eligible task through Draft, Review, Forge, Review, and Land."

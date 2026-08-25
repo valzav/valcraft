@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge"
-  short_description: "Implement a reviewed task and hand it to Review"
-  default_prompt: "Use $valcraft:forge to implement this task from its passed plan, verify it, and hand the exact code target to Review."

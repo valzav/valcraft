@@ -1,0 +1,4 @@
+interface:
+  display_name: "Temper"
+  short_description: "Produce and deliver an evidence-backed retrospective"
+  default_prompt: "Use $valcraft:valcraft-temper to produce a committed retrospective report and its exact Review and Land handoff."
