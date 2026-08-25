@@ -38,7 +38,7 @@ The Tune contract guarantees each reviewer uses a different harness from its pro
 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.
 
-1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the three primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. Release 0.8.2 is the verified source of all three. Stop rather than degrade when any is absent.
+1. `HERDR_ENV=1`, and `herdr --version` reports release 0.8.2 or newer — the verified source of the primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. An older or unreadable version fails readiness; never degrade to a partial contract.
 2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman.herdr.session` is non-null, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
 3. Every harness named by the worker map is startable in that session, and each reviewer-producer harness pair differs.
 4. This controller holds the project's lease.
