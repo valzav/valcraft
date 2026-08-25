@@ -49,7 +49,7 @@ pull_requests:
 - `local` permits only `mode`.
 - `github` requires `github_repository`: either one repository identifier accepted as free-form input and stored as a string, or the literal placeholder `TBD` recording that the operator has not selected the target yet. `TBD` is never an identifier: a skill that needs a concrete target treats it as pending activation and routes target selection back to Tune. Do not probe or mutate the host merely to validate configuration.
 
-Changing `tracker.mode` when committed feature artifacts exist is blocked: every committed mapping would need migration, and Tune performs no migration.
+Changing `tracker.mode` when committed feature artifacts exist is blocked: every committed mapping would need migration, and Tune performs no migration. Replacing one concrete `github_repository` identifier with another is blocked for the same reason while any committed positive `spec_issue` or task issue mapping exists: issue numbers are repository-relative, so the retarget would silently point every mapping at a different tracker. Replacing the `TBD` placeholder with the first concrete identifier is activation, not retargeting, and stays allowed.
 
 ### Foreman
 

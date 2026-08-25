@@ -23,6 +23,9 @@ jobs:
       - name: Check the OpenCode skills index is current
         run: python3 scripts/build-skills-index.py --check
 
+      - name: Check skill sizes against the Codex ceiling
+        run: python3 scripts/check-skill-sizes.py
+
       - name: Check coordination contracts
         run: |
           python3 scripts/check-coordination-contracts.py

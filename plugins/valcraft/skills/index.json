@@ -2,10 +2,11 @@
   "skills": [
     {
       "name": "cast",
-      "version": "a3854a6d96ba81ea",
+      "version": "cbcf2de6d6d9565e",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
+        "references/push-authority.md",
         "references/scaffold.md",
         "templates/AGENTS.md",
         "templates/README.md",
@@ -38,7 +39,7 @@
     },
     {
       "name": "foreman",
-      "version": "109ae7ac640ae4d5",
+      "version": "1cc0a53596f194ee",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -59,7 +60,7 @@
     },
     {
       "name": "forge",
-      "version": "e55bc575bdc5d03e",
+      "version": "f37b0d2b20787f34",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -79,7 +80,7 @@
     },
     {
       "name": "land",
-      "version": "5308804c6f2a5dc1",
+      "version": "102b40dd9e13789a",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -109,7 +110,7 @@
     },
     {
       "name": "spec",
-      "version": "e8f68f1cbb87e19a",
+      "version": "98b78d2e4ad8c093",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -135,7 +136,7 @@
     },
     {
       "name": "tune",
-      "version": "8a689ab3fe70cf75",
+      "version": "716ce64fad9cb4e8",
       "files": [
         "SKILL.md",
         "references/config.md"

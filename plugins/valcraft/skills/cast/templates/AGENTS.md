@@ -45,7 +45,7 @@ Read the documents relevant to a change before modifying code or specifications.
 
 ## Task workflow
 
-Read the resolved Valcraft configuration — the committed `.valcraft/config.yaml` plus any gitignored `.valcraft/config.local.yaml` overlay — before Valcraft task work. Invoke `valcraft:tune` when required configuration is missing or invalid.
+Read the resolved Valcraft configuration — the committed `.valcraft/config.yaml` plus any gitignored `.valcraft/config.local.yaml` overlay — before Valcraft task work. Invoke `valcraft:tune` when required configuration is missing or invalid, except under a report-only contract: `valcraft:review` reports invalid configuration as a finding and never invokes Tune.
 
 In local mode, use feature `tasks.md` checkboxes as status. Resolve hard dependencies only from `blocked by T-XXX`. Require no GitHub remote, CLI, or authentication.
 

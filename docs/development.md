@@ -43,7 +43,7 @@ The plugin ships three manifests over one shared `skills/` tree:
 
 Keep shared metadata synchronized by hand. Keep the portable and Codex fallback versions synchronized, but treat the version as release metadata rather than a cachebuster. Codex does not merge fallback-only fields such as `skills` and `interface` when the portable manifest exists; it discovers this plugin's default `skills/` tree automatically. Add future harness-specific manifests beside these rather than adding unsupported fields to the portable manifest.
 
-Codex 0.147.0 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body.
+Codex 0.147.0 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body. `scripts/check-skill-sizes.py` enforces the ceiling; CI runs it in the lint workflow.
 
 ## OpenCode skills source
 

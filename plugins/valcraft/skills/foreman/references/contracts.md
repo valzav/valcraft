@@ -58,7 +58,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `authority_drift`, `push_failed` | `StopProducer` |
+| `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `configuration_unresolved`, `authority_drift`, `push_failed` | `StopProducer` |
+| `configuration_required` | `AwaitOwner` |
 
 ### Draft
 
@@ -73,8 +74,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 | --- | --- |
 | `draft_required` | `Drafting` |
 | `review_target_mismatch` | `CodeReview` |
-| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
-| `product_decision_required` | `AwaitOwner` |
+| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `configuration_unresolved`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `product_decision_required`, `configuration_required` | `AwaitOwner` |
 
 ### Review
 
@@ -93,9 +94,9 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_spec` | `ReturnToSpecCaller` |
 | `evidence_review_required` | `EvidenceReview` |
 | `partial_completion` | `Landing` |
-| `operator_confirmation_required`, `owner_decision_required` | `AwaitOwner` |
+| `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
-| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
+| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
 
 `ReviewByTarget` means task PR to CodeReview and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
 
@@ -103,8 +104,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required` | `AwaitOwner` |
-| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
+| `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required`, `configuration_required` | `AwaitOwner` |
+| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
 
 ### Temper
 

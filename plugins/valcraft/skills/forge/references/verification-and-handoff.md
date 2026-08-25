@@ -92,6 +92,8 @@ Use these stable routing codes:
 - `assignment_invalid` — the assignment or task identity is missing, malformed, ambiguous, or cannot be tied to its contract.
 - `draft_required` — a required plan or exact passing plan review is missing or stale, or a finding changes plan scope or approach.
 - `workspace_not_ready` — required branch state is dirty, missing, ambiguous, or diverged.
+- `configuration_required` — Tune needs interactive operator answers this run cannot supply.
+- `configuration_unresolved` — Tune ended without done for another cause; the detail quotes Tune's terminal line.
 - `implementation_blocked` — the passed plan cannot be implemented or verified from current repository evidence.
 - `product_decision_required` — an unsettled behavior-changing owner decision is required.
 - `review_target_mismatch` — a remediation report does not cover the task and exact implementation head.

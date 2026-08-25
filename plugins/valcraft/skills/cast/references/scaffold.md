@@ -1,6 +1,14 @@
 # Scaffold and retrofit rules
 
-This reference owns project fact gathering, the recorded proposal, project-frame paths, the clean baseline commit, opt-in artifacts, and retrofit behavior. Tune owns configuration and tracker-mode resolution. Resolve template paths from the Cast skill directory.
+This reference owns project fact gathering, the recorded proposal, project-frame paths, the clean baseline commit, opt-in artifacts, retrofit behavior, and the Tune round-trip rules. Tune owns configuration and tracker-mode resolution. Resolve template paths from the Cast skill directory.
+
+## Tune round trip
+
+A request to change a configuration value reaches Tune even when the resolved configuration is already valid, and Tune alone accepts or rejects that value. A valid stored value needs no such round trip: it is authoritative for itself, and an operator's account of what they did or did not select does not unsettle it. Cast asks no configuration question in either case — reading `config.md` resolves configuration, it does not license judging or re-eliciting one.
+
+Tune's `Status: done` is an intermediate result of the Cast run; continue with fact gathering in the same turn. When Tune reports the base blocked by a stale blanket `/.valcraft/` rule, apply the Cast-owned `.gitignore` repair from the retrofit section, record it in the proposal, and re-enter Tune. Route every other non-done Tune result through the codes in Cast's report grammar.
+
+In a repository without the baseline, Tune leaves the written base file uncommitted and the run stages it with the frame. When the live operator instruction forbids leaving changes behind, establish commit readiness with non-mutating checks before invoking Tune, and include the base file in Cast's own rollback: restore it with Cast's writes on a failed baseline. Without that instruction, the base file persists across a failed baseline and makes a later run resumable.
 
 ## Gather project facts
 
@@ -51,13 +59,13 @@ Do not write Valcraft configuration into generated `AGENTS.md`. Tune owns `.valc
 
 Add an optional artifact only when its trigger is real. A triggered artifact is included without asking — the trigger is the justification — and is named in the recorded proposal:
 
-| Add | Trigger |
-| --- | --- |
-| `docs/glossary.md` | Domain terms must remain stable. |
-| `docs/system-requirements.md` | Cross-cutting requirements outgrow the brief. |
-| `docs/use-cases/uc-NNN-*.md` | Product steering requires narrative scenarios. |
-| `docs/status.md` | Necessary non-secret observations are absent from git and cannot be queried from the authoritative platform. |
-| `contracts/` and its README | A real public API, event, or service boundary exists. |
+| Add                           | Trigger                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `docs/glossary.md`            | Domain terms must remain stable.                                                                             |
+| `docs/system-requirements.md` | Cross-cutting requirements outgrow the brief.                                                                |
+| `docs/use-cases/uc-NNN-*.md`  | Product steering requires narrative scenarios.                                                               |
+| `docs/status.md`              | Necessary non-secret observations are absent from git and cannot be queried from the authoritative platform. |
+| `contracts/` and its README   | A real public API, event, or service boundary exists.                                                        |
 
 Create `docs/status.md` only from `templates/status.md`. Render its conditional pointers in README and AGENTS only when the file exists. The snapshot is context, never authority; current repository and platform state wins.
 
@@ -67,7 +75,7 @@ Before applying the recorded frame, require attributable worktree state and avai
 
 Prepare generated content outside the target paths. Apply the exact delta, stage only recorded paths, inspect the staged diff, and create one baseline commit. Resolve its full SHA and require no staged, unstaged, or untracked file. Empty directories and ignored runtime state do not count as a handoff artifact.
 
-If commit readiness is absent, apply nothing. If an attributable write or commit attempt fails, restore only Cast's written paths to their pre-run bytes and verify cleanliness; the base file Tune wrote persists for the next run. Never reset, clean, stash, or overwrite unrelated state.
+If commit readiness is absent, apply nothing. If an attributable write or commit attempt fails, restore only Cast's written paths to their pre-run bytes and verify cleanliness. The base file Tune wrote persists for the next run unless the live operator instruction forbids leaving changes behind; then the Tune round-trip rollback restores it with Cast's writes. Never reset, clean, stash, or overwrite unrelated state.
 
 ## Retrofit an existing project
 
@@ -81,7 +89,7 @@ Derive facts from the repository before asking questions. Merge frame content in
 
 When the stale blanket rule blocks Tune with `project_frame_required`, apply the `.gitignore` repair immediately, record it in the proposal, and re-enter Tune; the repair is part of the frame delta and its baseline commit.
 
-Before proposing a frame mutation, validate every existing numeric feature and quick file through Spec's contracts. Do not create missing feature artifacts, repair metadata, complete a staged feature, allocate another feature, or project tracker state. Preserve valid feature artifacts byte-for-byte. Report an invalid artifact with its exact path and violated Spec clause before any frame write.
+Before proposing a frame mutation, validate every existing numeric feature and quick file through Spec's contracts: read `../../spec/references/feature-contract.md` and `../../spec/references/quick.md` only for that validation, and do not copy their rules into Cast or mutate those artifacts. Do not create missing feature artifacts, repair metadata, complete a staged feature, allocate another feature, or project tracker state. Preserve valid feature artifacts byte-for-byte. Report an invalid artifact with its exact path and violated Spec clause before any frame write.
 
 Offer optional `valcraft:hone` for pre-existing agent instructions and `valcraft:msw` for imported planning documents only after the clean baseline.
 
