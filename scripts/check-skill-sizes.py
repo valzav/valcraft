@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Enforce the Codex model-visible skill-size ceiling.
 
-Codex 0.147.0 truncates each SKILL.md beyond 8,000 UTF-8 bytes (docs/development.md),
+Codex 0.149.1 truncates each SKILL.md beyond 8,000 UTF-8 bytes (docs/development.md),
 silently cutting whatever contract text follows the cutoff.
 """
 
