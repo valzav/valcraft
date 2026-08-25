@@ -87,6 +87,8 @@ Reviewer independence is structural. On the resolved configuration, require diff
 
 Ask only questions whose answers are genuinely open. Apply a value without asking when one authoritative source resolves it: an answer the operator already supplied in the current exchange, a valid existing value the operator did not ask to change, or unambiguous repository evidence. Ask when authoritative sources conflict or none exists.
 
+This rule governs the value questions below. The reconfiguration section menu is not one of them: it always appears, and the rule under [Reconfiguration](#reconfiguration) states why.
+
 ### First run or full repair
 
 Walk this order. Every quoted choice is a list item with its explanation, not an inferred default. Skip a step whose value is already resolved by an authoritative source.
@@ -128,7 +130,7 @@ For Custom, ask each role in the table order. Put the preset harness for that ro
 
 ## Reconfiguration
 
-For an existing valid resolved configuration, reconfigure only when the caller or operator asks for it. The first question is a list of sections. When the caller or operator named a section, put that section first and mark it recommended; this focuses delegation without accepting answers from the caller. Otherwise use this order:
+For an existing valid resolved configuration, reconfigure only when the caller or operator asks for it. The first question is always a list of sections, including when the request already named one. Naming a section is not an answer to this question, whether a caller or the operator named it: it selects the order, so put that section first and mark it recommended. The menu shows every section the operator may also want to change in the same run, which a named section cannot establish. Otherwise use this order:
 
 1. `Tasks/Issue Tracker (Recommended)` — change local or GitHub tracking and its dependent assignees.
 2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers.
