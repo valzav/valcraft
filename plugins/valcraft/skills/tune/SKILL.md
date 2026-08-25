@@ -42,6 +42,7 @@ End with exactly one terminal line:
 - valid configuration saved, re-read, and (outside a Cast invocation) the base change committed: `Status: done`;
 - interactive answers required: `Status: question: configuration_required — <detail>`;
 - the base is gitignored, a configuration path is a symlink or other special path, or the overlay is tracked or not ignored: `Status: blocked: project_frame_required — <detail>`;
+- the request asks for a change the contract blocks, such as a tracker-mode migration or a concrete repository retarget: `Status: blocked: configuration_change_rejected — <detail>`, with existing configuration preserved byte-for-byte;
 - the operator cancels mid-questionnaire: `Status: blocked: configuration_cancelled — existing configuration preserved`; or
 - an authorized write, or its required direct-invocation base commit, cannot be completed and verified: `Status: blocked: configuration_write_failed — <detail>`.
 
