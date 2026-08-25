@@ -1,6 +1,6 @@
 {
   "name": "valcraft",
-  "version": "0.7.0",
+  "version": "0.7.5",
   "description": "Reusable agent skills: tune (repository configuration), cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
     "name": "valcraft contributors",
@@ -23,7 +23,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use $valcraft:cast to scaffold this project."
+      "Use $valcraft:valcraft-cast to scaffold this project."
     ]
   }
 }

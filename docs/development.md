@@ -38,12 +38,18 @@ The tracked-content neutrality rule is defined in [AGENTS.md](../AGENTS.md#chang
 The plugin ships three manifests over one shared `skills/` tree:
 
 - `plugins/valcraft/.claude-plugin/plugin.json` — Claude Code's plugin manifest.
-- `plugins/valcraft/.codex-plugin/plugin.json` — Codex's native plugin manifest.
-- `plugins/valcraft/plugin.json` — the portable [Agent Plugins](https://github.com/agentplugins/agent-plugins-spec) manifest (v1.0.0) for hosts that implement that specification and the canonical Codex manifest when both Codex manifest paths exist.
+- `plugins/valcraft/.codex-plugin/plugin.json` — Codex's native plugin manifest and the source of `interface`, including `defaultPrompt`, in Codex 0.149.1.
+- `plugins/valcraft/plugin.json` — the portable [Agent Plugins](https://github.com/agentplugins/agent-plugins-spec) manifest (v1.0.0) for hosts that implement that specification and the source of the Codex installation version when both Codex manifest paths exist.
 
-Keep shared metadata synchronized by hand. Keep the portable and Codex fallback versions synchronized, but treat the version as release metadata rather than a cachebuster. Codex does not merge fallback-only fields such as `skills` and `interface` when the portable manifest exists; it discovers this plugin's default `skills/` tree automatically. Add future harness-specific manifests beside these rather than adding unsupported fields to the portable manifest.
+Keep shared metadata synchronized by hand. Keep the portable and native Codex versions synchronized, but treat the version as release metadata rather than a cachebuster. Codex 0.149.1 reads the native manifest's `interface`, including `defaultPrompt`, while using the portable manifest's version; it discovers this plugin's default `skills/` tree automatically. Do not assume other native-only fields merge. Add future harness-specific manifests beside these rather than adding unsupported fields to the portable manifest.
 
-Codex 0.147.0 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body. `scripts/check-skill-sizes.py` enforces the ceiling; CI runs it in the lint workflow.
+Codex 0.149.1 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body. `scripts/check-skill-sizes.py` enforces the ceiling; CI runs it in the lint workflow.
+
+Validate the Codex plugin with the validator shipped by the system `plugin-creator` skill:
+
+```bash
+python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/valcraft
+```
 
 ## OpenCode skills source
 
