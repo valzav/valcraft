@@ -97,6 +97,8 @@ A completed task target returns to Ready. A completed external closure returns t
 
 Dispatch a fresh `review-evidence-<identity>` with `valcraft:review` in evidence mode on Land's exact durable evidence record. Review owns criterion-by-criterion sufficiency. A sufficient report returns to Landing with the exact verdict. An insufficient or blocked report follows the registry. Foreman records and judges no evidence.
 
+The return re-enters `Landing` carrying the whole ownership listed there — final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and evidence recording — not the completion tick alone. Which of those the resolved tracker mode actually requires, and in what order, is Land's own contract in [`../../land/references/tracker-closure.md`](../../land/references/tracker-closure.md).
+
 ## `FeatureClose`
 
 Dispatch tracker-only Land with the exact feature or PRD target and the operator's quoted confirmation. Land closes only the authorized real tracker target. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
