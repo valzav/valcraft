@@ -480,7 +480,7 @@
         "External completion routes Landing to EvidenceReview and back to Landing without Draft or Forge",
         "Land stores attributed evidence for every acceptance criterion beside the target task",
         "A separate fresh Review report covers evidence sufficiency per criterion",
-        "Land owns the evidence-and-tick PR, exact-final-head and checks, merge, and close"
+        "Land owns the exact-final-head and check gates against real targets, the completion tick, and closure, and invents no PR or merge"
       ]
     },
     {
@@ -510,7 +510,7 @@
         "references/contracts.md"
       ],
       "assertions": [
-        "Land writes GitHub evidence as an attributed task-issue comment through an exact serialized batch",
+        "Land prepares the GitHub evidence as an attributed task-issue comment requiring its own exact tracker-write authority",
         "A fresh reviewer judges every criterion from the durable issue evidence",
         "Foreman and Land invent no branch, commit, PR, SHA, or git review target",
         "Applicable checks use their real authoritative targets and a check requiring an unavailable head cannot pass",
@@ -1178,7 +1178,7 @@
         "The worker receives the substitution, backtick, and quote characters unchanged",
         "Command substitution in untrusted envelope text is identified as executing in the controller's shell",
         "No shell expansion of envelope content is treated as acceptable",
-        "A quoting path that would alter the envelope's bytes stops the dispatch"
+        "A quoting path that would alter the envelope's bytes is rejected in favour of an argument vector or single-quoting with no expansion"
       ]
     },
     {

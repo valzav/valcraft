@@ -189,7 +189,7 @@
       "id": 9,
       "name": "closed-unmerged-pr-never-closes-task",
       "prompt": "$valcraft:land — in evals/files/delivery/, reconcile captured task PR 43. The PR is closed without merge, task issue 18 remains open with in-progress applied, and no completion tick exists. The assignment authorizes ordinary merge and tracker closure if valid. Explain the result without mutating external state.",
-      "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It performs no tick, merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: blocked: external_blocked —` with the closed-unmerged evidence.",
+      "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It performs no tick, merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: question: owner_decision_required —` with the prepared forward variants and their trade-off.",
       "files": [
         "evals/files/delivery/AGENTS.md",
         "evals/files/delivery/.valcraft/config.yaml",
@@ -203,7 +203,7 @@
         "Land performs no completion tick or merge",
         "Land performs no close comment, task close, or in-progress label removal",
         "Land does not delete the branch or create a replacement PR",
-        "The report preserves the exact closed-unmerged target and ends with external_blocked"
+        "The report preserves the exact closed-unmerged target and ends `Status: question: owner_decision_required` with the prepared variants and their trade-off"
       ]
     },
     {
