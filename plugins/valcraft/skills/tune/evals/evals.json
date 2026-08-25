@@ -28,8 +28,8 @@
       "files": [
         "SKILL.md",
         "references/config.md",
-        "evals/files/valid-config/.gitignore",
-        "evals/files/valid-config/.valcraft/config.yaml"
+        "evals/files/github-config/.gitignore",
+        "evals/files/github-config/.valcraft/config.yaml"
       ],
       "assertions": [
         "A valid existing configuration starts with the section menu using the titles Tasks/Issue Tracker, Foreman Loop, and Pull request strategy",
