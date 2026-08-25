@@ -108,7 +108,7 @@ Then show this preset list:
 
 1. `Balanced (Recommended)` — use Claude Sonnet and Codex Terra at medium effort with independent reviewers.
 2. `Quality` — use Claude Opus and Codex Sol at high effort with the same independent role split.
-3. `Economy` — use Claude Fable and Codex Luna at low effort with the same independent role split.
+3. `Economy` — use Claude Sonnet and Codex Luna at low effort with the same independent role split.
 4. `Custom` — choose harness, model, and effort for every role; invalid reviewer pairings are rejected.
 
 All three presets use this harness split:
