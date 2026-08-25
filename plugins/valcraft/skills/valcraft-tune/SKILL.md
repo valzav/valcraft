@@ -3,7 +3,7 @@ name: valcraft-tune
 description: Configure or reconfigure a repository's Valcraft settings — the committed `.valcraft/config.yaml` base and the user-local `.valcraft/config.local.yaml` overlay. Use when Cast initializes Valcraft, a Valcraft skill finds missing or invalid configuration, or the operator asks to change tracker, approvals, Foreman, Herdr workers, branches, or pull-request merge strategy. Tune owns only these two configuration files; it does not scaffold the repository, edit ignore rules, or run delivery work.
 ---
 
-# tune
+# valcraft-tune
 
 Own the committed `.valcraft/config.yaml` base and the gitignored, user-local `.valcraft/config.local.yaml` overlay. Do not read Valcraft configuration from `AGENTS.md`, migrate legacy declarations, or create a compatibility path.
 

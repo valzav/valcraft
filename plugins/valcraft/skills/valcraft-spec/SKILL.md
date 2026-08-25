@@ -9,7 +9,7 @@ description: >
   project scaffolding, task planning, implementation, review, merge, or closure.
 ---
 
-# spec
+# valcraft-spec
 
 Produce one complete feature contract or one quick task, commit its local state, and return exact Review and Land handoffs. Spec is the sole producer of every `spec.md`, `design.md`, and `tasks.md` feature triplet, including the first MVP. It never implements, reviews, merges, closes tracker state, or invokes Review or Land.
 

@@ -4,7 +4,7 @@ description: >
   Produce an evidence-based retrospective over completed work, or synthesize prior Temper reports, and deliver one local, gitignored retrospective report with an exact Review handoff. Use for a retrospective, post-mortem, lessons learned, process-improvement analysis, completed feature or quick-task batch, PR or commit corpus, date window, or synthesis of analyze reports. Temper writes no git state: no branch, commit, push, or PR. It never reviews, closes tracker state, applies proposals, or analyzes one change before merge; in an attended synthesize run it offers corroborated proposals to the operator as a selection and records the choice.
 ---
 
-# temper
+# valcraft-temper
 
 Compound evidence-backed lessons from finished work and produce one reviewable local retrospective report.
 

@@ -11,7 +11,7 @@ description: >
   or tracker closure.
 ---
 
-# cast
+# valcraft-cast
 
 Create the project frame that makes later SDD artifacts durable. Cast produces no feature contract. `valcraft-spec` is the sole producer of every feature triplet, including the first MVP feature, and every quick-task file.
 

@@ -4,7 +4,7 @@ description: >
   Coordinate the spec-driven delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Own runtime readiness, task selection, intermediate tracker state, worker lifecycle, backend returns, report validation, approval gates, recovery, and named-state transitions. Use for "run the delivery loop", "start sprint", "work through the tasks", "deliver quick", or "run foreman". Do not use for feature or PRD creation (valcraft-spec), task planning (valcraft-draft), implementation (valcraft-forge), review (valcraft-review), landing or closure (valcraft-land), retrospective production (valcraft-temper), or project framing (valcraft-cast).
 ---
 
-# foreman
+# valcraft-foreman
 
 Coordinate delivery. Never perform a worker skill's work.
 

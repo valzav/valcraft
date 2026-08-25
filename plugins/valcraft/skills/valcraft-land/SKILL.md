@@ -4,7 +4,7 @@ description: >
   Finalize reviewed Valcraft work: verify exact final heads and applicable checks, merge an authorized task or spec PR, close the valid tracker targets, reconcile partial completion, or record and close work completed outside git. Use when the operator or Foreman asks to land, merge, finalize, close, mark not planned, resume a partial merge or closure, or assess external-completion evidence. Land never implements or reviews a change and never gives merge authority to Foreman.
 ---
 
-# Land
+# valcraft-land
 
 Own one idempotent boundary from reviewed artifact to authoritative completion. Prepare first. Execute only exact authorized mutations. Reconcile before every retry.
 

@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "4291a9f8d9220713",
+      "version": "1e45282974ec5435",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -20,7 +20,7 @@
     },
     {
       "name": "valcraft-distill",
-      "version": "f22449825905e961",
+      "version": "67f538c185c01c47",
       "files": [
         "SKILL.md",
         "references/compare.md",
@@ -29,7 +29,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "8343643c822df6bd",
+      "version": "822f5dd7c209b137",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -39,7 +39,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "8e12f6f3317063c2",
+      "version": "fe95a8d1a5ada94a",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -60,7 +60,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "0395d7297a130939",
+      "version": "6e3f114cc1559769",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -69,7 +69,7 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "a1783d83df5f88d3",
+      "version": "48b8c8b33d69a029",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -80,7 +80,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "297910f91adcc75f",
+      "version": "e28df2cb8cfb2b66",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -91,7 +91,7 @@
     },
     {
       "name": "valcraft-msw",
-      "version": "6f291723cb3be4c6",
+      "version": "57f18be4ed3fbc20",
       "files": [
         "SKILL.md",
         "references/kernel.md"
@@ -99,7 +99,7 @@
     },
     {
       "name": "valcraft-review",
-      "version": "3d540f1c17d4f43a",
+      "version": "a61722bf8798d1e5",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -110,7 +110,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "23a98a0fdc74c849",
+      "version": "02e6294e9058b481",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -126,7 +126,7 @@
     },
     {
       "name": "valcraft-temper",
-      "version": "942e1172463045ab",
+      "version": "cbd67e3981f40ebe",
       "files": [
         "SKILL.md",
         "references/process.md",
@@ -136,7 +136,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "81bccca6886d391f",
+      "version": "52f186ef80a32189",
       "files": [
         "SKILL.md",
         "references/config.md"

@@ -3,7 +3,7 @@ name: valcraft-msw
 description: Apply the MSW Kernel to a markdown document — a plan, spec, skill, prompt, or any other .md file. Derives the document's contract, judges every claim by the kernel's deletion test, deletes the claims that fail, audits every limit for authority, and reports in the kernel's format. Use when explicitly invoked with a file, or when the user asks to apply MSW, run the MSW deletion test, or strip a document down to what its contract actually requires. Edits the target in place — for prompt-guide refinement use `valcraft-hone`; for a read-only essence summary use `valcraft-distill`.
 ---
 
-# msw
+# valcraft-msw
 
 Apply the MSW Kernel to one markdown document. The document's claims face the kernel's deletion test against the document's own contract; the result is reported in the kernel's report format. MSW deletes failed claims and makes only the minimal structural repairs those deletions force. It does not add substantive content or rewrite surviving claims.
 

@@ -3,7 +3,7 @@ name: valcraft-hone
 description: Refine an existing prompt artifact — inline prompt text, markdown prompt files (system prompts, agent instructions, slash commands), or a complete skill directory — against the official model prompting guides (Anthropic "Prompting Claude Fable 5" + OpenAI GPT-5.6 best practices). Use when explicitly invoked, or when the user asks to refine, tighten, optimize, modernize, or audit a prompt, system prompt, SKILL.md, CLAUDE.md, agent instructions, or skill for Claude, Opus, Fable, GPT, or Codex — even if they just say "make this prompt better" or "apply prompting best practices". Use for guide-based audit or refinement. For a read-only essence summary or separate minimal copy, use `valcraft-distill`. For deletion-only reduction of a Markdown document against its contract, use `valcraft-msw`.
 ---
 
-# hone
+# valcraft-hone
 
 Refine the prompt artifact for its target model family. Deletion is the primary tool; justify every added line against the artifact's contract.
 

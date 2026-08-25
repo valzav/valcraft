@@ -9,7 +9,7 @@ description: >
   planning, specification, review, merge, completion ticks, or tracker closure.
 ---
 
-# forge
+# valcraft-forge
 
 Implement and verify one assigned unit. Forge owns source changes and code-finding remediation. It never authors or revises a required task plan, reviews its own work, merges, ticks completion, closes tracker state, or declares the task shipped.
 
