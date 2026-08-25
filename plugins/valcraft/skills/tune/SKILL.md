@@ -45,4 +45,6 @@ End with exactly one terminal line:
 - the operator cancels mid-questionnaire: `Status: blocked: configuration_cancelled — existing configuration preserved`; or
 - an authorized write cannot be completed and verified: `Status: blocked: configuration_write_failed — <detail>`.
 
+The terminal line ends Tune's report, not the invoking skill's run; a caller such as Cast resumes its own workflow after reading it.
+
 `Status: done` is forbidden unless the base exists, is not ignored, validates standalone, and is committed or pending the active Cast baseline; any overlay is untracked, ignored, and validates; and the resolved configuration passes complete validation.

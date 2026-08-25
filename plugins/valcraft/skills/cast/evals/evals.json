@@ -13,6 +13,7 @@
         "CLAUDE.md is a relative symlink to AGENTS.md",
         "Cast invokes Tune first; Tune asks the open configuration questions with recommended explained choices and writes the base `.valcraft/config.yaml` without a confirmation question",
         "Cast does not repeat tracker, backend, approval, branch, Herdr, or merge-strategy questions after Tune returns Status: done",
+        "After Tune's terminal Status: done, Cast continues in the same turn through fact gathering, the recorded proposal, the frame, and the baseline commit instead of ending at Tune's report",
         "AGENTS.md contains no Valcraft configuration declaration and the tracked `.gitignore` contains the `/.valcraft/*` and `!/.valcraft/config.yaml` pair",
         "The generated tracker authority table names `.valcraft/config.yaml` and delegates missing or invalid configuration to Tune",
         "The baseline commit includes `.valcraft/config.yaml` with the tracked frame",
