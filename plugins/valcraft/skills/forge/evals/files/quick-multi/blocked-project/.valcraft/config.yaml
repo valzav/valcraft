@@ -1,0 +1,13 @@
+tracker:
+  mode: github
+  github_repository: github.example.test/neutral/tasks
+foreman:
+  backend: subagents
+  approval_mode: unattended
+  default_branch: main
+  release_branch: null
+  clarification_assignees:
+    product: null
+    default: null
+pull_requests:
+  merge_strategy: squash

@@ -10,7 +10,7 @@ Send every worker these fields in order:
 2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
 3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
 4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, and operation set.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
@@ -58,8 +58,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `scaffold_approval_required` | `AwaitOwner` |
-| `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `authority_drift`, `push_failed` | `StopProducer` |
+| `baseline_required`, `baseline_failed`, `artifact_validation_failed`, `configuration_unresolved`, `authority_drift`, `push_failed` | `StopProducer` |
+| `configuration_required` | `AwaitOwner` |
 
 ### Draft
 
@@ -74,8 +74,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 | --- | --- |
 | `draft_required` | `Drafting` |
 | `review_target_mismatch` | `CodeReview` |
-| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
-| `product_decision_required` | `AwaitOwner` |
+| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `configuration_unresolved`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `product_decision_required`, `configuration_required` | `AwaitOwner` |
 
 ### Review
 
@@ -94,9 +94,9 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_spec` | `ReturnToSpecCaller` |
 | `evidence_review_required` | `EvidenceReview` |
 | `partial_completion` | `Landing` |
-| `operator_confirmation_required`, `owner_decision_required` | `AwaitOwner` |
+| `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
-| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous` | `Blocked` |
+| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
 
 `ReviewByTarget` means task PR to CodeReview and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
 
@@ -104,8 +104,8 @@ Each declared code has one transition. The detail after `—` never changes it.
 
 | Outcome | Transition |
 | --- | --- |
-| `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required` | `AwaitOwner` |
-| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
+| `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required`, `configuration_required` | `AwaitOwner` |
+| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
 
 ### Temper
 

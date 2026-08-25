@@ -1,6 +1,6 @@
 # Backends
 
-A backend runs fresh workers; it never changes skill ownership. Missing `foreman_backend` selects native `subagents`.
+A backend runs fresh workers; it never changes skill ownership. Read the selected backend from `foreman.backend` in the resolved configuration.
 
 ## Primitives and flags
 
@@ -23,7 +23,7 @@ Backends declare `wake` (`event`, `foreground`, or authorized `poll`), `answer` 
 
 `report_available`, `idle_without_report`, `dispatch_error`, and `dead` end the current await. `permission_blocked` waits for an allowed answer or escalation. `wait_timeout` is nonterminal and valid only for foreground waiting; if the worker remains active, re-arm await in the same parent turn.
 
-Never poll a report file on event or foreground backends. Never treat absence from a live-only status list as success. A producer's semantic `Status: blocked` arrives under `report_available`, never `permission_blocked`.
+Never poll a report file on event or foreground backends. Never treat absence from a live-only status list as success.
 
 A signal from a physical worker whose assignment has already reached a terminal return is not a backend return. Record it in `state.md` as an observation with the released worker's identity and ignore it. Never treat it as `idle_without_report`; that return applies only to an active assignment.
 
@@ -73,7 +73,7 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Agent Orchestrator | an escalated permission gate stays under the re-armed poll waiter; an operator answer in the tmux window resolves it through the worker's terminal return | await | `transport:ao-gate-observed-by-poll` | Foreman eval 89 |
 | Herdr | submission can settle without delivering; `agent_prompt_stalled`, or a settled occupant with neither an observed `working` state nor the report, is unconfirmed | dispatch/await | `transport:herdr-unconfirmed-delivery` | Foreman eval 73 |
 | Herdr | the assignment envelope is passed as one argument value, never interpolated into a shell command string | dispatch | `transport:herdr-argv-envelope` | Foreman eval 84 |
-| Herdr | each role is pinned to a fixed harness so every Review runs on the model that did not produce its target | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
+| Herdr | each role uses its configured harness, model, and effort while every Review uses a different harness from its producer | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
 | Herdr | all roles share the orchestrator's checkout and canonical task branch | workspace | `transport:herdr-shared-checkout` | Foreman eval 75 |
 | Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
 | Herdr | an escalated permission gate stays under foreground observation; an operator answer in the worker's pane resolves it through the worker's terminal return | await | `transport:herdr-gate-observed-in-pane` | Foreman eval 87 |

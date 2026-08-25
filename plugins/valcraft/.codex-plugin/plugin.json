@@ -1,7 +1,7 @@
 {
   "name": "valcraft",
-  "version": "0.6.1",
-  "description": "Reusable agent skills: cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (retrospective production and authorized PRs), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+  "version": "0.7.0",
+  "description": "Reusable agent skills: tune (repository configuration), cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
     "name": "valcraft contributors",
     "url": "https://github.com/valzav/valcraft"
@@ -14,7 +14,7 @@
   "interface": {
     "displayName": "Valcraft",
     "shortDescription": "Skills for project framing, contracts, delivery, review, and prompt work.",
-    "longDescription": "Valcraft provides Cast project framing, Spec feature and quick contracts, Draft task planning with MSW, Forge implementation and task PR handoff, independent Review, Land finalization and tracker closure, Foreman named-state coordination, Temper retrospectives, prompt refinement and distillation, and MSW Kernel document judgment.",
+    "longDescription": "Valcraft provides Tune for configuration, Cast project framing, Spec feature and quick contracts, Draft task planning with MSW, Forge implementation and task PR handoff, independent Review, Land finalization and tracker closure, Foreman named-state coordination, Temper retrospectives, prompt refinement and distillation, and MSW Kernel document judgment.",
     "developerName": "valcraft contributors",
     "category": "Coding",
     "capabilities": [

@@ -1,8 +1,8 @@
 # Named-state delivery loop
 
-This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Every await first records one backend return, then opens a producer report only for `report_available`.
+This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
 
-Only an explicit delivery command enters the loop. `new PRD`, feature-contract creation, and quick-task creation route directly to `valcraft:spec` outside Foreman.
+Only an explicit delivery command enters the loop.
 
 ## Quick tasks
 
@@ -21,7 +21,7 @@ Before a new pick, reconcile the clean local default branch with its live remote
 - local ahead: wait for an operator instruction that names the exact push;
 - diverged: stop without merge, rebase, reset, force push, or task-branch creation.
 
-An absent release branch means no separate release branch. Fast-track and direct release-only paths are unavailable. Any configured release-branch write remains a human gate.
+`foreman.release_branch: null` means no separate release branch. Fast-track and direct release-only paths are unavailable. An omitted key invalidates the configuration and delegates repair to Tune. Any configured release-branch write remains a human gate.
 
 Apply Spec's readiness contract. An unready feature routes to Spec's direct caller; Foreman never repairs feature artifacts. Never interleave feature and quick pools.
 
@@ -29,19 +29,19 @@ Apply Spec's readiness contract. An unready feature routes to Spec's direct call
 
 Route only from verified producer reports and exact targets:
 
-| Durable evidence | Named state |
-| --- | --- |
-| selected eligible task with no plan | `Drafting` |
-| committed Draft plan not yet accessible to the next Review worker | `Drafting` |
-| committed Draft plan without an exact plan verdict | `PlanReview` |
-| exact passing plan verdict without Forge output | `Implementing` |
-| Forge implementation head with required task PR still prepared | `Implementing` |
-| Forge task PR head without an exact code verdict | `CodeReview` |
-| passing code verdict covering the current PR head | `Landing` |
-| Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
-| confirmed feature not yet closed by Land | `FeatureClose` |
-| feature closure complete without a retrospective report | `Retrospective` |
-| Temper report without an exact verdict | `RetroReview` |
+| Durable evidence                                                  | Named state      |
+| ----------------------------------------------------------------- | ---------------- |
+| selected eligible task with no plan                               | `Drafting`       |
+| committed Draft plan not yet accessible to the next Review worker | `Drafting`       |
+| committed Draft plan without an exact plan verdict                | `PlanReview`     |
+| exact passing plan verdict without Forge output                   | `Implementing`   |
+| Forge implementation head with required task PR still prepared    | `Implementing`   |
+| Forge task PR head without an exact code verdict                  | `CodeReview`     |
+| passing code verdict covering the current PR head                 | `Landing`        |
+| Land evidence record without fresh sufficiency verdict            | `EvidenceReview` |
+| confirmed feature not yet closed by Land                          | `FeatureClose`   |
+| feature closure complete without a retrospective report           | `Retrospective`  |
+| Temper report without an exact verdict                            | `RetroReview`    |
 
 Never restart Draft when a current committed plan exists. Never infer Review coverage from a branch, PR number, or earlier verdict.
 
@@ -96,6 +96,8 @@ A completed task target returns to Ready. A completed external closure returns t
 ## `EvidenceReview`
 
 Dispatch a fresh `review-evidence-<identity>` with `valcraft:review` in evidence mode on Land's exact durable evidence record. Review owns criterion-by-criterion sufficiency. A sufficient report returns to Landing with the exact verdict. An insufficient or blocked report follows the registry. Foreman records and judges no evidence.
+
+The return re-enters `Landing` carrying the whole ownership listed there — final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and evidence recording — not the completion tick alone. Which of those the resolved tracker mode actually requires, and in what order, is Land's own contract in [`../../land/references/tracker-closure.md`](../../land/references/tracker-closure.md).
 
 ## `FeatureClose`
 

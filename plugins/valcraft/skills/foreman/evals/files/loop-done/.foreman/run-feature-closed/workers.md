@@ -1,3 +1,0 @@
-| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| rf-land-feature-d000 | FeatureClose | FEAT-001 tracker-only close | land-F001-feature | subagents | Codex | Codex task land-F001-feature agent agent-rf-land-000 | none | .foreman/run-feature-closed/land-F001-feature-d000.md | 3333333333333333333333333333333333333333 | report_available | accepted; Retrospective pending |

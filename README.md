@@ -6,15 +6,15 @@ Status: alpha.
 
 ## Problems it addresses
 
-| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                                  |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code.                 |
-| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                                      |
-| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                                |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                                              |
-| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                                |
-| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                                            |
-| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                                 |
+| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                  |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code. |
+| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                      |
+| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                |
+| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                              |
+| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                |
+| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                            |
+| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                 |
 
 ## Valcraft's SDD at a glance
 
@@ -22,7 +22,7 @@ Valcraft treats spec-driven development as a repository data model, not a sessio
 
 ```text
 product idea:
-  -> cast: create the SDD project frame
+  -> cast: ensure configuration, then create the SDD project frame
     -> spec: create the first feature contract
 new feature or PRD:
   -> spec: create a feature contract or quick task
@@ -49,9 +49,10 @@ new feature or PRD:
 
 ### Artifacts and skill ownership
 
-- **Project frame:** `AGENTS.md` records the standing development rules and tracker mode; `docs/product-brief.md` records product intent and boundaries. `cast` creates or retrofits them, and every delivery skill reads the applicable rules.
+- **Configuration:** the committed `.valcraft/config.yaml` is the repository's shared base — tracker, Foreman, branch, Herdr worker, and pull-request settings. The optional gitignored `.valcraft/config.local.yaml` overlay overrides the user-scoped keys (approval mode, backend, and backend-specific worker settings), so collaborators can keep personal approval and backend choices without touching the shared file. `tune` is the sole writer of both and can reconfigure one section at any time.
+- **Project frame:** `AGENTS.md` records standing development rules; `docs/product-brief.md` records product intent and boundaries. `cast` creates or retrofits them, and every delivery skill reads the applicable rules.
 - **Decision record:** `docs/architecture/adr/NNNN-*.md` captures consequential technical decisions and their consequences. `cast` establishes the ADR structure; `forge` and `review` treat accepted ADRs as the highest project authority.
-- **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX` decomposition and dependencies. `spec` creates or resumes the complete triplet from one accepted source, including `001-mvp`; `foreman`, `draft`, `forge`, `review`, and `land` deliver against it.
+- **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX` decomposition and dependencies. `spec` creates or resumes the complete triplet from one accepted source, including the first MVP feature; `foreman`, `draft`, `forge`, `review`, and `land` deliver against it.
 - **Quick contract:** `specs/quick/NNN-<slug>.md` combines requirements, approach, and `QT-XXX` tasks for a change that does not need a feature triplet. `spec` creates it; the normal delivery and review skills use it as the complete contract.
 - **Delivery plan:** `docs/plans/*-plan.md` records implementation decisions for non-trivial work or remediation decisions for review findings. `draft` writes or revises the plan and applies `msw`; `review` checks its exact commit before `forge` implements it. Progress remains in the tracker rather than in the plan.
 - **Evidence and learning:** `forge` produces a verification handoff; `review` produces stable `R-XXX` findings and reproduced evidence; `land` owns final-head checks, authorized finalization, and tracker closure. `foreman` stores attributed worker reports while coordinating transitions. After feature closure, `temper` writes an append-only local report under the gitignored `docs/.retro/`; its synthesize mode aggregates those reports and, when evidence is corroborated across reports, offers the proposals to the operator as a selection.
@@ -62,11 +63,11 @@ new feature or PRD:
 
 The default path for a new project or a new body of work.
 
-1. **`/valcraft:cast`** — create or retrofit the project frame: README, `AGENTS.md`, product brief, architecture and ADR structure, tracker configuration, and the durable `specs/` root. Cast commits one approved clean baseline and hands the product brief to Spec; it creates no feature triplet or quick task.
-2. **`/valcraft:spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including `001-mvp`. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. No setup-time Foreman configuration is required: it defaults to native subagents and unattended mode, derives the repository's default branch when invoked, and treats a missing release branch as no separate release branch. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
+1. **`/valcraft:cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
+2. **`/valcraft:spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including the first MVP feature. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
+3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
 
-   Add `foreman_*` keys to `AGENTS.md` only when the project needs explicit overrides. Manual Forge remains available without changing the scaffold.
+   Run `/valcraft:tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
    `foreman` can use native subagents on either host. Claude Code wakes the parent turn when a worker completes; Codex keeps the parent turn active and waits for the worker in the foreground. External orchestrators integrate through registered Foreman backends.
 
@@ -90,6 +91,7 @@ Same contracts, you drive:
 
 | Skill                                                   | Claude Code         | Codex               | OpenCode  |
 | ------------------------------------------------------- | ------------------- | ------------------- | --------- |
+| `tune` — adjust the shared configuration or your local overlay | `/valcraft:tune` | `$valcraft:tune` | `tune` |
 | `cast` — create or retrofit the project frame           | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
 | `spec` — create a feature or quick contract             | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
 | `draft` — write a task plan and apply MSW               | `/valcraft:draft`   | `$valcraft:draft`   | `draft`   |
@@ -97,7 +99,7 @@ Same contracts, you drive:
 | `review` — review an exact plan, change, or evidence    | `/valcraft:review`  | `$valcraft:review`  | `review`  |
 | `land` — finalize reviewed work and close tracker state | `/valcraft:land`    | `$valcraft:land`    | `land`    |
 | `foreman` — coordinate the delivery loop                | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper` — produce a local retrospective and its handoff | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
+| `temper` — produce a local retrospective and handoff    | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
 | `hone` — refine a prompt artifact                       | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
 | `distill` — reduce a prompt to its essence              | `/valcraft:distill` | `$valcraft:distill` | `distill` |
 | `msw` — MSW Kernel over a document                      | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
@@ -108,7 +110,7 @@ Skills also trigger from natural requests ("new project", "review this PR", "ret
 
 | Elsewhere                                                                                    | In valcraft                                                                                                                                                                                                                                                |
 | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin, no runtime dependency, and nothing to install into the project beyond the files `cast` writes.                                                                                                                |
+| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin and no runtime dependency. `cast` writes the tracked project frame; `tune` writes the committed configuration and an optional ignored overlay.                                                                                       |
 | Specs and tasks live in the framework's own folders and formats.                             | Specs are ordinary files under `specs/`, tasks are checkboxes or GitHub Issues you already use, decisions are ADRs — readable and editable without the tool.                                                                                               |
 | SDD is a session ritual, not a project rule; work done outside it drifts from the specs.     | `cast` writes the discipline into `AGENTS.md`, so every agent session — inside the loop or not — cites IDs, updates the affected spec or ADR in the same change, and reviews against the same contract; `cast` retrofits an existing project the same way. |
 | Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | Valcraft's roles are skills with contracts (`spec`, `draft`, `forge`, `review`, `land`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                                |

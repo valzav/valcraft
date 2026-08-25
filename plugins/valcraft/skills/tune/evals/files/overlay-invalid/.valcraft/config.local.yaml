@@ -1,0 +1,4 @@
+foreman:
+  approval_mode: attended
+pull_requests:
+  merge_strategy: rebase

@@ -1,4 +1,4 @@
-# Intake: `project_tracker: local`
+# Intake: `tracker.mode: local`
 
 Git-owned task artifacts define order, dependencies, holds, and completion. Foreman reads them for coordination; producer skills own every artifact write.
 

@@ -3,7 +3,7 @@
 Create one gitignored directory per Foreman run:
 
 ```text
-.foreman/<run-id>/
+.valcraft/foreman/<run-id>/
 ├── state.md
 ├── workers.md
 ├── drafter-F004-T012-d000.md
@@ -17,7 +17,7 @@ Create one gitignored directory per Foreman run:
 └── retro-reviewer-F004-d000.md
 ```
 
-`<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.foreman/`. A run id never supplies an artifact date.
+`<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.valcraft/foreman/`. A run id never supplies an artifact date.
 
 ## `workers.md`
 
@@ -25,7 +25,7 @@ Append one row for every physical dispatch:
 
 `assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state`
 
-Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the dispatch ordinal plus the exact physical fields its backend reference declares, which differ per backend: AO records session id, alias, branch, workspace seed SHA, and whether that seed is predecessor or transport-only state; Herdr records session, workspace id, tab, pane, and agent name. A backend whose workers share the orchestrator's checkout records `none` for the physical branch. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
+Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. An external-orchestrator identity records the dispatch ordinal plus the exact physical fields its backend reference declares. A backend whose workers share the orchestrator's checkout records `none` for the physical branch. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
 
 ## `state.md`
 
@@ -48,3 +48,5 @@ Append checkpoints with:
 This checkpoint is not an authority. Re-read every referenced git, tracker, report, and backend fact before transition. Preserve prior checkpoints so resume can explain the state that produced each decision.
 
 The run directory is the audit and resume surface. Nothing in it is committed or pasted into a producer artifact.
+
+Ignore runtime state outside `.valcraft/foreman/`. Never migrate it into the current runtime contract.

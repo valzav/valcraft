@@ -1,2 +1,4 @@
 .eval/
-.foreman/
+/.valcraft/*
+!/.valcraft/config.yaml
+docs/.retro/

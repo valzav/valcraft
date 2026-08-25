@@ -1,4 +1,4 @@
-# Intake: `project_tracker: github`
+# Intake: `tracker.mode: github`
 
 Git owns task identity, order, and dependency intent. GitHub owns open or closed state, discussion, and intermediate labels. Spec owns projection. Bind every `gh` read to the configured repository and request explicit fields.
 
@@ -38,7 +38,7 @@ For a future owner, serialize one intermediate issue-comment batch containing fi
 
 ## Fast-track and release branch
 
-Fast-track is unavailable without an explicit `foreman_release_branch`. Never infer the default branch or fall back to ordinary delivery.
+Fast-track is unavailable when `foreman.release_branch` is `null`. Never infer the default branch or fall back to ordinary delivery.
 
 With a configured release branch, a `fast-track` label requests a release-target task PR. Read and report the label actor. The operator must authorize the exact release target. Forge proves the branch base and governing artifacts before its non-force push or PR action. Land receives separate exact release-write authority for landing. Every release operation waits in both approval modes. Foreman executes none of them.
 

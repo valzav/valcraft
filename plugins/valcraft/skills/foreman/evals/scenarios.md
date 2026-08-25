@@ -76,12 +76,12 @@ External-completion evals characterize routing ownership: Land records and close
 
 | Scenario | Eval |
 | --- | --- |
-| Missing keys select native subagents, unattended, live default branch, and no separate release branch | 1 |
-| Live default-branch authorities and stop conditions | 54 |
-| Missing release branch disables release-only flows without changing ordinary delivery | 55 |
+| Missing committed configuration and a repo-scoped overlay key delegate to Tune without read-time defaults | 1 |
+| Unambiguous default-branch authority stores silently; conflict or absence asks | 54 |
+| A null release branch disables release-only flows without changing ordinary delivery | 55 |
 | Quick selection, completion, validation, and qualified identities | 12, 13, 15, 16 |
 | Herdr keeps a Review worker with material findings for its closure check; producers stay fresh; a dead kept pane falls back to a fresh physical worker | 85 |
-| Herdr project session is the controller's own pane's session; `foreman_herdr_session` is an optional assertion; no re-targeting | 86 |
+| Herdr project session is the controller's own pane's session; `foreman.herdr.session` is a nullable assertion; no re-targeting | 86 |
 | Herdr escalated permission gate stays under observation; an operator answer in the pane resolves it; await timeouts stay below the controller's command limit | 87 |
 | AO keeps a Review worker for its closure check and refetches the canonical ref; a missing session falls back to a fresh one | 88 |
 | AO escalated permission gate stays under the re-armed waiter; an operator answer in tmux resolves it | 89 |

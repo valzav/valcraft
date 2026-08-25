@@ -31,6 +31,11 @@ For instructions, prompts, safety rules, and error messages:
 - Name the actor when it is not clear.
 - Prefer direct commands and simple sentence structures.
 
+## Skill interaction design
+
+- Minimize operator questions. Resolve a value from existing configuration, repository state, or history when one authoritative source exists, and apply it without asking. Ask only when the choice is genuinely open or authoritative sources conflict.
+- Do not ask the operator to confirm answers they just gave. An interactive answer authorizes the write it configures; show the exact result in the report instead of a confirmation question.
+
 ## Commands
 
 There is no application build or dependency install. The shipped plugin is Markdown, JSON, and YAML; standard-library Python scripts validate repository contracts and generated metadata.
@@ -41,6 +46,7 @@ There is no application build or dependency install. The shipped plugin is Markd
 - Run a skill's evals (`plugins/valcraft/skills/<skill>/evals/evals.json`): invoke the skill-creator skill with "run the evals for plugins/valcraft/skills/<skill>". Direct its workspace to `.local/` (gitignored) — never to the default sibling location inside `plugins/valcraft/`.
 - Regenerate the OpenCode skills index after any change under `plugins/valcraft/skills/` outside `evals/`: `python3 scripts/build-skills-index.py` (CI runs it with `--check`). OpenCode consumes the skills through that index over raw GitHub; there is no OpenCode manifest.
 - Check the federated worker-report registry, routing codes, backend returns, and active transport-deviation eval references: `python3 scripts/check-coordination-contracts.py`. Run its discriminating static tests with `python3 scripts/tests/test_check_coordination_contracts.py`. These checks detect declaration drift; behavioral evals prove behavior.
+- Check every shipped `SKILL.md` against the 8,000-byte Codex ceiling: `python3 scripts/check-skill-sizes.py` (CI runs it in the lint workflow).
 
 ## Architecture constraints
 

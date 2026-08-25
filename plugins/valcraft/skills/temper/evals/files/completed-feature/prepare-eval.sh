@@ -10,7 +10,7 @@ git init -q -b main
 git config user.name "Valcraft Eval"
 git config user.email "eval@example.test"
 
-git add .gitignore AGENTS.md docs prepare-eval.sh specs
+git add .gitignore .valcraft/config.yaml AGENTS.md docs prepare-eval.sh specs
 GIT_AUTHOR_DATE=2026-08-10T09:00:00Z GIT_COMMITTER_DATE=2026-08-10T09:00:00Z \
   git commit -q -m "docs(spec): define FEAT-001 record export"
 

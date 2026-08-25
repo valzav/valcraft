@@ -14,11 +14,11 @@ mode=${1:-plan-only}
 git init -q -b main
 git config user.name "Valcraft Eval"
 git config user.email "eval@example.test"
-git add .gitignore AGENTS.md bin docs prepare-eval.sh specs src tests
+git add .gitignore .valcraft/config.yaml AGENTS.md bin docs prepare-eval.sh specs src tests
 GIT_AUTHOR_DATE=2031-04-08T12:00:00Z GIT_COMMITTER_DATE=2031-04-08T12:00:00Z \
   git commit -q -m "docs(plan): define T-001 retention parser"
 
-mkdir -p .eval .foreman
+mkdir -p .eval .valcraft/foreman
 git init -q --bare .eval/remote.git
 git remote add origin "$PWD/.eval/remote.git"
 git push -q origin main
@@ -26,7 +26,7 @@ plan_sha=$(git rev-parse HEAD)
 git push -q origin "$plan_sha:refs/heads/feat/f001-t001-retention-window"
 git switch -q -c external/forge-f001-t001-eval
 
-cat > .foreman/plan-review.md <<EOF
+cat > .valcraft/foreman/plan-review.md <<EOF
 ## Review report
 
 ### Mode and change class
@@ -64,7 +64,7 @@ if [ "$mode" = implemented ]; then
   GIT_AUTHOR_DATE=2031-04-08T12:05:00Z GIT_COMMITTER_DATE=2031-04-08T12:05:00Z \
     git commit -q -m "feat(retention): implement T-001 window parser"
   head_sha=$(git rev-parse HEAD)
-  cat > .foreman/forge-assignment.md <<EOF
+  cat > .valcraft/foreman/forge-assignment.md <<EOF
 Producer: valcraft:forge
 Named state: Implementing
 Logical worker: forge-F001-T001
@@ -78,7 +78,7 @@ Observed remote head: $plan_sha
 PR target: main from feat/f001-t001-retention-window; matching PR absent
 Authorized operations: non-force push and create-or-update one task PR
 Authority source: attributed Foreman assignment for this exact prepared target
-Plan review: .foreman/plan-review.md covering $plan_sha
+Plan review: .valcraft/foreman/plan-review.md covering $plan_sha
 EOF
 fi
 

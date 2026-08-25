@@ -1,0 +1,4 @@
+| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rc-plan-review-d000 | PlanReview | FEAT-001 T-002 plan | plan-reviewer-F001-T002 | subagents | Codex | Codex task plan-reviewer-F001-T002 agent agent-rc-review-000 | none | .valcraft/foreman/run-closure-check/plan-reviewer-F001-T002-d000.md | 1111111111111111111111111111111111111111 | report_available | accepted and released |
+| rc-draft-d001 | Drafting | FEAT-001 T-002 plan remediation | drafter-F001-T002 | subagents | Codex | Codex task drafter-F001-T002 agent agent-rc-draft-001 | none | .valcraft/foreman/run-closure-check/drafter-F001-T002-d001.md | 1111111111111111111111111111111111111111 | report_available | accepted; transition pending |

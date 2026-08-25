@@ -1,1 +1,2 @@
-.foreman/
+/.valcraft/*
+!/.valcraft/config.yaml

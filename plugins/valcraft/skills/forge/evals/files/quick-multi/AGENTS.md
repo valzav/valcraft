@@ -1,7 +1,5 @@
 # Agent instructions
 
-project_tracker: github github_repository: github.example.test/acme/ledger
-
 ## Orientation
 
 - `docs/` contains product context, working plans, and architecture decisions.

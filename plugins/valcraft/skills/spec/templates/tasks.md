@@ -11,7 +11,7 @@ updated: <YYYY-MM-DD>
 
 The feature is complete when every applicable acceptance criterion is verified, repository checks pass, and affected git-owned contracts are current.
 
-<!-- Read project_tracker from root AGENTS.md. Use exactly one shape throughout.
+<!-- Read tracker.mode from .valcraft/config.yaml. Use exactly one shape throughout.
 
      Local:
      - [ ] T-001 <Task>; verifies FR-001.
@@ -26,7 +26,7 @@ The feature is complete when every applicable acceptance criterion is verified, 
      - T-002 <Task>; verifies FR-002; blocked by T-001. → #124
 -->
 
-<!-- Keep T-IDs stable. Root AGENTS.md owns tracker mode. The paired spec.md owns
+<!-- Keep T-IDs stable. .valcraft/config.yaml owns tracker mode. The paired spec.md owns
      the feature-issue mapping. This file owns task mappings only.
 
      Git owns task text, phases, order, and dependency intent. GitHub owns task

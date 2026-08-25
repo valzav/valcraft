@@ -1,3 +1,4 @@
 .eval/
-.foreman/
+/.valcraft/*
+!/.valcraft/config.yaml
 eval-tools/

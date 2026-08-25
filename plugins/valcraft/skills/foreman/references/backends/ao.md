@@ -1,6 +1,6 @@
 # Backend: `ao`
 
-Foreman runs in an Agent Orchestrator project. Every worker receives an isolated worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and an exact project id.
+Foreman runs in an Agent Orchestrator project. Every worker receives an isolated worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and the exact project id from `foreman.ao.project_id` in the resolved configuration.
 
 ## Flags
 
@@ -23,7 +23,7 @@ Keep the full canonical logical identity in the assignment and `workers.md`. Map
 - Land: `l`;
 - Temper: `t`.
 
-Do not define aliases for retired role families or for producer-owned substeps. Only the five role families above receive AO alias prefixes.
+Do not define aliases for retired role families or for producer-owned substeps.
 
 For dispatch ordinal zero, hash the UTF-8 canonical logical identity with SHA-256. For later dispatches, hash `<logical identity>\ndispatch:<ordinal>`. Form `<role>-<hex-prefix>` from the lowercase hexadecimal digest with as many characters as fit AO's 20-character name contract. If current project sessions or any `workers.md` row already owns the result, rehash `<dispatch preimage>\ncollision:<n>` until it is unused. Preserve all prior rows.
 

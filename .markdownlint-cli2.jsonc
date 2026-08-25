@@ -3,7 +3,7 @@
   // agent/worktree artifacts that only exist locally, plus foreman run
   // directories (worker reports in eval fixtures are wire format, not docs).
   "globs": ["**/*.md"],
-  "ignores": [".local/**", ".worktrees/**", "node_modules/**", "**/.foreman/**"],
+  "ignores": [".local/**", ".worktrees/**", "node_modules/**", "**/.valcraft/foreman/**"],
   "config": {
     "default": true,
     // Prose paragraphs, list items, blockquotes, skill descriptions, and

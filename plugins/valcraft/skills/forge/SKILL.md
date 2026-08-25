@@ -19,7 +19,7 @@ Read `references/verification-and-handoff.md` before editing. It owns verificati
 
 ## Load the contract
 
-Read root `AGENTS.md` and resolve `project_tracker`. Read `../spec/references/feature-contract.md` for feature identity and readiness. For a quick task, also read `../spec/references/quick.md`.
+Read root `AGENTS.md` for project instructions. Read `../tune/references/config.md` completely, then validate the resolved configuration — the committed `.valcraft/config.yaml` plus any `.valcraft/config.local.yaml` overlay — against that contract. If the configuration is missing or invalid, invoke `valcraft:tune` for the affected section and resume only after `Status: done`. A Tune question this run cannot answer ends the run with `configuration_required`; any other non-done Tune result ends it with `configuration_unresolved`, quoting Tune's terminal line in the detail. Read `../spec/references/feature-contract.md` for feature identity and readiness. For a quick task, also read `../spec/references/quick.md`.
 
 The git-owned contract is the feature's `spec.md`, `design.md`, `tasks.md`, accepted ADRs, and passed task plan, or the quick task's one file and passed plan. Accepted ADRs outrank `specs/`, which outrank derived `docs/`. Stop on an unresolved conflict or missing behavior-changing decision. Ask when attended; otherwise report the question. Never invent the answer.
 
@@ -40,7 +40,13 @@ State touched files and tasks and deliberately untouched adjacent scope. Do not 
 
 ## Require the passed plan
 
-Draft is the sole task-plan producer. Treat a feature or quick task as non-trivial unless its git-owned task is itself a complete, single-step implementation and verification contract. Non-trivial work requires:
+Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full, names the files and the exact change, and names the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
+
+A task is also non-trivial whenever reaching an implementation needs a decision rather than a transcription: contracts that conflict, an approach the artifacts leave open, or scope wider than the named change. Precedence settling which contract wins does not make the task trivial — knowing that an accepted ADR outranks `design.md` identifies the authority, not the plan it implies. Carry the resolved conflict to Draft as input.
+
+Route to Draft whenever both readings are arguable. An unnecessary plan costs one cycle; unplanned work costs an unreviewed change to code and to contracts Forge does not own.
+
+Non-trivial work requires:
 
 - one committed semantic task plan produced by `valcraft:draft`;
 - a Review report whose plan verdict is `pass` for that exact repository, plan path, and full plan commit SHA; and

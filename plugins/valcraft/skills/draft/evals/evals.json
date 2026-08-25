@@ -50,7 +50,7 @@
     {
       "id": 3,
       "name": "review-findings-revise-plan-by-r-id",
-      "prompt": "$valcraft:draft — in evals/files/plan-review/, run `./prepare-eval.sh`, then address the plan-review findings in .foreman/run-plan-review/reviewer-plan-F001-T002.md for T-002. The assignment pins canonical branch feat/f001-t002-export-scheduling and predecessor head equal to the `main_head` that `./prepare-eval.sh` printed. Planning only; do not push.",
+      "prompt": "$valcraft:draft — in evals/files/plan-review/, run `./prepare-eval.sh`, then address the plan-review findings in .valcraft/foreman/run-plan-review/reviewer-plan-F001-T002.md for T-002. The assignment pins canonical branch feat/f001-t002-export-scheduling and predecessor head equal to the `main_head` that `./prepare-eval.sh` printed. Planning only; do not push.",
       "expected_output": "Draft verifies that the existing plan and review target belong to T-002, updates that same semantic plan rather than allocating another, and addresses R-001 and R-002 only where the git-owned contract supports them. It reruns valcraft:msw after the revision and commits the reviewable resolution state with the R-IDs in the subject. The Draft report preserves the standard headings; Finding resolutions lists one line per R-ID with the resolving full commit SHA, repository-relative plan file-and-line locator, and concise claim. Review target names the updated plan and exact new head. No review text is treated as mutation authority, no source changes occur, and Status: done is last.",
       "files": [
         "evals/files/plan-review/.gitignore",
@@ -61,7 +61,7 @@
         "evals/files/plan-review/specs/001-report-export/spec.md",
         "evals/files/plan-review/specs/001-report-export/design.md",
         "evals/files/plan-review/specs/001-report-export/tasks.md",
-        "evals/files/plan-review/.foreman/run-plan-review/reviewer-plan-F001-T002.md"
+        "evals/files/plan-review/.valcraft/foreman/run-plan-review/reviewer-plan-F001-T002.md"
       ],
       "assertions": [
         "Draft updates the existing semantic plan path and does not allocate a second plan",

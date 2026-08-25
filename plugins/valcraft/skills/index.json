@@ -2,10 +2,11 @@
   "skills": [
     {
       "name": "cast",
-      "version": "14d0a07afffde931",
+      "version": "cbcf2de6d6d9565e",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
+        "references/push-authority.md",
         "references/scaffold.md",
         "templates/AGENTS.md",
         "templates/README.md",
@@ -38,7 +39,7 @@
     },
     {
       "name": "foreman",
-      "version": "d517d3dca8f8ac26",
+      "version": "1cc0a53596f194ee",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -46,20 +47,20 @@
         "references/backends/ao.md",
         "references/backends/herdr.md",
         "references/backends/subagents.md",
+        "references/configuration.md",
         "references/contracts.md",
         "references/hygiene.md",
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
         "references/review-round.md",
-        "templates/project-block.md",
         "templates/run-dir.md",
         "agents/openai.yaml"
       ]
     },
     {
       "name": "forge",
-      "version": "6efd8fccef9423d7",
+      "version": "f37b0d2b20787f34",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -79,7 +80,7 @@
     },
     {
       "name": "land",
-      "version": "22f9b26895f31894",
+      "version": "102b40dd9e13789a",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -98,7 +99,7 @@
     },
     {
       "name": "review",
-      "version": "da3e87f07ab29c45",
+      "version": "74fe7ac47475ef51",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -109,7 +110,7 @@
     },
     {
       "name": "spec",
-      "version": "538d6cd4a2689e78",
+      "version": "98b78d2e4ad8c093",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -125,12 +126,20 @@
     },
     {
       "name": "temper",
-      "version": "91a857049aca2b9b",
+      "version": "643adf9d8f5eccb3",
       "files": [
         "SKILL.md",
         "references/process.md",
         "references/report-format.md",
         "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "tune",
+      "version": "1a6503ed98349226",
+      "files": [
+        "SKILL.md",
+        "references/config.md"
       ]
     }
   ]

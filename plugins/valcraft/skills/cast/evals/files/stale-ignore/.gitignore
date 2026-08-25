@@ -1,0 +1,2 @@
+# Legacy scaffold rule: the blanket rule ignores the committed base file.
+/.valcraft/

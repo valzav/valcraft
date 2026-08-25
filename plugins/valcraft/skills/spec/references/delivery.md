@@ -106,6 +106,7 @@ Use these stable blocked codes:
 
 - `assignment_invalid` — the envelope, source, artifact, or requested shape is missing, malformed, ambiguous, or cannot be tied to its contract.
 - `scaffold_invalid` — project framing or tracker metadata fails preflight.
+- `configuration_unresolved` — Tune ended without done for a cause this run does not own; the detail quotes Tune's terminal line.
 - `feature_identity_invalid` — an existing feature, quick task, task, mapping, or dependency identity is invalid or collides.
 - `workspace_not_ready` — the selected local baseline is unavailable, local state is dirty or diverged, or an outward stage lacks agreeing live branch authority or finds incompatible refs.
 - `review_target_mismatch` — a revision report does not cover this artifact and exact head.
@@ -118,6 +119,7 @@ Use these stable blocked codes:
 Use these stable question codes:
 
 - `source_selection_required` — one source, staged feature, or shape requires an explicit operator selection.
+- `configuration_required` — Tune needs interactive operator answers this run cannot supply.
 - `product_decision_required` — observable behavior or an acceptance criterion needs an owner answer.
 - `owner_decision_required` — a necessary non-product choice needs an owner answer.
 - `tracker_target_required` — GitHub mode has no selected output repository.

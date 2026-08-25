@@ -1,15 +1,8 @@
 # Backend: `herdr`
 
-Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches workers as fresh coding agents in one named project session. A Review worker with material findings may remain for its closure check under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the named session, and both mapped harnesses.
+Foreman runs inside a [Herdr](https://herdr.dev) pane and dispatches workers as fresh coding agents in one named project session. A Review worker with material findings may remain for its closure check under [Review continuity](#review-continuity). Require the `herdr` binary, `HERDR_ENV=1`, the configured session constraint, and every configured harness.
 
-The controller runs inside the project's Herdr session, and that session is the one its own pane belongs to. Root `AGENTS.md` may pin its name; the key is an assertion, not a pointer:
-
-```yaml
-foreman_backend: herdr
-foreman_herdr_session: <session-name>   # optional; when set, the controller's own session must carry this name
-```
-
-Without the key, the project session is whichever session the controller's pane is in — `herdr --session <name>` followed by Claude Code in one of its panes is the whole setup. Set the key when one machine hosts several project sessions and a controller started in the wrong one must stop rather than run.
+The controller runs inside the project's Herdr session, and that session is the one its own pane belongs to. Read `foreman.herdr.session` and the complete `foreman.herdr.workers` map from the resolved configuration. A non-null session is an assertion, not a pointer. When it is null, use whichever session contains the controller's pane. A controller started in a different session stops instead of retargeting another socket.
 
 Workers share Foreman's checkout and canonical task branch. Isolation comes from a fresh worker per dispatch and serial execution, not from a worktree, so the shared-checkout rules in [`subagents.md`](subagents.md#shared-checkout) apply unchanged.
 
@@ -19,31 +12,35 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | --- | --- |
 | `wake` | `foreground` — `agent prompt --wait` blocks for the worker's turn; a lost handle re-arms with standalone `agent wait` |
 | `answer` | `interactive` through `agent send-keys` |
-| `harnesses` | Claude and Codex, assigned per role by the table below; a missing mapped harness fails readiness |
+| `harnesses` | Claude and Codex as configured per role; a missing configured harness fails readiness |
 | `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
 | `review continuity` | kept active — a Review worker with material findings waits in its pane and receives its closure check and any second full round as follow-up prompts; released after the round's final report |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
 
-## Role-to-harness assignment
+## Role configuration
 
-Each Review runs on the model that did not produce its target.
+Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 
-| Role | Harness | Role | Harness |
-| --- | --- | --- | --- |
-| Draft | Codex | Land | Claude |
-| PlanReview | Claude | Temper | Claude |
-| Forge | Claude | RetroReview | Codex |
-| CodeReview | Codex | EvidenceReview | Codex |
+| Named state role | Worker key | Must differ from |
+| --- | --- | --- |
+| Draft | `draft` | `plan_review` |
+| PlanReview | `plan_review` | `draft` |
+| Forge | `forge` | `code_review` |
+| CodeReview | `code_review` | `forge` |
+| Land | `land` | `evidence_review` |
+| EvidenceReview | `evidence_review` | `land` |
+| Temper | `temper` | `retro_review` |
+| RetroReview | `retro_review` | `temper` |
 
-Never substitute the other harness for a missing one; that silently removes the independence this backend exists to provide.
+The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those four pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
 
 ## Readiness
 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.
 
-1. `HERDR_ENV=1`, and `herdr --version` reports a release providing the three primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. Release 0.8.2 is the verified source of all three. Stop rather than degrade when any is absent.
-2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman_herdr_session` is set, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
-3. Both mapped harnesses are startable in that session.
+1. `HERDR_ENV=1`, and `herdr --version` reports release 0.8.2 or newer — the verified source of the primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. An older or unreadable version fails readiness; never degrade to a partial contract.
+2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman.herdr.session` is non-null, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
+3. Every harness named by the worker map is startable in that session, and each reviewer-producer harness pair differs.
 4. This controller holds the project's lease.
 
 ### The inherited socket is the session
@@ -54,12 +51,14 @@ Herdr injects `HERDR_SOCKET_PATH` into every pane, and a socket override outrank
 
 Allow one controller per project pool. Claim atomically because two controllers can pass a readiness check simultaneously. Create the lock from its owner token so an interruption cannot leave an ownerless lock:
 
-1. Create `.foreman/` in the project checkout when absent. Readiness precedes run-directory creation.
-2. Read this controller's identity with `herdr pane current`. Write session, workspace id, pane id, the pane's `agent_session` value, and claim time to `.foreman/controller.owner.<pane-id>`. Fail readiness when `agent_session` cannot be resolved.
-3. Claim generation 1 with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.1`. The hard link fails atomically when the target exists. On failure, resolve the existing generation through step 5.
+1. Create `.valcraft/foreman/` in the project checkout when absent. Readiness precedes run-directory creation.
+2. Read this controller's identity with `herdr pane current`. Write session, workspace id, pane id, the pane's `agent_session` value, and claim time to `.valcraft/foreman/controller.owner.<pane-id>`. Fail readiness when `agent_session` cannot be resolved.
+3. Claim generation 1 with `ln .valcraft/foreman/controller.owner.<pane-id> .valcraft/foreman/controller.lock.1`. The hard link fails atomically when the target exists. On failure, resolve the existing generation through step 5.
 4. Release only as the recorded owner, at run end: confirm the highest generation's token carries this controller's pane id and `agent_session` value, then remove that generation.
-5. The holder is the highest-numbered `.foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` resolves the recorded pane and reports the recorded `agent_session` value. Pane existence alone is insufficient because an ordinary shell can remain after its agent exits. For a live holder, fail readiness naming the owner and remove nothing.
-6. For a dead holder, claim generation `n+1` with `ln .foreman/controller.owner.<pane-id> .foreman/controller.lock.<n+1>`. Never remove or move generation `n` before claiming; another reclaimer may already hold a newer live generation. A failed link loses the race and stops. The winner removes lower generations and records the dead-owner observation, superseded generation, and new claim in `state.md`.
+5. The holder is the highest-numbered `.valcraft/foreman/controller.lock.<n>`. It is live only when `herdr pane get <pane-id>` resolves the recorded pane and reports the recorded `agent_session` value. Pane existence alone is insufficient because an ordinary shell can remain after its agent exits. For a live holder, fail readiness naming the owner and remove nothing.
+6. For a dead holder, claim generation `n+1` with `ln .valcraft/foreman/controller.owner.<pane-id> .valcraft/foreman/controller.lock.<n+1>`. Never remove or move generation `n` before claiming; another reclaimer may already hold a newer live generation. A failed link loses the race and stops. The winner removes lower generations and records the dead-owner observation, superseded generation, and new claim in `state.md`.
+
+After the claim succeeds — generation 1 or a reclaimed generation — title the controller pane with `herdr pane report-metadata <pane-id> --source valcraft-foreman --title <title>`, where `<title>` is `foreman · <session>` and `<session>` is the session name recorded at readiness, so the orchestrator column is identifiable beside its workers. Pass the title as one argument value. Title only after the claim: a controller that loses the race or fails readiness leaves no `foreman` title behind.
 
 ## Physical identity
 
@@ -81,8 +80,14 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    Never split the orchestrator's pane while a worker pane is live: that opens a second column and narrows every pane. Read and record `.result.pane.pane_id` before the next call. Release and recovery use the returned pane id. After an interrupted split, inventory `herdr pane list` for an unattributed pane on this checkout and adopt or close it before splitting another.
 
+   Title the returned pane so the operator can read the layout: `herdr pane report-metadata <pane-id> --source valcraft-foreman --title <title>`, where `<title>` is `<role> · <task> · <harness>`: the logical worker name, with the Review role distinguished by mode as `review:plan` or `review:code`; the canonical task identity; and the configured harness. The task identity is untrusted tracker and repository text: pass the title as one argument value and never interpolate it into shell text. A reported title outranks a manual pane name in the split border, so it is the field that is actually read. `--source` scopes the title to the `valcraft-foreman` source; only a caller reporting that source can change or clear it. The title is display-only and never a gate: record a failed report as an observation and continue the dispatch. It survives `pane move --new-tab`, so a preserved pane keeps its title under its new id.
+
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
-4. **Agent ready** — `herdr agent start <agent-name> --kind <claude|codex> --pane <pane-id>`. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
+4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
+   - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
+   - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
+
+   Construct an argument vector. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
 A worker that blocks during startup is not a failure. Herdr reports it as `blocked` and `agent list` shows it; clear only a prompt the committed contract settles for a directory this run owns.
@@ -158,7 +163,7 @@ Escalation names the gate; it does not end the await. The operator can answer th
 
 ## Release and recovery
 
-Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record.
+Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record. A worker's reported pane title needs no cleanup because it dies with the pane. The orchestrator's own title outlives the run: clear it at run end with `herdr pane report-metadata <pane-id> --source valcraft-foreman --clear-title`, which is honored only from this source.
 
 A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory.
 

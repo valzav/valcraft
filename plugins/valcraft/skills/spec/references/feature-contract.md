@@ -1,19 +1,19 @@
 # Feature contract
 
-This reference owns Spec's feature schema, intake, allocation, staged resumption, artifact synthesis, and readiness rules. A feature contract is one complete `spec.md`, `design.md`, and `tasks.md` triplet. Spec is the sole producer of every triplet, including `001-mvp`.
+This reference owns Spec's feature schema, intake, allocation, staged resumption, artifact synthesis, and readiness rules. A feature contract is one complete `spec.md`, `design.md`, and `tasks.md` triplet. Spec is the sole producer of every triplet, including the first MVP feature.
 
 ## Preflight the scaffold
 
 Require all of the following before feature work:
 
-- a readable root `AGENTS.md` with exactly one `project_tracker: local` or `project_tracker: github` declaration;
+- a readable root `AGENTS.md` and a valid resolved configuration whose committed `.valcraft/config.yaml` sets `tracker.mode: local` or `tracker.mode: github`;
 - a readable `docs/product-brief.md`;
 - a readable `specs/` directory; and
 - exactly one mode-valid `spec_issue` mapping in every existing `spec.md`.
 
-Read `AGENTS.md` and resolve its tracker declaration before inspecting remotes or GitHub. Local mode performs no output-tracker discovery or readiness check.
+Read tracker mode and target from the committed `.valcraft/config.yaml` before inspecting remotes or GitHub. Local mode performs no output-tracker discovery or readiness check. A producer skill delegates a missing or invalid tracker section to Tune and resumes only after `Status: done`; report-only Review instead reports it as blocking.
 
-A local mapping is exactly `spec_issue: null`. A GitHub mapping is `spec_issue: TBD` or one positive issue number. Reject a `tracker` or `spec_issue` field in `tasks.md`. Root `AGENTS.md` owns tracker mode and target; `spec.md` owns the feature-issue mapping; `tasks.md` owns only T-ID-to-task-issue mappings.
+A local mapping is exactly `spec_issue: null`. A GitHub mapping is `spec_issue: TBD` or one positive issue number. Reject a `tracker` or `spec_issue` field in `tasks.md`. Tune owns tracker mode and target in the committed `.valcraft/config.yaml`; `spec.md` owns the feature-issue mapping; `tasks.md` owns only T-ID-to-task-issue mappings.
 
 Stop on an invalid scaffold or metadata shape. Name the exact problem and require an explicit scaffold repair. Spec does not repair project framing during feature production.
 
@@ -47,7 +47,7 @@ Accept exactly one operator-selected source:
 
 When none is selected, ask. When several are supplied, ask the operator to select one. An inline operator brief is valid only for a quick task.
 
-Canonicalize a local source to its normalized repository-relative path. Reject an absolute output path, a path outside the repository, an empty file, or a non-file. For GitHub, accept a full issue URL, `HOST/OWNER/REPOSITORY#NUMBER`, or `#NUMBER` only when root `AGENTS.md` declares one concrete `github_repository`. Resolve the source repository from the selector or declaration, never from git remotes. Read only issue title, body, positive number, repository identity, and canonical URL. Reject pull requests. Do not fetch comments, linked content, or another issue.
+Canonicalize a local source to its normalized repository-relative path. Reject an absolute output path, a path outside the repository, an empty file, or a non-file. For GitHub, accept a full issue URL, `HOST/OWNER/REPOSITORY#NUMBER`, or `#NUMBER` only when the committed `.valcraft/config.yaml` contains one concrete `tracker.github_repository`. Resolve the source repository from the selector or configuration, never from git remotes. Read only issue title, body, positive number, repository identity, and canonical URL. Reject pull requests. Do not fetch comments, linked content, or another issue.
 
 Canonicalize the source to its repository-relative path or `https://<host>/<owner>/<repository>/issues/<number>`. Every `spec.md` has a `Sources` section with exactly that one value. Compare it with every existing feature source before allocation.
 

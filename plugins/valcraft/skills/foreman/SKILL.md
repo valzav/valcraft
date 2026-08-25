@@ -10,7 +10,7 @@ Coordinate delivery. Never perform a worker skill's work.
 
 ## Resolve the run
 
-Read the root `AGENTS.md`. Resolve runtime keys with [`templates/project-block.md`](templates/project-block.md). Missing backend means native subagents. Missing approval mode means unattended. Missing release branch means no separate release branch. Resolve a missing default branch only from unambiguous live repository authorities.
+Read the root `AGENTS.md` for project instructions. Resolve tracker and runtime settings from the resolved configuration — the committed `.valcraft/config.yaml` plus any `.valcraft/config.local.yaml` overlay — with [`references/configuration.md`](references/configuration.md). If the configuration is missing or invalid, invoke `valcraft:tune` for the affected section and resume only after `Status: done`. Never infer or default a missing value while reading configuration.
 
 Load these contracts before dispatch:
 
@@ -21,7 +21,7 @@ Load these contracts before dispatch:
 - [`references/loop.md`](references/loop.md);
 - [`references/hygiene.md`](references/hygiene.md).
 
-Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.foreman/` is ignored. Create or resume the run directory from [`templates/run-dir.md`](templates/run-dir.md).
+Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/foreman/` is ignored by the `/.valcraft/*` rule. Create or resume the run directory from [`templates/run-dir.md`](templates/run-dir.md).
 
 `new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft:spec`; create no Foreman run.
 
@@ -33,7 +33,7 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 - Accept only the active assignment's attributed report path and logical and physical worker identity. Reject stale, late, missing, or unattributed reports.
 - Validate the producer-owned report contract mechanically. Route declared codes with the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.
-- End only at completion or a named human gate. Follow the selected backend's wake contract: `event` ends the turn and wakes on completion, `foreground` keeps waiting in the same turn, and authorized `poll` arms its waiter before the turn ends. Never ask the operator for a status or continue prompt.
+- End only at completion or a named human gate; follow the selected backend's wake contract for how the turn waits or ends. Never ask the operator for a status or continue prompt.
 - Never author or revise a plan, implement, review, create an artifact or PR, record or judge external evidence, merge, tick completion, close tracker state, or apply a retrospective proposal.
 
 ## Roles
@@ -57,7 +57,7 @@ Use a second harness for Review when the backend offers one. Fresh context suppl
 
 After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority, or owner decision.
 
-With a harness task tool, mirror the loop for the current task: one item per named state on its path, titled `<task identity> — <state>`, one `in_progress` at a time, `completed` when `state.md` records the transition out of it. Add the feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
+Mirror the loop with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex): at task pick, create one item per named state on the task's path, titled `<task identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add the feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
 
 ## Trust boundary
 

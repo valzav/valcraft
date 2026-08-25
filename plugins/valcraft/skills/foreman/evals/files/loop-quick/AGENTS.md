@@ -1,16 +1,5 @@
 # Agent instructions
 
-## Project metadata
-
-```yaml
-project_tracker: github
-github_repository: github.example.test/acme/ledger
-foreman_backend: subagents
-foreman_approval_mode: unattended
-foreman_default_branch: dev
-foreman_release_branch: main
-```
-
 ## Orientation
 
 - `docs/` contains product context, working plans, and architecture decisions.
