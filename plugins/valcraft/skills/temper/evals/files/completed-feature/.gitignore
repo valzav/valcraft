@@ -1,3 +1,4 @@
 .eval/
 /.valcraft/*
 !/.valcraft/config.yaml
+docs/.retro/
