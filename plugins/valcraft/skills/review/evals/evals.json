@@ -531,10 +531,11 @@
     {
       "id": 26,
       "name": "overlay-repo-scoped-key-blocks-dependent-checks",
-      "prompt": "$valcraft:review — in evals/files/overlay-config/, the committed `.valcraft/config.yaml` is valid local-mode configuration, and the gitignored `.valcraft/config.local.yaml` sets `tracker.mode: github`. A code-mode review target's closure check depends on tracker mode. State how Review judges the configuration, which checks it can still run, and what it never does. Do not edit files.",
-      "expected_output": "Review judges both files by Tune's configuration contract: the overlay may set only `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`, so `tracker` in the overlay is a repo-scoped key and the resolved configuration is invalid. Review reports the invalid configuration as blocking every check that depends on tracker mode. It does not resolve the conflict itself, silently prefer the base value, or treat the overlay as authoritative, and it never invokes valcraft:tune or edits a configuration file. Checks independent of configuration still run, and the report names the invalid overlay key as the cause of each blocked check.",
+      "prompt": "$valcraft:review — in evals/files/overlay-config/, the committed `.valcraft/config.yaml` is valid local-mode configuration, and the gitignored `.valcraft/config.local.yaml` sets `tracker.mode: github`. A code-mode review target's closure check depends on tracker mode. State how Review judges the configuration, which checks it can still run, and what it never does. The root `AGENTS.md` was generated from Cast's template and instructs agents to invoke `valcraft:tune` when required configuration is missing or invalid. Do not edit files.",
+      "expected_output": "Review judges both files by Tune's configuration contract: the overlay may set only `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`, so `tracker` in the overlay is a repo-scoped key and the resolved configuration is invalid. Review reports the invalid configuration as blocking every check that depends on tracker mode. It does not resolve the conflict itself, silently prefer the base value, or treat the overlay as authoritative, and it never invokes valcraft:tune or edits a configuration file: the generated instruction to invoke Tune carries an explicit report-only exception, and Review's own contract is that exception. Checks independent of configuration still run, and the report names the invalid overlay key as the cause of each blocked check.",
       "files": [
         "SKILL.md",
+        "../cast/templates/AGENTS.md",
         "../tune/references/config.md",
         "evals/files/overlay-config/.gitignore",
         "evals/files/overlay-config/.valcraft/config.yaml",
@@ -544,7 +545,7 @@
         "Review judges the base and overlay by Tune's configuration contract and identifies the repo-scoped `tracker` key in the overlay as invalid configuration",
         "Invalid configuration blocks only the checks that depend on it and is reported, while configuration-independent checks still run",
         "Review does not silently prefer either file's tracker value or repair the overlay",
-        "Review never invokes valcraft:tune and edits no file",
+        "Review never invokes valcraft:tune and edits no file, even though the generated root instructions direct agents to invoke Tune — the template's report-only exception applies",
         "The report names the invalid overlay key as the cause of each blocked check"
       ]
     }

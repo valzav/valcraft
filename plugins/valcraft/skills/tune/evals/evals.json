@@ -157,6 +157,61 @@
         "A safe free-form Codex model can use xhigh",
         "Invalid model-effort pairs never reach the saved candidate"
       ]
+    },
+    {
+      "id": 9,
+      "name": "combined-invalid-layers-repair-in-one-transaction",
+      "prompt": "$valcraft:tune — `.valcraft/config.yaml` is missing its `pull_requests` section and `.valcraft/config.local.yaml` sets the repo-scoped `tracker` mapping, as in evals/files/both-invalid. Compare an attended run where I answer the base questions and choose to remove the overlay, and a headless run on the same repository.",
+      "expected_output": "Both layers are invalid, so the attended run repairs both in the same run: the complete first-run flow replaces the base, and overlay repair — replace or remove — handles the overlay independently of the base. Tune never retains the invalid overlay for the resolved validation to fail later. After the operator chooses removal, both repairs feed one candidate: temporary files validate before any replacement, the base is written and committed, the overlay is removed, and the resolved configuration revalidates as the base alone before Status: done. The headless run selects no recommended answers, reports the unresolved fields of both layers, returns configuration_required, and writes nothing.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "evals/files/both-invalid/.gitignore",
+        "evals/files/both-invalid/.valcraft/config.yaml",
+        "evals/files/both-invalid/.valcraft/config.local.yaml"
+      ],
+      "assertions": [
+        "An invalid base plus an invalid overlay triggers both the first-run flow and overlay repair in one run",
+        "The invalid overlay is never retained, written around, or silently dropped",
+        "Both repairs feed one candidate whose temporary files validate before any destination is replaced",
+        "The attended run ends Status: done only after the resolved configuration revalidates and the base commit exists",
+        "A headless run returns configuration_required for both layers and writes nothing"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "symlink-paths-and-commit-failure-preserve-the-transaction",
+      "prompt": "$valcraft:tune — compare three runs. In run A, `.valcraft` is a symlink into a directory outside the repository. In run B, `.valcraft/config.yaml` is itself a symlink to another file inside the repository. In run C, a direct attended reconfiguration answers every question, but `git commit` fails after `.valcraft/config.yaml` was already replaced.",
+      "expected_output": "Runs A and B write nothing and return project_frame_required: Tune resolves the repository root to its real path, requires the configuration directory, configuration files, and temporary destinations to be regular paths inside that root, and never reads through or replaces a symlink or other special path. Run C preflighted commit readiness without mutating before serializing anything; when the commit still fails, Tune restores the replaced base to its pre-run bytes, restores the index for that one path, removes the temporary files, and returns configuration_write_failed rather than ending done with an authorized base left uncommitted.",
+      "files": [
+        "SKILL.md",
+        "references/config.md"
+      ],
+      "assertions": [
+        "A symlinked .valcraft directory or configuration file returns project_frame_required without reading through or replacing it",
+        "Destination regularity is rechecked immediately before each replacement",
+        "Direct-invocation commit readiness is preflighted without mutation before any file is written",
+        "A failed commit restores the replaced base byte-for-byte, restores the index for that path, and returns configuration_write_failed",
+        "No run ends Status: done"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "concrete-repository-retarget-blocked-by-positive-mappings",
+      "prompt": "$valcraft:tune — the committed base is evals/files/github-config with repository github.example/acme/widget, and a committed feature's spec.md carries `spec_issue: 41`. Compare run A, where I ask to change `github_repository` to github.example/acme/gadget, and run B on another repository whose valid base stores `github_repository: TBD` with no positive mapping, where I supply the first concrete identifier.",
+      "expected_output": "Run A refuses the retarget: positive issue numbers are repository-relative, so a concrete-to-concrete change would silently point every committed mapping at a different tracker, and Tune performs no migration. Tune explains the block, preserves the existing configuration byte-for-byte, and writes and commits nothing for the rejected value. Run B is activation, not retargeting: replacing the TBD placeholder with the first concrete identifier is allowed, so Tune writes it immediately after the last answer, commits only `.valcraft/config.yaml`, and returns Status: done.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "evals/files/github-config/.gitignore",
+        "evals/files/github-config/.valcraft/config.yaml"
+      ],
+      "assertions": [
+        "A concrete-to-concrete github_repository change is refused while a committed positive mapping exists",
+        "The refusal names repository-relative issue mappings and the absence of migration, and writes nothing",
+        "Replacing the TBD placeholder with the first concrete identifier proceeds as activation and commits only the base",
+        "No migrated or partially retargeted mapping state is ever written"
+      ]
     }
   ]
 }

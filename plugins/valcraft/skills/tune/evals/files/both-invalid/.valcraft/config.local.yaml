@@ -1,0 +1,4 @@
+foreman:
+  approval_mode: attended
+tracker:
+  mode: github

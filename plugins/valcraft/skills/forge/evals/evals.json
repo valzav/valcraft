@@ -421,6 +421,23 @@
         "The documented unittest command passes at the committed head with no injected warning remaining in source or tests",
         "No push or PR operation occurs and the report ends Status: done"
       ]
+    },
+    {
+      "id": 20,
+      "name": "tune-non-done-results-route-through-configuration-codes",
+      "prompt": "$valcraft:forge — task T-042 is assigned, but `.valcraft/config.yaml` is missing `foreman.default_branch`. Compare a headless dispatched run where Tune ends needing interactive operator answers, and a second run where `.valcraft/config.local.yaml` is tracked by git so Tune reports a project-frame problem.",
+      "expected_output": "Forge invokes valcraft:tune for the affected section and resumes configuration-dependent work only after Status: done. In the first run Tune needs interactive answers a headless worker cannot supply, so Forge changes no source and ends its report with configuration_required, quoting Tune's terminal line in the detail. In the second run Tune's result is a frame problem Forge does not own, so Forge ends with configuration_unresolved, again quoting Tune's terminal line. Forge never answers configuration questions itself, never writes a configuration file, and never proceeds on read-time defaults.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "../tune/SKILL.md"
+      ],
+      "assertions": [
+        "Forge resumes configuration-dependent work only after Tune returns Status: done",
+        "A Tune question a headless run cannot answer ends the run with configuration_required",
+        "Any other non-done Tune result ends the run with configuration_unresolved quoting Tune's terminal line",
+        "Forge never supplies configuration answers, writes configuration, or applies read-time defaults"
+      ]
     }
   ]
 }
