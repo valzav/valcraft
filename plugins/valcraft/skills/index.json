@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "cast",
-      "version": "aaac44cbfcc34cae",
+      "version": "b15445058ffdec54",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -109,7 +109,7 @@
     },
     {
       "name": "spec",
-      "version": "29a055ea27648ad6",
+      "version": "e8f68f1cbb87e19a",
       "files": [
         "SKILL.md",
         "references/delivery.md",

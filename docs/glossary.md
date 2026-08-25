@@ -46,7 +46,7 @@ Terms used across the valcraft skills, sorted alphabetically. Each skill defines
 - **material finding** (review) — a P1 or P2 finding; it gets a remediation plan and a resolution commit citing its R-ID.
 - **MSW Kernel** — the program in `msw/references/kernel.md`: derive the contract, judge every claim by the deletion test, halt at the fixed point, report.
 - **mutation check** (forge) — reverting a fix to confirm its regression test goes red on the unfixed code; a test that passes on both sides of the fix proves nothing.
-- **MVP journey** (spec) — the one coherent end-to-end outcome `specs/001-mvp/` describes; not an infrastructure chore list.
+- **MVP journey** (spec) — the one coherent end-to-end outcome the first MVP feature describes; not an infrastructure chore list.
 - **noise** — a claim that fails the deletion test. Reported by group: repetition, default behavior, old-model babysitting, ceremony, dead references.
 - **operational snapshot** (cast) — the optional `docs/status.md` record of dated, non-secret deployment or managed-infrastructure observations that are unavailable from git and not directly queryable from the authoritative platform. It provides context only; current repository and live platform state win on conflict.
 - **operator attestation** (foreman) — an operator-supplied empirical claim with a source locator. It remains attributed evidence and does not replace verification.

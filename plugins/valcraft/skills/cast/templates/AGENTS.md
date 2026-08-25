@@ -23,7 +23,7 @@ Read the documents relevant to a change before modifying code or specifications.
 ## SDD ownership
 
 - `valcraft:cast` creates or retrofits only the project frame and clean baseline.
-- `valcraft:spec` creates or resumes every feature triplet, including `001-mvp`, and every quick-task file. It owns authorized GitHub projection.
+- `valcraft:spec` creates or resumes every feature triplet, including the first MVP feature, and every quick-task file. It owns authorized GitHub projection.
 - `valcraft:draft` writes and revises task plans.
 - `valcraft:forge` implements one passed task plan and prepares the task PR.
 - `valcraft:review` independently reviews exact plan or code targets.

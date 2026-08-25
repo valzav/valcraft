@@ -7,13 +7,13 @@ description: >
   project or repository, asking to scaffold or set up SDD, retrofitting project
   structure, or committing Valcraft's base configuration with the frame. Cast commits one clean
   frame and hands its product brief to Spec. Not for feature or PRD triplets,
-  001-mvp, staged-feature completion, quick tasks, implementation, review, merge,
+  the first MVP feature, staged-feature completion, quick tasks, implementation, review, merge,
   or tracker closure.
 ---
 
 # cast
 
-Create the project frame that makes later SDD artifacts durable. Cast produces no feature contract. `valcraft:spec` is the sole producer of every feature triplet, including `001-mvp`, and every quick-task file.
+Create the project frame that makes later SDD artifacts durable. Cast produces no feature contract. `valcraft:spec` is the sole producer of every feature triplet, including the first MVP feature, and every quick-task file.
 
 Cast reads another skill's contract to act on it, never to restate or adjudicate it. Name the owning skill and the exact path instead of reproducing its grammar, re-deriving its rules, or ruling on a value it owns. This holds even when the operator asks Cast to explain that contract: a second copy of it is a second thing to drift.
 
@@ -48,7 +48,7 @@ Read the applicable files under `templates/` directly. Do not reconstruct them f
 5. **Record the exact proposal.** Record the exact mutation set in the report per `references/scaffold.md`, then proceed without waiting for approval. The stop conditions in `scaffold.md` still stop the run before mutation.
 6. **Create or merge the frame.** Write only the recorded frame delta. Preserve unrelated work and every existing feature artifact byte-for-byte.
 7. **Commit the baseline.** Stage only the recorded frame paths, including `.valcraft/config.yaml`. Inspect the staged diff. Create one commit. Resolve its full SHA. Require a clean worktree. If the run cannot establish commit readiness, write nothing and report `baseline_required`. If applying or committing the exact delta fails, restore only Cast's attributable writes to their pre-run bytes and report `baseline_failed`; never leave Spec a dirty handoff.
-8. **Prepare the Spec handoff.** Name the repository, `docs/product-brief.md`, exact baseline head, tracker mode and target, and any validation blocker. Spec may create `001-mvp` only from that clean baseline and valid resolved configuration.
+8. **Prepare the Spec handoff.** Name the repository, `docs/product-brief.md`, exact baseline head, tracker mode and target, and any validation blocker. Spec may create the first MVP feature only from that clean baseline and valid resolved configuration.
 9. **Handle an optional push.** A local baseline never implies push authority. Apply the prepare-authorize-execute contract below. The Spec handoff remains usable at its local commit when no push is authorized.
 10. **Report.** Emit the producer-owned Cast report below. Direct and dispatched invocation use the same headings and terminal status grammar.
 

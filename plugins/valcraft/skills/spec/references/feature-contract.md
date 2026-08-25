@@ -1,6 +1,6 @@
 # Feature contract
 
-This reference owns Spec's feature schema, intake, allocation, staged resumption, artifact synthesis, and readiness rules. A feature contract is one complete `spec.md`, `design.md`, and `tasks.md` triplet. Spec is the sole producer of every triplet, including `001-mvp`.
+This reference owns Spec's feature schema, intake, allocation, staged resumption, artifact synthesis, and readiness rules. A feature contract is one complete `spec.md`, `design.md`, and `tasks.md` triplet. Spec is the sole producer of every triplet, including the first MVP feature.
 
 ## Preflight the scaffold
 

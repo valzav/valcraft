@@ -1,7 +1,7 @@
 ---
 name: spec
 description: >
-  Create or resume one complete feature contract triplet, including 001-mvp,
+  Create or resume one complete feature contract triplet, including the first MVP feature,
   or one quick-task file from exactly one local requirements document, selected
   GitHub PRD issue, or inline quick brief. Use for feature and PRD intake,
   staged feature completion, Spec review remediation, and authorized feature
