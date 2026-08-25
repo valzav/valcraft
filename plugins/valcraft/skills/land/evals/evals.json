@@ -99,7 +99,7 @@
       "id": 5,
       "name": "unattended-landing-across-trackers-and-backends",
       "prompt": "$valcraft:land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: `tracker.mode` local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each trusted assignment authorizes the exact repository, PR, base, head, configured squash merge, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
-      "expected_output": "Land resolves tracker mode and squash merge strategy from the committed `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode applies only the exact local feature-task tick and merge. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. Release-branch work and feature or PRD confirmation remain human gates.",
+      "expected_output": "Land resolves tracker mode and squash merge strategy from the committed `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode applies only the exact local feature-task tick and merge. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
         "evals/files/tracker-local/.valcraft/config.yaml",
@@ -119,7 +119,7 @@
         "Local mode uses the exact feature-task tick while github mode uses the serialized hosted tracker-close batch",
         "A future backend lets authorized Land execute, maps host permission prompts or transport denials to permission_blocked, and preserves producer-owned Land failures",
         "Shared backend permission does not block ordinary landing or transfer the merge to Foreman",
-        "Release-branch work and feature or PRD confirmation remain human gates"
+        "With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate"
       ]
     },
     {

@@ -413,7 +413,7 @@
     {
       "id": 23,
       "name": "codex-terminal-routing-preserves-existing-rules",
-      "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not spawn workers. Do not write files. Report only.",
+      "prompt": "$valcraft:foreman — on Codex, classify these native-subagent outcomes: done, blocked, question, dead, dispatch error, and absent from live status with no terminal message. Do not spawn workers. Do not write files. Report only.",
       "expected_output": "Foreman resolves each return against the assigned worker. Blocked and question follow the existing blocked-worker and report-status rules; a settled answer or valid respawn creates a fresh worker, while a human decision escalates. A dispatch error before any worker can act follows the existing two-attempt rule. A dead worker first triggers the backend-aware recovery inventory and resumes through a fresh worker only after that worker verifies or discards every observation; unsafe recovery escalates. Absence from live status without a completion or other terminal evidence is not success and cannot advance the loop; Foreman continues resolving state. Every done report still passes completeness validation.",
       "files": [
         "references/backends/README.md",
@@ -1146,10 +1146,11 @@
     {
       "id": 83,
       "name": "herdr-retrospective-remediation-separates-the-two-reports",
-      "prompt": "$valcraft:foreman — on the herdr backend, RetroReview returns material findings R-001 and R-002 against Temper's local retrospective report. Dispatch the remediation. State which harness the remediating worker runs on, what physical identity and `.valcraft/foreman` report path it receives, and which retrospective artifact it edits and where. Do not spawn workers or mutate files.",
+      "prompt": "$valcraft:foreman — on the herdr backend with the resolved configuration using the Balanced Herdr preset, RetroReview returns material findings R-001 and R-002 against Temper's local retrospective report. Dispatch the remediation. State which harness the remediating worker runs on, what physical identity and `.valcraft/foreman` report path it receives, and which retrospective artifact it edits and where. Do not spawn workers or mutate files.",
       "expected_output": "The remediating worker keeps the logical Temper identity and runs on Claude, the harness mapped to Temper, while RetroReview's closure check runs on Codex — the two never collapse onto one harness. It is a fresh physical worker: a new pane, a new agent name derived from the logical identity and the next dispatch ordinal, and a fresh, absent `.valcraft/foreman` report path, because every producer dispatch gets a new physical identity and a predecessor must not be able to append to its replacement's active path. The retrospective artifact is the opposite case: Temper edits its existing report file under the gitignored docs/.retro/ in place and reports the new content hash, because a report becomes immutable only when its run ends; there is no branch or commit. Foreman itself neither edits the report nor applies any proposal, and the two must not be confused — one is Foreman's coordination surface, the other is Temper's product.",
       "files": [
         "references/backends/herdr.md",
+        "references/configuration.md",
         "references/contracts.md",
         "references/loop.md",
         "templates/run-dir.md"
