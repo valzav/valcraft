@@ -10,7 +10,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-
 REPOSITORY = Path(__file__).resolve().parents[2]
 CHECKER = REPOSITORY / "scripts" / "check-coordination-contracts.py"
 PRODUCERS = (
@@ -294,6 +293,14 @@ class CoordinationContractCheckTests(unittest.TestCase):
             )
         )
         self.assert_check_fails("coverage has no active deviation")
+
+    def test_transport_deviation_cursor_row_requires_eval(self) -> None:
+        self.replace(
+            BACKENDS,
+            "| Cursor native | parent remains active; the Task tool call holds the turn until the worker returns | wake/await | `transport:cursor-foreground-task` | Foreman eval 91 |",
+            "| Cursor native | parent remains active; the Task tool call holds the turn until the worker returns | wake/await | `transport:cursor-foreground-task` | none |",
+        )
+        self.assert_check_fails("active transport deviation has no named eval")
 
 
 if __name__ == "__main__":

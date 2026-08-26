@@ -65,6 +65,7 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | --- | --- | --- | --- | --- |
 | Claude Code native | completion event wakes the parent after it ends the turn | wake/await | `transport:claude-event-wake` | Foreman eval 7 |
 | Codex native | parent remains active and uses foreground `wait_agent`; timeout re-arms without a user message | wake/await | `transport:codex-foreground-wake` | Foreman eval 18 |
+| Cursor native | parent remains active; the Task tool call holds the turn until the worker returns | wake/await | `transport:cursor-foreground-task` | Foreman eval 91 |
 | Native subagents | all roles share the parent checkout | workspace | `transport:native-shared-workspace` | Foreman eval 35 |
 | Agent Orchestrator | authorized background polling converts AO session state to one backend return | wake/await | `transport:poll-wake` | Foreman eval 63 |
 | Agent Orchestrator | a git-backed dispatch uses an isolated physical branch seeded from the predecessor SHA | dispatch/workspace | `transport:isolated-branch` | Foreman eval 62 |

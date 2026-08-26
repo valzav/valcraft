@@ -21,12 +21,13 @@ Behavioral evals prove the state machine. The future coordination drift check on
 | --- | --- |
 | Six backend returns remain separate from producer semantic status | 58 |
 | Codex foreground active wait and timeout re-arm without user prompt | 17, 18 |
+| Cursor in-turn Task hold without resume, isolated checkout, or invented wait_timeout | 91 |
 | Fresh native physical identities preserve complete logical identities | 22 |
 | Dead, dispatch failure, blocked prompt, and missing terminal evidence remain distinct | 23 |
 | Dirty shared checkout stops new-task synchronization; dead recovery remains separate | 35 |
 | Late predecessor report is rejected after replacement | 59 |
 
-Claude Code's event completion is covered by eval 7. Codex's foreground continuation is covered by eval 18. External-orchestrator polling and isolated branch behavior are covered by evals 63 and 62. These ids appear in the active-deviation registry.
+Claude Code's event completion is covered by eval 7. Codex's foreground continuation is covered by eval 18. Cursor's in-turn Task hold is covered by eval 91. External-orchestrator polling and isolated branch behavior are covered by evals 63 and 62. These ids appear in the active-deviation registry.
 
 ## External orchestrators
 
