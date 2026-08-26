@@ -213,6 +213,25 @@
         "Replacing the TBD placeholder with the first concrete identifier proceeds as activation and commits only the base",
         "No migrated or partially retargeted mapping state is ever written"
       ]
+    },
+    {
+      "id": 12,
+      "name": "custom-herdr-cursor-worker",
+      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. Assign Forge to Cursor with base model alias `claude-sonnet-5-thinking` and high effort, and keep Code Review on Codex. Then compare Cursor alias `unsafe[effort=max]` with xhigh effort and `cursor-grok-4.6` with none and xhigh effort. Do not save until the candidate validates.",
+      "expected_output": "Tune offers Cursor alongside Claude and Codex for every Custom role. Because Cursor's model catalog is account-dependent, it asks for a free-form base model alias rather than presenting a static catalog. It accepts `claude-sonnet-5-thinking` with high effort and `cursor-grok-4.6` with both none and xhigh effort, but rejects `unsafe[effort=max]` because the Herdr backend owns the parameterized effort suffix. It validates that Forge and Code Review use different harnesses, preserves the Cursor model and effort as separate configuration values, then writes the valid candidate immediately and shows its exact YAML in the report.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "evals/files/valid-config/.gitignore",
+        "evals/files/valid-config/.valcraft/config.yaml"
+      ],
+      "assertions": [
+        "Custom offers Cursor as a harness for every Herdr worker role",
+        "Cursor model aliases are free-form because the available catalog is account-dependent",
+        "Cursor model aliases containing brackets are rejected before writing",
+        "Cursor accepts none, low, medium, high, xhigh, and max effort",
+        "The complete candidate preserves reviewer-producer harness independence before the immediate write"
+      ]
     }
   ]
 }
