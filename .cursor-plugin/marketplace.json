@@ -1,0 +1,17 @@
+{
+  "name": "valcraft",
+  "owner": {
+    "name": "valcraft contributors"
+  },
+  "metadata": {
+    "description": "Agent skills for spec-driven delivery — one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor. Tune owns the committed configuration and its local overrides; Foreman coordinates a fresh-context Draft → Review → Forge → Review → Land loop; Cast frames projects, Spec creates feature and quick contracts, and Temper learns from shipped work.",
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "valcraft",
+      "source": "valcraft",
+      "description": "Reusable agent skills: tune (repository configuration), cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment)."
+    }
+  ]
+}
