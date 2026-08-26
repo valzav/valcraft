@@ -63,11 +63,11 @@ new feature or PRD:
 
 The default path for a new project or a new body of work.
 
-1. **`/valcraft:cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
-2. **`/valcraft:spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including the first MVP feature. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
+1. **`/valcraft:valcraft-cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
+2. **`/valcraft:valcraft-spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including the first MVP feature. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
+3. **`/valcraft:valcraft-foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
 
-   Run `/valcraft:tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
+   Run `/valcraft:valcraft-tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
    `foreman` can use native subagents on either host. Claude Code wakes the parent turn when a worker completes; Codex keeps the parent turn active and waits for the worker in the foreground. External orchestrators integrate through registered Foreman backends.
 
@@ -75,11 +75,11 @@ The default path for a new project or a new body of work.
 
 Same contracts, you drive:
 
-1. `/valcraft:cast`, then `/valcraft:spec` as above.
-2. `/valcraft:draft T-XXX` (or `Q-NNN QT-XXX`) — write or revise the task plan, apply MSW, verify the surviving plan, and commit that reviewable state. Run `/valcraft:review` in plan mode on that exact commit; return findings to Draft by `R-ID`.
-3. `/valcraft:forge T-XXX` — implement only from the passed plan review, verify the change, and prepare or create the authorized task PR. Run `/valcraft:review` in code mode on the exact head; return findings to Forge by `R-ID`.
-4. `/valcraft:land` — revalidate Review coverage and applicable checks, then perform only the authorized finalization and closure operations. In unattended mode, exact target-bound Land authority permits ordinary landing on native subagents, external orchestrators, and conforming future backends; Foreman never merges.
-5. `/valcraft:temper` over the closed feature, then run `/valcraft:review` in plan mode on the exact report path and content hash it returns. There is no PR and no Land step.
+1. `/valcraft:valcraft-cast`, then `/valcraft:valcraft-spec` as above.
+2. `/valcraft:valcraft-draft T-XXX` (or `Q-NNN QT-XXX`) — write or revise the task plan, apply MSW, verify the surviving plan, and commit that reviewable state. Run `/valcraft:valcraft-review` in plan mode on that exact commit; return findings to Draft by `R-ID`.
+3. `/valcraft:valcraft-forge T-XXX` — implement only from the passed plan review, verify the change, and prepare or create the authorized task PR. Run `/valcraft:valcraft-review` in code mode on the exact head; return findings to Forge by `R-ID`.
+4. `/valcraft:valcraft-land` — revalidate Review coverage and applicable checks, then perform only the authorized finalization and closure operations. In unattended mode, exact target-bound Land authority permits ordinary landing on native subagents, external orchestrators, and conforming future backends; Foreman never merges.
+5. `/valcraft:valcraft-temper` over the closed feature, then run `/valcraft:valcraft-review` in plan mode on the exact report path and content hash it returns. There is no PR and no Land step.
 
 ## Prompt tooling
 
@@ -91,20 +91,20 @@ Same contracts, you drive:
 
 | Skill                                                   | Claude Code         | Codex               | OpenCode  |
 | ------------------------------------------------------- | ------------------- | ------------------- | --------- |
-| `tune` — adjust the shared configuration or your local overlay | `/valcraft:tune` | `$valcraft:tune` | `tune` |
-| `cast` — create or retrofit the project frame           | `/valcraft:cast`    | `$valcraft:cast`    | `cast`    |
-| `spec` — create a feature or quick contract             | `/valcraft:spec`    | `$valcraft:spec`    | `spec`    |
-| `draft` — write a task plan and apply MSW               | `/valcraft:draft`   | `$valcraft:draft`   | `draft`   |
-| `forge` — implement a reviewed task                     | `/valcraft:forge`   | `$valcraft:forge`   | `forge`   |
-| `review` — review an exact plan, change, or evidence    | `/valcraft:review`  | `$valcraft:review`  | `review`  |
-| `land` — finalize reviewed work and close tracker state | `/valcraft:land`    | `$valcraft:land`    | `land`    |
-| `foreman` — coordinate the delivery loop                | `/valcraft:foreman` | `$valcraft:foreman` | `foreman` |
-| `temper` — produce a local retrospective and handoff    | `/valcraft:temper`  | `$valcraft:temper`  | `temper`  |
-| `hone` — refine a prompt artifact                       | `/valcraft:hone`    | `$valcraft:hone`    | `hone`    |
-| `distill` — reduce a prompt to its essence              | `/valcraft:distill` | `$valcraft:distill` | `distill` |
-| `msw` — MSW Kernel over a document                      | `/valcraft:msw`     | `$valcraft:msw`     | `msw`     |
+| `tune` — adjust the shared configuration or your local overlay | `/valcraft:valcraft-tune` | `$valcraft:valcraft-tune` | `valcraft-tune` |
+| `cast` — create or retrofit the project frame           | `/valcraft:valcraft-cast`    | `$valcraft:valcraft-cast`    | `valcraft-cast`    |
+| `spec` — create a feature or quick contract             | `/valcraft:valcraft-spec`    | `$valcraft:valcraft-spec`    | `valcraft-spec`    |
+| `draft` — write a task plan and apply MSW               | `/valcraft:valcraft-draft`   | `$valcraft:valcraft-draft`   | `valcraft-draft`   |
+| `forge` — implement a reviewed task                     | `/valcraft:valcraft-forge`   | `$valcraft:valcraft-forge`   | `valcraft-forge`   |
+| `review` — review an exact plan, change, or evidence    | `/valcraft:valcraft-review`  | `$valcraft:valcraft-review`  | `valcraft-review`  |
+| `land` — finalize reviewed work and close tracker state | `/valcraft:valcraft-land`    | `$valcraft:valcraft-land`    | `valcraft-land`    |
+| `foreman` — coordinate the delivery loop                | `/valcraft:valcraft-foreman` | `$valcraft:valcraft-foreman` | `valcraft-foreman` |
+| `temper` — produce a local retrospective and handoff    | `/valcraft:valcraft-temper`  | `$valcraft:valcraft-temper`  | `valcraft-temper`  |
+| `hone` — refine a prompt artifact                       | `/valcraft:valcraft-hone`    | `$valcraft:valcraft-hone`    | `valcraft-hone`    |
+| `distill` — reduce a prompt to its essence              | `/valcraft:valcraft-distill` | `$valcraft:valcraft-distill` | `valcraft-distill` |
+| `msw` — MSW Kernel over a document                      | `/valcraft:valcraft-msw`     | `$valcraft:valcraft-msw`     | `valcraft-msw`     |
 
-Skills also trigger from natural requests ("new project", "review this PR", "retrospective on feature 3"); the command is the explicit path. OpenCode has no plugin namespace: its `skill` tool loads them by bare name, and a skill that says "run `valcraft:review`" means the `review` skill there.
+Skills also trigger from natural requests ("new project", "review this PR", "retrospective on feature 3"); the command is the explicit path. The skill name is `valcraft-<skill>` on every host. Claude Code and Codex prepend the `valcraft:` plugin namespace in their explicit forms, while OpenCode loads the bare name through its `skill` tool.
 
 ## Compared with other SDD frameworks
 

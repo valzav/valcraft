@@ -13,16 +13,24 @@ from pathlib import Path
 
 REPOSITORY = Path(__file__).resolve().parents[2]
 CHECKER = REPOSITORY / "scripts" / "check-coordination-contracts.py"
-PRODUCERS = ("cast", "draft", "forge", "review", "land", "spec", "temper")
-CONTRACTS = "plugins/valcraft/skills/foreman/references/contracts.md"
-DRAFT_CONTRACT = "plugins/valcraft/skills/draft/references/plan-contract.md"
-BACKENDS = "plugins/valcraft/skills/foreman/references/backends/README.md"
-SUBAGENTS = "plugins/valcraft/skills/foreman/references/backends/subagents.md"
-FOREMAN_EVALS = "plugins/valcraft/skills/foreman/evals/evals.json"
+PRODUCERS = (
+    "valcraft-cast",
+    "valcraft-draft",
+    "valcraft-forge",
+    "valcraft-review",
+    "valcraft-land",
+    "valcraft-spec",
+    "valcraft-temper",
+)
+CONTRACTS = "plugins/valcraft/skills/valcraft-foreman/references/contracts.md"
+DRAFT_CONTRACT = "plugins/valcraft/skills/valcraft-draft/references/plan-contract.md"
+BACKENDS = "plugins/valcraft/skills/valcraft-foreman/references/backends/README.md"
+SUBAGENTS = "plugins/valcraft/skills/valcraft-foreman/references/backends/subagents.md"
+FOREMAN_EVALS = "plugins/valcraft/skills/valcraft-foreman/evals/evals.json"
 FORGE_MESSAGE_ROW = (
     "| Task implementation and PR | Forge | Foreman, Review | "
-    "[`../../forge/references/verification-and-handoff.md#forge-report`]"
-    "(../../forge/references/verification-and-handoff.md#forge-report) | "
+    "[`../../valcraft-forge/references/verification-and-handoff.md#forge-report`]"
+    "(../../valcraft-forge/references/verification-and-handoff.md#forge-report) | "
     "Implementing | `ForgeResult` |\n"
 )
 
@@ -34,7 +42,7 @@ class CoordinationContractCheckTests(unittest.TestCase):
         source = REPOSITORY / "plugins" / "valcraft" / "skills"
         target = self.root / "plugins" / "valcraft" / "skills"
         target.mkdir(parents=True)
-        for skill in ("foreman", *PRODUCERS):
+        for skill in ("valcraft-foreman", *PRODUCERS):
             shutil.copytree(source / skill, target / skill)
 
     def tearDown(self) -> None:
@@ -67,16 +75,16 @@ class CoordinationContractCheckTests(unittest.TestCase):
     def test_broken_registry_contract_link_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "](../../draft/references/plan-contract.md#report)",
-            "](../../draft/references/missing.md#report)",
+            "](../../valcraft-draft/references/plan-contract.md#report)",
+            "](../../valcraft-draft/references/missing.md#report)",
         )
         self.assert_check_fails("contract link does not resolve")
 
     def test_broken_registry_contract_anchor_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "](../../draft/references/plan-contract.md#report)",
-            "](../../draft/references/plan-contract.md#missing-anchor)",
+            "](../../valcraft-draft/references/plan-contract.md#report)",
+            "](../../valcraft-draft/references/plan-contract.md#missing-anchor)",
         )
         self.assert_check_fails("contract anchor does not resolve")
 
