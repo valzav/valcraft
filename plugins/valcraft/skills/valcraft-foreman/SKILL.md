@@ -8,7 +8,7 @@ description: >
 
 Coordinate delivery. Never perform a worker skill's work.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 ## Resolve the run
 

@@ -2,6 +2,8 @@
 
 This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
 
+On Cursor, bind every worker prompt to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. Do not slash-invoke `valcraft-review` or `/review`. Cursor's built-in `/review` is not Valcraft Review.
+
 Only an explicit delivery command enters the loop.
 
 ## Quick tasks

@@ -13,7 +13,7 @@ description: >
 
 Produce one complete feature contract or one quick task, commit its local state, and return exact Review and Land handoffs. Spec is the sole producer of every `spec.md`, `design.md`, and `tasks.md` feature triplet, including the first MVP. It never implements, reviews, merges, closes tracker state, or invokes Review or Land.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 ## Load the contracts
 

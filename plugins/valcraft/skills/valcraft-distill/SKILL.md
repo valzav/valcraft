@@ -7,7 +7,7 @@ description: Distill a prompt artifact — inline prompt text, a markdown prompt
 
 Reduce a prompt artifact to the smallest instruction set that still meets its contract, and present the result either as a short structured summary — the distillate — or as a leaner working copy, depending on the user's goal. distill never edits the source. When the user wants the source improved in place, offer `valcraft-hone` instead.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 Vocabulary, shared with `valcraft-hone` and `valcraft-msw`: a **prompt artifact** is the source being analyzed; its **contract** is its requested outcome plus the smallest criteria that prove it; a **claim** is one atomic instruction, requirement, constraint, example, or rationale. "Skill directory" names only the filesystem container.
 

@@ -17,7 +17,7 @@ Create the project frame that makes later SDD artifacts durable. Cast produces n
 
 Cast reads another skill's contract to act on it, never to restate or adjudicate it. Name the owning skill and the exact path instead of reproducing its grammar, re-deriving its rules, or ruling on a value it owns. This holds even when the operator asks Cast to explain that contract: a second copy of it is a second thing to drift.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 ## Load the contracts
 

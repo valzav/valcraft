@@ -161,7 +161,7 @@
       "name": "cold-start-drafter-and-small-context",
       "coordination_coverage": "transport:claude-event-wake",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
-      "expected_output": "Foreman resolves runtime, creates state.md and workers.md, reconciles readiness, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft-draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event. Foreman does not read the artifacts to plan or run MSW itself.",
+      "expected_output": "Foreman resolves runtime, creates state.md and workers.md, reconciles readiness, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft-draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event; Cursor uses a fresh Task generalPurpose dispatch, binds the absolute valcraft-draft SKILL.md path, records the Task agent id, and awaits in the active turn. Foreman does not read the artifacts to plan or run MSW itself.",
       "files": [
         "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
@@ -178,7 +178,7 @@
         "After the pick, Foreman mirrors the loop in the host todo-list tool: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
         "The drafter is a fresh general-purpose worker, not a fork, with canonical logical identity drafter-F001-T002",
         "The Draft assignment contains the cold-start reading order, report path, Status line instruction, exact predecessor, and trust-boundary paragraph",
-        "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending",
+        "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending; Cursor dispatch uses Task generalPurpose, binds the absolute SKILL.md path, records the Task agent id, and awaits in the active turn",
         "Foreman reads only the exact spec, design, and task evidence needed for Spec readiness and selection; it does not interpret those artifacts as a task plan or run MSW"
       ]
     },
@@ -750,7 +750,7 @@
       "name": "polling-backend-classifies-attributed-active-session",
       "coordination_coverage": "transport:poll-wake",
       "prompt": "$valcraft:valcraft-foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, no-git transport workspaces covered by eval 67, and Herdr's unconfirmed prompt delivery, fixed role-to-harness assignment, and shared checkout covered by evals 73, 74, and 75. Every row and eval shares one unique reciprocal coverage key.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, Cursor in-turn Task hold covered by eval 91, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, no-git transport workspaces covered by eval 67, and Herdr's unconfirmed prompt delivery, fixed role-to-harness assignment, and shared checkout covered by evals 73, 74, and 75. Every row and eval shares one unique reciprocal coverage key.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -1305,6 +1305,43 @@
         "After (b) the orchestrator is a full-height left column and the workers are stacked in one right column",
         "After the reviewer is released the next split returns to the orchestrator pane with --direction right",
         "A preserved pane still in the tab is either moved out first or split down from; the orchestrator pane is not split while it is live"
+      ]
+    },
+    {
+      "id": 91,
+      "name": "cursor-task-holds-parent-turn",
+      "coordination_coverage": "transport:cursor-foreground-task",
+      "prompt": "/valcraft-foreman — on Cursor, describe the native-subagent continuation after dispatching drafter-F001-T002 while the assigned worker is still active. Do not spawn anything.",
+      "expected_output": "Foreman selects the subagents backend's Cursor mapping from the active host. It dispatches a fresh Task with subagent_type generalPurpose, binds the absolute valcraft-draft SKILL.md path from the parent's active plugin root, records the returned Task agent id against drafter-F001-T002, and keeps the parent turn active while the Task call holds. It does not resume a prior Task, request an isolated checkout, slash-invoke valcraft-review or /review, end the turn to wait for a background notification, or invent a wait_timeout. A host permission prompt or host-enforced denial is permission_blocked.",
+      "files": [
+        "references/backends/README.md",
+        "references/backends/subagents.md",
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The active Cursor host selects the in-turn Task mapping without a second backend or project setting",
+        "Dispatch uses Task generalPurpose, binds the absolute assigned SKILL.md path, and records the returned agent id against drafter-F001-T002",
+        "Foreman keeps the parent turn active; the Task call is the await",
+        "Foreman does not resume a Task, isolate a checkout, slash-invoke review, end the turn for a background notification, or invent wait_timeout",
+        "A host permission prompt or host-enforced denial maps to permission_blocked"
+      ]
+    },
+    {
+      "id": 92,
+      "name": "cursor-initial-and-respawn-identities-stay-fresh",
+      "prompt": "/valcraft-foreman — show Cursor native-subagent dispatch mappings for initial drafter-F001-T002, its fresh respawn, initial forge-Q1000-QT001, and its fresh respawn. Do not spawn anything.",
+      "expected_output": "Every initial dispatch and respawn is a new Task with subagent_type generalPurpose. Foreman never passes resume. It preserves drafter-F001-T002 and forge-Q1000-QT001, records a unique Task agent id for every physical dispatch, and appends a distinct workers.md row for each. A respawn is a new Task rather than a resume of the prior handle.",
+      "files": [
+        "references/backends/subagents.md",
+        "references/hygiene.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Initial feature and quick workers and their respawns all use Task generalPurpose",
+        "Canonical logical identities preserve every F/T/Q/QT digit",
+        "Each physical dispatch records a unique Task agent id and a distinct workers.md row",
+        "A respawn is a new Task and never passes resume"
       ]
     }
   ]

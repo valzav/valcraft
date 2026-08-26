@@ -8,7 +8,7 @@ description: >
 
 Own one idempotent boundary from reviewed artifact to authoritative completion. Prepare first. Execute only exact authorized mutations. Reconcile before every retry.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 ## Inputs
 

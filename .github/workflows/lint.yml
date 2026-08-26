@@ -39,3 +39,14 @@ jobs:
           check-jsonschema
           --schemafile https://agent-plugins.org/schemas/1.0.0/plugin.schema.json
           plugins/valcraft/plugin.json
+
+      - name: Validate Cursor plugin manifests
+        run: |
+          check-jsonschema \
+            --schemafile https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json \
+            plugins/valcraft/.cursor-plugin/plugin.json
+          check-jsonschema \
+            --schemafile https://raw.githubusercontent.com/cursor/plugins/main/schemas/marketplace.schema.json \
+            .cursor-plugin/marketplace.json
+          python3 scripts/check-cursor-marketplace.py
+          python3 scripts/tests/test_check_cursor_marketplace.py
