@@ -26,7 +26,7 @@ Omit both the bullet and this instruction when the snapshot is absent. -->
 
 ### Spec-driven workflow
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 Start with the project frame and product brief created by Cast. Run `valcraft-spec` to create the first MVP feature, a later feature triplet, or a quick task. For task delivery, use Draft, Review, Forge, Review, and Land directly, or let Foreman coordinate those stages.
 

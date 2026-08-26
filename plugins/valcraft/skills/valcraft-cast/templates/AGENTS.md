@@ -22,7 +22,7 @@ Read the documents relevant to a change before modifying code or specifications.
 
 ## SDD ownership
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 - `valcraft-cast` creates or retrofits only the project frame and clean baseline.
 - `valcraft-spec` creates or resumes every feature triplet, including the first MVP feature, and every quick-task file. It owns authorized GitHub projection.

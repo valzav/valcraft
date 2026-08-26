@@ -1326,6 +1326,23 @@
         "Foreman does not resume a Task, isolate a checkout, slash-invoke review, end the turn for a background notification, or invent wait_timeout",
         "A host permission prompt or host-enforced denial maps to permission_blocked"
       ]
+    },
+    {
+      "id": 92,
+      "name": "cursor-initial-and-respawn-identities-stay-fresh",
+      "prompt": "/valcraft-foreman — show Cursor native-subagent dispatch mappings for initial drafter-F001-T002, its fresh respawn, initial forge-Q1000-QT001, and its fresh respawn. Do not spawn anything.",
+      "expected_output": "Every initial dispatch and respawn is a new Task with subagent_type generalPurpose. Foreman never passes resume. It preserves drafter-F001-T002 and forge-Q1000-QT001, records a unique Task agent id for every physical dispatch, and appends a distinct workers.md row for each. A respawn is a new Task rather than a resume of the prior handle.",
+      "files": [
+        "references/backends/subagents.md",
+        "references/hygiene.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Initial feature and quick workers and their respawns all use Task generalPurpose",
+        "Canonical logical identities preserve every F/T/Q/QT digit",
+        "Each physical dispatch records a unique Task agent id and a distinct workers.md row",
+        "A respawn is a new Task and never passes resume"
+      ]
     }
   ]
 }

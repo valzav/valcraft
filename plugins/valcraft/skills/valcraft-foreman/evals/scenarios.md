@@ -23,6 +23,7 @@ Behavioral evals prove the state machine. The future coordination drift check on
 | Codex foreground active wait and timeout re-arm without user prompt | 17, 18 |
 | Cursor in-turn Task hold without resume, isolated checkout, or invented wait_timeout | 91 |
 | Fresh native physical identities preserve complete logical identities | 22 |
+| Cursor respawn is a new Task with unique recorded agent ids and no resume | 92 |
 | Dead, dispatch failure, blocked prompt, and missing terminal evidence remain distinct | 23 |
 | Dirty shared checkout stops new-task synchronization; dead recovery remains separate | 35 |
 | Late predecessor report is rejected after replacement | 59 |

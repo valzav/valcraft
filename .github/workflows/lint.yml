@@ -48,3 +48,5 @@ jobs:
           check-jsonschema \
             --schemafile https://raw.githubusercontent.com/cursor/plugins/main/schemas/marketplace.schema.json \
             .cursor-plugin/marketplace.json
+          python3 scripts/check-cursor-marketplace.py
+          python3 scripts/tests/test_check_cursor_marketplace.py
