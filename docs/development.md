@@ -23,11 +23,22 @@ codex plugin add valcraft@valcraft
 
 Re-run `codex plugin add valcraft@valcraft` and start a new Codex session after edits. A local marketplace installation is still a copy; it does not read later edits live.
 
+### Cursor
+
+Start an isolated Agent session against the plugin directory:
+
+```bash
+agent --plugin-dir /path/to/valcraft/plugins/valcraft
+```
+
+`--plugin-dir` reads the checkout. The CLI has no plugin-reload command. After a `SKILL.md` edit in an IDE session that is not using `--plugin-dir`, reload the window. A team-marketplace install is a cached copy and does not read later checkout edits. Use a disposable Teams or Enterprise marketplace for install-path checks; never write the operator's live `~/.cursor` plugin set or team marketplace without approval.
+
 ## Repository structure
 
 - `.claude-plugin/marketplace.json` — Claude Code marketplace manifest.
 - `.agents/plugins/marketplace.json` — Codex repository marketplace manifest.
-- `plugins/valcraft/` — the plugin: native Claude Code and Codex manifests, the portable Agent Plugins manifest, and `skills/<skill>/SKILL.md` with each skill's `references/`, `templates/`, and `evals/`. Only this subtree ships to consumers.
+- `.cursor-plugin/marketplace.json` — Cursor team-marketplace catalog (`metadata.pluginRoot: "plugins"`, plugin `source: "valcraft"`).
+- `plugins/valcraft/` — the plugin: native Claude Code, Codex, and Cursor manifests, the portable Agent Plugins manifest, and `skills/<skill>/SKILL.md` with each skill's `references/`, `templates/`, and `evals/`. Only this subtree ships to consumers.
 - `scripts/` — standard-library repository checks and generated-artifact builders; these development tools do not ship in the plugin.
 - `docs/`, `AGENTS.md` — repository documentation and agent instructions; never installed.
 
@@ -35,13 +46,14 @@ The tracked-content neutrality rule is defined in [AGENTS.md](../AGENTS.md#chang
 
 ## Packaging
 
-The plugin ships three manifests over one shared `skills/` tree:
+The plugin ships four manifests over one shared `skills/` tree:
 
 - `plugins/valcraft/.claude-plugin/plugin.json` — Claude Code's plugin manifest.
 - `plugins/valcraft/.codex-plugin/plugin.json` — Codex's native plugin manifest and the source of `interface`, including `defaultPrompt`, in Codex 0.149.1.
+- `plugins/valcraft/.cursor-plugin/plugin.json` — Cursor's native plugin manifest. Marketplace resolution looks for `pluginRoot/source/.cursor-plugin/plugin.json`. Folder discovery loads `skills/`. The Cursor schema allows `author.name` and optional `author.email` only.
 - `plugins/valcraft/plugin.json` — the portable [Agent Plugins](https://github.com/agentplugins/agent-plugins-spec) manifest (v1.0.0) for hosts that implement that specification and the source of the Codex installation version when both Codex manifest paths exist.
 
-Keep shared metadata synchronized by hand. Keep the portable and native Codex versions synchronized, but treat the version as release metadata rather than a cachebuster. Codex 0.149.1 reads the native manifest's `interface`, including `defaultPrompt`, while using the portable manifest's version; it discovers this plugin's default `skills/` tree automatically. Do not assume other native-only fields merge. Add future harness-specific manifests beside these rather than adding unsupported fields to the portable manifest.
+Keep shared metadata synchronized by hand. Keep the portable, native Codex, and native Cursor versions synchronized, but treat the version as release metadata rather than a cachebuster. Codex 0.149.1 reads the native manifest's `interface`, including `defaultPrompt`, while using the portable manifest's version; it discovers this plugin's default `skills/` tree automatically. Do not assume other native-only fields merge. Add future harness-specific manifests beside these rather than adding unsupported fields to the portable manifest. The lint workflow validates the Cursor marketplace and native manifests against the schemas published in `cursor/plugins`.
 
 Codex 0.149.1 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body. `scripts/check-skill-sizes.py` enforces the ceiling; CI runs it in the lint workflow.
 

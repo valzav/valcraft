@@ -1,6 +1,6 @@
 # valcraft
 
-Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, and OpenCode. At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code or Codex session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
+Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor (Teams or Enterprise with marketplace-import authority). At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code, Codex, or Cursor session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
 
 Status: alpha.
 
@@ -69,7 +69,7 @@ The default path for a new project or a new body of work.
 
    Run `/valcraft:valcraft-tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
-   `foreman` can use native subagents on either host. Claude Code wakes the parent turn when a worker completes; Codex keeps the parent turn active and waits for the worker in the foreground. External orchestrators integrate through registered Foreman backends.
+   `foreman` can use native subagents on Claude Code, Codex, and Cursor. Claude Code wakes the parent turn when a worker completes; Codex waits in the foreground with `wait_agent`; Cursor keeps the parent turn active while the Task call holds. OpenCode has no worker backend. External orchestrators integrate through registered Foreman backends.
 
 ### 2. Manual loop, one task at a time
 
@@ -89,22 +89,22 @@ Same contracts, you drive:
 
 ## Skills at a glance
 
-| Skill                                                   | Claude Code         | Codex               | OpenCode  |
-| ------------------------------------------------------- | ------------------- | ------------------- | --------- |
-| `tune` — adjust the shared configuration or your local overlay | `/valcraft:valcraft-tune` | `$valcraft:valcraft-tune` | `valcraft-tune` |
-| `cast` — create or retrofit the project frame           | `/valcraft:valcraft-cast`    | `$valcraft:valcraft-cast`    | `valcraft-cast`    |
-| `spec` — create a feature or quick contract             | `/valcraft:valcraft-spec`    | `$valcraft:valcraft-spec`    | `valcraft-spec`    |
-| `draft` — write a task plan and apply MSW               | `/valcraft:valcraft-draft`   | `$valcraft:valcraft-draft`   | `valcraft-draft`   |
-| `forge` — implement a reviewed task                     | `/valcraft:valcraft-forge`   | `$valcraft:valcraft-forge`   | `valcraft-forge`   |
-| `review` — review an exact plan, change, or evidence    | `/valcraft:valcraft-review`  | `$valcraft:valcraft-review`  | `valcraft-review`  |
-| `land` — finalize reviewed work and close tracker state | `/valcraft:valcraft-land`    | `$valcraft:valcraft-land`    | `valcraft-land`    |
-| `foreman` — coordinate the delivery loop                | `/valcraft:valcraft-foreman` | `$valcraft:valcraft-foreman` | `valcraft-foreman` |
-| `temper` — produce a local retrospective and handoff    | `/valcraft:valcraft-temper`  | `$valcraft:valcraft-temper`  | `valcraft-temper`  |
-| `hone` — refine a prompt artifact                       | `/valcraft:valcraft-hone`    | `$valcraft:valcraft-hone`    | `valcraft-hone`    |
-| `distill` — reduce a prompt to its essence              | `/valcraft:valcraft-distill` | `$valcraft:valcraft-distill` | `valcraft-distill` |
-| `msw` — MSW Kernel over a document                      | `/valcraft:valcraft-msw`     | `$valcraft:valcraft-msw`     | `valcraft-msw`     |
+| Skill | Claude Code | Codex | OpenCode | Cursor |
+| --- | --- | --- | --- | --- |
+| `tune` — adjust the shared configuration or your local overlay | `/valcraft:valcraft-tune` | `$valcraft:valcraft-tune` | `valcraft-tune` | `/valcraft-tune` |
+| `cast` — create or retrofit the project frame | `/valcraft:valcraft-cast` | `$valcraft:valcraft-cast` | `valcraft-cast` | `/valcraft-cast` |
+| `spec` — create a feature or quick contract | `/valcraft:valcraft-spec` | `$valcraft:valcraft-spec` | `valcraft-spec` | `/valcraft-spec` |
+| `draft` — write a task plan and apply MSW | `/valcraft:valcraft-draft` | `$valcraft:valcraft-draft` | `valcraft-draft` | `/valcraft-draft` |
+| `forge` — implement a reviewed task | `/valcraft:valcraft-forge` | `$valcraft:valcraft-forge` | `valcraft-forge` | `/valcraft-forge` |
+| `review` — review an exact plan, change, or evidence | `/valcraft:valcraft-review` | `$valcraft:valcraft-review` | `valcraft-review` | `/valcraft-review` |
+| `land` — finalize reviewed work and close tracker state | `/valcraft:valcraft-land` | `$valcraft:valcraft-land` | `valcraft-land` | `/valcraft-land` |
+| `foreman` — coordinate the delivery loop | `/valcraft:valcraft-foreman` | `$valcraft:valcraft-foreman` | `valcraft-foreman` | `/valcraft-foreman` |
+| `temper` — produce a local retrospective and handoff | `/valcraft:valcraft-temper` | `$valcraft:valcraft-temper` | `valcraft-temper` | `/valcraft-temper` |
+| `hone` — refine a prompt artifact | `/valcraft:valcraft-hone` | `$valcraft:valcraft-hone` | `valcraft-hone` | `/valcraft-hone` |
+| `distill` — reduce a prompt to its essence | `/valcraft:valcraft-distill` | `$valcraft:valcraft-distill` | `valcraft-distill` | `/valcraft-distill` |
+| `msw` — MSW Kernel over a document | `/valcraft:valcraft-msw` | `$valcraft:valcraft-msw` | `valcraft-msw` | `/valcraft-msw` |
 
-Skills also trigger from natural requests ("new project", "review this PR", "retrospective on feature 3"); the command is the explicit path. The skill name is `valcraft-<skill>` on every host. Claude Code and Codex prepend the `valcraft:` plugin namespace in their explicit forms, while OpenCode loads the bare name through its `skill` tool.
+Skills also trigger from natural requests ("new project", "review this PR", "retrospective on feature 3"); the command is the explicit path. The skill name is `valcraft-<skill>` on every host. Claude Code and Codex prepend the `valcraft:` plugin namespace in their explicit forms, OpenCode loads the bare name through its `skill` tool, and Cursor uses `/valcraft-<skill>`. Cursor's built-in `/review` is not Valcraft Review; invoke `/valcraft-review`.
 
 ## Compared with other SDD frameworks
 
@@ -149,6 +149,14 @@ OpenCode — add the skills source to `opencode.json` (project or global) and al
 
 The URL form needs the repository to be public (raw GitHub answers anonymous requests only for public repositories). From a clone, use `"skills": { "paths": ["/path/to/valcraft/plugins/valcraft/skills"] }` instead. `foreman` has no OpenCode worker backend yet; the other skills run as they do elsewhere.
 
+Cursor Teams or Enterprise (marketplace-import authority). Import this git repository as a team marketplace from the dashboard **Plugins → Add Marketplace**, or add it from the CLI:
+
+```bash
+agent plugin marketplace add https://github.com/valzav/valcraft
+```
+
+The CLI has no `plugin install` verb. After the marketplace is visible, install `valcraft` from the Cursor Plugins UI. Do not install from a skill directory, and do not point a `~/.cursor/skills` path at this repository.
+
 ## Update
 
 Claude Code — third-party marketplaces do not auto-update; every push is a new version:
@@ -166,6 +174,14 @@ codex plugin add valcraft@valcraft
 ```
 
 OpenCode — nothing to run: the source is re-read at startup, and a skill whose `version` in `index.json` changed is re-downloaded (raw GitHub caches for a few minutes).
+
+Cursor — re-index the team marketplace, then install the plugin again from the Plugins UI:
+
+```bash
+agent plugin marketplace update valcraft
+```
+
+A marketplace install is a cached copy. It does not read later checkout edits.
 
 ## More
 
