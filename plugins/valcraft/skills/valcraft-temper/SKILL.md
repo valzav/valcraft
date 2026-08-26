@@ -6,6 +6,8 @@ description: >
 
 # valcraft-temper
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Compound evidence-backed lessons from finished work and produce one reviewable local retrospective report.
 
 Two modes:

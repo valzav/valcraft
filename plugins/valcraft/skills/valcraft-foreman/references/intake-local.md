@@ -6,7 +6,7 @@ Git-owned task artifacts define order, dependencies, holds, and completion. Fore
 
 Require feature tasks to use `T-XXX`. Validate quick tasks with [`../../valcraft-spec/references/quick.md`](../../valcraft-spec/references/quick.md). Inspect task branches and open PR identities to find in-progress work.
 
-Select the first unchecked task in file order whose dependencies are checked and which is not held. A local pick needs no tracker write; record it in `state.md`. An existing task branch, plan, producer report, or PR resumes through `loop.md`'s named-state map.
+Select the first unchecked task in file order whose dependencies are checked and which is not held. A local pick needs no tracker write; record it in `state.md`. An existing contract, Spec branch or PR, task branch, plan, producer report, or retrospective resumes through `loop.md`'s takeover and named-state map.
 
 Quick runs walk files and tasks in order, use canonical `Q-NNN QT-XXX`, and derive eligibility from quick-file checkboxes only. No GitHub issue, label, or tracker batch exists for quick work.
 

@@ -22,6 +22,8 @@ Record the repository, operator-selected local baseline ref and SHA, canonical t
 
 An exact Foreman assignment overrides standalone derivation. Require its repository, task artifact, reconciled base SHA, canonical task branch, backend identity, and any physical branch. Do not infer a missing assignment field from coordinator state.
 
+A confirmed takeover assignment may attribute exact dirty Draft paths only on the already-correct shared branch and head. Validate their Draft ownership, scope, ancestry, and current contents before incorporating them. Confirmation is attribution, not proof or mutation authority. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return the assignment's durable-handoff blocker without snapshotting, stashing, committing, or transferring it.
+
 Without an envelope:
 
 1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state before switching or creating a branch. Stop on unattributed changes. Use the clean current checked-out ref selected by the invocation as the planning baseline. Resolve and record its exact HEAD locally.

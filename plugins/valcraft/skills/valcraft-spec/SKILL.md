@@ -11,6 +11,8 @@ description: >
 
 # valcraft-spec
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Produce one complete feature contract or one quick task, commit its local state, and return exact Review and Land handoffs. Spec is the sole producer of every `spec.md`, `design.md`, and `tasks.md` feature triplet, including the first MVP. It never implements, reviews, merges, closes tracker state, or invokes Review or Land.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.

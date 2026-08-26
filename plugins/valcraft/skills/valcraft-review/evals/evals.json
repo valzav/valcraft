@@ -548,6 +548,24 @@
         "Review never invokes valcraft-tune and edits no file, even though the generated root instructions direct agents to invoke Tune — the template's report-only exception applies",
         "The report names the invalid overlay key as the cause of each blocked check"
       ]
+    },
+    {
+      "id": 27,
+      "name": "review-does-not-replay-prior-spec-report",
+      "prompt": "$valcraft:valcraft-review — the immediately preceding Valcraft turn ended with a complete `## Spec report` for FEAT-012 at exact head 1212121212121212121212121212121212121212 and handed that target to Review. Review that exact feature-contract head now. The prior outcome is relevant only to identify the handoff. Show the response presentation and current report boundary; do not edit files.",
+      "expected_output": "Because the prior state is relevant, Review precedes its own result with one short prose paragraph stating only that Spec completed FEAT-012 at exact head 1212121212121212121212121212121212121212, handed that target to Review, and the suggested next action is to complete this exact Review before any landing action. It does not reproduce the prior `## Spec report`, any prior headings, tables, findings, or terminal Status line. Review then emits its own complete `## Review report` and required terminal status for the current invocation. The paragraph is presentation only: it is not evidence of contract validity, a Review verdict, or authority to land. Nothing follows Review's terminal status line.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The prior Spec report heading and body are never replayed",
+        "Relevant prior state occupies at most one prose paragraph",
+        "The paragraph contains only the outcome, exact FEAT-012 target, handoff, and one suggested next action",
+        "The suggested action identifies Review as the current owner and does not authorize landing",
+        "Review still emits its own complete fixed-shape report and terminal status",
+        "The presentation paragraph is not routing evidence or a verdict, and nothing follows the current report's terminal status"
+      ]
     }
   ]
 }

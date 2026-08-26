@@ -47,6 +47,23 @@
         "No replacement value is invented or recommended",
         "The report (or the question) names the blocking owner decision explicitly"
       ]
+    },
+    {
+      "id": 4,
+      "name": "prior-state-summary-precedes-closed-kernel-report",
+      "prompt": "/valcraft:valcraft-msw evals/files/csv-export-plan/plan.md — a prior Spec run completed FEAT-012 at exact head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa and handed this plan to MSW. Apply MSW. Do not replay the Spec report.",
+      "expected_output": "Before the kernel report, MSW emits at most one prose paragraph containing only the prior Spec outcome, exact FEAT-012 target at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, the relevant handoff or blocker, and one advisory next action. It does not reproduce a Spec report heading or any other prior detail. The kernel report then keeps its required outcome, proof, rejected-claims, and flagged-claims sections with no unrelated content after them.",
+      "files": [
+        "evals/files/csv-export-plan/plan.md"
+      ],
+      "assertions": [
+        "No Spec report heading or replayed report appears",
+        "At most one prior-state prose paragraph precedes the kernel report",
+        "The paragraph contains only prior outcome, exact target, relevant blocker or handoff, and one suggested next action",
+        "The suggested action is advisory and grants no authority",
+        "The kernel report retains outcome, proof, rejected claims, and flagged claims",
+        "No unrelated prior state appears after the kernel report"
+      ]
     }
   ]
 }

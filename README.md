@@ -26,7 +26,8 @@ product idea:
     -> spec: create the first feature contract
 new feature or PRD:
   -> spec: create a feature contract or quick task
-    -> foreman: coordinate delivery
+    -> foreman: infer and confirm the current state, then coordinate the remaining delivery
+      -> spec / review / land: establish the contract on the default branch when needed
       -> draft: write the task plan, then apply msw
       -> review: pass the task plan or return findings
       -> forge: implement the task and produce verification evidence
@@ -36,7 +37,9 @@ new feature or PRD:
         -> review: pass the report or return findings
 ```
 
-`foreman` can coordinate the delivery stages in one loop; the same skills also run individually when a human drives the work.
+`foreman` can coordinate the delivery stages in one loop or take over work started with the individual skills. Without a verified active checkpoint, it inspects durable repository, tracker, PR, and report evidence, proposes the inferred state and next action, and waits for confirmation before creating a run. An exact checkpoint resumes without that takeover confirmation.
+
+Each skill emits its own complete report only for its current invocation. A later Valcraft skill never replays an earlier skill's report. When prior state is relevant to the current target or handoff, it may instead show one short paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and a suggested next action; that summary is presentation, not routing evidence or mutation authority.
 
 ### Primitives
 
@@ -65,7 +68,7 @@ The default path for a new project or a new body of work.
 
 1. **`/valcraft:valcraft-cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
 2. **`/valcraft:valcraft-spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including the first MVP feature. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:valcraft-foreman`** — say "start sprint" whenever the project is ready. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. For each task, in order: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" runs the task loop over `specs/quick/`. Feature and PRD intake goes directly to Spec rather than through Foreman.
+3. **`/valcraft:valcraft-foreman`** — say "start sprint" after Spec or at any later point through Temper. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. With no verified active checkpoint, it finds the selected feature or quick task's earliest unproven state, previews the exact target, evidence, attributed dirty paths, inferred state, and next producer action, then waits for confirm, correct, or cancel even in unattended mode. It can resume Spec for an incomplete or unpublished contract, route an exact contract through Review and Land, or adopt exact later producer evidence before continuing the normal task loop: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" applies the same takeover and task flow to `specs/quick/`. New feature and PRD intake still begins directly with Spec.
 
    Run `/valcraft:valcraft-tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
@@ -80,6 +83,8 @@ Same contracts, you drive:
 3. `/valcraft:valcraft-forge T-XXX` — implement only from the passed plan review, verify the change, and prepare or create the authorized task PR. Run `/valcraft:valcraft-review` in code mode on the exact head; return findings to Forge by `R-ID`.
 4. `/valcraft:valcraft-land` — revalidate Review coverage and applicable checks, then perform only the authorized finalization and closure operations. In unattended mode, exact target-bound Land authority permits ordinary landing on native subagents, external orchestrators, and conforming future backends; Foreman never merges.
 5. `/valcraft:valcraft-temper` over the closed feature, then run `/valcraft:valcraft-review` in plan mode on the exact report path and content hash it returns. There is no PR and no Land step.
+
+Invoke Foreman at any point after Spec to hand over the remaining sequence. It confirms the inferred state and next action once, then continues autonomously under the configured approval mode and existing authority gates.
 
 ## Prompt tooling
 

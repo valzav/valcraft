@@ -13,6 +13,8 @@ description: >
 
 # valcraft-cast
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Create the project frame that makes later SDD artifacts durable. Cast produces no feature contract. `valcraft-spec` is the sole producer of every feature triplet, including the first MVP feature, and every quick-task file.
 
 Cast reads another skill's contract to act on it, never to restate or adjudicate it. Name the owning skill and the exact path instead of reproducing its grammar, re-deriving its rules, or ruling on a value it owns. This holds even when the operator asks Cast to explain that contract: a second copy of it is a second thing to drift.

@@ -26,6 +26,14 @@ DRAFT_CONTRACT = "plugins/valcraft/skills/valcraft-draft/references/plan-contrac
 BACKENDS = "plugins/valcraft/skills/valcraft-foreman/references/backends/README.md"
 SUBAGENTS = "plugins/valcraft/skills/valcraft-foreman/references/backends/subagents.md"
 FOREMAN_EVALS = "plugins/valcraft/skills/valcraft-foreman/evals/evals.json"
+FOREMAN_SKILL = "plugins/valcraft/skills/valcraft-foreman/SKILL.md"
+PRIOR_STATE_PRESENTATION_CONTRACT = (
+    "Never replay another Valcraft skill's report. Omit unrelated prior state. "
+    "When relevant prior state is necessary, summarize it in one prose paragraph "
+    "containing only the prior outcome, exact target, relevant blocker or handoff, "
+    "and one suggested next action. The suggested action is advisory and grants no "
+    "authority."
+)
 FORGE_MESSAGE_ROW = (
     "| Task implementation and PR | Forge | Foreman, Review | "
     "[`../../valcraft-forge/references/verification-and-handoff.md#forge-report`]"
@@ -119,6 +127,26 @@ class CoordinationContractCheckTests(unittest.TestCase):
             "",
         )
         self.assert_check_fails("message registry entries differ")
+
+    def test_missing_prior_state_presentation_contract_fails(self) -> None:
+        self.replace(FOREMAN_SKILL, PRIOR_STATE_PRESENTATION_CONTRACT, "")
+        self.assert_check_fails(
+            "prior-state presentation contract must appear exactly once in "
+            f"{FOREMAN_SKILL}; observed=0"
+        )
+
+    def test_drifted_prior_state_presentation_contract_fails(self) -> None:
+        self.replace(
+            FOREMAN_SKILL,
+            PRIOR_STATE_PRESENTATION_CONTRACT,
+            PRIOR_STATE_PRESENTATION_CONTRACT.replace(
+                "one suggested next action", "a suggested next action"
+            ),
+        )
+        self.assert_check_fails(
+            "prior-state presentation contract must appear exactly once in "
+            f"{FOREMAN_SKILL}; observed=0"
+        )
 
     def test_duplicate_message_registry_row_fails(self) -> None:
         self.replace(CONTRACTS, FORGE_MESSAGE_ROW, FORGE_MESSAGE_ROW * 2)

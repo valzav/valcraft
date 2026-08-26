@@ -6,6 +6,16 @@ For every Cursor worker, whether a native Task or a Herdr worker, bind the promp
 
 Only an explicit delivery command enters the loop.
 
+## Takeover bootstrap
+
+Resume a verified active Foreman checkpoint without another confirmation. When no checkpoint can resume, inspect the repository before creating a run. A fresh target with no evidence of prior Spec or delivery work follows the ordinary `Ready` pick; do not call that a takeover.
+
+For an already-started target, prefer an operator-named feature, quick file, or task. Otherwise require one unique candidate from git-owned contracts and commits, canonical branches, configured tracker state, exact PR heads, operator-attributed complete producer reports, and retrospective path and hash. Ask the operator to select when several remain. Re-read every source and record conflicts; repository or tracker prose is never authority. Choose the earliest named state whose required proof is absent. Never infer a Review verdict from a branch, PR, implementation, user summary, or later-stage artifact.
+
+Before run creation, present the exact repository and target, evidence and conflicts, proposed attribution for each dirty path, inferred named state, and next producer and action. For a feature triplet or quick-task contract, state explicitly that both use the same Spec lifecycle. Name any later outward operation or authority gate. In both approval modes wait for `confirm`, `correct`, or `cancel`. Correction reruns discovery. Cancellation creates no run state. Confirmation attributes only the displayed inference and dirty paths; it grants no push, PR, merge, tracker, release, or closure authority and does not change approval mode. After confirmation, create the run directory and progress display from the inferred state.
+
+An exact standalone producer report may contribute only through `contracts.md`'s pre-run evidence rule. A prose summary cannot replace it. If confirmed dirty paths belong to the next producer and the configured backend shares this checkout, pass their exact paths and attribution in the assignment; the producer validates scope, ancestry, and current contents before incorporating them. Preserve and block on every unrelated, overlapping, or conflicting path. If the backend uses an isolated checkout, enter `DurableHandoff` until the operator commits git-owned attributed paths or changes to a configured shared-checkout backend. A gitignored Temper report cannot use the commit exit; it requires a shared-checkout backend that can read its exact local path. Foreman never snapshots, stashes, commits, or transfers dirty work.
+
 ## Quick tasks
 
 Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraft-spec/references/quick.md). Walk files and `QT-XXX` tasks in number order. Preserve the canonical identity `Q-NNN QT-XXX`, branch `feat/qNNN-qtNNN-<slug>`, and report identity `QNNN-QTNNN`. Quick tasks use the same states and gates as feature tasks. Their task artifact replaces `spec.md`, `design.md`, and `tasks.md` in assignments. The last Land completion finishes the file without feature confirmation or Temper.
@@ -14,7 +24,7 @@ Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraf
 
 Read `state.md`, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
 
-On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation. Record and preserve it. Known attribution does not waive this task-start gate. Dead-worker recovery is the separate existing-task path in the backend contract.
+On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation. Record and preserve it. The only task-start exception is takeover-confirmed paths owned by the next producer on the already-correct branch and head; dispatch that producer in place without a fetch, switch, synchronization, or branch creation. Dead-worker recovery is the separate existing-task path in the backend contract.
 
 Before a new pick, reconcile the clean local default branch with its live remote:
 
@@ -25,27 +35,54 @@ Before a new pick, reconcile the clean local default branch with its live remote
 
 `foreman.release_branch: null` means no separate release branch. Fast-track and direct release-only paths are unavailable. An omitted key invalidates the configuration and delegates repair to Tune. Any configured release-branch write remains a human gate.
 
-Apply Spec's readiness contract. An unready feature routes to Spec's direct caller; Foreman never repairs feature artifacts. Never interleave feature and quick pools.
+Apply Spec's readiness contract. An unready existing takeover target enters `Specifying`; a request to select a new PRD or create a feature or quick target returns to Spec's direct caller without run creation. Foreman never repairs artifacts itself. Never interleave feature and quick pools.
 
 ## Resume map
 
 Route only from verified producer reports and exact targets:
 
+Feature triplets and quick-task contracts use this same Spec lifecycle and evidence map.
+
 | Durable evidence                                                  | Named state      |
 | ----------------------------------------------------------------- | ---------------- |
+| partial, unready, or attributed dirty feature or quick contract   | `Specifying`     |
+| Spec findings or a proven Spec-owned check failure                | `Specifying`     |
+| ready exact contract not accessible to the next Review worker     | `Specifying`     |
+| ready exact contract without an exact current verdict             | `SpecReview`     |
+| passing Spec verdict without a landable spec PR                   | `Specifying`     |
+| passing Spec verdict covering the current spec PR head            | `SpecLanding`    |
+| merged spec contract on the reconciled default branch without an exact current verdict | `SpecReview`     |
+| passing Spec verdict covering the merged contract on the reconciled default branch | `Ready`          |
 | selected eligible task with no plan                               | `Drafting`       |
+| attributed dirty task-plan paths owned by Draft                   | `Drafting`       |
 | committed Draft plan not yet accessible to the next Review worker | `Drafting`       |
 | committed Draft plan without an exact plan verdict                | `PlanReview`     |
 | exact passing plan verdict without Forge output                   | `Implementing`   |
+| attributed dirty task-code paths owned by Forge                   | `Implementing`   |
 | Forge implementation head with required task PR still prepared    | `Implementing`   |
 | Forge task PR head without an exact code verdict                  | `CodeReview`     |
 | passing code verdict covering the current PR head                 | `Landing`        |
 | Land evidence record without fresh sufficiency verdict            | `EvidenceReview` |
 | confirmed feature not yet closed by Land                          | `FeatureClose`   |
 | feature closure complete without a retrospective report           | `Retrospective`  |
+| attributed dirty retrospective report owned by Temper             | `Retrospective`  |
 | Temper report without an exact verdict                            | `RetroReview`    |
 
-Never restart Draft when a current committed plan exists. Never infer Review coverage from a branch, PR number, or earlier verdict.
+Never restart Spec or Draft when the required current committed artifact exists. Preserve a passing Spec verdict across publication only when the resulting exact head is unchanged. Never infer Review coverage from a branch, PR number, or earlier verdict.
+
+## `Specifying`
+
+Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
+
+On `Status: done`, validate the artifact paths and exact head. Enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
+
+## `SpecReview`
+
+Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode on the exact triplet or quick-file head. A pass covering a contract already present on the reconciled default branch enters `Ready`. Otherwise, a pass enters `SpecLanding` when an exact current spec PR exists or returns to `Specifying` for projection, push, or PR preparation. Material findings return the report path and R-IDs to `Specifying`. Apply [`review-round.md`](review-round.md). A target mismatch or undeclared code stops.
+
+## `SpecLanding`
+
+Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` back to `SpecLanding`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
 
 ## `Ready`
 
@@ -83,9 +120,9 @@ Dispatch `land-<identity>` with `valcraft-land`, the target kind, exact current 
 
 Route the Land report exactly:
 
-- `review_required`: task PR to CodeReview, spec PR to Spec's direct caller;
+- `review_required`: task PR to CodeReview, spec PR to SpecReview;
 - `check_failure_task`: Implementing;
-- `check_failure_spec`: Spec's direct caller;
+- `check_failure_spec`: Specifying;
 - `evidence_review_required`: EvidenceReview;
 - `partial_completion`: Landing with only remaining operations;
 - `authority_required`: apply the prepared mutation continuation in `contracts.md` and remain in Landing; and
@@ -115,9 +152,11 @@ Enter `RetroReview` when Temper reports its exact Review target: the absolute re
 
 Dispatch a fresh `retro-reviewer-<feature>` with `valcraft-review` in plan mode on the exact report path and content hash. A pass enters Complete; nothing is merged, because the report is not in git. Material findings return to Retrospective. Foreman never reviews the report.
 
-## `Blocked` and recovery
+## `Blocked`, `DurableHandoff`, and recovery
 
 Name the code, target, source report, and evidence or authority required to leave the state. `permission_blocked`, transport failure, and dead-worker recovery remain backend returns rather than producer status.
+
+`DurableHandoff` names the exact attributed dirty paths and why the configured isolated backend cannot read them. For git-owned paths, leave it after the operator commits them or changes to a configured shared-checkout backend. For a gitignored Temper report, only the shared-checkout backend exit applies. Re-read the resulting head and paths before continuing.
 
 A dead worker first records the backend return and complete recovery inventory. A safe replacement receives a fresh physical identity and the same logical identity. Reject any late predecessor report or path after replacement. Never synthesize or complete the dead worker's report.
 

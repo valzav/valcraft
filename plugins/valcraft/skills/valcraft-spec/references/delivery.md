@@ -8,6 +8,8 @@ Record the repository, operator-selected local baseline ref and SHA, canonical S
 
 An exact Foreman assignment overrides standalone derivation. Require its repository, accepted source or artifact, reconciled base SHA, canonical branch, backend identity, and any physical branch. Do not infer a missing field from coordinator state.
 
+A confirmed takeover assignment may attribute exact dirty Spec paths only on the already-correct shared branch and head. Validate their Spec ownership, scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths.
+
 Without an envelope:
 
 1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state before switching or creating a branch. Stop on unattributed changes. Use the clean current checked-out ref selected by the invocation as the Spec baseline. Resolve and record its exact HEAD locally.
@@ -15,7 +17,7 @@ Without an envelope:
 3. Reconcile the local canonical branch against the selected local baseline. Create it from that baseline when absent. Resume it only when its attributable Spec history is equal to or descends cleanly from the baseline. Stop on ambiguous ancestry or divergence. Do not fetch or fabricate remote state for local production.
 4. Reconcile existing artifacts and commits before writing. Never duplicate a complete local result.
 
-On a shared checkout, use the canonical Spec branch. Preserve and report unattributed state; do not stash, clean, reset, or absorb it. On an isolated-workspace backend, require a unique clean physical branch seeded from the assignment's exact predecessor SHA. Keep the canonical branch as the remote ref. Never publish the physical branch name.
+On a shared checkout, use the canonical Spec branch. Preserve and report unattributed state; do not stash, clean, reset, or absorb it. Incorporate only the takeover-attributed Spec paths validated above. On an isolated-workspace backend, require a unique clean physical branch seeded from the assignment's exact predecessor SHA. Keep the canonical branch as the remote ref. Never publish the physical branch name.
 
 A configured release branch does not select the local baseline. When live outward resolution succeeds, a Spec PR targets the authoritative default branch.
 

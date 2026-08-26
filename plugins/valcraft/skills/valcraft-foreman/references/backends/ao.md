@@ -2,6 +2,8 @@
 
 Foreman runs in an Agent Orchestrator project. Every worker receives an isolated worktree on a unique physical branch. Require the installed `ao` CLI, tmux, and the exact project id from `foreman.ao.project_id` in the resolved configuration.
 
+An isolated worker cannot adopt dirty paths from Foreman's checkout. A takeover carrying such paths stops at `DurableHandoff` before worker creation until the operator commits them or changes to a configured shared-checkout backend. Foreman never copies or commits them.
+
 ## Flags
 
 | Flag | Value |

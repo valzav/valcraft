@@ -18,6 +18,15 @@ CONTRACTS = Path("plugins/valcraft/skills/valcraft-foreman/references/contracts.
 BACKENDS = Path("plugins/valcraft/skills/valcraft-foreman/references/backends/README.md")
 BACKEND_DIRECTORY = BACKENDS.parent
 FOREMAN_EVALS = Path("plugins/valcraft/skills/valcraft-foreman/evals/evals.json")
+SKILLS_DIRECTORY = Path("plugins/valcraft/skills")
+
+PRIOR_STATE_PRESENTATION_CONTRACT = (
+    "Never replay another Valcraft skill's report. Omit unrelated prior state. "
+    "When relevant prior state is necessary, summarize it in one prose paragraph "
+    "containing only the prior outcome, exact target, relevant blocker or handoff, "
+    "and one suggested next action. The suggested action is advisory and grants no "
+    "authority."
+)
 
 BACKEND_RETURNS = {
     "report_available": ("terminal", "ReportValidation"),
@@ -577,6 +586,18 @@ def check_backend_conformance(root: Path, errors: list[str]) -> None:
         )
 
 
+def check_prior_state_presentation(root: Path, errors: list[str]) -> None:
+    skill_files = sorted((root / SKILLS_DIRECTORY).glob("*/SKILL.md"))
+    for skill_file in skill_files:
+        occurrences = skill_file.read_text().count(PRIOR_STATE_PRESENTATION_CONTRACT)
+        if occurrences != 1:
+            relative = skill_file.relative_to(root)
+            errors.append(
+                f"prior-state presentation contract must appear exactly once in "
+                f"{relative}; observed={occurrences}"
+            )
+
+
 def check(root: Path) -> list[str]:
     errors: list[str] = []
     contracts_text = (root / CONTRACTS).read_text()
@@ -586,6 +607,7 @@ def check(root: Path) -> list[str]:
     check_backend_returns(contracts_text, errors)
     check_backend_conformance(root, errors)
     check_transport_deviations(root, errors)
+    check_prior_state_presentation(root, errors)
     return errors
 
 

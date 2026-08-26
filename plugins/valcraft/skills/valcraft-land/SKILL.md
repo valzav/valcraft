@@ -6,6 +6,8 @@ description: >
 
 # valcraft-land
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Own one idempotent boundary from reviewed artifact to authoritative completion. Prepare first. Execute only exact authorized mutations. Reconcile before every retry.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.

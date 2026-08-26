@@ -2,6 +2,10 @@
 
 Read this reference before editing code. It owns Forge's verification, outward-mutation, recovery, Review-handoff, and report contracts.
 
+## Takeover-attributed working state
+
+Exact dirty paths attributed by a confirmed Foreman takeover are allowed only on the already-correct shared canonical branch at an attributable implementation head that equals or descends from the reviewed-plan SHA while the reviewed plan remains unchanged. Validate their Forge ownership, stated scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return the assignment's durable-handoff blocker without snapshotting, stashing, committing, or transferring it.
+
 ## Verify the implementation
 
 Run the repository's real tests, typecheck, lint, and applicable integration checks. Cite command output. For every new or changed test, state the defect that could still pass it.

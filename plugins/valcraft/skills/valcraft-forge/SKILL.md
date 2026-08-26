@@ -1,17 +1,14 @@
 ---
 name: valcraft-forge
 description: >
-  Implement one feature task, quick task, passed task plan, or small
-  fully-specified fix from its git-owned contract; consume Draft's exact
-  Review-passed plan for non-trivial work, write code and discriminating tests,
-  remediate code findings, and hand an exact implementation target to Review.
-  Use for implementation, including an authorized task push or PR, not task
-  planning, specification, review, merge, completion ticks, or tracker closure.
+  Implement one feature task, quick task, passed plan, or small fully specified fix; write code and discriminating tests, remediate code findings, and hand Review an exact target. Use for implementation and authorized task publication, not planning, specification, review, merge, or closure.
 ---
 
 # valcraft-forge
 
-Implement and verify one unit. Forge owns source changes and code-finding remediation. It never authors or revises a required task plan, reviews its own work, merges, ticks completion, closes tracker state, or declares the task shipped.
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
+Implement and verify one unit. Forge owns source changes and code-finding remediation. It never authors a required plan, reviews itself, merges, ticks completion, closes tracker state, or declares shipment.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
@@ -42,9 +39,9 @@ State touched files and tasks and deliberately untouched adjacent scope. Do not 
 
 Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full, names the files and the exact change, and names the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
 
-A task is also non-trivial whenever reaching an implementation needs a decision rather than a transcription: contracts that conflict, an approach the artifacts leave open, or scope wider than the named change. Precedence settling which contract wins does not make the task trivial — knowing that an accepted ADR outranks `design.md` identifies the authority, not the plan it implies. Carry the resolved conflict to Draft as input.
+A task is also non-trivial when implementation needs a decision rather than transcription: conflicting contracts, an open approach, or wider scope. Precedence identifies the authority, not the plan it implies. Carry the conflict to Draft.
 
-Route to Draft whenever both readings are arguable. An unnecessary plan costs one cycle; unplanned work costs an unreviewed change to code and to contracts Forge does not own.
+Route to Draft whenever both readings are arguable; Forge does not choose between them.
 
 Non-trivial work requires:
 
@@ -58,7 +55,7 @@ A missing plan, missing pass, stale verdict, or plan-path or commit mismatch cha
 
 Record repository and remote identity, authoritative base ref and SHA, canonical task branch, physical branch, current HEAD, reviewed plan path and SHA, and local and remote canonical-ref heads. Prefer an exact Foreman assignment; otherwise derive the canonical branch from repository policy and the task identity.
 
-Reconcile prior work before creating anything. Fetch applicable refs and stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
+Reconcile prior work before creating anything. Apply the loaded reference's takeover-dirt rule; otherwise stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
 
 For first implementation, begin at Draft's exact passing plan-review SHA:
 

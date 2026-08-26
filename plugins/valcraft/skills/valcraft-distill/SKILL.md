@@ -5,6 +5,8 @@ description: Distill a prompt artifact — inline prompt text, a markdown prompt
 
 # valcraft-distill
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Reduce a prompt artifact to the smallest instruction set that still meets its contract, and present the result either as a short structured summary — the distillate — or as a leaner working copy, depending on the user's goal. distill never edits the source. When the user wants the source improved in place, offer `valcraft-hone` instead.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.

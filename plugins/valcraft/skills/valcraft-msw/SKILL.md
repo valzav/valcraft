@@ -5,6 +5,8 @@ description: Apply the MSW Kernel to a markdown document — a plan, spec, skill
 
 # valcraft-msw
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Apply the MSW Kernel to one markdown document. The document's claims face the kernel's deletion test against the document's own contract; the result is reported in the kernel's report format. MSW deletes failed claims and makes only the minimal structural repairs those deletions force. It does not add substantive content or rewrite surviving claims.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
@@ -22,7 +24,7 @@ Vocabulary, shared with `valcraft-distill` and `valcraft-hone`: a **prompt artif
 5. **Apply the kernel's deletion test to each claim.** When unsure whether a claim is load-bearing, keep it and flag it in the report — never delete on suspicion.
 6. **Run the limits pass.** Apply the kernel's "No unauthoritative limits" rule to every numeric cap, threshold, quota, count, or budget in the target. A limit whose exact value has no stated authority — requester, technical or platform contract, project policy, or measured evidence — is a failed claim. When a limit is necessary but its exact value is an unresolved owner choice: attended → ask before editing; unattended → leave the target unchanged, halt, and report the owner decision that blocks the pass.
 7. **Edit the target in place.** Delete the failing claims; make only the structural repairs the deletions force — numbering, a dangling conjunction, an empty section. If the target is not recoverable through version control, show the proposed deletions and require confirmation before editing.
-8. **Report.** The kernel's report and nothing else:
+8. **Report.** Return the kernel's report, preceded only by the prior-state paragraph when the presentation contract above makes it relevant:
    - the outcome against the contract — the contract as stated, and that the surviving document still meets it;
    - the proof — for each surviving section, why deleting it would leave the contract unmet or unproven (grouped, not claim-by-claim);
    - rejected claims worth the user's attention, one line each, with the reason (deletion test failed, or limit without authority);
