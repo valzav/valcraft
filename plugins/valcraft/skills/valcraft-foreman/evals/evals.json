@@ -982,8 +982,8 @@
       "id": 74,
       "name": "herdr-roles-use-configured-native-arguments",
       "coordination_coverage": "transport:herdr-cross-model-roles",
-      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, use this valid configured worker map: Draft Codex Terra medium; PlanReview Claude Opus high; Forge Claude Sonnet medium; CodeReview Codex Sol xhigh; Land Claude Fable low; EvidenceReview Codex Luna max; Temper Claude Opus high; RetroReview Codex Terra medium. Show each start translation. Then classify a missing Codex harness and, separately, an invalid reconfiguration that assigns CodeReview to Claude like Forge. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman reads each role's harness, model, and effort from the resolved configuration. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`. Every value is a distinct argument, never interpolated shell text, and the physical identity records all three. The four reviewer-producer pairs use different harnesses. When Codex cannot start, readiness fails naming the configured harness and creates no run or worker; Claude is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Tune and does not dispatch until Tune returns Status: done.",
+      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, use this valid configured worker map: Draft Codex Terra medium; PlanReview Claude Opus high; Forge Cursor model `cursor-grok-4.6` high; CodeReview Codex Sol xhigh; Land Claude Fable low; EvidenceReview Cursor model `claude-sonnet-5-thinking` xhigh; Temper Cursor model `gpt-5.6-sol` medium; RetroReview Claude Opus high. Show each start translation. Then classify a missing Cursor harness and, separately, an invalid reconfiguration that assigns CodeReview to Cursor like Forge. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman reads each role's harness, model, and effort from the resolved configuration. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`; Cursor starts pass one constructed catalog model argument `<configured-model>-<configured-effort>` through `--model` after `--`. Every value is passed through an argument vector, never interpolated into shell text, and the physical identity records the configured harness, model, and effort. Every Cursor prompt is bound to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. The four reviewer-producer pairs use different harnesses. When Cursor cannot start, readiness fails naming the configured harness and creates no run or worker; another harness is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Tune and does not dispatch until Tune returns Status: done.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -993,7 +993,8 @@
       ],
       "assertions": [
         "Each dispatch uses the configured harness, model, and effort for its worker key",
-        "Claude and Codex settings translate to their native argument forms after Herdr's argument separator",
+        "Claude, Codex, and Cursor settings translate to their native argument forms after Herdr's argument separator",
+        "Cursor receives one catalog model slug and an absolute producer SKILL.md path",
         "Configured values are passed as distinct arguments and recorded with physical identity",
         "A missing configured harness fails readiness without substitution",
         "A same-harness producer-reviewer pair delegates repair to Tune and dispatches no worker"

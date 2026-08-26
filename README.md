@@ -69,7 +69,7 @@ The default path for a new project or a new body of work.
 
    Run `/valcraft:valcraft-tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
 
-   `foreman` can use native subagents on Claude Code, Codex, and Cursor. Claude Code wakes the parent turn when a worker completes; Codex waits in the foreground with `wait_agent`; Cursor keeps the parent turn active while the Task call holds. OpenCode has no worker backend. External orchestrators integrate through registered Foreman backends.
+   `foreman` can use native subagents on Claude Code, Codex, and Cursor. Claude Code wakes the parent turn when a worker completes; Codex waits in the foreground with `wait_agent`; Cursor keeps the parent turn active while the Task call holds. The Herdr backend can assign each role to Claude, Codex, or Cursor while preserving cross-harness Review independence. OpenCode has no worker backend. External orchestrators integrate through registered Foreman backends.
 
 ### 2. Manual loop, one task at a time
 

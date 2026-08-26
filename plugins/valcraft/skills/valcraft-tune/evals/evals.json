@@ -213,6 +213,26 @@
         "Replacing the TBD placeholder with the first concrete identifier proceeds as activation and commits only the base",
         "No migrated or partially retargeted mapping state is ever written"
       ]
+    },
+    {
+      "id": 12,
+      "name": "custom-herdr-cursor-worker",
+      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. Assign Forge to Cursor with the recommended model `cursor-grok-4.6` and high effort, and keep Code Review on Codex. Then compare free-form Cursor base alias `claude-sonnet-5-thinking` with xhigh effort against values `cursor-grok-4.6-high` and `unsafe[effort=max]`. Do not save until the candidate validates.",
+      "expected_output": "Tune offers Cursor alongside Claude and Codex for every Custom role. It offers `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. It accepts the safe free-form base alias `claude-sonnet-5-thinking` with xhigh effort, but rejects the complete catalog slug `cursor-grok-4.6-high` and bracketed value `unsafe[effort=max]` because the Herdr backend owns the effort suffix. The known `cursor-grok-4.6` model permits low, medium, high, and xhigh; a free-form Cursor model permits none through max, with runtime readiness verifying whether the constructed catalog slug exists. Tune validates that Forge and Code Review use different harnesses, preserves the Cursor model and effort as separate configuration values, then writes the valid candidate immediately and shows its exact YAML in the report.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "evals/files/valid-config/.gitignore",
+        "evals/files/valid-config/.valcraft/config.yaml"
+      ],
+      "assertions": [
+        "Custom offers Cursor as a harness for every Herdr worker role",
+        "Cursor offers cursor-grok-4.6 as the recommended model followed by free-form model input",
+        "A safe free-form Cursor base model alias is accepted and preserved as data",
+        "A complete catalog slug or bracketed Cursor model value is rejected before writing",
+        "The known Cursor model accepts low through xhigh, while a free-form Cursor model accepts none through max",
+        "The complete candidate preserves reviewer-producer harness independence before the immediate write"
+      ]
     }
   ]
 }

@@ -12,7 +12,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | --- | --- |
 | `wake` | `foreground` — `agent prompt --wait` blocks for the worker's turn; a lost handle re-arms with standalone `agent wait` |
 | `answer` | `interactive` through `agent send-keys` |
-| `harnesses` | Claude and Codex as configured per role; a missing configured harness fails readiness |
+| `harnesses` | Claude, Codex, and Cursor as configured per role; a missing configured harness fails readiness |
 | `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
 | `review continuity` | kept active — a Review worker with material findings waits in its pane and receives its closure check and any second full round as follow-up prompts; released after the round's final report |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
@@ -86,8 +86,9 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
    - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
    - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
+   - Cursor: construct the catalog model argument `<model>-<effort>`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
 
-   Construct an argument vector. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
+   Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
 A worker that blocks during startup is not a failure. Herdr reports it as `blocked` and `agent list` shows it; clear only a prompt the committed contract settles for a directory this run owns.
