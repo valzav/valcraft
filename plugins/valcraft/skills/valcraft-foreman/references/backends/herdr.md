@@ -86,9 +86,9 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
    - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
    - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
-   - Cursor: construct the single parameterized model argument `<model>[effort=<effort>]`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <parameterized-model>`.
+   - Cursor: construct the catalog model argument `<model>-<effort>`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
 
-   Construct an argument vector. Build Cursor's parameterized model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
+   Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
 A worker that blocks during startup is not a failure. Herdr reports it as `blocked` and `agent list` shows it; clear only a prompt the committed contract settles for a directory this run owns.
