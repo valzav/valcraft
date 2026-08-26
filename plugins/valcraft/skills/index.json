@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "1e45282974ec5435",
+      "version": "fe0a5faec892bf74",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -20,7 +20,7 @@
     },
     {
       "name": "valcraft-distill",
-      "version": "67f538c185c01c47",
+      "version": "88046adddcd8ccac",
       "files": [
         "SKILL.md",
         "references/compare.md",
@@ -29,7 +29,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "822f5dd7c209b137",
+      "version": "f3b093ccddd8f2d7",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -39,7 +39,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "df898d28d54dbf2a",
+      "version": "9ac87e2495a70348",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -60,7 +60,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "6e3f114cc1559769",
+      "version": "68490f5860c66ce2",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -69,7 +69,7 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "a59be9f37edca3fc",
+      "version": "ff3970f92977386d",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -80,7 +80,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "e28df2cb8cfb2b66",
+      "version": "392df0c151472737",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -91,7 +91,7 @@
     },
     {
       "name": "valcraft-msw",
-      "version": "57f18be4ed3fbc20",
+      "version": "8c9ab2f6b39d66ce",
       "files": [
         "SKILL.md",
         "references/kernel.md"
@@ -110,7 +110,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "02e6294e9058b481",
+      "version": "a5ccfefc17529ace",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -136,7 +136,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "52f186ef80a32189",
+      "version": "bac5bb1e6de14a66",
       "files": [
         "SKILL.md",
         "references/config.md"

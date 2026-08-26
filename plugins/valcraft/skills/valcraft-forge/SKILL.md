@@ -11,11 +11,11 @@ description: >
 
 # valcraft-forge
 
-Implement and verify one assigned unit. Forge owns source changes and code-finding remediation. It never authors or revises a required task plan, reviews its own work, merges, ticks completion, closes tracker state, or declares the task shipped.
+Implement and verify one unit. Forge owns source changes and code-finding remediation. It never authors or revises a required task plan, reviews its own work, merges, ticks completion, closes tracker state, or declares the task shipped.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
-Read `references/verification-and-handoff.md` before editing. It owns verification, outward-mutation authority, recovery, the Review handoff, routing codes, and the final Forge report.
+Read `references/verification-and-handoff.md` first. It owns verification, outward-mutation authority, recovery, the Review handoff, routing codes, and the Forge report.
 
 ## Load the contract
 

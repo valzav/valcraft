@@ -7,7 +7,7 @@ description: Configure or reconfigure a repository's Valcraft settings — the c
 
 Own the committed `.valcraft/config.yaml` base and the gitignored, user-local `.valcraft/config.local.yaml` overlay. Do not read Valcraft configuration from `AGENTS.md`, migrate legacy declarations, or create a compatibility path.
 
-Skill names use `valcraft:valcraft-<name>` on namespaced hosts and `valcraft-<name>` on flat hosts.
+Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 ## Load the contract
 
