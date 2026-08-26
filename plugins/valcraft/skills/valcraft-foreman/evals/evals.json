@@ -44,7 +44,7 @@
       "assertions": [
         "Foreman identifies the plan-review report as incomplete against Review's contract, naming the missing finding table and checks-performed record",
         "Foreman remains in PlanReview and does not treat the plan as reviewed",
-        "Foreman re-requests the full contract from a fresh physical plan-reviewer with the same logical identity and report path",
+        "Foreman re-requests the full contract from a fresh physical plan-reviewer with the same logical identity and a fresh report path",
         "Foreman does not read spec.md or design.md to review the plan itself"
       ]
     },

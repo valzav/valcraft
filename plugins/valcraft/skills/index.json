@@ -39,7 +39,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "fe95a8d1a5ada94a",
+      "version": "df898d28d54dbf2a",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -69,7 +69,7 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "48b8c8b33d69a029",
+      "version": "a59be9f37edca3fc",
       "files": [
         "SKILL.md",
         "references/claude.md",

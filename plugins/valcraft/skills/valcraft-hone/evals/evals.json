@@ -25,13 +25,13 @@
       "expected_output": "Refine mode with the distill pass accepted: distill's deletion-test analysis runs over the already-read target and its deletions are applied to the target in place as the first refinement pass, attributed to distill in the change report. Then guide-based refinement: prescriptive competence-spelling steps pruned to the real workflow contract, self-critique replaced with verifier guidance where relevant, each instruction stated once, a change→guideline report, and flagged judgment calls rather than silent deletion of possibly load-bearing steps.",
       "files": ["evals/files/report-writer/SKILL.md"],
       "assertions": [
-        "The distill pass runs first and its deletions are applied in place, attributed to distill in the change report",
+        "The distill pass runs first and its deletions are applied before guide-based refinement, attributed to distill in the change report",
         "Mechanical competence steps are removed; every surviving numbered step maps to a workflow requirement, output contract, safety rule, or measured model-specific need",
         "Apology instructions removed",
         "'Explain your reasoning step by step in your final response' removed or flagged as a Claude reasoning_extraction refusal risk",
         "Frontmatter name 'report-writer' and the Summary/Progress/Blockers output contract preserved",
         "The reports/ save path survives",
-        "SKILL.md edited in place (the result differs from the original fixture)",
+        "The refined SKILL.md preserves the original frontmatter, output contract, and reports/ path while removing the targeted competence and apology instructions",
         "Change report maps changes to motivating guidelines"
       ]
     },
