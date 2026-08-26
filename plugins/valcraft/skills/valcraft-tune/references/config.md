@@ -69,7 +69,7 @@ When the resolved `foreman.backend` is `ao`, the resolved configuration also req
 `foreman.herdr` requires:
 
 - `session`: a Herdr session identifier string or YAML `null` to use the active controller session; and
-- `workers`: exactly `draft`, `plan_review`, `forge`, `code_review`, `land`, `temper`, `retro_review`, and `evidence_review`.
+- `workers`: exactly `spec`, `spec_review`, `draft`, `plan_review`, `forge`, `code_review`, `land`, `temper`, `retro_review`, and `evidence_review`.
 
 Each worker requires exactly `harness`, `model`, and `effort`.
 
@@ -78,7 +78,7 @@ Each worker requires exactly `harness`, `model`, and `effort`.
 - Cursor workers use `harness: cursor`; the known model alias is `cursor-grok-4.6`; its allowed effort is `low`, `medium`, `high`, or `xhigh`. The Herdr backend passes `--model <model>-<effort>`, so the Cursor CLI receives a catalog slug such as `cursor-grok-4.6-high`. A free-form Cursor value names a base model alias, not a complete catalog slug: reject bracket syntax and a value that already carries an effort or `fast` suffix because the backend owns those suffixes. A free-form Cursor model allows `none`, `low`, `medium`, `high`, `xhigh`, or `max`; runtime readiness verifies the constructed catalog slug.
 - A nonempty, single-line model alias without control characters and whose first character is not `-` is valid as a free-form model value. Keep it as data and do not infer its provider or availability. For a free-form Codex model, allow `low`, `medium`, `high`, `xhigh`, `max`, or `ultra`; runtime readiness still verifies model availability. A free-form Claude model uses the Claude effort set. A free-form Cursor model uses the Cursor effort set and base-alias restriction above; runtime readiness verifies that the constructed catalog slug is available.
 
-Reviewer independence is structural. On the resolved configuration, require different harnesses for each pair: `plan_review` and `draft`, `code_review` and `forge`, `retro_review` and `temper`, and `evidence_review` and `land`. Reject the complete candidate if any pair uses the same harness.
+Reviewer independence is structural. On the resolved configuration, require different harnesses for each pair: `spec_review` and `spec`, `plan_review` and `draft`, `code_review` and `forge`, `retro_review` and `temper`, and `evidence_review` and `land`. Reject the complete candidate if any pair uses the same harness.
 
 ### Pull requests
 
@@ -118,6 +118,8 @@ All three presets use this harness split:
 
 | Role              | Harness |
 | ----------------- | ------- |
+| `spec`            | Codex   |
+| `spec_review`     | Claude  |
 | `draft`           | Codex   |
 | `plan_review`     | Claude  |
 | `forge`           | Claude  |
@@ -127,7 +129,7 @@ All three presets use this harness split:
 | `retro_review`    | Codex   |
 | `evidence_review` | Codex   |
 
-For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models with the balanced alias first and marked recommended, followed by the other known aliases and `Enter another model alias`. For Cursor, offer `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort supported by the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all four independence pairs after the last role; do not silently change a conflicting answer.
+For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models with the balanced alias first and marked recommended, followed by the other known aliases and `Enter another model alias`. For Cursor, offer `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort supported by the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all five independence pairs after the last role; do not silently change a conflicting answer.
 
 ## Reconfiguration
 

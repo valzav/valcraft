@@ -157,6 +157,43 @@
         "The unattended run ends Status: done without blocking on the menu or accepting on the operator's behalf",
         "Temper applies nothing and writes no git state"
       ]
+    },
+    {
+      "id": 9,
+      "name": "confirmed-takeover-resumes-attributed-dirty-report",
+      "prompt": "$valcraft:valcraft-temper — a confirmed Foreman takeover assignment attributes exact dirty path /work/project/docs/.retro/feat-012.md as Temper's incomplete current report, with its content hash, corpus FEAT-012, and described repository head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa. The shared checkout contains no other dirt. Compare the valid assignment with a wrong hash, different corpus, path outside docs/.retro/, and unrelated dirt. State the write target. Do not mutate anything.",
+      "expected_output": "For the valid assignment, Temper validates the exact path under the gitignored report directory, Temper ownership, FEAT-012 corpus, described head, current contents, and content hash, then resumes that same report instead of allocating a second file. This is the confirmed-takeover path for resuming an exact current report; RetroReview remediation is the other exact-report resumption path. A wrong hash, different corpus or head, path outside docs/.retro/, or unrelated, overlapping, or conflicting dirt blocks and is preserved. The assignment grants no authority over another report or git state.",
+      "files": [
+        "SKILL.md",
+        "references/report-format.md",
+        "references/process.md"
+      ],
+      "assertions": [
+        "Temper validates path, ownership, corpus, described head, contents, and content hash",
+        "A valid confirmed takeover resumes the exact attributed report instead of creating another",
+        "The exception applies only to the current attributed Temper report",
+        "A wrong hash, corpus, head, or report-directory path blocks",
+        "Unrelated, overlapping, or conflicting dirt blocks and is preserved",
+        "The assignment grants no authority over another report or git state"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "retro-review-remediation-edits-exact-current-report",
+      "prompt": "$valcraft:valcraft-temper — RetroReview returned material finding R-031 against /work/project/docs/.retro/feat-012.md at content hash bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb and described head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa. The remediation assignment carries the accepted Review report, R-031, the same corpus, and no other dirt. Compare that assignment with a stale content hash and an assignment for another report. State the write target. Do not mutate anything.",
+      "expected_output": "Temper validates the accepted Review report, R-031, exact report path, current content hash, Temper ownership, corpus, described head, and current contents. It edits /work/project/docs/.retro/feat-012.md in place and returns a new content hash for the same path. It does not allocate a second report. A stale hash, different path, mismatched corpus or head, or unrelated dirt blocks and is preserved. Review findings grant authority only to remediate the exact reviewed report.",
+      "files": [
+        "SKILL.md",
+        "references/report-format.md",
+        "references/process.md"
+      ],
+      "assertions": [
+        "RetroReview remediation validates the accepted report and exact R-ID",
+        "Temper validates the current path, hash, ownership, corpus, head, and contents",
+        "Valid remediation edits the same report and returns its new content hash",
+        "Temper does not allocate a second report during remediation",
+        "A stale hash, different report, mismatch, or unrelated dirt blocks and is preserved"
+      ]
     }
   ]
 }

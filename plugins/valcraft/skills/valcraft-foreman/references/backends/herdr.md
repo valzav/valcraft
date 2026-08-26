@@ -23,6 +23,8 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 
 | Named state role | Worker key | Must differ from |
 | --- | --- | --- |
+| Specifying | `spec` | `spec_review` |
+| SpecReview | `spec_review` | `spec` |
 | Draft | `draft` | `plan_review` |
 | PlanReview | `plan_review` | `draft` |
 | Forge | `forge` | `code_review` |
@@ -32,7 +34,7 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 | Temper | `temper` | `retro_review` |
 | RetroReview | `retro_review` | `temper` |
 
-The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those four pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
+The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those five pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
 
 ## Readiness
 
@@ -145,7 +147,7 @@ Reconcile the recorded assignment checkpoint against the report and the exact oc
 
 Herdr keeps a pane's agent and conversation alive after a turn, so this backend keeps a Review worker for its own round as [`../hygiene.md`](../hygiene.md#workers) allows. Preserve Review independence and shared-checkout serialization as follows.
 
-1. **Who is kept.** Keep only a Review worker (`plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
+1. **Who is kept.** Keep only a Review worker (`spec-reviewer`, `plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Spec, Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
 2. **What waiting means.** The kept worker is settled (`idle` or `done`) and executes nothing. Between its report and its next prompt it touches no Git state, so the producer's remediation still runs alone in the shared checkout. Do not read from, prompt, or `send-keys` the waiting worker while the producer is active.
 3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — pane id and agent name — is the initial dispatch's, recorded again on the new row and marked continued. The agent name keeps its original ordinal; only the report path advances.
 4. **Revalidate before the follow-up prompt.** Require `herdr pane get <pane-id>` to resolve the recorded pane, `agent_session`, and settled occupant. A missing pane, different occupant, or null session means the kept worker is gone. Record that as an observation rather than a backend return because no assignment is active. Skip dead-worker inventory because the settled reviewer touched no Git state and the producer's commits are already recorded. Close the pane if it still exists and confirm it no longer resolves to the recorded name. Dispatch the closure check as a fresh physical worker with the same logical identity through [Spawn](#spawn), without the task-start gate because the producer's head is the expected mid-round state. Continuity is optional.

@@ -27,6 +27,9 @@ BACKENDS = "plugins/valcraft/skills/valcraft-foreman/references/backends/README.
 SUBAGENTS = "plugins/valcraft/skills/valcraft-foreman/references/backends/subagents.md"
 FOREMAN_EVALS = "plugins/valcraft/skills/valcraft-foreman/evals/evals.json"
 FOREMAN_SKILL = "plugins/valcraft/skills/valcraft-foreman/SKILL.md"
+HERDR = "plugins/valcraft/skills/valcraft-foreman/references/backends/herdr.md"
+LOOP = "plugins/valcraft/skills/valcraft-foreman/references/loop.md"
+TUNE_CONFIG = "plugins/valcraft/skills/valcraft-tune/references/config.md"
 PRIOR_STATE_PRESENTATION_CONTRACT = (
     "Never replay another Valcraft skill's report. Omit unrelated prior state. "
     "When relevant prior state is necessary, summarize it in one prose paragraph "
@@ -49,7 +52,7 @@ class CoordinationContractCheckTests(unittest.TestCase):
         source = REPOSITORY / "plugins" / "valcraft" / "skills"
         target = self.root / "plugins" / "valcraft" / "skills"
         target.mkdir(parents=True)
-        for skill in ("valcraft-foreman", *PRODUCERS):
+        for skill in ("valcraft-foreman", "valcraft-tune", *PRODUCERS):
             shutil.copytree(source / skill, target / skill)
 
     def tearDown(self) -> None:
@@ -146,6 +149,116 @@ class CoordinationContractCheckTests(unittest.TestCase):
         self.assert_check_fails(
             "prior-state presentation contract must appear exactly once in "
             f"{FOREMAN_SKILL}; observed=0"
+        )
+
+    def test_unexpected_tune_herdr_worker_key_fails(self) -> None:
+        self.replace(
+            TUNE_CONFIG,
+            "and `evidence_review`.",
+            "and `evidence_review`, plus `rogue`.",
+        )
+        self.assert_check_fails("Tune Herdr worker keys differ")
+
+    def test_duplicate_tune_herdr_worker_key_fails(self) -> None:
+        self.replace(
+            TUNE_CONFIG,
+            "and `evidence_review`.",
+            "and `evidence_review`, plus `spec`.",
+        )
+        self.assert_check_fails("Tune Herdr worker keys differ")
+
+    def test_tune_herdr_review_pair_drift_fails(self) -> None:
+        self.replace(
+            TUNE_CONFIG,
+            "`spec_review` and `spec`",
+            "`spec_review` and `draft`",
+        )
+        self.assert_check_fails("Tune Herdr review pairs differ")
+
+    def test_odd_tune_herdr_review_pair_declaration_fails(self) -> None:
+        self.replace(
+            TUNE_CONFIG,
+            "`evidence_review` and `land`. Reject",
+            "`evidence_review`. Reject",
+        )
+        self.assert_check_fails("Tune Herdr review pairs differ")
+
+    def test_herdr_role_map_drift_fails(self) -> None:
+        self.replace(
+            HERDR,
+            "| Specifying | `spec` | `spec_review` |",
+            "| Specifying | `rogue` | `spec_review` |",
+        )
+        self.assert_check_fails("Herdr role map differs")
+
+    def test_duplicate_herdr_role_fails(self) -> None:
+        row = "| Specifying | `spec` | `spec_review` |\n"
+        self.replace(HERDR, row, row * 2)
+        self.assert_check_fails("Herdr role map differs")
+
+    def test_duplicate_tune_preset_role_fails(self) -> None:
+        row = "| `spec`            | Codex   |\n"
+        self.replace(TUNE_CONFIG, row, row * 2)
+        self.assert_check_fails("Tune Herdr preset differs")
+
+    def test_tune_preset_harness_drift_fails(self) -> None:
+        self.replace(
+            TUNE_CONFIG,
+            "| `spec_review`     | Claude  |",
+            "| `spec_review`     | Codex   |",
+        )
+        self.assert_check_fails("Tune Herdr preset differs")
+
+    def test_partial_completion_transition_drift_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "| `partial_completion` | `PartialCompletionByTarget` |",
+            "| `partial_completion` | `Landing` |",
+        )
+        self.assert_check_fails(
+            "Land partial_completion must use PartialCompletionByTarget"
+        )
+
+    def test_missing_spec_partial_completion_route_fails(self) -> None:
+        self.replace(
+            LOOP,
+            "`partial_completion` through `PartialCompletionByTarget`",
+            "`partial_completion` to `SpecLanding`",
+        )
+        self.assert_check_fails(
+            "Foreman loop SpecLanding must route partial completion exactly once"
+        )
+
+    def test_negated_partial_completion_route_fails(self) -> None:
+        self.replace(
+            LOOP,
+            "`partial_completion`: route through `PartialCompletionByTarget`",
+            "`partial_completion`: must never route through "
+            "`PartialCompletionByTarget`",
+        )
+        self.assert_check_fails(
+            "Foreman loop Landing must route partial completion exactly once"
+        )
+
+    def test_missing_feature_close_partial_completion_route_fails(self) -> None:
+        self.replace(
+            LOOP,
+            "Route `partial_completion` through `PartialCompletionByTarget` with only "
+            "remaining operations. On completion, enter Retrospective.",
+            "On completion, enter Retrospective.",
+        )
+        self.assert_check_fails(
+            "Foreman loop FeatureClose must route partial completion exactly once"
+        )
+
+    def test_partial_completion_definition_drift_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "tracker-only feature or PRD closure to FeatureClose",
+            "tracker-only feature or PRD closure to Landing",
+        )
+        self.assert_check_fails(
+            "PartialCompletionByTarget definition is missing or drifted"
         )
 
     def test_duplicate_message_registry_row_fails(self) -> None:

@@ -19,6 +19,47 @@ BACKENDS = Path("plugins/valcraft/skills/valcraft-foreman/references/backends/RE
 BACKEND_DIRECTORY = BACKENDS.parent
 FOREMAN_EVALS = Path("plugins/valcraft/skills/valcraft-foreman/evals/evals.json")
 SKILLS_DIRECTORY = Path("plugins/valcraft/skills")
+HERDR = BACKEND_DIRECTORY / "herdr.md"
+LOOP = Path("plugins/valcraft/skills/valcraft-foreman/references/loop.md")
+TUNE_CONFIG = Path("plugins/valcraft/skills/valcraft-tune/references/config.md")
+
+HERDR_ROLE_MAP = {
+    "Specifying": ("spec", "spec_review"),
+    "SpecReview": ("spec_review", "spec"),
+    "Draft": ("draft", "plan_review"),
+    "PlanReview": ("plan_review", "draft"),
+    "Forge": ("forge", "code_review"),
+    "CodeReview": ("code_review", "forge"),
+    "Land": ("land", "evidence_review"),
+    "EvidenceReview": ("evidence_review", "land"),
+    "Temper": ("temper", "retro_review"),
+    "RetroReview": ("retro_review", "temper"),
+}
+HERDR_WORKER_KEYS = {key for pair in HERDR_ROLE_MAP.values() for key in pair}
+HERDR_REVIEW_PAIRS = (
+    ("spec_review", "spec"),
+    ("plan_review", "draft"),
+    ("code_review", "forge"),
+    ("retro_review", "temper"),
+    ("evidence_review", "land"),
+)
+HERDR_PRESET_HARNESSES = {
+    "spec": "Codex",
+    "spec_review": "Claude",
+    "draft": "Codex",
+    "plan_review": "Claude",
+    "forge": "Claude",
+    "code_review": "Codex",
+    "land": "Claude",
+    "temper": "Claude",
+    "retro_review": "Codex",
+    "evidence_review": "Codex",
+}
+LOOP_PARTIAL_COMPLETION_ROUTES = {
+    "SpecLanding": "`partial_completion` through `PartialCompletionByTarget`",
+    "Landing": "`partial_completion`: route through `PartialCompletionByTarget`",
+    "FeatureClose": "Route `partial_completion` through `PartialCompletionByTarget`",
+}
 
 PRIOR_STATE_PRESENTATION_CONTRACT = (
     "Never replay another Valcraft skill's report. Omit unrelated prior state. "
@@ -598,6 +639,103 @@ def check_prior_state_presentation(root: Path, errors: list[str]) -> None:
             )
 
 
+def check_herdr_worker_configuration(root: Path, errors: list[str]) -> None:
+    herdr_text = (root / HERDR).read_text()
+    rows = table_rows(section(herdr_text, "Role configuration"))
+    expected_roles = [
+        (role, worker, counterpart)
+        for role, (worker, counterpart) in HERDR_ROLE_MAP.items()
+    ]
+    observed_roles = [
+        (row[0], row[1].strip("`"), row[2].strip("`"))
+        for row in rows[1:]
+        if len(row) == 3
+    ]
+    if observed_roles != expected_roles:
+        errors.append(
+            "Herdr role map differs; "
+            f"expected={expected_roles}, observed={observed_roles}"
+        )
+
+    tune_text = (root / TUNE_CONFIG).read_text()
+    worker_line = re.search(r"`workers`: exactly (.+?)\.\n", tune_text)
+    worker_keys = (
+        re.findall(r"`([a-z][a-z0-9_]*)`", worker_line.group(1))
+        if worker_line
+        else []
+    )
+    if (
+        len(worker_keys) != len(HERDR_WORKER_KEYS)
+        or set(worker_keys) != HERDR_WORKER_KEYS
+    ):
+        errors.append(
+            "Tune Herdr worker keys differ; "
+            f"expected={sorted(HERDR_WORKER_KEYS)}, observed={sorted(worker_keys)}"
+        )
+
+    pair_line = re.search(
+        r"require different harnesses for each pair: (.+?)\. Reject",
+        tune_text,
+    )
+    pair_keys = (
+        re.findall(r"`([a-z][a-z0-9_]*)`", pair_line.group(1))
+        if pair_line
+        else []
+    )
+    observed_pairs = list(zip(pair_keys[::2], pair_keys[1::2]))
+    if len(pair_keys) != len(HERDR_REVIEW_PAIRS) * 2 or observed_pairs != list(
+        HERDR_REVIEW_PAIRS
+    ):
+        errors.append(
+            "Tune Herdr review pairs differ; "
+            f"expected={HERDR_REVIEW_PAIRS}, observed={observed_pairs}"
+        )
+
+    preset = tune_text.split("All three presets use this harness split:", 1)
+    preset_text = preset[1].split("For Custom", 1)[0] if len(preset) == 2 else ""
+    preset_rows = table_rows(preset_text)
+    observed_preset = [
+        (row[0].strip("`"), row[1]) for row in preset_rows[1:] if len(row) == 2
+    ]
+    expected_preset = list(HERDR_PRESET_HARNESSES.items())
+    if observed_preset != expected_preset:
+        errors.append(
+            "Tune Herdr preset differs; "
+            f"expected={expected_preset}, observed={observed_preset}"
+        )
+
+
+def check_target_kind_routing(
+    root: Path,
+    contracts_text: str,
+    routing: dict[str, dict[str, str]],
+    errors: list[str],
+) -> None:
+    transition = routing.get("Land", {}).get("partial_completion")
+    if transition != "PartialCompletionByTarget":
+        errors.append(
+            "Land partial_completion must use PartialCompletionByTarget; "
+            f"observed={transition}"
+        )
+    definition = (
+        "`PartialCompletionByTarget` means spec PR to SpecLanding, tracker-only "
+        "feature or PRD closure to FeatureClose, and every other Land target to "
+        "Landing."
+    )
+    if definition not in contracts_text:
+        errors.append("PartialCompletionByTarget definition is missing or drifted")
+    loop_text = (root / LOOP).read_text()
+    for state, route in LOOP_PARTIAL_COMPLETION_ROUTES.items():
+        state_text = section(loop_text, f"`{state}`")
+        occurrences = state_text.count(route)
+        if occurrences != 1:
+            errors.append(
+                f"Foreman loop {state} must route partial completion exactly once "
+                "through PartialCompletionByTarget; "
+                f"observed={occurrences}"
+            )
+
+
 def check(root: Path) -> list[str]:
     errors: list[str] = []
     contracts_text = (root / CONTRACTS).read_text()
@@ -608,6 +746,8 @@ def check(root: Path) -> list[str]:
     check_backend_conformance(root, errors)
     check_transport_deviations(root, errors)
     check_prior_state_presentation(root, errors)
+    check_herdr_worker_configuration(root, errors)
+    check_target_kind_routing(root, contracts_text, routing, errors)
     return errors
 
 

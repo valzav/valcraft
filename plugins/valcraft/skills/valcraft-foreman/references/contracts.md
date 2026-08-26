@@ -93,12 +93,14 @@ Each declared code has one transition. The detail after `—` never changes it.
 | `check_failure_task` | `Implementing` |
 | `check_failure_spec` | `Specifying` |
 | `evidence_review_required` | `EvidenceReview` |
-| `partial_completion` | `Landing` |
+| `partial_completion` | `PartialCompletionByTarget` |
 | `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
 
 `ReviewByTarget` means task PR to CodeReview and spec PR to SpecReview. It is one target-kind transition function.
+
+`PartialCompletionByTarget` means spec PR to SpecLanding, tracker-only feature or PRD closure to FeatureClose, and every other Land target to Landing. It is one target-kind transition function.
 
 ### Spec
 

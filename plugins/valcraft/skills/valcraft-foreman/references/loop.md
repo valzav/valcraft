@@ -82,7 +82,7 @@ Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 ## `SpecLanding`
 
-Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` back to `SpecLanding`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
+Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` through `PartialCompletionByTarget`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
 
 ## `Ready`
 
@@ -124,7 +124,7 @@ Route the Land report exactly:
 - `check_failure_task`: Implementing;
 - `check_failure_spec`: Specifying;
 - `evidence_review_required`: EvidenceReview;
-- `partial_completion`: Landing with only remaining operations;
+- `partial_completion`: route through `PartialCompletionByTarget` with only remaining operations;
 - `authority_required`: apply the prepared mutation continuation in `contracts.md` and remain in Landing; and
 - unresolved, external, configuration, authority, or applicability codes: Blocked.
 
@@ -140,7 +140,7 @@ The return re-enters `Landing` carrying the whole ownership listed there — fin
 
 ## `FeatureClose`
 
-Dispatch tracker-only Land with the exact feature or PRD target and the operator's quoted confirmation. Land closes only the authorized real tracker target. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
+Dispatch tracker-only Land with the exact feature or PRD target and the operator's quoted confirmation. Land closes only the authorized real tracker target. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
 
 ## `Retrospective`
 

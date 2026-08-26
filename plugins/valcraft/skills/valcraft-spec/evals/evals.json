@@ -402,6 +402,25 @@
         "Confirmation grants no mutation authority",
         "Spec never stashes, cleans, resets, copies, or silently absorbs dirt"
       ]
+    },
+    {
+      "id": 20,
+      "name": "foreman-existing-artifact-bypasses-new-source-selection",
+      "prompt": "/valcraft:valcraft-spec — a confirmed Foreman Specifying assignment names the existing partial FEAT-014 triplet at specs/014-bulk-labels/ and its canonical source recorded in spec.md. The assignment supplies the exact repository, base SHA, canonical branch, backend, current head, and attributed existing artifact paths, but no new PRD document, issue, or inline brief. State request and source resolution before any write. Do not mutate anything.",
+      "expected_output": "Spec treats the exact assigned FEAT-014 artifact as the request, validates and reuses its one canonical recorded source, and resumes the assigned triplet. It does not ask for a new source, allocate another feature, invoke source_selection_required, or reinterpret the assignment as new PRD intake. A missing or conflicting canonical source blocks as an assignment or artifact mismatch rather than opening standalone source selection. The assignment grants no outward mutation authority.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "references/delivery.md"
+      ],
+      "assertions": [
+        "The exact Foreman-assigned existing artifact is the request",
+        "Spec validates and reuses the artifact's one canonical source",
+        "Spec resumes FEAT-014 without asking for or selecting a new source",
+        "Spec never allocates another feature or returns source_selection_required",
+        "A missing or conflicting artifact source blocks instead of opening standalone intake",
+        "The assignment grants no outward mutation authority"
+      ]
     }
   ]
 }

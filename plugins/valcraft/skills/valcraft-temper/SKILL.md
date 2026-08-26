@@ -21,7 +21,7 @@ Read [`references/report-format.md`](references/report-format.md) before writing
 
 ## Ownership
 
-Create exactly one new report under `docs/.retro/`, a gitignored directory. Never overwrite or extend another run's report. Do not edit `AGENTS.md`, installed plugin files, product artifacts, or another prompt. Route every proposed change inside the report. Applying a proposal is later reviewed work: `valcraft-hone` for a prompt artifact such as `AGENTS.md`, a quick task for anything else.
+Create exactly one new report under `docs/.retro/`, a gitignored directory. Never overwrite or extend another run's report. Resume one exact current Temper report only for a confirmed Foreman takeover assignment that attributes its dirty path, or for a RetroReview remediation assignment that carries the accepted Review report and R-IDs. Validate the report path under the gitignored report directory, Temper ownership, corpus identity, described head, current contents, and content hash before editing that same file. Preserve and stop on any mismatch or other dirt. Do not edit `AGENTS.md`, installed plugin files, product artifacts, or another prompt. Route every proposed change inside the report. Applying a proposal is later reviewed work: `valcraft-hone` for a prompt artifact such as `AGENTS.md`, a quick task for anything else.
 
 Temper touches no git state. It creates no branch, commit, push, or PR, and it invokes neither Review nor Land. Retrospectives accumulate locally; synthesize mode is how they are aggregated and distilled into proposals for `AGENTS.md` and other project files.
 
@@ -45,7 +45,7 @@ Every lesson incident uses the six-field record and A/B/C grade in `report-forma
 
 1. Pin the corpus and exact repository state. Record the repository head the report describes.
 2. Require `docs/.retro/` to be gitignored: `git check-ignore -q docs/.retro/probe` must succeed. Probe a path inside the directory, because a directory-only pattern does not match the bare directory name while it is still absent. Otherwise return `report_dir_not_ignored` before writing, because an untracked report in a shared checkout is dirt that stops the next task. Temper never edits `.gitignore`; `valcraft-cast` owns it.
-3. Resolve a unique report name with `report-format.md`. Create the report with `report-format.md` and `process.md`. Create no other file. A write failure returns `report_write_failed`.
+3. For a confirmed takeover or RetroReview remediation, continue only the validated exact report. Otherwise resolve a unique report name with `report-format.md` and create the report with `report-format.md` and `process.md`. Create no other file. A write failure returns `report_write_failed`.
 4. Pin the report by its absolute path and the SHA-256 of its content. That pair is the exact Review target; there is no commit, branch, or PR.
 5. In synthesize mode, apply the operator selection in `process.md` when the run is attended.
 6. Return the report contract below with the exact Review target.
