@@ -8,7 +8,7 @@ Record the repository, operator-selected local baseline ref and SHA, canonical S
 
 An exact Foreman assignment overrides standalone derivation. Require its repository, accepted source or artifact, reconciled base SHA, canonical branch, backend identity, and any physical branch. Do not infer a missing field from coordinator state.
 
-A confirmed takeover assignment may attribute exact dirty Spec paths only on the already-correct shared branch and head. Validate their Spec ownership, scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths.
+A confirmed takeover assignment may attribute exact dirty Spec paths only on the already-correct shared branch and head. Validate their Spec ownership, scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return `assignment_invalid` without snapshotting, stashing, committing, or transferring it.
 
 Without an envelope:
 
@@ -106,7 +106,7 @@ End with exactly one line:
 
 Use these stable blocked codes:
 
-- `assignment_invalid` — the envelope, source, artifact, or requested shape is missing, malformed, ambiguous, or cannot be tied to its contract.
+- `assignment_invalid` — the envelope, source, artifact, or requested shape is missing, malformed, ambiguous, cannot be tied to its contract, or attributes dirty paths this workspace cannot read.
 - `scaffold_invalid` — project framing or tracker metadata fails preflight.
 - `configuration_unresolved` — Tune ended without done for a cause this run does not own; the detail quotes Tune's terminal line.
 - `feature_identity_invalid` — an existing feature, quick task, task, mapping, or dependency identity is invalid or collides.

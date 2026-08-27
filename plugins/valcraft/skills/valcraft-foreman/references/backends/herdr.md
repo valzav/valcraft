@@ -42,7 +42,7 @@ Fail before run creation or task selection when any of these does not hold. Neve
 
 1. `HERDR_ENV=1`, and `herdr --version` reports release 0.8.2 or newer — the verified source of the primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. An older or unreadable version fails readiness; never degrade to a partial contract.
 2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman.herdr.session` is non-null, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
-3. Every harness named by the worker map is startable in that session, and each reviewer-producer harness pair differs.
+3. Every harness named by the worker map is startable in that session, each reviewer-producer harness pair differs, and every Cursor worker's catalog model, constructed as in [Spawn](#spawn) step 4, appears in `agent models` output.
 4. This controller holds the project's lease.
 
 ### The inherited socket is the session
@@ -88,7 +88,7 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
    - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
    - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
-   - Cursor: construct the catalog model argument `<model>-<effort>`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
+   - Cursor: construct the catalog model argument `<model>-<effort>`, or `<model>` alone when effort is `none`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
 
    Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).

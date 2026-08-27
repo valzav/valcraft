@@ -4,7 +4,7 @@ Git owns task identity, order, and dependency intent. GitHub owns open or closed
 
 ## Rebuild and pick
 
-Read the feature's Spec projection, task sub-issues, labels, relationship fields, and git-owned task order. Use [`../../valcraft-spec/references/github-projection.md`](../../valcraft-spec/references/github-projection.md) for projected identity. During takeover, a projection gap or unready existing feature enters `Specifying`; Foreman dispatches Spec and never repairs it. A request to select a new PRD or create a new feature remains outside the loop.
+Read the feature's Spec projection, task sub-issues, labels, relationship fields, and git-owned task order. Use [`../../valcraft-spec/references/github-projection.md`](../../valcraft-spec/references/github-projection.md) for projected identity. A projection gap or unready existing feature enters `Specifying`; Foreman dispatches Spec and never repairs it. A request to select a new PRD or create a new feature remains outside the loop.
 
 Select the first task whose issue is open, not held or already in progress, and has no open blocked-by dependency. Apply the approval-mode pick gate. Foreman may serialize and apply the exact intermediate `in-progress` label batch, then record it in `state.md`.
 

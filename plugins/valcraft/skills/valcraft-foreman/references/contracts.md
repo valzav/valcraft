@@ -20,7 +20,7 @@ Every dated artifact resolves its date from repository policy, then an explicit 
 
 A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, authoritative base, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
-When Spec or Draft must publish its exact commit for the next Review worker, Spec has a passing verdict but no landable PR, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
+When Spec or Draft must publish its exact commit for the next Review worker, Specifying holds a passing Spec verdict without a landable PR, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
 
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
@@ -31,7 +31,7 @@ When Spec or Draft must publish its exact commit for the next Review worker, Spe
 
 Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Spec and Draft advance to Review only when the next Review worker can access their exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it returns to Specifying until Spec reports a landable exact PR, and remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
+Spec and Draft advance to Review only when the next Review worker can access their exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it enters SpecLanding with a current exact spec PR, or returns to Specifying until Spec reports a landable exact PR; it remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
 
 ## Message registry
 

@@ -196,6 +196,16 @@ class CoordinationContractCheckTests(unittest.TestCase):
         self.replace(HERDR, row, row * 2)
         self.assert_check_fails("Herdr role map differs")
 
+    def test_malformed_herdr_role_row_fails(self) -> None:
+        row = "| Specifying | `spec` | `spec_review` |\n"
+        self.replace(HERDR, row, row + "| DurableHandoff | `handoff` |\n")
+        self.assert_check_fails("Herdr role configuration row has 2 columns")
+
+    def test_malformed_tune_preset_row_fails(self) -> None:
+        row = "| `spec`            | Codex   |\n"
+        self.replace(TUNE_CONFIG, row, row + "| `handoff` | Codex | extra |\n")
+        self.assert_check_fails("Tune Herdr preset row has 3 columns")
+
     def test_duplicate_tune_preset_role_fails(self) -> None:
         row = "| `spec`            | Codex   |\n"
         self.replace(TUNE_CONFIG, row, row * 2)

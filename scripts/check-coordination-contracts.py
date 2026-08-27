@@ -646,11 +646,14 @@ def check_herdr_worker_configuration(root: Path, errors: list[str]) -> None:
         (role, worker, counterpart)
         for role, (worker, counterpart) in HERDR_ROLE_MAP.items()
     ]
-    observed_roles = [
-        (row[0], row[1].strip("`"), row[2].strip("`"))
-        for row in rows[1:]
-        if len(row) == 3
-    ]
+    observed_roles = []
+    for row in rows[1:]:
+        if len(row) != 3:
+            errors.append(
+                f"Herdr role configuration row has {len(row)} columns: {' | '.join(row)}"
+            )
+            continue
+        observed_roles.append((row[0], row[1].strip("`"), row[2].strip("`")))
     if observed_roles != expected_roles:
         errors.append(
             "Herdr role map differs; "
@@ -694,9 +697,14 @@ def check_herdr_worker_configuration(root: Path, errors: list[str]) -> None:
     preset = tune_text.split("All three presets use this harness split:", 1)
     preset_text = preset[1].split("For Custom", 1)[0] if len(preset) == 2 else ""
     preset_rows = table_rows(preset_text)
-    observed_preset = [
-        (row[0].strip("`"), row[1]) for row in preset_rows[1:] if len(row) == 2
-    ]
+    observed_preset = []
+    for row in preset_rows[1:]:
+        if len(row) != 2:
+            errors.append(
+                f"Tune Herdr preset row has {len(row)} columns: {' | '.join(row)}"
+            )
+            continue
+        observed_preset.append((row[0].strip("`"), row[1]))
     expected_preset = list(HERDR_PRESET_HARNESSES.items())
     if observed_preset != expected_preset:
         errors.append(

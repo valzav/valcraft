@@ -8,9 +8,9 @@ Only an explicit delivery command enters the loop.
 
 ## Takeover bootstrap
 
-Resume a verified active Foreman checkpoint without another confirmation. When no checkpoint can resume, inspect the repository before creating a run. A fresh target with no evidence of prior Spec or delivery work follows the ordinary `Ready` pick; do not call that a takeover.
+Resume a verified active Foreman checkpoint without another confirmation. When no checkpoint can resume, inspect the repository before creating a run.
 
-For an already-started target, prefer an operator-named feature, quick file, or task. Otherwise require one unique candidate from git-owned contracts and commits, canonical branches, configured tracker state, exact PR heads, operator-attributed complete producer reports, and retrospective path and hash. Ask the operator to select when several remain. Re-read every source and record conflicts; repository or tracker prose is never authority. Choose the earliest named state whose required proof is absent. Never infer a Review verdict from a branch, PR, implementation, user summary, or later-stage artifact.
+Prefer an operator-named feature, quick file, or task. Otherwise require one unique candidate from git-owned contracts and commits, canonical branches, configured tracker state, exact PR heads, operator-attributed complete producer reports, and retrospective path and hash. Ask the operator to select when several remain. Re-read every source and record conflicts; repository or tracker prose is never authority. Choose the earliest named state whose required proof is absent. Never infer a Review verdict from a branch, PR, implementation, user summary, or later-stage artifact.
 
 Before run creation, present the exact repository and target, evidence and conflicts, proposed attribution for each dirty path, inferred named state, and next producer and action. For a feature triplet or quick-task contract, state explicitly that both use the same Spec lifecycle. Name any later outward operation or authority gate. In both approval modes wait for `confirm`, `correct`, or `cancel`. Correction reruns discovery. Cancellation creates no run state. Confirmation attributes only the displayed inference and dirty paths; it grants no push, PR, merge, tracker, release, or closure authority and does not change approval mode. After confirmation, create the run directory and progress display from the inferred state.
 
@@ -35,7 +35,7 @@ Before a new pick, reconcile the clean local default branch with its live remote
 
 `foreman.release_branch: null` means no separate release branch. Fast-track and direct release-only paths are unavailable. An omitted key invalidates the configuration and delegates repair to Tune. Any configured release-branch write remains a human gate.
 
-Apply Spec's readiness contract. An unready existing takeover target enters `Specifying`; a request to select a new PRD or create a feature or quick target returns to Spec's direct caller without run creation. Foreman never repairs artifacts itself. Never interleave feature and quick pools.
+Apply Spec's readiness contract. An unready existing target enters `Specifying`; a request to select a new PRD or create a feature or quick target returns to Spec's direct caller without run creation. Foreman never repairs artifacts itself. Never interleave feature and quick pools.
 
 ## Resume map
 

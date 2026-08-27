@@ -1491,7 +1491,7 @@
       "id": 100,
       "name": "isolated-backend-cannot-commit-gitignored-temper-report",
       "prompt": "$valcraft:valcraft-foreman — takeover attributes exact dirty retrospective report /work/project/docs/.retro/feat-012.md with its current content hash. The configured backend uses an isolated workspace and cannot read that gitignored path. State the inferred pending state, named gate, and valid exits. Do not dispatch or mutate anything.",
-      "expected_output": "The pending state is Retrospective or RetroReview according to whether the exact report already has a current verdict, but Foreman stops first at DurableHandoff because the isolated worker cannot read the path. The commit exit is invalid for this gitignored Temper report. The only valid exit is for the operator to change to a configured shared-checkout backend that can read the exact local path, after which Foreman revalidates the path and content hash. Foreman never copies, snapshots, stages, commits, or transfers the report.",
+      "expected_output": "The pending state is Retrospective, because an attributed dirty report owned by Temper resumes there under the resume map, but Foreman stops first at DurableHandoff because the isolated worker cannot read the path. The commit exit is invalid for this gitignored Temper report. The only valid exit is for the operator to change to a configured shared-checkout backend that can read the exact local path, after which Foreman revalidates the path and content hash. Foreman never copies, snapshots, stages, commits, or transfers the report.",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -1499,7 +1499,7 @@
         "../valcraft-temper/SKILL.md"
       ],
       "assertions": [
-        "The report's evidence determines Retrospective or RetroReview as the pending state",
+        "An attributed dirty Temper-owned report resolves to Retrospective as the pending state",
         "An inaccessible isolated-workspace report stops at DurableHandoff",
         "Committing is not offered as an exit for the gitignored Temper report",
         "Changing to a configured shared-checkout backend is the only valid exit",

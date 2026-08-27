@@ -4,7 +4,7 @@ Read this reference before editing code. It owns Forge's verification, outward-m
 
 ## Takeover-attributed working state
 
-Exact dirty paths attributed by a confirmed Foreman takeover are allowed only on the already-correct shared canonical branch at an attributable implementation head that equals or descends from the reviewed-plan SHA while the reviewed plan remains unchanged. Validate their Forge ownership, stated scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return the assignment's durable-handoff blocker without snapshotting, stashing, committing, or transferring it.
+Exact dirty paths attributed by a confirmed Foreman takeover are allowed only on the already-correct shared canonical branch at an attributable implementation head that equals or descends from the reviewed-plan SHA while the reviewed plan remains unchanged. Validate their Forge ownership, stated scope, ancestry, and current contents before incorporating them. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return `assignment_invalid` without snapshotting, stashing, committing, or transferring it.
 
 ## Verify the implementation
 
@@ -93,7 +93,7 @@ End with exactly one line:
 
 Use these stable routing codes:
 
-- `assignment_invalid` — the assignment or task identity is missing, malformed, ambiguous, or cannot be tied to its contract.
+- `assignment_invalid` — the assignment or task identity is missing, malformed, ambiguous, cannot be tied to its contract, or attributes dirty paths this workspace cannot read.
 - `draft_required` — a required plan or exact passing plan review is missing or stale, or a finding changes plan scope or approach.
 - `workspace_not_ready` — required branch state is dirty, missing, ambiguous, or diverged.
 - `configuration_required` — Tune needs interactive operator answers this run cannot supply.

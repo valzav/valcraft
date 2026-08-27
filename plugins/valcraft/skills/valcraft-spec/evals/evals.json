@@ -389,7 +389,7 @@
       "id": 19,
       "name": "confirmed-takeover-dirt-remains-producer-validated",
       "prompt": "$valcraft:valcraft-spec — a confirmed Foreman takeover envelope attributes only specs/031-webhooks/spec.md and specs/031-webhooks/design.md as dirty Spec paths. Compare a shared checkout on the exact assigned canonical Spec branch and head with an isolated workspace, a wrong head, and a checkout containing unrelated or overlapping dirt. State what Spec accepts and rejects. Do not mutate anything.",
-      "expected_output": "On the exact shared canonical branch and head, Spec may incorporate only the attributed paths after validating Spec ownership, scope, ancestry, and current contents. Confirmation is attribution, not proof or mutation authority. An isolated workspace returns the assignment's durable-handoff blocker because it cannot access the paths. A wrong branch or head and any unrelated, overlapping, or conflicting dirt block; Spec preserves all dirt and never stashes, cleans, resets, copies, or silently absorbs it.",
+      "expected_output": "On the exact shared canonical branch and head, Spec may incorporate only the attributed paths after validating Spec ownership, scope, ancestry, and current contents. Confirmation is attribution, not proof or mutation authority. An isolated workspace returns `assignment_invalid` because it cannot access the paths. A wrong branch or head and any unrelated, overlapping, or conflicting dirt block; Spec preserves all dirt and never stashes, cleans, resets, copies, or silently absorbs it.",
       "files": [
         "SKILL.md",
         "references/delivery.md"
@@ -397,7 +397,7 @@
       "assertions": [
         "Spec accepts only exact attributed paths on the correct shared canonical branch and head",
         "Spec validates ownership, scope, ancestry, and current contents before incorporation",
-        "An isolated workspace returns the assignment's durable-handoff blocker",
+        "An isolated workspace returns `assignment_invalid`",
         "Wrong target or unrelated, overlapping, or conflicting dirt blocks and is preserved",
         "Confirmation grants no mutation authority",
         "Spec never stashes, cleans, resets, copies, or silently absorbs dirt"

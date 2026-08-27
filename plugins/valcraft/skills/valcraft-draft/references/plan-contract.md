@@ -22,7 +22,7 @@ Record the repository, operator-selected local baseline ref and SHA, canonical t
 
 An exact Foreman assignment overrides standalone derivation. Require its repository, task artifact, reconciled base SHA, canonical task branch, backend identity, and any physical branch. Do not infer a missing assignment field from coordinator state.
 
-A confirmed takeover assignment may attribute exact dirty Draft paths only on the already-correct shared branch and head. Validate their Draft ownership, scope, ancestry, and current contents before incorporating them. Confirmation is attribution, not proof or mutation authority. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return the assignment's durable-handoff blocker without snapshotting, stashing, committing, or transferring it.
+A confirmed takeover assignment may attribute exact dirty Draft paths only on the already-correct shared branch and head. Validate their Draft ownership, scope, ancestry, and current contents before incorporating them. Confirmation is attribution, not proof or mutation authority. Preserve and stop on unrelated, overlapping, or conflicting paths. An isolated workspace cannot adopt shared-checkout dirt; return `assignment_invalid` without snapshotting, stashing, committing, or transferring it.
 
 Without an envelope:
 
@@ -131,7 +131,7 @@ End the report with exactly one terminal line. Write nothing after it because a 
 
 Use these blocked-status routing codes:
 
-- `assignment_invalid` — the target is missing, malformed, ambiguous, or cannot be tied to its contract.
+- `assignment_invalid` — the target is missing, malformed, ambiguous, cannot be tied to its contract, or attributes dirty paths this workspace cannot read.
 - `workspace_not_ready` — the selected local baseline is unavailable, local state is dirty or diverged, or an outward stage lacks agreeing live branch authority or finds incompatible refs.
 - `review_target_mismatch` — a remediation report does not cover this task and plan commit.
 - `msw_failed` — MSW could not complete for a reason other than an owner decision.
