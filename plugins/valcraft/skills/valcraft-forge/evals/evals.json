@@ -438,6 +438,24 @@
         "Any other non-done Tune result ends the run with configuration_unresolved quoting Tune's terminal line",
         "Forge never supplies configuration answers, writes configuration, or applies read-time defaults"
       ]
+    },
+    {
+      "id": 21,
+      "name": "confirmed-takeover-code-dirt-remains-producer-validated",
+      "prompt": "$valcraft:valcraft-forge — a confirmed Foreman takeover envelope attributes exact dirty Forge code paths on the assigned canonical task branch. Compare a shared checkout whose attributable implementation head equals the reviewed-plan SHA, one whose head descends from it with the reviewed plan unchanged, an isolated workspace, a wrong head, a changed reviewed plan, and unrelated or overlapping dirt. State what Forge accepts and rejects. Do not mutate anything.",
+      "expected_output": "Forge may incorporate the attributed code paths on the exact shared canonical branch when the attributable head equals or descends from the reviewed-plan SHA and the reviewed plan remains unchanged, but only after validating Forge ownership, stated scope, ancestry, and current contents. Confirmation is attribution, not proof or mutation authority. An isolated workspace returns `assignment_invalid`. A wrong branch or head, a changed reviewed plan, or unrelated, overlapping, or conflicting dirt blocks; Forge preserves all dirt and never stashes, cleans, resets, copies, or silently absorbs it.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "Forge accepts exact attributed code paths at the reviewed-plan SHA or an attributable descendant head",
+        "Forge requires the reviewed plan to remain unchanged",
+        "Forge validates ownership, stated scope, ancestry, and current contents before incorporation",
+        "An isolated workspace returns `assignment_invalid`",
+        "Wrong target or unrelated, overlapping, or conflicting dirt blocks and is preserved",
+        "Confirmation grants no mutation authority and Forge never stashes, cleans, resets, copies, or silently absorbs dirt"
+      ]
     }
   ]
 }

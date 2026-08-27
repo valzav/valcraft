@@ -23,6 +23,8 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 
 | Named state role | Worker key | Must differ from |
 | --- | --- | --- |
+| Specifying | `spec` | `spec_review` |
+| SpecReview | `spec_review` | `spec` |
 | Draft | `draft` | `plan_review` |
 | PlanReview | `plan_review` | `draft` |
 | Forge | `forge` | `code_review` |
@@ -32,7 +34,7 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 | Temper | `temper` | `retro_review` |
 | RetroReview | `retro_review` | `temper` |
 
-The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those four pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
+The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those five pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
 
 ## Readiness
 
@@ -40,7 +42,7 @@ Fail before run creation or task selection when any of these does not hold. Neve
 
 1. `HERDR_ENV=1`, and `herdr --version` reports release 0.8.2 or newer — the verified source of the primitives this contract depends on: `agent_prompt_stalled` from `agent prompt --wait`, `herdr pane close`, and the pane `agent_session` identity reported by `herdr pane get`. An older or unreadable version fails readiness; never degrade to a partial contract.
 2. The controller is inside a running Herdr session: `HERDR_SOCKET_PATH` is set and `herdr status server` answers on it. Resolve that socket to its session name through `herdr session list --json` (`socket_path` → `name`; the default session is named `default`) and record the name in `state.md`. When `foreman.herdr.session` is non-null, the resolved name must equal it; on a mismatch fail readiness naming both, and never re-target another session's socket.
-3. Every harness named by the worker map is startable in that session, and each reviewer-producer harness pair differs.
+3. Every harness named by the worker map is startable in that session, each reviewer-producer harness pair differs, and every Cursor worker's catalog model, constructed as in [Spawn](#spawn) step 4, appears in `agent models` output.
 4. This controller holds the project's lease.
 
 ### The inherited socket is the session
@@ -70,7 +72,7 @@ Derive the agent name from the canonical logical identity and dispatch ordinal, 
 
 Record each transition in `state.md` before attempting the next, so an interrupted call can be reconciled without creating a second worker.
 
-1. **Checkout verified** — at a task's start the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch before any worker is spawned. On that stop, record the branch, the exact head, and the staged, unstaged, and untracked state in `state.md`, and preserve them. Known attribution never waives this task-start gate, including dirt left by a worker whose own recovery is already closed. Never clean, stash, reset, switch, or fetch through dirt.
+1. **Checkout verified** — at a task's start the shared checkout is clean, on the canonical task branch, at the recorded predecessor SHA. Dirt, another branch, or another head stops the dispatch before any worker is spawned. On that stop, record the branch, the exact head, and the staged, unstaged, and untracked state in `state.md`, and preserve them. The only exception is the exact takeover-confirmed producer-owned path set on the already-correct branch and head; pass its attribution to that producer and preserve every other path. Known attribution outside that bootstrap never waives the gate, including dirt left by a worker whose own recovery is already closed. Never clean, stash, reset, switch, or fetch through dirt.
 
    A replacement for a dead or replaced worker is the separate existing-task path named in [`../loop.md`](../loop.md) and does not pass this gate: it inherits the predecessor's commits and dirt to inventory them. It requires the completed inventory and a closed predecessor under [Release and recovery](#release-and-recovery) instead.
 2. **Report path claimed** — the assigned path is unique and absent.
@@ -86,7 +88,7 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
    - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
    - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
-   - Cursor: construct the catalog model argument `<model>-<effort>`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
+   - Cursor: construct the catalog model argument `<model>-<effort>`, or `<model>` alone when effort is `none`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
 
    Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
@@ -145,7 +147,7 @@ Reconcile the recorded assignment checkpoint against the report and the exact oc
 
 Herdr keeps a pane's agent and conversation alive after a turn, so this backend keeps a Review worker for its own round as [`../hygiene.md`](../hygiene.md#workers) allows. Preserve Review independence and shared-checkout serialization as follows.
 
-1. **Who is kept.** Keep only a Review worker (`plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
+1. **Who is kept.** Keep only a Review worker (`spec-reviewer`, `plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Spec, Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
 2. **What waiting means.** The kept worker is settled (`idle` or `done`) and executes nothing. Between its report and its next prompt it touches no Git state, so the producer's remediation still runs alone in the shared checkout. Do not read from, prompt, or `send-keys` the waiting worker while the producer is active.
 3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — pane id and agent name — is the initial dispatch's, recorded again on the new row and marked continued. The agent name keeps its original ordinal; only the report path advances.
 4. **Revalidate before the follow-up prompt.** Require `herdr pane get <pane-id>` to resolve the recorded pane, `agent_session`, and settled occupant. A missing pane, different occupant, or null session means the kept worker is gone. Record that as an observation rather than a backend return because no assignment is active. Skip dead-worker inventory because the settled reviewer touched no Git state and the producer's commits are already recorded. Close the pane if it still exists and confirm it no longer resolves to the recorded name. Dispatch the closure check as a fresh physical worker with the same logical identity through [Spawn](#spawn), without the task-start gate because the producer's head is the expected mid-round state. Continuity is optional.

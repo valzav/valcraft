@@ -1,10 +1,12 @@
 ---
 name: valcraft-foreman
 description: >
-  Coordinate the spec-driven delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Own runtime readiness, task selection, intermediate tracker state, worker lifecycle, backend returns, report validation, approval gates, recovery, and named-state transitions. Use for "run the delivery loop", "start sprint", "work through the tasks", "deliver quick", or "run foreman". Do not use for feature or PRD creation (valcraft-spec), task planning (valcraft-draft), implementation (valcraft-forge), review (valcraft-review), landing or closure (valcraft-land), retrospective production (valcraft-temper), or project framing (valcraft-cast).
+  Coordinate or take over the spec-driven delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers. Own runtime readiness, takeover inference, task selection, intermediate tracker state, worker lifecycle, backend returns, report validation, approval gates, recovery, and named-state transitions. Use for "run the delivery loop", "take over delivery", "start sprint", "work through the tasks", "deliver quick", or "run foreman". Do not use for new feature or PRD creation (valcraft-spec), task planning (valcraft-draft), implementation (valcraft-forge), review (valcraft-review), landing or closure (valcraft-land), retrospective production (valcraft-temper), or project framing (valcraft-cast).
 ---
 
 # valcraft-foreman
+
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
 
 Coordinate delivery. Never perform a worker skill's work.
 
@@ -23,7 +25,7 @@ Load these contracts before dispatch:
 - [`references/loop.md`](references/loop.md);
 - [`references/hygiene.md`](references/hygiene.md).
 
-Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/foreman/` is ignored by the `/.valcraft/*` rule. Create or resume the run directory from [`templates/run-dir.md`](templates/run-dir.md).
+Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/foreman/` is ignored by the `/.valcraft/*` rule. Resume a verified active checkpoint automatically. Without one, apply `loop.md`'s takeover bootstrap before creating a run directory from [`templates/run-dir.md`](templates/run-dir.md).
 
 `new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft-spec`; create no Foreman run.
 
@@ -31,8 +33,8 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 
 - Start every dispatch with a fresh worker. Preserve its logical identity across recovery, but give every dispatch a new physical identity.
 - Keep only coordination state: active named state, exact artifact pointers, logical and physical worker identities, report paths, backend returns, gate decisions, and recovery observations.
-- Record a backend return before inspecting report content. Open a producer report only for `report_available`.
-- Accept only the active assignment's attributed report path and logical and physical worker identity. Reject stale, late, missing, or unattributed reports.
+- Record a backend return before inspecting an active assignment's report. Open it only for `report_available`. The only exception is an exact standalone report the operator attributes during takeover; validate and record it as pre-run evidence under `contracts.md`.
+- Accept only the active assignment's attributed report path and logical and physical worker identity, or validated pre-run evidence during takeover. Reject stale, late, missing, or unattributed reports.
 - Validate the producer-owned report contract mechanically. Route declared codes with the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.
 - End only at completion or a named human gate; follow the selected backend's wake contract for how the turn waits or ends. Never ask the operator for a status or continue prompt.
@@ -40,6 +42,8 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 
 ## Roles
 
+- `specifier-<identity>` runs `valcraft-spec` only to resume an existing contract, resolve Spec findings, or complete its prepared outward handoff.
+- `spec-reviewer-<identity>` runs `valcraft-review` in plan mode on the feature triplet or quick file.
 - `drafter-<identity>` runs `valcraft-draft`.
 - `plan-reviewer-<identity>` runs `valcraft-review` in plan mode.
 - `forge-<identity>` runs `valcraft-forge` and owns code-finding remediation.
@@ -55,11 +59,11 @@ Use a second harness for Review when the backend offers one. Fresh context suppl
 
 [`references/loop.md`](references/loop.md) is authoritative.
 
-`Ready -> Drafting -> PlanReview -> Implementing -> CodeReview -> Landing -> Ready` delivers one task. Findings return plan work to Draft and code work to Forge. Land owns stale-review, checks-pending, remediation-owner, merge, and closure results.
+Takeover may begin with `Specifying -> SpecReview -> SpecLanding -> Ready`; feature triplets and quick-task contracts use this same Spec lifecycle, and Spec findings return to Specifying. `Ready -> Drafting -> PlanReview -> Implementing -> CodeReview -> Landing -> Ready` delivers one task. Findings return plan work to Draft and code work to Forge. Land owns stale-review, checks-pending, remediation-owner, merge, and closure results.
 
-After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `Blocked` names the missing evidence, authority, or owner decision.
+After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `DurableHandoff` waits for attributed dirty work to become accessible; `Blocked` names other missing evidence, authority, or owner decisions.
 
-Mirror the loop with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex): at task pick, create one item per named state on the task's path, titled `<task identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add the feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
+Mirror the loop with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex): at task pick or confirmed takeover, create one item per named state from the active state through completion, titled `<target identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
 
 ## Trust boundary
 

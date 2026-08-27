@@ -5,6 +5,8 @@ description: Refine an existing prompt artifact — inline prompt text, markdown
 
 # valcraft-hone
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Refine the prompt artifact for its target model family. Deletion is the primary tool; justify every added line against the artifact's contract.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.

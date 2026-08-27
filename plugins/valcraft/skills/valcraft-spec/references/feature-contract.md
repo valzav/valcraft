@@ -40,6 +40,8 @@ Feature task IDs are `T-XXX`, with at least three digits, unique within the feat
 
 ## Resolve one accepted source
 
+When an exact Foreman assignment names an existing feature triplet or quick-task artifact, validate and reuse that artifact's one canonical source as the accepted source. Do not ask for, select, or allocate from a new source. This exception resumes only the assigned existing target.
+
 Accept exactly one operator-selected source:
 
 - one readable local PRD, plan, or requirements document inside the repository; or

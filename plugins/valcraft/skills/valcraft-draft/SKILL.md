@@ -10,6 +10,8 @@ description: >
 
 # valcraft-draft
 
+Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
+
 Create one implementation-ready task plan and stop at the Review handoff. Draft is the sole task-plan producer. It never implements source changes or performs review, PR, tracker, merge, or closure work.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.

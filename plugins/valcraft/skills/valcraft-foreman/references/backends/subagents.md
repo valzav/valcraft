@@ -51,7 +51,7 @@ Do not end the parent turn to wait for a background Task notification, and do no
 
 ## Shared checkout
 
-Workers run serially. The run directory is the absolute `.valcraft/foreman/<run-id>/` path in the shared checkout. Before a new task, Foreman's Ready recovery requires a clean checkout and records branch, exact HEAD, staged, unstaged, and untracked state. Never clean, stash, reset, fetch, switch, synchronize, or create a branch through dirt.
+Workers run serially. The run directory is the absolute `.valcraft/foreman/<run-id>/` path in the shared checkout. Before a new task, Foreman's Ready recovery requires a clean checkout and records branch, exact HEAD, staged, unstaged, and untracked state. The only exception is an exact set of takeover-confirmed dirty paths owned by the next producer on the already-correct branch and head. Pass those paths and their attribution to that producer for validation before incorporation. Preserve and block on every other path. Never clean, stash, reset, fetch, switch, synchronize, or create a branch through dirt.
 
 On death, inventory the shared checkout in place. A fresh replacement verifies and resumes attributable work. Unresolved attribution or an unreconciled external effect blocks replacement.
 

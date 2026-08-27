@@ -982,8 +982,8 @@
       "id": 74,
       "name": "herdr-roles-use-configured-native-arguments",
       "coordination_coverage": "transport:herdr-cross-model-roles",
-      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, use this valid configured worker map: Draft Codex Terra medium; PlanReview Claude Opus high; Forge Cursor model `cursor-grok-4.6` high; CodeReview Codex Sol xhigh; Land Claude Fable low; EvidenceReview Cursor model `claude-sonnet-5-thinking` xhigh; Temper Cursor model `gpt-5.6-sol` medium; RetroReview Claude Opus high. Show each start translation. Then classify a missing Cursor harness and, separately, an invalid reconfiguration that assigns CodeReview to Cursor like Forge. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman reads each role's harness, model, and effort from the resolved configuration. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`; Cursor starts pass one constructed catalog model argument `<configured-model>-<configured-effort>` through `--model` after `--`. Every value is passed through an argument vector, never interpolated into shell text, and the physical identity records the configured harness, model, and effort. Every Cursor prompt is bound to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. The four reviewer-producer pairs use different harnesses. When Cursor cannot start, readiness fails naming the configured harness and creates no run or worker; another harness is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Tune and does not dispatch until Tune returns Status: done.",
+      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, use this valid configured worker map: Spec Codex Terra medium; SpecReview Claude Opus high; Draft Codex Terra medium; PlanReview Claude Opus high; Forge Cursor model `cursor-grok-4.6` high; CodeReview Codex Sol xhigh; Land Claude Fable low; EvidenceReview Cursor model `claude-sonnet-5-thinking` xhigh; Temper Cursor model `gpt-5.6-sol` medium; RetroReview Claude Opus high. Show each start translation. Then classify a missing Cursor harness and, separately, an invalid reconfiguration that assigns CodeReview to Cursor like Forge. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman reads each role's harness, model, and effort from the resolved configuration. Claude starts pass `--model <configured-model> --effort <configured-effort>` after Herdr's `--`; Codex starts pass `--model <configured-model> -c model_reasoning_effort=<configured-effort>` after `--`; Cursor starts pass one constructed catalog model argument `<configured-model>-<configured-effort>` through `--model` after `--`. Every value is passed through an argument vector, never interpolated into shell text, and the physical identity records the configured harness, model, and effort. Every Cursor prompt is bound to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. The five reviewer-producer pairs use different harnesses. When Cursor cannot start, readiness fails naming the configured harness and creates no run or worker; another harness is never substituted. The same-harness CodeReview candidate is invalid configuration, so Foreman delegates the Foreman section to Tune and does not dispatch until Tune returns Status: done.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -997,6 +997,7 @@
         "Cursor receives one catalog model slug and an absolute producer SKILL.md path",
         "Configured values are passed as distinct arguments and recorded with physical identity",
         "A missing configured harness fails readiness without substitution",
+        "All five producer-reviewer pairs use different harnesses",
         "A same-harness producer-reviewer pair delegates repair to Tune and dispatches no worker"
       ]
     },
@@ -1343,6 +1344,205 @@
         "Canonical logical identities preserve every F/T/Q/QT digit",
         "Each physical dispatch records a unique Task agent id and a distinct workers.md row",
         "A respawn is a new Task and never passes resume"
+      ]
+    },
+    {
+      "id": 93,
+      "name": "takeover-confirmation-always-waits-before-run-creation",
+      "prompt": "$valcraft:valcraft-foreman — approval mode is unattended and no verified active Foreman checkpoint exists. The operator names FEAT-014. On a shared-checkout backend, a clean committed Spec triplet exists on local branch spec/f014-bulk-labels at exact head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa and is accessible to the next Review worker; there is no current Review verdict, remote branch, PR, tracker projection, or standalone producer report. Describe the takeover bootstrap through its first gate. Do not create a run or dispatch a worker.",
+      "expected_output": "Foreman performs read-only takeover discovery because no exact active checkpoint can resume. It selects FEAT-014, reports the repository and exact contract target at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, the evidence it used and the absent outward state, no attributed dirty paths, inferred state SpecReview, and Review as the next producer action. It also states that later push, PR, tracker, landing, or closure operations still require their own applicable authority. Even in unattended mode it offers confirm, correct, or cancel and waits. It creates no run directory, progress display, assignment, or worker before confirmation. Confirmation would attribute only this inferred state and evidence; it would not grant mutation authority or change approval mode.",
+      "files": [
+        "SKILL.md",
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "No verified active checkpoint selects takeover discovery rather than ordinary resume",
+        "The preview names FEAT-014, repository and exact target, evidence, dirty-path attribution, SpecReview, and Review as the next action",
+        "The preview preserves later outward-mutation authority gates",
+        "Unattended mode still waits for confirm, correct, or cancel",
+        "No run directory, progress display, assignment, or worker exists before confirmation",
+        "Confirmation attributes the previewed evidence only and does not grant mutation authority or change approval mode"
+      ]
+    },
+    {
+      "id": 94,
+      "name": "takeover-routes-manual-spec-lifecycle-evidence",
+      "prompt": "$valcraft:valcraft-foreman — infer the takeover state and next producer for four confirmed FEAT-021 snapshots with no active checkpoint: (a) attributed dirty spec.md and design.md exist but tasks.md is missing; (b) spec PR #40 has current complete head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, accessible to the next Review worker, with no exact current verdict; (c) spec PR #41 has current head cccccccccccccccccccccccccccccccccccccccc and an exact passing Spec Review covers that same head; (d) local exact head dddddddddddddddddddddddddddddddddddddddd has an unchanged passing Spec Review but no landable PR. State the route for each, what Foreman must not infer, and whether quick-task contracts use the same lifecycle. Do not dispatch or mutate anything.",
+      "expected_output": "(a) is Specifying and dispatches Spec to reconcile the attributed partial contract; Foreman does not complete or commit it. (b) is SpecReview and dispatches Review against PR #40 at exact head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; the complete triplet and PR are not themselves a verdict. (c) is SpecLanding and dispatches Land against PR #41 at exact reviewed head cccccccccccccccccccccccccccccccccccccccc. (d) returns to Specifying and dispatches Spec to prepare projection, push, or PR publication while preserving the verdict only if the resulting exact head remains dddddddddddddddddddddddddddddddddddddddd. Foreman never infers Review pass from a branch, PR, implementation, or user summary, and the same state rules apply to a quick-task contract.",
+      "files": [
+        "SKILL.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/intake-local.md",
+        "references/intake-github.md"
+      ],
+      "assertions": [
+        "An attributed partial contract enters Specifying and returns to Spec",
+        "A current spec PR without an exact verdict enters SpecReview and goes to Review",
+        "A landable spec PR with a passing verdict over its current exact head enters SpecLanding and goes to Land",
+        "A passing verdict without a landable PR returns to Specifying for publication and is preserved only while its covered head remains unchanged",
+        "Foreman never infers Review pass from branch, PR, implementation, or user prose",
+        "Feature triplets and quick-task contracts use the same lifecycle"
+      ]
+    },
+    {
+      "id": 95,
+      "name": "takeover-adopts-only-exact-standalone-reports",
+      "prompt": "/valcraft:valcraft-foreman — no active checkpoint exists for T-004. Compare four proposed pre-run Forge reports: (a) the operator attributes /work/project/.local/forge-T-004.md, whose complete producer-owned shape and content hash match repository project-x, T-004, plan pppppppppppppppppppppppppppppppppppppppp, current task PR #52, and its exact Review target at implementation head dddddddddddddddddddddddddddddddddddddddd; (b) a complete report covers prior head eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee; (c) a matching report path is discovered but the operator did not attribute it; (d) an attributed complete current report still names task PR `none`. State what Foreman records and routes after takeover confirmation. Do not create workers or files.",
+      "expected_output": "Foreman may adopt (a) as pre-run evidence after validating the exact path, complete Forge shape, content hash, repository, target, plan, task PR #52, exact Review target, and current covered head. It records the evidence as adopted, infers CodeReview, and routes PR #52 at head dddddddddddddddddddddddddddddddddddddddd to Review. It creates no assignment id, logical or physical worker identity, backend return, or workers.md row for the historical Forge run. It rejects (b) as stale and (c) as unattributed. It may adopt (d) as current Forge evidence but remains in Implementing because no exact task PR and Review target exist. Rejected or prose-only evidence resumes from the earliest state current durable evidence proves. A user summary cannot substitute for a report.",
+      "files": [
+        "SKILL.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "The exact operator-attributed complete report is validated and adopted as pre-run evidence",
+        "The adopted Forge report infers CodeReview only with an exact current task PR and Review target",
+        "Adoption fabricates no assignment, worker identity, backend return, or workers.md row",
+        "A report over an old head is rejected as stale",
+        "A discovered but unattributed report is rejected despite matching contents",
+        "A current Forge report with task PR none remains in Implementing",
+        "Rejected or prose-only evidence cannot skip the earliest unproven producer"
+      ]
+    },
+    {
+      "id": 96,
+      "name": "takeover-dirty-attribution-respects-backend-workspace",
+      "prompt": "$valcraft:valcraft-foreman — takeover finds uncommitted Spec work for FEAT-031 and no active checkpoint. Compare (a) a shared-checkout backend where the operator confirms exact dirty paths specs/031-webhooks/spec.md and specs/031-webhooks/design.md and every other path is clean, with (b) an isolated-workspace backend that cannot access those dirty files. State the confirmed state, dispatch gate, and handling of unrelated dirt. Do not commit, stash, clean, or copy files.",
+      "expected_output": "Both previews infer Specifying only after the operator attributes the two exact paths. On the shared checkout, Foreman may dispatch Spec with those attributed paths; Spec must still validate their scope, ancestry, and current contents before incorporating or committing them. Confirmation is attribution, not proof or mutation authority. On the isolated backend, Foreman stops at a named durable-handoff gate until the operator commits the work or changes to a shared-checkout backend; Foreman never snapshots, copies, or commits it. Any unrelated, overlapping, or conflicting dirty path blocks both routes and is preserved. Foreman never stashes, cleans, resets, or silently absorbs it.",
+      "files": [
+        "SKILL.md",
+        "references/hygiene.md",
+        "references/loop.md",
+        "references/backends/README.md"
+      ],
+      "assertions": [
+        "Exact operator-attributed Spec paths permit a shared-checkout Specifying dispatch subject to Spec validation",
+        "The producer validates scope, ancestry, and current contents before incorporation",
+        "An isolated backend without access stops at a named durable-handoff gate",
+        "Foreman does not snapshot, copy, or commit inaccessible dirty work",
+        "Unrelated, overlapping, or conflicting dirt blocks both routes and is preserved",
+        "Takeover attribution grants no mutation authority"
+      ]
+    },
+    {
+      "id": 97,
+      "name": "exact-checkpoint-resume-skips-takeover-confirmation",
+      "prompt": "/valcraft:valcraft-foreman — state.md names the active CodeReview assignment for FEAT-008 T-003, exact head ffffffffffffffffffffffffffffffffffffffff, worker identity, attributed report path, and pre-dispatch checkpoint. Repository and backend observations verify every pointer unchanged. Approval mode is attended. Describe resumption and whether Foreman shows a takeover preview. Do not dispatch or mutate anything.",
+      "expected_output": "Foreman uses ordinary exact checkpoint resume: it reconciles the recorded active assignment, exact head, worker identity, report path, and backend state, then continues the existing CodeReview await or recovery path. It does not run takeover discovery, ask the operator to reconfirm known state, create a replacement run, rebuild the progress display, or infer an earlier state. A takeover preview is required only when no verified active checkpoint can resume.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/hygiene.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Every exact checkpoint pointer is revalidated before resume",
+        "Foreman continues the recorded CodeReview assignment and await or recovery path",
+        "Exact resume does not perform takeover discovery or request confirmation",
+        "Exact resume creates no replacement run and does not infer an earlier state",
+        "Takeover remains limited to the absence of a verified active checkpoint"
+      ]
+    },
+    {
+      "id": 98,
+      "name": "takeover-dirty-draft-and-forge-resume-from-attributable-heads",
+      "prompt": "$valcraft:valcraft-foreman — after confirmation on a shared checkout, compare (a) exact Draft-owned dirty plan paths on the correct task branch and attributable current head and (b) exact Forge-owned dirty code paths on an attributable implementation head that equals or descends from the reviewed-plan SHA while the reviewed plan is unchanged. For each, state the inferred state and producer validation gate. Also state what happens for a wrong branch or head, changed reviewed plan, or unrelated, overlapping, or conflicting dirt. Do not dispatch or mutate anything.",
+      "expected_output": "Case (a) enters Drafting and may dispatch Draft in place only after Draft validates ownership, scope, ancestry, and current contents. Case (b) enters Implementing and may dispatch Forge in place from the reviewed-plan head before the first implementation commit or from an attributable descendant implementation head, only after Forge validates ownership, stated scope, ancestry, current contents, and that the reviewed plan remains unchanged. A wrong branch or head, changed reviewed plan, or unrelated, overlapping, or conflicting dirt blocks and is preserved. Confirmation attributes the exact paths but grants no mutation authority.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/hygiene.md",
+        "../valcraft-draft/references/plan-contract.md",
+        "../valcraft-forge/references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "Attributed Draft dirt on the correct branch and head enters Drafting subject to producer validation",
+        "Attributed Forge dirt may resume at the reviewed-plan SHA or an attributable descendant implementation head",
+        "Forge requires the reviewed plan to remain unchanged",
+        "Draft and Forge validate ownership, scope, ancestry, and current contents before incorporation",
+        "Wrong target or unrelated, overlapping, or conflicting dirt blocks and is preserved",
+        "Takeover attribution grants no mutation authority"
+      ]
+    },
+    {
+      "id": 99,
+      "name": "takeover-reviews-merged-spec-before-ready",
+      "prompt": "/valcraft:valcraft-foreman — no active checkpoint exists for FEAT-044. Its complete contract is already present at exact head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa on the reconciled default branch, but no exact current Spec Review verdict exists. State the inferred state and route. Then state the transition after a passing Review covers that exact default-branch head. Do not dispatch or mutate anything.",
+      "expected_output": "The merged contract without an exact current verdict enters SpecReview and dispatches Review against head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; merge or default-branch presence never substitutes for a verdict. A passing verdict covering that exact reconciled default-branch head advances directly to Ready because no spec PR remains to land. It does not enter SpecLanding or return to Specifying for publication.",
+      "files": [
+        "SKILL.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "A merged contract without an exact current verdict enters SpecReview",
+        "Review receives the exact reconciled default-branch head",
+        "Merge and default-branch presence do not substitute for a Review verdict",
+        "A passing verdict over that exact head advances directly to Ready",
+        "The post-review route does not enter SpecLanding or Specifying"
+      ]
+    },
+    {
+      "id": 100,
+      "name": "isolated-backend-cannot-commit-gitignored-temper-report",
+      "prompt": "$valcraft:valcraft-foreman — takeover attributes exact dirty retrospective report /work/project/docs/.retro/feat-012.md with its current content hash. The configured backend uses an isolated workspace and cannot read that gitignored path. State the inferred pending state, named gate, and valid exits. Do not dispatch or mutate anything.",
+      "expected_output": "The pending state is Retrospective, because an attributed dirty report owned by Temper resumes there under the resume map, but Foreman stops first at DurableHandoff because the isolated worker cannot read the path. The commit exit is invalid for this gitignored Temper report. The only valid exit is for the operator to change to a configured shared-checkout backend that can read the exact local path, after which Foreman revalidates the path and content hash. Foreman never copies, snapshots, stages, commits, or transfers the report.",
+      "files": [
+        "SKILL.md",
+        "references/approval-modes.md",
+        "references/loop.md",
+        "../valcraft-temper/SKILL.md"
+      ],
+      "assertions": [
+        "An attributed dirty Temper-owned report resolves to Retrospective as the pending state",
+        "An inaccessible isolated-workspace report stops at DurableHandoff",
+        "Committing is not offered as an exit for the gitignored Temper report",
+        "Changing to a configured shared-checkout backend is the only valid exit",
+        "Foreman revalidates the exact path and content hash after the exit",
+        "Foreman never copies, snapshots, stages, commits, or transfers the report"
+      ]
+    },
+    {
+      "id": 101,
+      "name": "herdr-dispatches-and-keeps-spec-roles",
+      "prompt": "$valcraft:valcraft-foreman — the resolved Herdr map assigns Spec to Codex Terra medium and SpecReview to Claude Opus high. First show the worker-key lookup for a confirmed Specifying dispatch and the following SpecReview dispatch. Then SpecReview returns material finding R-021, Spec remediates through a fresh worker, and the same review round needs a closure check. State the independence and continuity behavior. Do not spawn workers or mutate files.",
+      "expected_output": "Specifying resolves the `spec` worker entry and starts the specifier with Codex Terra medium. SpecReview resolves the `spec_review` entry and starts the spec reviewer with Claude Opus high. Readiness requires their harnesses to differ and never substitutes another configured value. After material finding R-021, Herdr keeps the settled spec-reviewer pane while a fresh Spec producer remediates alone in the shared checkout. The closure check is a new assignment to that kept reviewer after pane, session, occupant, producer release, exact new head, R-021, and fresh report path are revalidated. The reviewer is released after the round's final report.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/hygiene.md",
+        "references/loop.md",
+        "../valcraft-tune/references/config.md"
+      ],
+      "assertions": [
+        "Specifying resolves the spec worker key and its configured harness, model, and effort",
+        "SpecReview resolves the spec_review worker key and its configured harness, model, and effort",
+        "Spec and SpecReview must use different harnesses without substitution",
+        "A Spec Review worker with material findings is eligible for Herdr continuity",
+        "Spec remediation uses a fresh producer while the settled reviewer touches no shared state",
+        "The closure check is a new assignment against the exact remediated head and R-ID before final release"
+      ]
+    },
+    {
+      "id": 102,
+      "name": "land-partial-completion-routes-by-target-kind",
+      "prompt": "/valcraft:valcraft-foreman — compare three accepted Land reports with Status blocked: partial_completion. Report (a) is for spec PR #61 in SpecLanding and completed the merge but still has an exact tracker operation remaining. Report (b) is for task PR #62 in Landing and completed the merge but still has an exact tracker operation remaining. Report (c) is for tracker-only feature close FEAT-012 in FeatureClose and completed one tracker operation but still has an exact tracker operation remaining. State the transition and next assignment for each. Do not mutate anything.",
+      "expected_output": "Foreman routes all three reports through the one PartialCompletionByTarget transition. The spec PR target returns to SpecLanding; the task PR target returns to Landing; the tracker-only feature close returns to FeatureClose. Each route dispatches Land again with a fresh physical identity, the accepted report, reconciled authoritative state, and only the exact remaining operation. Foreman never sends the spec PR or feature close into task Landing, reconstructs the report, or executes the remaining operation.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "All three reports use the single PartialCompletionByTarget transition",
+        "A spec PR partial completion returns to SpecLanding",
+        "A task PR partial completion returns to Landing",
+        "A tracker-only feature or PRD partial completion returns to FeatureClose",
+        "Land resumes under a fresh physical identity with only exact remaining operations",
+        "Foreman never routes a spec PR or feature close into task Landing or executes the remaining operation"
       ]
     }
   ]

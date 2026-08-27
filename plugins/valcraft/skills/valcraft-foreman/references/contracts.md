@@ -10,7 +10,7 @@ Send every worker these fields in order:
 2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
 3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
 4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
@@ -20,7 +20,7 @@ Every dated artifact resolves its date from repository policy, then an explicit 
 
 A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, authoritative base, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
-When Draft must publish its exact plan commit for the next Review worker, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
+When Spec or Draft must publish its exact commit for the next Review worker, Specifying holds a passing Spec verdict without a landable PR, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
 
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
@@ -31,24 +31,24 @@ When Draft must publish its exact plan commit for the next Review worker, Forge 
 
 Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Draft advances only when the next Review worker can access its exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
+Spec and Draft advance to Review only when the next Review worker can access their exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it enters SpecLanding with a current exact spec PR, or returns to Specifying until Spec reports a landable exact PR; it remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
 
 ## Message registry
 
 | Message | Producer | Consumer | Authoritative report contract | Active state | `done` transition |
 | --- | --- | --- | --- | --- | --- |
 | Project frame | Cast | direct caller, then Spec | [`../../valcraft-cast/SKILL.md#report`](../../valcraft-cast/SKILL.md#report) | OutsideLoop | `ReturnToCaller` |
-| Feature or quick contract | Spec | direct caller, Review, Land | [`../../valcraft-spec/references/delivery.md#spec-report`](../../valcraft-spec/references/delivery.md#spec-report) | OutsideLoop | `ReturnToCaller` |
+| Feature or quick contract | Spec | direct caller or Foreman, Review, Land | [`../../valcraft-spec/references/delivery.md#spec-report`](../../valcraft-spec/references/delivery.md#spec-report) | OutsideLoop or Specifying | `ReturnToCaller` or `SpecResult` |
 | Task plan | Draft | Foreman, Review | [`../../valcraft-draft/references/plan-contract.md#report`](../../valcraft-draft/references/plan-contract.md#report) | Drafting | `DraftResult` |
-| Plan verdict | Review | Foreman, Draft or Forge | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | PlanReview | `PlanVerdict` |
+| Plan verdict | Review | Foreman, Spec, Draft, Forge, or Land | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | SpecReview or PlanReview | `PlanVerdict` |
 | Task implementation and PR | Forge | Foreman, Review | [`../../valcraft-forge/references/verification-and-handoff.md#forge-report`](../../valcraft-forge/references/verification-and-handoff.md#forge-report) | Implementing | `ForgeResult` |
 | Code verdict | Review | Foreman, Forge or Land | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | CodeReview | `CodeVerdict` |
-| Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../valcraft-land/SKILL.md#report`](../../valcraft-land/SKILL.md#report) | Landing or FeatureClose | `LandResult` |
+| Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../valcraft-land/SKILL.md#report`](../../valcraft-land/SKILL.md#report) | SpecLanding, Landing, or FeatureClose | `LandResult` |
 | Evidence-sufficiency verdict | Review | Foreman, Land | [`../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report`](../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report) | EvidenceReview | `Landing` |
 | Retrospective report | Temper | Foreman, Review | [`../../valcraft-temper/SKILL.md#report`](../../valcraft-temper/SKILL.md#report) | Retrospective | `TemperResult` |
 | Retrospective verdict | Review | Foreman, Temper | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 
-`DraftResult` and `ForgeResult` first apply the prepared outward continuation above; they advance to PlanReview or CodeReview only when the next worker can resolve the exact target. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose: pass advances to Implementing, Landing, or Complete respectively; material findings return to Drafting, Implementing, or Retrospective. LandResult uses the reported target kind: a completed task returns Ready, a completed tracker-only feature close enters Retrospective, and completed external closure returns Ready.
+`SpecResult`, `DraftResult`, and `ForgeResult` first apply the prepared outward continuation above; they advance only when the next worker can resolve the exact target. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose. A SpecReview pass enters Ready when the reviewed contract is already present on the reconciled default branch. Otherwise it advances to SpecLanding only with a current exact spec PR or returns to Specifying. Material SpecReview findings return to Specifying. LandResult uses the reported target kind: a completed spec PR enters Ready after default-branch reconciliation, a completed task returns Ready, a completed tracker-only feature close enters Retrospective, and completed external closure returns Ready.
 
 ## Declared outcome routing
 
@@ -91,21 +91,23 @@ Each declared code has one transition. The detail after `—` never changes it.
 | --- | --- |
 | `review_required` | `ReviewByTarget` |
 | `check_failure_task` | `Implementing` |
-| `check_failure_spec` | `ReturnToSpecCaller` |
+| `check_failure_spec` | `Specifying` |
 | `evidence_review_required` | `EvidenceReview` |
-| `partial_completion` | `Landing` |
+| `partial_completion` | `PartialCompletionByTarget` |
 | `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
 | `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
 
-`ReviewByTarget` means task PR to CodeReview and spec PR to Spec's direct caller outside the loop. It is one target-kind transition function.
+`ReviewByTarget` means task PR to CodeReview and spec PR to SpecReview. It is one target-kind transition function.
+
+`PartialCompletionByTarget` means spec PR to SpecLanding, tracker-only feature or PRD closure to FeatureClose, and every other Land target to Landing. It is one target-kind transition function.
 
 ### Spec
 
 | Outcome | Transition |
 | --- | --- |
 | `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required`, `configuration_required` | `AwaitOwner` |
-| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `StopProducer` |
+| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `Blocked` |
 
 ### Temper
 
@@ -138,3 +140,11 @@ A host or tool may surface an observation that is neither a producer report nor 
 Require the active assignment id, logical worker, physical worker, backend return, and report path to match `state.md` and `workers.md`. Reject a predecessor's late report after replacement, even when its report contract is complete. A report is complete only when its producer-owned headings are present in order, required exact identities are populated, and exactly one terminal status line is last.
 
 On the first incomplete report, reassign the same producer to append the missing named parts. On the second, escalate under the established two-attempt rule. Never fill a missing field, copy a shape into another report, interpret prose as a code, or advance on an undeclared code.
+
+## Adopted pre-run evidence
+
+During takeover only, accept a standalone producer report when a live operator message attributes its exact path and Foreman validates the complete producer-owned shape, content hash, repository, target, predecessor plan or artifact identity, and covered head or artifact hash against current authoritative state. Record the report as adopted pre-run evidence. Do not invent an assignment id, logical or physical worker, backend return, or `workers.md` row.
+
+Route adopted evidence by the same exact-target transition as a current worker report. In particular, an adopted complete Forge report that names the current implementation head and its exact task-PR Review target proves `CodeReview`; dispatch Review on that target. Reject stale or unattributed reports and resume from the earliest state that current durable evidence proves.
+
+Reject stale, incomplete, ambiguous, mismatched, prose-only, or unattributed material and dispatch the required producer or Review again. Adoption makes the report evidence for state inference; it does not grant mutation authority or convert the report into an active worker return.

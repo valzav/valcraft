@@ -210,6 +210,24 @@
         "At least one verification step names an observable that distinguishes a real run from a vacuous one",
         "The plan is committed locally and no push occurs"
       ]
+    },
+    {
+      "id": 10,
+      "name": "confirmed-takeover-plan-dirt-remains-producer-validated",
+      "prompt": "/valcraft:valcraft-draft — a confirmed Foreman takeover envelope attributes one exact dirty Draft plan path on the assigned canonical task branch and attributable head. Compare the correct shared checkout with an isolated workspace, a wrong head, and a checkout containing unrelated or overlapping dirt. State what Draft accepts and rejects. Do not mutate anything.",
+      "expected_output": "On the exact shared canonical branch and attributable head, Draft may incorporate only the attributed plan path after validating Draft ownership, scope, ancestry, and current contents. Confirmation is attribution, not proof or mutation authority. An isolated workspace returns `assignment_invalid` because it cannot access the path. A wrong branch or head and any unrelated, overlapping, or conflicting dirt block; Draft preserves all dirt and never stashes, cleans, resets, copies, or silently absorbs it.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md"
+      ],
+      "assertions": [
+        "Draft accepts only the exact attributed plan path on the correct shared canonical branch and head",
+        "Draft validates ownership, scope, ancestry, and current contents before incorporation",
+        "An isolated workspace returns `assignment_invalid`",
+        "Wrong target or unrelated, overlapping, or conflicting dirt blocks and is preserved",
+        "Confirmation grants no mutation authority",
+        "Draft never stashes, cleans, resets, copies, or silently absorbs dirt"
+      ]
     }
   ]
 }
