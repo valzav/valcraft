@@ -1,0 +1,15 @@
+{
+  // Markdown lint defaults for a Valcraft project. Every rule not named here stays at its
+  // default; each exception below exists because a scaffolded artifact would otherwise fail.
+  "gitignore": true,
+  "config": {
+    // Prose, list items, and one-line rules stay on one physical line. The writing standard
+    // treats sentence length as a clarity signal, not a hard limit.
+    "MD013": false,
+    // Templates carry `<placeholder>` markers and HTML comments as authoring guidance.
+    "MD033": false,
+    // A feature `spec.md` carries a frontmatter `title:` plus a body H1; the frontmatter
+    // title is not a second top-level heading.
+    "MD025": { "front_matter_title": "" }
+  }
+}

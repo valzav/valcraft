@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "d123c504c2d6c899",
+      "version": "073761057e8e99af",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -13,6 +13,7 @@
         "templates/adr-index.md",
         "templates/adr.md",
         "templates/gitignore-base",
+        "templates/markdownlint-cli2.jsonc",
         "templates/overview.md",
         "templates/product-brief.md",
         "templates/status.md"
