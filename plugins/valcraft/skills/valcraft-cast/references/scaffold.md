@@ -41,6 +41,7 @@ README.md
 AGENTS.md
 CLAUDE.md                     # relative symlink to AGENTS.md
 .gitignore
+.markdownlint-cli2.jsonc
 .valcraft/config.yaml         # committed base configuration, written by Tune
 docs/
 ├── product-brief.md
@@ -52,6 +53,8 @@ specs/.gitkeep
 ```
 
 Populate the named files from their Cast templates. Create `CLAUDE.md` with `ln -s AGENTS.md CLAUDE.md`. The `.gitkeep` files make the empty plan and feature roots durable in the baseline; they carry no contract content. The `.gitignore` must contain the pair `/.valcraft/*` and `!/.valcraft/config.yaml`, which keeps run directories, locks, temporary files, and the `.valcraft/config.local.yaml` overlay invisible to git while tracking the base configuration.
+
+`.markdownlint-cli2.jsonc` is unconditional, not an opt-in artifact: the frame's own Markdown fails default rules, so a project that lints without it reports failures Cast caused. It is inert in a project that never lints. Each exception it carries is justified by a scaffolded artifact — long prose lines, `<placeholder>` markers and HTML comments in templates, and the frontmatter `title:` a feature `spec.md` carries alongside its body H1. Preserve an existing configuration during a retrofit; add only the missing exceptions.
 
 Create no numeric directory under `specs/`. Create no `spec.md`, `design.md`, `tasks.md`, or quick-task file. Spec owns those artifacts. The `.gitkeep` carries no contract and does not affect feature allocation.
 
