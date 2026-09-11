@@ -15,6 +15,10 @@ updated: <YYYY-MM-DD>
 
 <Technical approach, with the FR, NFR, BR, and AC IDs it satisfies.>
 
+## Verified baseline assumptions
+
+<One entry per existing-code fact the design depends on, checked at the exact baseline SHA: assumption, source locator, check performed, result. Correct the design before readiness when a check disproves the assumption. Proposed changes do not belong here.>
+
 ## Impact on existing architecture
 
 <Affected components, boundaries, ownership, and interfaces.>

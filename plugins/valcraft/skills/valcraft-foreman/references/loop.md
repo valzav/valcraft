@@ -72,7 +72,7 @@ Never restart Spec or Draft when the required current committed artifact exists.
 
 ## `Specifying`
 
-Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
+Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, the verified absence of the canonical remote Spec ref when the accepted Land report recorded it, and target-bound outward authority when granted. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
 
 On `Status: done`, validate the artifact paths and exact head. Enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
 

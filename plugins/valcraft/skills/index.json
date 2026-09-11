@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "edfa89e36fb7b3de",
+      "version": "196d7ffba497a26c",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -111,7 +111,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "03c2fb75b4e6f25d",
+      "version": "567ac9daaec15242",
       "files": [
         "SKILL.md",
         "references/delivery.md",

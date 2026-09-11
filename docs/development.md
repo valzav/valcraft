@@ -73,7 +73,7 @@ Verified against OpenCode 1.18.15 (config shape `skills.urls`; the v2 config spe
 
 Each skill carries `evals/evals.json` (prompt, fixtures under `evals/files/`, expected output, assertions). Run them with the skill-creator skill: "run the evals for `plugins/valcraft/skills/<skill>`", with the workspace directed to `.local/`.
 
-### Delivery regression coverage
+## Delivery contract coverage
 
 Spec readiness includes evidence for consequential existing-code assumptions and task ownership of every substantive acceptance-criterion clause. Review checks that evidence independently across the triplet. These checks distinguish current facts from proposed implementation; they require no separate claim ledger.
 

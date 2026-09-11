@@ -1554,7 +1554,7 @@
         "evals/files/reset-provenance/AGENTS.md",
         "evals/files/reset-provenance/.valcraft/config.yaml",
         "evals/files/reset-provenance/.valcraft/config.local.yaml",
-        "evals/files/reset-provenance/.valcraft/foreman/resume/state.md",
+        "evals/files/reset-provenance/.valcraft/foreman/run-retrospective/state.md",
         "evals/files/reset-provenance/summary.md"
       ],
       "assertions": [
