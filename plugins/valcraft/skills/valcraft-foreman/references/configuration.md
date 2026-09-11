@@ -12,3 +12,5 @@ Resolution rules:
 - For AO, use the resolved `foreman.ao.project_id` exactly as stored, only as an argument value.
 - Delegate any missing or invalid value to `valcraft-tune` for the affected section. Resume only after `Status: done` and a complete re-read.
 - Everything under `.valcraft/` except `config.yaml` must be gitignored; `valcraft-cast` establishes the `/.valcraft/*` and `!/.valcraft/config.yaml` pair at scaffold time.
+
+Before constructing a dispatch, re-read the configuration entries that supply its backend and worker settings. Record the effective harness, model, and effort with the actual source file and key in the assignment checkpoint when the backend configures them. Preserve overlay precedence; a value from `.valcraft/config.local.yaml` must not be attributed to the base. For a backend that supplies worker settings itself, record that source instead of inventing configuration keys.

@@ -456,6 +456,23 @@
         "Wrong target or unrelated, overlapping, or conflicting dirt blocks and is preserved",
         "Confirmation grants no mutation authority and Forge never stashes, cleans, resets, copies, or silently absorbs dirt"
       ]
+    },
+    {
+      "id": 22,
+      "name": "browser-results-require-intended-candidate",
+      "prompt": "/valcraft:valcraft-forge — the browser suite reports green. Its runner reused a server already listening on the requested URL, but that server serves the previous commit; the task changes the displayed result. The passed plan requires the current candidate and a known fixture dataset. State whether this proves the acceptance criteria and what evidence the report needs. Contrast a static-page browser test without a database. Do not start or stop services.",
+      "expected_output": "Forge rejects the green suite as candidate evidence, establishes the actual application revision, effective runner target and relevant fixture state, and obtains valid verification or reports it unproven through the existing blocker route. Requested variables or commands do not prove effective state. It adds no migration or origin checklist unrelated to the test.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "A green run against the previous commit does not prove the candidate",
+        "Evidence identifies the actual tested application and effective runner target",
+        "Applicable fixture prerequisites are established before accepting the result",
+        "Unresolved prerequisites leave verification unproven and use an existing blocker route",
+        "No unrelated database, origin or migration requirements are imposed"
+      ]
     }
   ]
 }

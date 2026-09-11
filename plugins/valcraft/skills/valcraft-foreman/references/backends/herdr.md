@@ -64,7 +64,7 @@ After the claim succeeds — generation 1 or a reclaimed generation — title th
 
 ## Physical identity
 
-The physical worker is the returned pane id in the recorded session, plus the live agent name. A name alone is not an identity: it follows the pane's current occupant and is released when that agent exits, so a reused name can address a different process.
+The physical worker is the returned pane id in the recorded session, plus the live agent name and `agent_session`. A name alone is not an identity: it follows the pane's current occupant and is released when that agent exits, so a reused name can address a different process.
 
 Derive the agent name from the canonical logical identity and dispatch ordinal, normalized to Herdr's `[a-z][a-z0-9_-]{0,31}` contract, and collision-check it against `agent list` and every `workers.md` row before use. Record session, workspace, tab, pane, agent name, harness, dispatch ordinal, and report path.
 
@@ -94,6 +94,14 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
 A worker that blocks during startup is not a failure. Herdr reports it as `blocked` and `agent list` shows it; clear only a prompt the committed contract settles for a directory this run owns.
+
+### Exit before the first assignment
+
+Immediately before first submission, use `herdr pane get <pane-id>` to verify the expected occupant and a non-null `agent_session`. Record that session identity. A shell left in the pane is not a ready worker. Handle a live blocked occupant under Permission prompts rather than restarting it.
+
+When the launched worker has exited and no assignment was submitted, record a startup observation and restart with the identical argument vector in the same pane. Confirm the old occupant is gone and the checkout still matches the pre-launch state before restarting. Record and verify the new `agent_session` before submission; pane and name reuse do not preserve physical identity. Apply `hygiene.md`'s owner-established two-attempt rule to startup attempts and escalate when exhausted.
+
+This shortcut applies only before submission. A submitted assignment with uncertain delivery must use checkpoint reconciliation and existing return precedence, even when the pane shows a restart banner. Confirmed delivery uses ordinary dead-worker recovery. Never resend merely because no report exists; an exit after the liveness check is still possible.
 
 ## Assign and await
 

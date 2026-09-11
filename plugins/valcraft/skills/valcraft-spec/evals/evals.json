@@ -421,6 +421,58 @@
         "A missing or conflicting artifact source blocks instead of opening standalone intake",
         "The assignment grants no outward mutation authority"
       ]
+    },
+    {
+      "id": 21,
+      "name": "readiness-checks-existing-claims-and-criterion-clauses",
+      "prompt": "/valcraft:valcraft-spec — assess a complete FEAT-014 triplet at its exact selected baseline. All identities and dependencies validate. The schema defines jobs with a last_run_at column. The design describes job_runs as an existing table used for the no-run assertion. AC-001 requires the marker in List and Board; T-001 cites AC-001 but changes and verifies only List. The spec requires a new export endpoint; its proposed design and T-002 fully cover that requirement, and the endpoint is not implemented yet. State readiness and the local corrections needed. Do not mutate anything.",
+      "expected_output": "Spec does not declare the triplet ready. It verifies consequential existing-code assumptions at the baseline, corrects the existing job_runs claim against the actual schema, and records locator/check/result evidence beside the design decision. It assigns Board coverage or the whole AC to a verifying task rather than accepting an ID match. It does not reject the proposed export endpoint merely because it is not implemented. It creates no mandatory claim-ledger sidecar.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md"
+      ],
+      "assertions": [
+        "The false existing-table claim prevents readiness and must be verified and corrected against the baseline",
+        "Recorded design evidence identifies baseline, source, check and result",
+        "Board must have verifiable task ownership despite AC-001 already appearing in T-001",
+        "Proposed implementation is distinguished from claims about existing code",
+        "No universal reference ledger or Area quota is required",
+        "The spec-required, task-owned proposed endpoint raises no finding merely because it is not implemented"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "squash-amendment-synchronizes-before-final-review",
+      "prompt": "/valcraft:valcraft-spec — prepare an amendment to FEAT-014. The clean canonical branch holds only attributable Spec history and the amendment. The recorded Land report and git artifacts prove its previous version landed by squash on the selected baseline. That baseline also contains completed task ticks and implementation changes; it is not an ancestor of the Spec branch. A previous Review pass and push grant cover the pre-synchronization head. The remote Spec ref is now verified absent. Compare this shared checkout with an isolated physical branch at the same predecessor, and state what happens if project policy forbids local merge commits. Do not mutate anything.",
+      "expected_output": "Spec synchronizes the exact selected baseline locally before preparing the final Review target, preserving landed changes and the amendment, with non-artifact paths matching the baseline. Both shared canonical and exact isolated physical branches may perform the synchronization. A new full head needs new Review and newly prepared exact authority; unchanged artifact blobs do not retain the old pass. Remote absence permits preparing a non-force branch-creating push to the canonical ref, never publishing the physical ref. Policy forbidding this merge returns owner_decision_required without an invented alternative.",
+      "files": [
+        "SKILL.md",
+        "references/delivery.md"
+      ],
+      "assertions": [
+        "Synchronization occurs in local preparation before the final Review target",
+        "Landed task ticks, implementation and accepted amendment are preserved",
+        "The merge requires new exact-head Review and fresh outward authority",
+        "Verified remote absence is bound in a non-force canonical-ref creation handoff",
+        "Shared and isolated branches follow the same ancestry rule without publishing the physical name",
+        "A policy prohibition returns owner_decision_required without silent branch replacement"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "synchronization-does-not-bypass-drift-or-ownership",
+      "prompt": "/valcraft:valcraft-spec — compare (a) executing an exact push grant when the live base changed, (b) local amendment preparation with a dirty checkout, (c) a diverged Spec branch containing unattributed code changes, and (d) a clean attributable branch whose selected baseline is already an ancestor. State the result and whether local synchronization is allowed. Do not mutate anything.",
+      "expected_output": "An executing grant with changed fields returns authority_drift before any merge or push. Dirty or unattributed divergence returns workspace_not_ready and preserves state. An already-integrated baseline requires no synchronization commit. Spec never uses the local synchronization exception to broaden a grant, reset state or rewrite history.",
+      "files": [
+        "SKILL.md",
+        "references/delivery.md"
+      ],
+      "assertions": [
+        "Executing a drifted grant returns authority_drift before synchronization or outward mutation",
+        "Dirty or unattributed state is preserved and blocks workspace preparation",
+        "An ancestor baseline adds no unnecessary merge commit",
+        "No force-push, reset or history rewrite is proposed"
+      ]
     }
   ]
 }

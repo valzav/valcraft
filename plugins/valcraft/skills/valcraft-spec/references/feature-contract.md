@@ -84,7 +84,9 @@ Read `../templates/spec.md`, `../templates/design.md`, and `../templates/tasks.m
 
 `design.md` explains how the feature satisfies the spec. Map its architecture, interfaces, data, failure handling, tests, trade-offs, risks, and applicable technical questions to requirement or acceptance IDs. Include only applicable sections. Do not choose product behavior that the source leaves unresolved.
 
-`tasks.md` decomposes the design into ordered, concrete, verifiable T-ID work. Every task names the behavior or subsystem it changes and the requirement or criterion it serves. Put tests and operational work with the behavior they prove. Declare only real hard dependencies. Use one tracker shape throughout the file.
+Verify the existing-code assumptions that determine the design against the exact baseline SHA. Check the actual schema, symbols, formulas, enumerations, and behavior the design relies on. Distinguish existing behavior from proposed changes. Record the baseline, source locator, check, and result beside the relevant design decision. Correct a disproven assumption before declaring readiness; an implementation task cannot substitute for verifying an existing fact.
+
+`tasks.md` decomposes the design into ordered, concrete, verifiable T-ID work. Every task names the behavior or subsystem it changes and the requirement or criterion it serves. Assign every substantive clause of an acceptance criterion to a verifying task, or name one task that owns the whole criterion. A mapped criterion ID alone does not prove coverage of its enumerated surfaces or behaviors. Put tests and operational work with the behavior they prove. Declare only real hard dependencies. Use one tracker shape throughout the file.
 
 Set all feature identities consistently. Set `spec_issue: null` for local mode and `spec_issue: TBD` for GitHub until authorized projection records a verified issue number. Preserve verified existing mappings while resuming. Set `created` on creation and `updated` on a real revision.
 
@@ -93,7 +95,8 @@ Set all feature identities consistently. Set `spec_issue: null` for local mode a
 A complete triplet is implementation-ready only when:
 
 - every artifact contains substantive project-specific content with no template instruction, unresolved token, example, ellipsis, or `TBD`-only section;
-- design and tasks cover every applicable requirement and acceptance criterion;
+- the existing-code assumptions that determine the design have recorded verification at the baseline;
+- design and tasks cover every applicable requirement and every substantive acceptance-criterion clause;
 - all task identities, mappings, and dependencies validate; and
 - no assumption or open product question can change observable behavior or an acceptance criterion unless the operator explicitly accepts that uncertainty.
 

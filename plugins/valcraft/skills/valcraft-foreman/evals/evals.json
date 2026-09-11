@@ -1544,6 +1544,65 @@
         "Land resumes under a fresh physical identity with only exact remaining operations",
         "Foreman never routes a spec PR or feature close into task Landing or executes the remaining operation"
       ]
+    },
+    {
+      "id": 103,
+      "name": "reset-reloads-authority-and-overlay-provenance",
+      "prompt": "/valcraft:valcraft-foreman — use the isolated project copied from evals/files/reset-provenance/. Resume after compaction from summary.md and the active checkpoint it names. State the effective backend, next worker and subsequent reviewer, including harness, model, effort, and the source file/key for each setting. Explain whether an active material-finding round would change the contracts to load. Backend readiness and the controller lease are established fixture facts. Stop before dispatch; do not spawn or mutate anything.",
+      "expected_output": "Foreman rereads both configuration files, resolves the complete overlay mapping, and reloads governing references before dispatch. It takes the effective role/model/effort from that resolved map rather than the summary or base alone, records actual source file/key provenance, and preserves the existing worker lifecycle and authority rules. If a finding round is active it also reloads review-round.md.",
+      "files": [
+        "evals/files/reset-provenance/AGENTS.md",
+        "evals/files/reset-provenance/.valcraft/config.yaml",
+        "evals/files/reset-provenance/.valcraft/config.local.yaml",
+        "evals/files/reset-provenance/.valcraft/foreman/resume/state.md",
+        "evals/files/reset-provenance/summary.md"
+      ],
+      "assertions": [
+        "The trace reads the base, overlay, checkpoint and governing Foreman contracts before preparing worker settings",
+        "Temper resolves to codex, gpt-5.6-sol, high from .valcraft/config.local.yaml at foreman.herdr.workers.temper",
+        "RetroReview resolves to claude, opus, xhigh from .valcraft/config.local.yaml at foreman.herdr.workers.retro_review",
+        "The backend herdr is attributed to .valcraft/config.yaml at foreman.backend, without misattributing overlay worker fields",
+        "The stale summary does not supply model/effort authority or erase the configured RetroReview role",
+        "An active material-finding round would reload review-round.md without changing policy"
+      ]
+    },
+    {
+      "id": 104,
+      "name": "herdr-exit-before-first-submission",
+      "coordination_coverage": "transport:herdr-startup-exit",
+      "prompt": "/valcraft:valcraft-foreman — Herdr returned a pane and a ready Codex launch. No assignment has been submitted. The next pane observation shows a plain shell, a null agent_session and a completed CLI-update restart banner; the checkout matches its pre-launch state. Prepare the next action. Also consider a live blocked occupant and a restart that exhausts the existing startup-attempt allowance. Do not operate Herdr.",
+      "expected_output": "Foreman verifies the occupant and agent_session before first submission. For the proven exit with no submission and unchanged checkout, it records a startup observation and restarts in the same pane with identical native arguments, records the new session identity and checks readiness before prompting. A live blocked occupant follows permission handling instead. Startup uses the owner-established two-attempt rule and escalates when exhausted; it invents no new return code or retry count.",
+      "files": [
+        "SKILL.md",
+        "references/backends/herdr.md",
+        "references/backends/README.md",
+        "references/hygiene.md"
+      ],
+      "assertions": [
+        "The plain shell with null agent_session is not a ready worker",
+        "The proven pre-submission exit can restart in the same pane using identical arguments",
+        "The new agent_session is recorded and verified before submission",
+        "The event is a startup observation rather than a fabricated producer report",
+        "A blocked live worker receives permission handling rather than restart",
+        "The existing two-attempt policy governs startup and exhaustion escalates"
+      ]
+    },
+    {
+      "id": 105,
+      "name": "herdr-startup-shortcut-excludes-submitted-work",
+      "prompt": "/valcraft:valcraft-foreman — Herdr accepted an agent prompt but no working state or report was observed before the pane showed a restart banner. Separately, another exited worker had confirmed delivery. Decide recovery for both. Do not operate Herdr.",
+      "expected_output": "The first case reconciles the submitted checkpoint with the exact occupant and report under existing delivery/return rules. It cannot use pre-submission restart or resend based on absent output. The confirmed-delivery case uses ordinary dead-worker inventory and fresh replacement. A restart banner is not proof no assignment was delivered.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/backends/README.md",
+        "references/hygiene.md"
+      ],
+      "assertions": [
+        "Submitted but uncertain delivery excludes the pre-submission shortcut",
+        "No report or restart banner alone authorizes resend",
+        "Checkpoint reconciliation and existing return precedence decide the uncertain case",
+        "Confirmed delivery retains ordinary dead-worker inventory and fresh replacement"
+      ]
     }
   ]
 }

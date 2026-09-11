@@ -14,12 +14,24 @@ Without an envelope:
 
 1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state before switching or creating a branch. Stop on unattributed changes. Use the clean current checked-out ref selected by the invocation as the Spec baseline. Resolve and record its exact HEAD locally.
 2. Derive the canonical Spec branch from the artifact identity: `spec/fNNN-<slug>` for a feature and `spec/qNNN-<slug>` for a quick task.
-3. Reconcile the local canonical branch against the selected local baseline. Create it from that baseline when absent. Resume it only when its attributable Spec history is equal to or descends cleanly from the baseline. Stop on ambiguous ancestry or divergence. Do not fetch or fabricate remote state for local production.
+3. Reconcile the local canonical branch against the selected local baseline. Create it from that baseline when absent. Resume it when its attributable Spec history is equal to or descends cleanly from the baseline. For previously landed Spec history, apply the synchronization below. Stop on ambiguous or unattributed divergence. Do not fetch or fabricate remote state for local production.
 4. Reconcile existing artifacts and commits before writing. Never duplicate a complete local result.
 
 On a shared checkout, use the canonical Spec branch. Preserve and report unattributed state; do not stash, clean, reset, or absorb it. Incorporate only the takeover-attributed Spec paths validated above. On an isolated-workspace backend, require a unique clean physical branch seeded from the assignment's exact predecessor SHA. Keep the canonical branch as the remote ref. Never publish the physical branch name.
 
 A configured release branch does not select the local baseline. When live outward resolution succeeds, a Spec PR targets the authoritative default branch.
+
+## Synchronize a previously landed Spec branch
+
+A squash landing can leave the canonical Spec branch outside the selected baseline's ancestry. Before preparing an amendment's final Review target, reconcile that branch with the exact selected baseline. This is local Spec preparation, not PR landing or execution of an outward grant.
+
+Require a clean canonical branch, or the assigned isolated physical branch at its exact predecessor. Establish from the recorded landing and git artifacts that the divergent history belongs to this target's previously landed contract and its attributable amendments. Stop with `workspace_not_ready` when that ownership or the selected baseline is ambiguous.
+
+If the baseline is already an ancestor, no synchronization commit is needed. Otherwise merge the exact baseline into the Spec working branch without rewriting history. If project policy forbids this synchronization, return `owner_decision_required` without choosing another branch strategy. Resolve only target-artifact conflicts whose resolution follows from the accepted contract and baseline. Preserve landed changes, including task completion state, and the accepted amendment. Outside the target artifacts, the result must match the baseline; an unrelated change or unresolved conflict stops preparation and is preserved for recovery. Record the predecessor, baseline, resulting merge SHA and artifact changes in `Workspace`. Re-evaluate readiness after synchronization and any revision.
+
+The resulting full head is a new Review target even when the artifact blobs are unchanged. Never carry a prior pass or mutation grant onto that head. Prepare fresh outward fields and authority. Do not synchronize during execution of an existing grant; drift returns `authority_drift` first.
+
+Retain the canonical remote Spec ref between landings. If the host or an explicitly authorized deletion removed it, record verified absence and prepare a non-force branch-creating push of the reconciled head. Never reuse its former remote SHA as a current fact. The physical branch name remains unpublished.
 
 ## Commit the artifact
 

@@ -228,6 +228,23 @@
         "Confirmation grants no mutation authority",
         "Draft never stashes, cleans, resets, copies, or silently absorbs dirt"
       ]
+    },
+    {
+      "id": 11,
+      "name": "browser-plan-names-effective-prerequisites",
+      "prompt": "/valcraft:valcraft-draft — plan verification for a task whose acceptance criteria change a browser-visible calculation. The repository runner can reuse an existing server and loads file configuration over process variables. The proposed verification step is only BASE_URL=http://localhost:4100 run-e2e. The calculation also depends on the fixture dataset. Contrast a static-page task with no database. State the verification content the plans need; do not write files.",
+      "expected_output": "Draft names checks proving the effective runner target, intended candidate and relevant fixture state rather than treating the command as environment proof. It inspects committed runner/configuration behavior for the plan and names the live checks Forge must perform. It includes only applicable prerequisites; the static page does not acquire database/migration obligations.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "references/baseline-facts.md"
+      ],
+      "assertions": [
+        "The command alone is not accepted as proof of the test target or effective configuration",
+        "The plan identifies how to establish the intended running candidate",
+        "Relevant fixture state has a proving check",
+        "The static-page case adds no unrelated database or migration checklist"
+      ]
     }
   ]
 }

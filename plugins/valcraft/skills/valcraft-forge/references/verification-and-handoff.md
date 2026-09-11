@@ -10,6 +10,8 @@ Exact dirty paths attributed by a confirmed Foreman takeover are allowed only on
 
 Run the repository's real tests, typecheck, lint, and applicable integration checks. Cite command output. For every new or changed test, state the defect that could still pass it.
 
+Before accepting verification results, establish the effective environment prerequisites the check depends on and record the evidence beside the result. For browser checks, prove that the runner reaches the intended candidate, including when it reuses an existing server. Inspect effective configuration or data state when it can change the result; a requested command or exported variable is not proof of the state used. Do not require unrelated infrastructure checks. An unresolved prerequisite leaves the affected verification unproven and follows the existing blocker route.
+
 - Test negative and invariant claims by attempting to violate them.
 - Before relying on a negative result, inject a known-present condition and prove the same instrument detects it. Record that calibration beside the check; reversing a fix does not calibrate the instrument.
 - Characterize uncovered behavior before changing it.

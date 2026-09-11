@@ -566,6 +566,25 @@
         "Review still emits its own complete fixed-shape report and terminal status",
         "The presentation paragraph is not routing evidence or a verdict, and nothing follows the current report's terminal status"
       ]
+    },
+    {
+      "id": 28,
+      "name": "triplet-review-does-not-defer-consequential-claims",
+      "prompt": "/valcraft:valcraft-review — review a feature triplet at its pinned head. The design uses the claimed existing job_runs table to define a no-run invariant; the baseline schema has only jobs.last_run_at. The author provides no check for the table and proposes verifying that citation during T-003. AC-001 names List and Board; the only mapped task tests List. The spec requires a genuinely new endpoint; its proposed design and task fully cover that requirement, and the endpoint is not implemented yet. State the verdict and evidence needed. Do not edit files.",
+      "expected_output": "Review reproduces the existing-code mismatch against the baseline and reports the false assumption and uncovered Board clause as material findings owned by Spec. It does not pass by accepting the author or deferring consequential verification to T-003. It does not demand that the new endpoint already exist. It uses the ordinary whole-triplet review contract without Area quotas or partial verdict aggregation.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "../valcraft-spec/references/feature-contract.md"
+      ],
+      "assertions": [
+        "Consequential existing-code assumptions are independently checked before a pass",
+        "The proposed later citation check does not discharge readiness",
+        "The unmapped Board clause is a material coverage finding even though AC-001 is mapped",
+        "Proposed new behavior need not exist at the baseline",
+        "The report uses the existing Review contract without partial-verdict machinery",
+        "The spec-required, task-owned proposed endpoint raises no finding merely because it is not implemented"
+      ]
     }
   ]
 }

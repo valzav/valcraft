@@ -1,0 +1,52 @@
+tracker:
+  mode: local
+foreman:
+  backend: herdr
+  approval_mode: unattended
+  default_branch: main
+  release_branch: null
+  herdr:
+    session: null
+    workers:
+      spec:
+        harness: codex
+        model: gpt-5.6-terra
+        effort: medium
+      spec_review:
+        harness: claude
+        model: sonnet
+        effort: medium
+      draft:
+        harness: codex
+        model: gpt-5.6-terra
+        effort: medium
+      plan_review:
+        harness: claude
+        model: sonnet
+        effort: medium
+      forge:
+        harness: claude
+        model: sonnet
+        effort: medium
+      code_review:
+        harness: codex
+        model: gpt-5.6-terra
+        effort: medium
+      land:
+        harness: claude
+        model: sonnet
+        effort: medium
+      temper:
+        harness: claude
+        model: sonnet
+        effort: medium
+      retro_review:
+        harness: codex
+        model: gpt-5.6-terra
+        effort: medium
+      evidence_review:
+        harness: codex
+        model: gpt-5.6-terra
+        effort: medium
+pull_requests:
+  merge_strategy: squash

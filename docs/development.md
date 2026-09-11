@@ -73,6 +73,16 @@ Verified against OpenCode 1.18.15 (config shape `skills.urls`; the v2 config spe
 
 Each skill carries `evals/evals.json` (prompt, fixtures under `evals/files/`, expected output, assertions). Run them with the skill-creator skill: "run the evals for `plugins/valcraft/skills/<skill>`", with the workspace directed to `.local/`.
 
+### Delivery regression coverage
+
+Spec readiness includes evidence for consequential existing-code assumptions and task ownership of every substantive acceptance-criterion clause. Review checks that evidence independently across the triplet. These checks distinguish current facts from proposed implementation; they require no separate claim ledger.
+
+Spec synchronizes attributable previously landed branch history with its selected baseline before preparing an amendment's final Review head. Land preserves the canonical Spec ref between landings. Synchronization produces a new Review target and requires new exact outward authority. See Spec's [delivery contract](../plugins/valcraft/skills/valcraft-spec/references/delivery.md#synchronize-a-previously-landed-spec-branch).
+
+Foreman reloads configuration and contracts after context reset and records effective worker-setting provenance, including local overrides. Herdr's [startup-exit recovery](../plugins/valcraft/skills/valcraft-foreman/references/backends/herdr.md#exit-before-the-first-assignment) permits pane reuse only before submission, with a new session identity under the existing attempt policy. Submitted work retains normal reconciliation and recovery.
+
+Draft names effective verification prerequisites; Forge proves the applicable environment and intended candidate before accepting browser results. Test these decisions with consumer-neutral scenarios. Keep actual environment values and setup recipes in the consumer repository.
+
 ## Coordination-contract drift
 
 Each report-producing skill owns its headings, terminal status grammar, and routing codes. Foreman's registry links to those contracts and owns only consumers, routes, backend returns, and named-state transitions.

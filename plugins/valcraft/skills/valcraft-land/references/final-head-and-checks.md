@@ -2,6 +2,8 @@
 
 Use this gate for every task and spec PR. It controls both merge and any closure that depends on a merge.
 
+For a spec PR, preserve the canonical remote Spec ref for later amendments. Do not include branch deletion in ordinary spec-PR landing. A separate explicit deletion instruction remains a separately bound operation; report a ref removed by that operation or by the host so the next Spec assignment can reconcile verified absence.
+
 ## Exact Review coverage
 
 Read the current PR head from the hosting service. Compare it with the exact head in the latest passing Review report for this target. A branch name, older verdict, merge base, or review summary is not coverage.

@@ -273,6 +273,22 @@
         "When squash is unavailable, Land invokes Tune with the pull-request section first",
         "Land never falls back to merge commit and performs no merge or tracker closure before Tune returns Status: done"
       ]
+    },
+    {
+      "id": 13,
+      "name": "spec-ref-retention-and-synchronized-head-coverage",
+      "prompt": "/valcraft:valcraft-land — prepare finalization of a spec PR for an open feature. The exact current head has passing Review and checks; mutation authority names only the configured squash merge. State the branch disposition after landing. Separately, consider a Spec synchronization merge after that Review which leaves the artifact blobs unchanged, and a host that already removed the ref. Do not mutate anything.",
+      "expected_output": "Ordinary spec landing preserves the canonical Spec ref and includes no branch deletion. The synchronized new head requires Review despite identical artifact blobs. If the host removed the ref, Land reports verified absence so a future Spec assignment can prepare canonical non-force recreation; it does not claim retention or reuse a stale remote head. Separate explicit deletion remains target-bound and is never inferred from merge authority.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md"
+      ],
+      "assertions": [
+        "Ordinary spec-PR landing preserves the canonical ref",
+        "Merge authority does not imply deletion authority",
+        "A synchronization merge requires Review of its new exact head even with identical artifact blobs",
+        "A ref removed by the host is reported as absent without fabricated retention or stale head claims"
+      ]
     }
   ]
 }

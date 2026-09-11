@@ -39,6 +39,7 @@ Append checkpoints with:
 - active named state, target kind, canonical task identity, tracker reference, and authoritative contract paths;
 - takeover disposition: exact checkpoint resume or confirmed takeover; for takeover record the candidate set, evidence and conflicts, operator response, inferred state, next action, and exact attributed dirty paths;
 - active assignment id, logical and physical worker identities, physical branch, attributed report path, and predecessor target;
+- effective backend and worker settings with the source file and key, or the backend source when it supplies those settings;
 - the plugin revision of each dispatched skill at every dispatch, as that skill's `version` content hash from the plugin's `skills/index.json` together with the plugin manifest's release version string. The content hash is the canonical revision because it distinguishes snapshots that share a release version; the release version string is corroborating metadata and never substitutes for it. Record the revision as unavailable when `skills/index.json` cannot be read, rather than falling back to the base directory or the release version;
 - every backend return, its source, time, and terminal or nonterminal disposition;
 - accepted producer report path, terminal status, routing code or structured verdict, exact artifact or PR identity, and registry transition;

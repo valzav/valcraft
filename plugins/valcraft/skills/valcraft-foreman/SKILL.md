@@ -27,6 +27,8 @@ Load these contracts before dispatch:
 
 Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/foreman/` is ignored by the `/.valcraft/*` rule. Resume a verified active checkpoint automatically. Without one, apply `loop.md`'s takeover bootstrap before creating a run directory from [`templates/run-dir.md`](templates/run-dir.md).
 
+After compaction, resume, takeover, or another context reset, repeat configuration resolution and reload the governing contracts before the next dispatch. Reload `review-round.md` when a material-finding round is active. A summary carries state pointers, never configuration or contract authority.
+
 `new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft-spec`; create no Foreman run.
 
 ## Invariants

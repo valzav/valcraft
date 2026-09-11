@@ -24,9 +24,9 @@ Read the blob at the pinned commit, or the file at the pinned hash. A newer comm
 
 For a feature spec, verify that directory number equals frontmatter `id`, `Sources` contains exactly one canonical entry, and `spec_issue` matches tracker mode.
 
-For feature `tasks.md`, require every task to use `T-XXX`. Map every declared `FR-`, `AC-`, `NFR-`, and `BR-` to a verifying task. Resolve every `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered requirements as material findings.
+For feature `tasks.md`, require every task to use `T-XXX`. Map every declared `FR-`, `AC-`, `NFR-`, and `BR-` to a verifying task. Check ownership of every substantive acceptance-criterion clause, including each enumerated surface or behavior; an ID appearing in a task is insufficient. Resolve every `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered requirements as material findings.
 
-When `design.md` and `tasks.md` both exist, apply `feature-contract.md`'s complete implementation-readiness gate.
+When `design.md` and `tasks.md` both exist, apply `feature-contract.md`'s complete implementation-readiness gate. Apply the substantive checks above to the whole triplet: independently verify the existing-code assumptions that determine its design and cross-check its behavior against the spec and task ownership. Use the recorded baseline and evidence as locators, not as a substitute for reproduction. Do not pass an unverified consequential claim by deferring it to a later task review. Proposed behavior still belongs to implementation; do not require it to exist at the baseline.
 
 For a retrospective report under `docs/.retro/`, apply Temper's `report-format.md` and `process.md` as the governing contract.
 
