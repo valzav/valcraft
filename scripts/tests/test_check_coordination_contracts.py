@@ -459,7 +459,7 @@ class CoordinationContractCheckTests(unittest.TestCase):
     def test_coordinator_reads_missing_message_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "| Evidence-sufficiency verdict | `### Overall verdict` |\n",
+            "| Evidence-sufficiency verdict | `### Target and sources`, `### Overall verdict` |\n",
             "",
         )
         self.assert_check_fails(
@@ -469,8 +469,8 @@ class CoordinationContractCheckTests(unittest.TestCase):
     def test_coordinator_reads_unregistered_message_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "| Evidence-sufficiency verdict | `### Overall verdict` |",
-            "| Evidence-sufficiency verdict | `### Overall verdict` |\n| Project frame | `### Tracker` |",
+            "| Evidence-sufficiency verdict | `### Target and sources`, `### Overall verdict` |",
+            "| Evidence-sufficiency verdict | `### Target and sources`, `### Overall verdict` |\n| Project frame | `### Tracker` |",
         )
         self.assert_check_fails("coordinator reads names an unregistered message: Project frame")
 

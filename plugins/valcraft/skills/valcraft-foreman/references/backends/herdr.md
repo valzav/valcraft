@@ -132,15 +132,17 @@ A submission to an already-blocked agent is rejected with `agent_blocked` before
 Claude Code offers a persistent background monitor that runs one command across turns and wakes the controller when the command exits. Use it for every await after delivery is confirmed, so the controller spends no turn re-arming.
 
 1. Submit with `agent prompt --wait --timeout <ms>` as above. The bounded foreground call still owns delivery confirmation.
-2. When that call returns `wait_timeout` and delivery is confirmed by an observed `working` state, arm the standalone wait under the harness's persistent background monitor with no `--timeout`, naming the settled states and `unknown` explicitly:
+2. When that call returns `wait_timeout` and delivery is confirmed by an observed `working` state, arm the standalone wait under the harness's persistent background monitor with no `--timeout`, naming every state other than the occupant's current one:
 
 ```sh
 herdr agent wait <agent-name> --until idle --until done --until blocked --until unknown
 ```
 
+   Never include the occupant's current state in the armed set. A wait that already matches returns at once, and re-arming it wakes the controller in a loop instead of on a change.
+
 3. Record the monitor's harness task id against the assignment in `state.md`, then end the turn. While the monitor is armed, do not poll the report file, `agent get`, or the pane.
-4. The command's exit wakes the controller. Resolve [Return precedence](#return-precedence) on that wake exactly as for a foreground return; `wait_timeout` does not occur on this path. A wake on `unknown` is not a return by itself: `herdr pane get <pane-id>` decides. The recorded occupant with its `agent_session` still present is an observation, and the wait is re-armed; a missing occupant is `dead`. `agent_not_found` exits the wait immediately and is `dead`.
-5. An escalated permission gate arms the same way with `--until idle --until done --until unknown`, so the operator's answer in the worker's pane wakes the controller through the worker's terminal state.
+4. The command's exit wakes the controller. Resolve [Return precedence](#return-precedence) on that wake exactly as for a foreground return; `wait_timeout` does not occur on this path. A wake on `unknown` is not a return by itself: `herdr pane get <pane-id>` decides. A missing occupant is `dead`. The recorded occupant with its `agent_session` still present is an observation; re-arm with `--until working --until idle --until done --until blocked`, and when that wake reports `working`, re-arm the set in step 2. `agent_not_found` exits the wait immediately and is `dead`.
+5. An escalated permission gate leaves the occupant `blocked`, so arm `--until working --until idle --until done --until unknown`. A wake on `working` means the operator answered in the worker's pane: record the gate as answered and re-arm the set in step 2, which includes `blocked` so that a later prompt wakes the controller as `permission_blocked`. A wake on a settled state resolves the gate under return precedence.
 6. Stop the monitor with the harness's task-stop primitive when its worker is released or replaced before the wait exits. A later wake from a stopped or superseded monitor falls under precedence rule 1.
 
 A Codex or Cursor controller has no such primitive and keeps the bounded foreground await with re-arms.

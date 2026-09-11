@@ -62,15 +62,15 @@ A producer report body never enters Foreman's context. After `report_available`,
 | --- | --- |
 | Feature or quick contract | `### Readiness`, `### Workspace`, `### Outward mutations`, `### Finding resolutions`, `### Review target`, `### Land target`, `### Open questions` |
 | Task plan | `### Plan`, `### Review target`, `### Finding resolutions`, `### Outward mutations`, `### Open questions` |
-| Plan verdict | the machine-readable first line of `### Verdict` |
+| Plan verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
 | Task implementation and PR | `### Workspace`, `### Finding resolutions`, `### Outward mutations`, `### Open questions`, `### Review target` |
-| Code verdict | the machine-readable first line of `### Verdict` |
+| Code verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
 | Finalization or evidence record | `### Target`, `### Authoritative state`, `### Prepared operations`, `### Completed operations`, `### Remaining operations`, `### Handoffs` |
-| Evidence-sufficiency verdict | `### Overall verdict` |
+| Evidence-sufficiency verdict | `### Target and sources`, `### Overall verdict` |
 | Retrospective report | `### Operator selection`, `### Review target`, `### Blockers` |
-| Retrospective verdict | the machine-readable first line of `### Verdict` |
+| Retrospective verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
 
-Every other section — verification evidence, findings, reproductions, checks performed, coverage detail — stays on disk for the worker whose role reads it. A field a transition needs that is absent from the named sections makes the report incomplete under [Validation and rejection](#validation-and-rejection); it is never a reason to read the body. The project frame is outside the loop and has no coordinator read.
+The open finding rows carry the severity, claim, evidence, and resolution that `review-round.md`'s second-round triggers test. Every other section — verification evidence, resolved or informational findings, reproductions, checks performed, criterion detail — stays on disk for the worker whose role reads it. A field a transition needs that is absent from the named sections makes the report incomplete under [Validation and rejection](#validation-and-rejection); it is never a reason to read the body. The project frame is outside the loop and has no coordinator read.
 
 ## Declared outcome routing
 

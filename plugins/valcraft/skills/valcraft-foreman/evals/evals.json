@@ -1608,8 +1608,8 @@
       "id": 106,
       "name": "herdr-background-wake-on-claude-controller",
       "coordination_coverage": "transport:herdr-background-wake",
-      "prompt": "/valcraft:valcraft-foreman — on the herdr backend under a Claude Code controller, `herdr agent prompt forge-f001-t002-d000 <envelope> --wait --timeout <ms>` returned wait_timeout and the recorded pane's occupant was observed working. Show how the await continues, what wakes the controller, how a wake on unknown and on agent_not_found is classified, what changes for an escalated permission gate, and what a Codex controller does instead. Do not spawn workers or write files.",
-      "expected_output": "Foreman treats the observed working state as confirmed delivery, arms `herdr agent wait forge-f001-t002-d000 --until idle --until done --until blocked --until unknown` with no timeout under the harness's persistent background monitor, records the monitor's task id against the assignment in state.md, and ends the turn without polling the report file, agent status, or the pane. The command's exit wakes the controller, which resolves return precedence as for a foreground return: an attributed report is report_available, a blocked occupant is permission_blocked, a settled occupant without a report is idle_without_report, agent_not_found is dead. A wake on unknown is resolved by `herdr pane get`: the recorded occupant and agent_session still present is an observation and the wait is re-armed; a missing occupant is dead. wait_timeout does not occur on this path. An escalated gate arms `--until idle --until done --until unknown` the same way. A Codex controller keeps the bounded foreground await and re-arms in the same parent turn.",
+      "prompt": "/valcraft:valcraft-foreman — on the herdr backend under a Claude Code controller, `herdr agent prompt forge-f001-t002-d000 <envelope> --wait --timeout <ms>` returned wait_timeout and the recorded pane's occupant was observed working. Show how the await continues, what wakes the controller, how a wake on unknown and on agent_not_found is classified, what changes for an escalated permission gate and for a second prompt raised after the operator answers the first, and what a Codex controller does instead. Do not spawn workers or write files.",
+      "expected_output": "Foreman treats the observed working state as confirmed delivery, arms `herdr agent wait forge-f001-t002-d000 --until idle --until done --until blocked --until unknown` with no timeout under the harness's persistent background monitor, records the monitor's task id against the assignment in state.md, and ends the turn without polling the report file, agent status, or the pane. The command's exit wakes the controller, which resolves return precedence as for a foreground return: an attributed report is report_available, a blocked occupant is permission_blocked, a settled occupant without a report is idle_without_report, agent_not_found is dead. A wake on unknown is resolved by `herdr pane get`: a missing occupant is dead; the recorded occupant and agent_session still present is an observation, and the wait is re-armed for a change — `--until working --until idle --until done --until blocked` — never for the state the occupant is already in, so the controller does not loop. wait_timeout does not occur on this path. An escalated gate leaves the occupant blocked, so Foreman arms `--until working --until idle --until done --until unknown`; a wake on working records the gate as answered and re-arms the full set including blocked, so a second prompt wakes the controller as permission_blocked. A Codex controller keeps the bounded foreground await and re-arms in the same parent turn.",
       "files": [
         "references/backends/herdr.md",
         "references/backends/README.md",
@@ -1622,17 +1622,18 @@
         "The monitor task id is recorded in state.md before the turn ends",
         "No report-file, status, or pane polling happens while the monitor is armed",
         "The wake resolves return precedence exactly as a foreground return, and wait_timeout is never recorded on this path",
-        "A wake on unknown is decided by pane get: present occupant re-arms, missing occupant is dead",
         "agent_not_found is classified dead",
-        "An escalated gate uses --until idle --until done --until unknown under the same monitor",
-        "A Codex controller keeps the bounded foreground await with same-turn re-arm"
+        "A Codex controller keeps the bounded foreground await with same-turn re-arm",
+        "The armed set never includes the occupant's current state, so a wake on unknown re-arms for working or a settled state and does not loop",
+        "An escalated gate arms --until working --until idle --until done --until unknown; a working wake records the answered gate and re-arms the full set including blocked",
+        "A second permission prompt after the first is answered wakes the controller as permission_blocked"
       ]
     },
     {
       "id": 107,
       "name": "coordinator-reads-named-sections-only",
       "prompt": "/valcraft:valcraft-foreman — the active assignment forge-F001-T002-d000 returned report_available; the assigned report is 120 KB, most of it under `### Verification evidence`. Show exactly what Foreman reads from the file to validate it and route ForgeResult, and what it passes to code-reviewer-F001-T002. Then do the same for a plan-reviewer report whose `### Findings` section is long. Do not spawn workers or write files.",
-      "expected_output": "Foreman never loads either report body. For the Forge report it extracts the heading index (every `## ` and `### ` line) to check headings present in order, the last line for the terminal Status, and only the Coordinator-reads sections: Workspace, Finding resolutions, Outward mutations, Open questions, and Review target. It routes on the declared status and the exact Review target and passes the report path, not its content, to code-reviewer-F001-T002. Verification evidence stays on disk for the reviewer. For the plan-reviewer report it reads the heading index, the terminal line, and the machine-readable first line of Verdict — verdict word, open R-IDs, covered target — and routes on that line; Findings, Reproductions, and Checks performed stay on disk. A needed field missing from the named sections makes the report incomplete and reassigns the producer to append it; it does not trigger a body read.",
+      "expected_output": "Foreman never loads either report body. For the Forge report it extracts the heading index (every `## ` and `### ` line) to check headings present in order, the last line for the terminal Status, and only the Coordinator-reads sections: Workspace, Finding resolutions, Outward mutations, Open questions, and Review target. It routes on the declared status and the exact Review target and passes the report path, not its content, to code-reviewer-F001-T002. Verification evidence stays on disk for the reviewer. For the plan-reviewer report it reads the heading index, the terminal line, and the machine-readable first line of Verdict — verdict word, open R-IDs, covered target — and, because it reports material findings, only the Findings rows for the R-IDs that line lists as open, which carry the severity, claim, evidence, and resolution the second-round triggers test; the remaining Findings rows, Reproductions, and Checks performed stay on disk. A needed field missing from the named sections makes the report incomplete and reassigns the producer to append it; it does not trigger a body read.",
       "files": [
         "SKILL.md",
         "references/contracts.md",
@@ -1642,7 +1643,7 @@
         "Neither report body is read into the coordinator's context",
         "Completeness is checked from the heading index and the terminal line",
         "Only the sections named in the Coordinator reads table are extracted for the Forge report, excluding Verification evidence",
-        "The Review verdict is taken from the machine-readable first line of Verdict only",
+        "The Review read is the machine-readable first line of Verdict plus only the Findings rows for R-IDs listed as open",
         "The next worker receives the report path, not pasted content",
         "A missing required field is handled as an incomplete report, not by reading the body"
       ]
