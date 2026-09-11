@@ -134,9 +134,9 @@ Claude Code offers a persistent background monitor that runs one command across 
 1. Submit with `agent prompt --wait --timeout <ms>` as above. The bounded foreground call still owns delivery confirmation.
 2. When that call returns `wait_timeout` and delivery is confirmed by an observed `working` state, arm the standalone wait under the harness's persistent background monitor with no `--timeout`, naming every state other than the occupant's current one:
 
-```sh
-herdr agent wait <agent-name> --until idle --until done --until blocked --until unknown
-```
+   ```sh
+   herdr agent wait <agent-name> --until idle --until done --until blocked --until unknown
+   ```
 
    Never include the occupant's current state in the armed set. A wait that already matches returns at once, and re-arming it wakes the controller in a loop instead of on a change.
 

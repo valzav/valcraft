@@ -54,7 +54,7 @@ Spec and Draft advance to Review only when the next Review worker can access the
 
 A producer report body never enters Foreman's context. After `report_available`, extract only these parts with line-oriented tools and pass the report path, not its content, to the next worker:
 
-1. the heading index — every line beginning with `## ` or `### ` — for the completeness check;
+1. the heading index — every line that opens with two or three `#` characters and a space — for the completeness check;
 2. the terminal `Status:` line — the last line of the file;
 3. the sections this table names for the message, each read by its heading range.
 
