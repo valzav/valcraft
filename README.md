@@ -167,6 +167,7 @@ The CLI has no `plugin install` verb. After the marketplace is visible, install 
 Claude Code — third-party marketplaces do not auto-update; every push is a new version:
 
 ```bash
+# Claude
 claude plugin marketplace update valcraft
 claude plugin update valcraft@valcraft
 ```
@@ -174,16 +175,22 @@ claude plugin update valcraft@valcraft
 Codex — refresh the marketplace snapshot and re-add, then start a new session:
 
 ```bash
+# Codex
 codex plugin marketplace upgrade valcraft
 codex plugin add valcraft@valcraft
 ```
 
 OpenCode — nothing to run: the source is re-read at startup, and a skill whose `version` in `index.json` changed is re-downloaded (raw GitHub caches for a few minutes).
 
-Cursor — re-index the team marketplace, then install the plugin again from the Plugins UI:
+Cursor — inspect the configured marketplaces, remove and re-add Valcraft, then install or update the plugin from the user-scoped Plugins UI:
 
 ```bash
-agent plugin marketplace update valcraft
+# Cursor
+agent plugin marketplace list --format json
+agent plugin marketplace remove valcraft
+agent plugin marketplace add https://github.com/valzav/valcraft
+agent
+# Then: /plugins → valcraft → Install/Update (user scope)
 ```
 
 A marketplace install is a cached copy. It does not read later checkout edits.
