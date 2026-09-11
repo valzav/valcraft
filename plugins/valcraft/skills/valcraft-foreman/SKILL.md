@@ -27,7 +27,7 @@ Load these contracts before dispatch:
 
 Load [`references/review-round.md`](references/review-round.md) only after material findings. Confirm `.valcraft/foreman/` is ignored by the `/.valcraft/*` rule. Resume a verified active checkpoint automatically. Without one, apply `loop.md`'s takeover bootstrap before creating a run directory from [`templates/run-dir.md`](templates/run-dir.md).
 
-After compaction, resume, takeover, or another context reset, repeat configuration resolution and reload the governing contracts before the next dispatch. Reload `review-round.md` when a material-finding round is active. A summary carries state pointers, never configuration or contract authority.
+After compaction, resume, takeover, or another context reset, repeat configuration resolution, reload the governing contracts, and read the latest checkpoint rather than the whole log before the next dispatch. Reload `review-round.md` when a material-finding round is active. A summary carries state pointers, never configuration or contract authority.
 
 `new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft-spec`; create no Foreman run.
 
@@ -35,7 +35,7 @@ After compaction, resume, takeover, or another context reset, repeat configurati
 
 - Start every dispatch with a fresh worker. Preserve its logical identity across recovery, but give every dispatch a new physical identity.
 - Keep only coordination state: active named state, exact artifact pointers, logical and physical worker identities, report paths, backend returns, gate decisions, and recovery observations.
-- Record a backend return before inspecting an active assignment's report. Open it only for `report_available`. The only exception is an exact standalone report the operator attributes during takeover; validate and record it as pre-run evidence under `contracts.md`.
+- Record a backend return before inspecting an active assignment's report. For `report_available`, read only the parts `contracts.md` names under Coordinator reads. The only exception is an exact standalone report the operator attributes during takeover; validate and record it as pre-run evidence under `contracts.md`.
 - Accept only the active assignment's attributed report path and logical and physical worker identity, or validated pre-run evidence during takeover. Reject stale, late, missing, or unattributed reports.
 - Validate the producer-owned report contract mechanically. Route declared codes with the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.

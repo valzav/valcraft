@@ -744,6 +744,33 @@ def check_target_kind_routing(
             )
 
 
+def check_coordinator_reads(text: str, errors: list[str]) -> None:
+    """Every coordinator-read row names a loop message and only that report's headings."""
+    rows = table_rows(section(text, "Coordinator reads"))
+    expected = set(MESSAGE_REGISTRY) - {"Project frame"}
+    observed: set[str] = set()
+    for row in rows[1:]:
+        if len(row) != 2:
+            errors.append(f"coordinator reads row has {len(row)} columns: {' | '.join(row)}")
+            continue
+        message, sections = row
+        if message not in expected:
+            errors.append(f"coordinator reads names an unregistered message: {message}")
+            continue
+        if message in observed:
+            errors.append(f"duplicate coordinator reads row: {message}")
+        observed.add(message)
+        headings = REPORT_HEADINGS[MESSAGE_REGISTRY[message][1]]
+        for heading in re.findall(r"`(#{2,3} [^`]+)`", sections):
+            if heading not in headings:
+                errors.append(
+                    f"coordinator reads names a heading outside {message}'s report: {heading}"
+                )
+    missing = sorted(expected - observed)
+    if missing:
+        errors.append(f"coordinator reads rows missing for: {missing}")
+
+
 def check(root: Path) -> list[str]:
     errors: list[str] = []
     contracts_text = (root / CONTRACTS).read_text()
@@ -756,6 +783,7 @@ def check(root: Path) -> list[str]:
     check_prior_state_presentation(root, errors)
     check_herdr_worker_configuration(root, errors)
     check_target_kind_routing(root, contracts_text, routing, errors)
+    check_coordinator_reads(contracts_text, errors)
     return errors
 
 

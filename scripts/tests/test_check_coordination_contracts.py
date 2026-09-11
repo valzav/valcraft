@@ -445,6 +445,35 @@ class CoordinationContractCheckTests(unittest.TestCase):
         )
         self.assert_check_fails("coverage has no active deviation")
 
+    def test_coordinator_reads_unknown_heading_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "| Task implementation and PR | `### Workspace`,",
+            "| Task implementation and PR | `### Verification log`, `### Workspace`,",
+        )
+        self.assert_check_fails(
+            "coordinator reads names a heading outside Task implementation and PR's report: "
+            "### Verification log"
+        )
+
+    def test_coordinator_reads_missing_message_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "| Evidence-sufficiency verdict | `### Overall verdict` |\n",
+            "",
+        )
+        self.assert_check_fails(
+            "coordinator reads rows missing for: ['Evidence-sufficiency verdict']"
+        )
+
+    def test_coordinator_reads_unregistered_message_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "| Evidence-sufficiency verdict | `### Overall verdict` |",
+            "| Evidence-sufficiency verdict | `### Overall verdict` |\n| Project frame | `### Tracker` |",
+        )
+        self.assert_check_fails("coordinator reads names an unregistered message: Project frame")
+
     def test_transport_deviation_cursor_row_requires_eval(self) -> None:
         self.replace(
             BACKENDS,

@@ -22,7 +22,7 @@ Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraf
 
 ## Rebuild before transition
 
-Read `state.md`, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
+Read the latest `state.md` checkpoint, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
 
 On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation. Record and preserve it. The only task-start exception is takeover-confirmed paths owned by the next producer on the already-correct branch and head; dispatch that producer in place without a fetch, switch, synchronization, or branch creation. Dead-worker recovery is the separate existing-task path in the backend contract.
 

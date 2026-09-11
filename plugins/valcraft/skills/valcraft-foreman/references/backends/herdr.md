@@ -10,7 +10,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 
 | Flag | Value |
 | --- | --- |
-| `wake` | `foreground` — `agent prompt --wait` blocks for the worker's turn; a lost handle re-arms with standalone `agent wait` |
+| `wake` | `event` on a Claude Code controller — a persistent background `agent wait` wakes the controller when the worker settles, see [Await on a Claude Code controller](#await-on-a-claude-code-controller); `foreground` on a Codex or Cursor controller — `agent prompt --wait` blocks for the worker's turn and a lost handle re-arms with standalone `agent wait` |
 | `answer` | `interactive` through `agent send-keys` |
 | `harnesses` | Claude, Codex, and Cursor as configured per role; a missing configured harness fails readiness |
 | `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
@@ -127,6 +127,24 @@ Delivery is confirmed by an observed `working` state for the exact occupant, or 
 
 A submission to an already-blocked agent is rejected with `agent_blocked` before any input is sent. That is not a delivery failure and consumes no attempt: the occupant holds a host prompt, so record `permission_blocked`, answer or escalate under [Permission prompts](#permission-prompts), then submit.
 
+### Await on a Claude Code controller
+
+Claude Code offers a persistent background monitor that runs one command across turns and wakes the controller when the command exits. Use it for every await after delivery is confirmed, so the controller spends no turn re-arming.
+
+1. Submit with `agent prompt --wait --timeout <ms>` as above. The bounded foreground call still owns delivery confirmation.
+2. When that call returns `wait_timeout` and delivery is confirmed by an observed `working` state, arm the standalone wait under the harness's persistent background monitor with no `--timeout`, naming the settled states and `unknown` explicitly:
+
+```sh
+herdr agent wait <agent-name> --until idle --until done --until blocked --until unknown
+```
+
+3. Record the monitor's harness task id against the assignment in `state.md`, then end the turn. While the monitor is armed, do not poll the report file, `agent get`, or the pane.
+4. The command's exit wakes the controller. Resolve [Return precedence](#return-precedence) on that wake exactly as for a foreground return; `wait_timeout` does not occur on this path. A wake on `unknown` is not a return by itself: `herdr pane get <pane-id>` decides. The recorded occupant with its `agent_session` still present is an observation, and the wait is re-armed; a missing occupant is `dead`. `agent_not_found` exits the wait immediately and is `dead`.
+5. An escalated permission gate arms the same way with `--until idle --until done --until unknown`, so the operator's answer in the worker's pane wakes the controller through the worker's terminal state.
+6. Stop the monitor with the harness's task-stop primitive when its worker is released or replaced before the wait exits. A later wake from a stopped or superseded monitor falls under precedence rule 1.
+
+A Codex or Cursor controller has no such primitive and keeps the bounded foreground await with re-arms.
+
 ### Return precedence
 
 On every wake, resolve in this order and record exactly one return:
@@ -170,11 +188,11 @@ Read the blocked prompt with `herdr agent read <agent-name> --source recent-unwr
 
 ### An escalated gate stays under observation
 
-Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own pane, and the worker then finishes with no message to the controller — in the second tetris drill a Forge worker completed twenty-five minutes before the operator told the controller so. After escalating, keep awaiting the same physical worker with `herdr agent wait <agent-name> --until idle --until done --timeout <ms>`, bounded as above and re-armed in the same parent turn. The explicit states are required. Without `--until`, Herdr 0.8.2 matches `idle`, `done`, or `blocked`, so a bare wait on an already-blocked worker returns immediately and re-arming it in the same parent turn spins instead of waiting for the operator. A terminal return that arrives while the gate is open resolves it: record the gate as answered in the pane, with the observed state change and the attributed report, and continue under return precedence. A gate still standing when the bounded await returns `wait_timeout` stays at the gate; re-arm and keep waiting for the operator. A different prompt raised after the operator answers matches neither requested state, so the bounded timeout surfaces it: on that wake, return precedence records `permission_blocked` for the new gate. A worker that left `blocked` without a report is `idle_without_report`, not a resolved gate.
+Escalation names the gate; it does not end the await. The operator can answer the prompt in the worker's own pane, and the worker then finishes with no message to the controller — in the second tetris drill a Forge worker completed twenty-five minutes before the operator told the controller so. After escalating, keep awaiting the same physical worker with `herdr agent wait <agent-name> --until idle --until done --timeout <ms>`, bounded as above and re-armed in the same parent turn; a Claude Code controller arms the unbounded form under its background monitor instead, per [Await on a Claude Code controller](#await-on-a-claude-code-controller). The explicit states are required. Without `--until`, Herdr 0.8.2 matches `idle`, `done`, or `blocked`, so a bare wait on an already-blocked worker returns immediately and re-arming it in the same parent turn spins instead of waiting for the operator. A terminal return that arrives while the gate is open resolves it: record the gate as answered in the pane, with the observed state change and the attributed report, and continue under return precedence. A gate still standing when the bounded await returns `wait_timeout` stays at the gate; re-arm and keep waiting for the operator. A different prompt raised after the operator answers matches neither requested state, so the bounded timeout surfaces it: on that wake, return precedence records `permission_blocked` for the new gate. A worker that left `blocked` without a report is `idle_without_report`, not a resolved gate.
 
 ## Release and recovery
 
-Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. The shared checkout and canonical branch are the durable record. A worker's reported pane title needs no cleanup because it dies with the pane. The orchestrator's own title outlives the run: clear it at run end with `herdr pane report-metadata <pane-id> --source valcraft-foreman --clear-title`, which is honored only from this source.
+Release runs `herdr pane close <pane-id>` for the accepted worker's own recorded pane and touches no Git state. Stop the worker's background await first when one is still armed. The shared checkout and canonical branch are the durable record. A worker's reported pane title needs no cleanup because it dies with the pane. The orchestrator's own title outlives the run: clear it at run end with `herdr pane report-metadata <pane-id> --source valcraft-foreman --clear-title`, which is honored only from this source.
 
 A dead or replaced worker leaves its commits, dirt, and partial report in place for the replacement to inventory; the next task start is gated on a clean checkout. Follow [`README.md`](README.md#dead-worker-recovery) for the inventory.
 

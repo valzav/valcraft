@@ -4,7 +4,8 @@
 
 - Hold only the active named state, exact target pointers, logical and physical worker identities, assigned report paths, backend returns, gate decisions, and recovery observations.
 - Rebuild other facts from git, tracker state, producer reports, and the run directory.
-- Read an active producer report only after `report_available`. During takeover, read only an exact operator-attributed standalone path under `contracts.md`'s pre-run evidence rule. Pass report paths to workers; never paste report, tracker, plan, diff, or fetched content into an assignment.
+- Read an active producer report only after `report_available`, and read only the parts [`contracts.md`](contracts.md#coordinator-reads) names: the heading index, the terminal status line, and the listed sections. Never load a report body. During takeover, read only an exact operator-attributed standalone path under `contracts.md`'s pre-run evidence rule. Pass report paths to workers; never paste report, tracker, plan, diff, or fetched content into an assignment.
+- On resume or after a context reset, read the latest `state.md` checkpoint and the active assignment's `workers.md` rows. Read an earlier checkpoint only to explain one recorded decision, never the whole log.
 - Use explicit fields for hosted-tracker reads and the smallest backend status window.
 
 ## Naming

@@ -83,6 +83,8 @@ Foreman reloads configuration and contracts after context reset and records effe
 
 Draft names effective verification prerequisites; Forge proves the applicable environment and intended candidate before accepting browser results. Test these decisions with consumer-neutral scenarios. Keep actual environment values and setup recipes in the consumer repository.
 
+Foreman reads a producer report by its heading index, terminal status line, and the sections [Coordinator reads](../plugins/valcraft/skills/valcraft-foreman/references/contracts.md#coordinator-reads) names; the body stays on disk for the next worker. On resume it reads the latest checkpoint, not the log. Under a Claude Code controller the Herdr backend awaits through the harness's persistent background monitor and wakes on `agent wait` exit instead of re-arming a bounded foreground wait; the static check requires every coordinator-read row to name a registered message and only headings from that report's fingerprint.
+
 ## Coordination-contract drift
 
 Each report-producing skill owns its headings, terminal status grammar, and routing codes. Foreman's registry links to those contracts and owns only consumers, routes, backend returns, and named-state transitions.
