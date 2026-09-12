@@ -192,6 +192,7 @@ A marketplace install is a cached copy. It does not read later checkout edits.
 
 - [docs/development.md](docs/development.md) — live editing, repository layout, packaging, evals.
 - [docs/glossary.md](docs/glossary.md) — the terms the skills share.
+- [docs/migration.md](docs/migration.md) — what each release changes for a repository that already uses Valcraft.
 
 ## Contributing
 

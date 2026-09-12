@@ -66,6 +66,7 @@ There is no application build or dependency install. The shipped plugin is Markd
 - Keep tracked Valcraft content consumer-neutral. Do not name consumer projects, products, organizations, or brands. Keep consumer-specific evidence in the consumer repository or under gitignored `.local/`. Use a generic role, a neutral fictional identity, or an incident label instead. Valcraft and required third-party technology or platform names are exempt.
 - Apply the MSW deletion test to commit messages and PR bodies: state only what the change does and why it matters, then delete every sentence whose removal loses none of that. No process narration, no restated diff, no filler.
 - Update affected docs in the same change as the skill edit.
+- A change that alters what an existing consumer repository must contain — configuration keys, artifact sections, branch or ref conventions, tracker markers — gets an entry under the next release heading in `docs/migration.md` in the same change, with the operator action.
 - Renaming a skill directory changes its invocation string. Update the skill's `name:` field, every self-reference in its description and body, and the README table together.
 
 ## Completion criteria
