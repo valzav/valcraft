@@ -193,6 +193,7 @@ A marketplace install is a cached copy. It does not read later checkout edits.
 - [docs/development.md](docs/development.md) — live editing, repository layout, packaging, evals.
 - [docs/glossary.md](docs/glossary.md) — the terms the skills share.
 - [migrations.md](plugins/valcraft/skills/valcraft-tune/references/migrations.md) — what each release changes for a repository that already uses Valcraft, and how bare `tune` applies it.
+- [models.md](plugins/valcraft/skills/valcraft-tune/references/models.md) — the model aliases, effort sets, and Herdr presets Tune offers; the only file to edit when a provider adds or retires a model.
 
 ## Contributing
 

@@ -694,7 +694,7 @@ def check_herdr_worker_configuration(root: Path, errors: list[str]) -> None:
             f"expected={HERDR_REVIEW_PAIRS}, observed={observed_pairs}"
         )
 
-    preset = tune_text.split("All three presets use this harness split:", 1)
+    preset = tune_text.split("Every preset uses this harness split:", 1)
     preset_text = preset[1].split("For Custom", 1)[0] if len(preset) == 2 else ""
     preset_rows = table_rows(preset_text)
     observed_preset = []

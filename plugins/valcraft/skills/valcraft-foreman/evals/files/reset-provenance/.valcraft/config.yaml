@@ -1,4 +1,4 @@
-valcraft_version: "0.8.1"
+valcraft_version: "0.8.2"
 
 tracker:
   mode: local
@@ -12,43 +12,43 @@ foreman:
     workers:
       spec:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       spec_review:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       draft:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       plan_review:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       forge:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       code_review:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       land:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       temper:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       retro_review:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       evidence_review:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
 pull_requests:
   merge_strategy: squash

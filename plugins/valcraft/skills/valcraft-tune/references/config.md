@@ -75,10 +75,9 @@ When the resolved `foreman.backend` is `ao`, the resolved configuration also req
 
 Each worker requires exactly `harness`, `model`, and `effort`.
 
-- Claude workers use `harness: claude`; known model aliases are `sonnet`, `fable`, and `opus`; allowed effort is `low`, `medium`, `high`, `xhigh`, or `max`.
-- Codex workers use `harness: codex`; known model aliases are `gpt-5.6-terra`, `gpt-5.6-sol`, and `gpt-5.6-luna`. Terra and Sol allow `low`, `medium`, `high`, `xhigh`, `max`, or `ultra`. Luna allows `low`, `medium`, `high`, `xhigh`, or `max`.
-- Cursor workers use `harness: cursor`; the known model alias is `cursor-grok-4.6`; its allowed effort is `low`, `medium`, `high`, or `xhigh`. The Herdr backend passes `--model <model>-<effort>`, or `--model <model>` alone for effort `none`, so the Cursor CLI receives a catalog slug such as `cursor-grok-4.6-high`. A free-form Cursor value names a base model alias, not a complete catalog slug: reject bracket syntax and a value that already carries an effort or `fast` suffix because the backend owns those suffixes. A free-form Cursor model allows `none`, `low`, `medium`, `high`, `xhigh`, or `max`; runtime readiness verifies the constructed catalog slug.
-- A nonempty, single-line model alias without control characters and whose first character is not `-` is valid as a free-form model value. Keep it as data and do not infer its provider or availability. For a free-form Codex model, allow `low`, `medium`, `high`, `xhigh`, `max`, or `ultra`; runtime readiness still verifies model availability. A free-form Claude model uses the Claude effort set. A free-form Cursor model uses the Cursor effort set and base-alias restriction above; runtime readiness verifies that the constructed catalog slug is available.
+- `harness` is `claude`, `codex`, or `cursor`.
+- `model` is a known alias for that harness in [`models.md`](models.md), or a free-form alias. A free-form alias is a nonempty, single-line value without control characters whose first character is not `-`. Keep it as data and do not infer its provider or availability; runtime readiness verifies it. `models.md` may add harness-specific restrictions on free-form aliases.
+- `effort` is in the set `models.md` gives for the model: the known alias's set, or the harness's free-form set.
 
 Reviewer independence is structural. On the resolved configuration, require different harnesses for each pair: `spec_review` and `spec`, `plan_review` and `draft`, `code_review` and `forge`, `retro_review` and `temper`, and `evidence_review` and `land`. Reject the complete candidate if any pair uses the same harness.
 
@@ -119,14 +118,9 @@ Walk this order. Every quoted choice is a list item with its explanation, not an
 
 Ask for session binding first: `Use the active session (Recommended)` — store YAML `null`; `Pin a session` — ask for the session identifier.
 
-Then show this preset list:
+Then show the presets from [`models.md`](models.md) as a list, `Balanced (Recommended)` first, each with its operator summary, followed by `Custom` — choose harness, model, and effort for every role; invalid reviewer pairings are rejected.
 
-1. `Balanced (Recommended)` — use Claude Sonnet and Codex Terra at medium effort with independent reviewers.
-2. `Quality` — use Claude Opus and Codex Sol at high effort with the same independent role split.
-3. `Economy` — use Claude Sonnet and Codex Luna at low effort with the same independent role split.
-4. `Custom` — choose harness, model, and effort for every role; invalid reviewer pairings are rejected.
-
-All three presets use this harness split:
+Every preset uses this harness split:
 
 | Role              | Harness |
 | ----------------- | ------- |
@@ -141,7 +135,7 @@ All three presets use this harness split:
 | `retro_review`    | Codex   |
 | `evidence_review` | Codex   |
 
-For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models with the balanced alias first and marked recommended, followed by the other known aliases and `Enter another model alias`. For Cursor, offer `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort supported by the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all five independence pairs after the last role; do not silently change a conflicting answer.
+For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models from `models.md` with its recommended model first and marked recommended, followed by the other known aliases and `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort `models.md` allows for the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all five independence pairs after the last role; do not silently change a conflicting answer.
 
 ## Reconfiguration
 

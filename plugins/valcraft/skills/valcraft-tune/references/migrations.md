@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.2
+
+### Model catalog drops Luna and the xhigh and max efforts
+
+Model aliases, effort sets, and Herdr presets moved to Tune's `references/models.md`. Codex gains `gpt-6-astra` as its most capable alias and drops `gpt-5.6-luna` as a known alias. No model accepts `xhigh` or `max` any longer. The presets changed: `Balanced` pairs Claude Opus at medium with Codex Sol at high, `Quality` pairs Claude Fable with Codex Astra at high, and `Economy` pairs Claude Sonnet at high with Codex Sol at medium.
+
+- Applies when: the resolved `foreman.herdr.workers` map has a worker whose `effort` is `xhigh` or `max`, or whose `model` is `gpt-5.6-luna`.
+- Tune performs: the Herdr worker questions from `config.md` for each affected role, harness kept, in the file that carries that worker entry; nothing else.
+- Operator: none.
+
 ## v0.8.1
 
 ### Configuration records the migrated plugin version

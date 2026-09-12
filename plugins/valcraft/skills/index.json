@@ -137,11 +137,12 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "f15e91e47cd68608",
+      "version": "964af0025070577c",
       "files": [
         "SKILL.md",
         "references/config.md",
-        "references/migrations.md"
+        "references/migrations.md",
+        "references/models.md"
       ]
     }
   ]

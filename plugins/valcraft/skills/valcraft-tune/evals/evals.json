@@ -43,7 +43,7 @@
       "id": 3,
       "name": "herdr-balanced-overlay-layer-choice",
       "prompt": "$valcraft:valcraft-tune — change Foreman from subagents to Herdr. When Tune asks where the change applies, answer Just for you: my collaborators keep their settings. Choose the active session and the Balanced preset. Then describe a later personal reconfiguration back to subagents.",
-      "expected_output": "Because backend and Herdr workers are user-scoped, Tune asks the layer question — `For everyone (Recommended)` writing the committed base, `Just for you` writing the gitignored overlay — and the operator selects Just for you. It writes `foreman.backend: herdr` and the complete eight-worker `foreman.herdr` mapping into `.valcraft/config.local.yaml` as one unit, leaves the committed base byte-for-byte unchanged, creates no commit, and reports both the overlay YAML and the resolved configuration. Balanced maps Draft to Codex Terra medium, Plan Review to Claude Sonnet medium, Forge to Claude Sonnet medium, Code Review to Codex Terra medium, Land and Temper to Claude Sonnet medium, and Retro Review and Evidence Review to Codex Terra medium; every reviewer harness differs from its producer in the resolved configuration. A later personal change back to subagents removes the overlay's entire `foreman.herdr` mapping rather than retaining dormant values.",
+      "expected_output": "Because backend and Herdr workers are user-scoped, Tune asks the layer question — `For everyone (Recommended)` writing the committed base, `Just for you` writing the gitignored overlay — and the operator selects Just for you. It writes `foreman.backend: herdr` and the complete ten-worker `foreman.herdr` mapping into `.valcraft/config.local.yaml` as one unit, leaves the committed base byte-for-byte unchanged, creates no commit, and reports both the overlay YAML and the resolved configuration. Balanced maps Draft to Codex Sol medium, Plan Review to Claude Opus medium, Forge to Claude Opus medium, Code Review to Codex Sol medium, Land and Temper to Claude Opus medium, and Retro Review and Evidence Review to Codex Sol medium; every reviewer harness differs from its producer in the resolved configuration. A later personal change back to subagents removes the overlay's entire `foreman.herdr` mapping rather than retaining dormant values.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -54,7 +54,7 @@
         "A user-scoped-only change asks the layer question with For everyone recommended first",
         "Choosing Just for you writes backend and the complete Herdr mapping into config.local.yaml as a unit and leaves the base byte-for-byte unchanged",
         "An overlay write creates no commit",
-        "Balanced serializes the exact eight-role Claude Sonnet and Codex Terra medium mapping and every reviewer differs from its producer in the resolved configuration",
+        "Balanced serializes the exact ten-role mapping from models.md, Claude Opus medium and Codex Sol high, and every reviewer differs from its producer in the resolved configuration",
         "The report shows the overlay YAML and the resolved configuration",
         "Changing the personal backend away from Herdr removes the overlay's full Herdr mapping"
       ]
@@ -62,8 +62,8 @@
     {
       "id": 4,
       "name": "custom-herdr-validation-and-free-form-model",
-      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. First choose Claude for both Forge and Code Review. After validation rejects that pairing, change Code Review to Codex with free-form model alias `codex-lab-preview` and effort xhigh. Keep every other producer/reviewer pair independent.",
-      "expected_output": "Tune asks harness, model, and effort for every worker through explained lists, using free-form input only for the model alias. It rejects the first complete candidate because Code Review uses Forge's harness and does not silently repair or save it. It accepts the safe single-line model alias as data after Code Review changes to Codex, validates xhigh for Codex and all independence pairs on the resolved configuration, then writes the valid candidate immediately and shows its exact YAML in the report.",
+      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. First choose Claude for both Forge and Code Review. After validation rejects that pairing, change Code Review to Codex with free-form model alias `codex-lab-preview` and effort ultra. Keep every other producer/reviewer pair independent.",
+      "expected_output": "Tune asks harness, model, and effort for every worker through explained lists, using free-form input only for the model alias. It rejects the first complete candidate because Code Review uses Forge's harness and does not silently repair or save it. It accepts the safe single-line model alias as data after Code Review changes to Codex, validates ultra for Codex and all independence pairs on the resolved configuration, then writes the valid candidate immediately and shows its exact YAML in the report.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -75,7 +75,7 @@
         "A same-harness producer and reviewer pair is rejected before writing",
         "Tune does not silently switch a harness or model to repair independence",
         "The safe free-form model alias is preserved as data and never interpolated into shell text",
-        "Codex xhigh is accepted and the complete repaired candidate is validated before the immediate write"
+        "Codex ultra is accepted and the complete repaired candidate is validated before the immediate write"
       ]
     },
     {
@@ -142,8 +142,8 @@
     {
       "id": 8,
       "name": "codex-known-model-effort-matrix",
-      "prompt": "$valcraft:valcraft-tune — in Custom Herdr configuration compare these Codex worker choices: Terra with none, Terra with ultra, Sol with ultra, Luna with ultra, and Luna with max. Then try free-form model aliases `-unsafe` and `codex-preview` with xhigh. Do not save until the candidate validates.",
-      "expected_output": "Tune rejects Terra with none, Luna with ultra, and the leading-hyphen model alias. It accepts Terra and Sol with ultra, Luna with max, and the safe free-form alias with xhigh. Each model and effort is selected from an explained list where applicable, every value remains a distinct argument value, and no invalid candidate is saved.",
+      "prompt": "$valcraft:valcraft-tune — in Custom Herdr configuration compare these Codex worker choices: Terra with none, Terra with ultra, Sol with ultra, Astra with ultra, and Astra with xhigh. Then try free-form model aliases `-unsafe` and `codex-preview` with high, and `codex-preview` with max. Do not save until the candidate validates.",
+      "expected_output": "Tune rejects Terra with none, Astra with xhigh, the leading-hyphen model alias, and the free-form alias with max. It accepts Terra, Sol, and Astra with ultra and the safe free-form alias with high. Each model and effort is selected from an explained list where applicable, every value remains a distinct argument value, and no invalid candidate is saved.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -151,10 +151,10 @@
         "evals/files/valid-config/.valcraft/config.yaml"
       ],
       "assertions": [
-        "Terra and Sol accept low through ultra except none",
-        "Luna accepts low through max but rejects none and ultra",
+        "Terra, Sol, and Astra accept low, medium, high, and ultra but reject none",
+        "xhigh and max are rejected for every Codex model, known or free-form",
         "A free-form model alias cannot begin with a hyphen or contain a line break or control character",
-        "A safe free-form Codex model can use xhigh",
+        "A safe free-form Codex model can use high",
         "Invalid model-effort pairs never reach the saved candidate"
       ]
     },
@@ -217,8 +217,8 @@
     {
       "id": 12,
       "name": "custom-herdr-cursor-worker",
-      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. Assign Forge to Cursor with the recommended model `cursor-grok-4.6` and high effort, and keep Code Review on Codex. Then compare free-form Cursor base alias `claude-sonnet-5-thinking` with xhigh effort against values `cursor-grok-4.6-high` and `unsafe[effort=max]`. Do not save until the candidate validates.",
-      "expected_output": "Tune offers Cursor alongside Claude and Codex for every Custom role. It offers `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. It accepts the safe free-form base alias `claude-sonnet-5-thinking` with xhigh effort, but rejects the complete catalog slug `cursor-grok-4.6-high` and bracketed value `unsafe[effort=max]` because the Herdr backend owns the effort suffix. The known `cursor-grok-4.6` model permits low, medium, high, and xhigh; a free-form Cursor model permits none through max, with runtime readiness verifying whether the constructed catalog slug exists. Tune validates that Forge and Code Review use different harnesses, preserves the Cursor model and effort as separate configuration values, then writes the valid candidate immediately and shows its exact YAML in the report.",
+      "prompt": "$valcraft:valcraft-tune — configure Custom Herdr workers for everyone. Assign Forge to Cursor with the recommended model `cursor-grok-4.6` and high effort, and keep Code Review on Codex. Then compare free-form Cursor base alias `claude-sonnet-5-thinking` with high effort against values `cursor-grok-4.6-high` and `unsafe[effort=max]`. Do not save until the candidate validates.",
+      "expected_output": "Tune offers Cursor alongside Claude and Codex for every Custom role. It offers `cursor-grok-4.6 (Recommended)` followed by `Enter another model alias`. It accepts the safe free-form base alias `claude-sonnet-5-thinking` with high effort, but rejects the complete catalog slug `cursor-grok-4.6-high` and bracketed value `unsafe[effort=max]` because the Herdr backend owns the effort suffix. The known `cursor-grok-4.6` model permits low, medium, and high; a free-form Cursor model permits none, low, medium, and high, with runtime readiness verifying whether the constructed catalog slug exists. Tune validates that Forge and Code Review use different harnesses, preserves the Cursor model and effort as separate configuration values, then writes the valid candidate immediately and shows its exact YAML in the report.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -230,7 +230,7 @@
         "Cursor offers cursor-grok-4.6 as the recommended model followed by free-form model input",
         "A safe free-form Cursor base model alias is accepted and preserved as data",
         "A complete catalog slug or bracketed Cursor model value is rejected before writing",
-        "The known Cursor model accepts low through xhigh, while a free-form Cursor model accepts none through max",
+        "The known Cursor model accepts low, medium, and high, while a free-form Cursor model accepts none, low, medium, and high",
         "The complete candidate preserves reviewer-producer harness independence before the immediate write"
       ]
     },
@@ -238,7 +238,7 @@
       "id": 13,
       "name": "absent-version-migrates-and-records-current",
       "prompt": "/valcraft:valcraft-tune — in evals/files/unversioned/, the committed base is complete and valid in every other respect but has no `valcraft_version` key. The operator invoked Tune with no arguments. Describe what Tune does, every file it writes, the exact YAML added, whether it commits, and which questions it asks. Do not mutate anything.",
-      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.1\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
+      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.2 entry is skipped because there are no Herdr workers; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.2\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -248,9 +248,9 @@
       ],
       "assertions": [
         "An absent `valcraft_version` is invalid with reason outdated, and the migration flow takes precedence over the first-run flow",
-        "The v0.8.1 entry applies and the subagents backend skips the Herdr entry",
+        "The v0.8.1 entry applies and the subagents backend skips both Herdr entries, v0.7.7 and v0.8.2",
         "Operator items from the v0.8.0 entries appear in the report verbatim",
-        "`valcraft_version: \"0.8.1\"` is written to the base and only that file is committed",
+        "`valcraft_version: \"0.8.2\"` is written to the base and only that file is committed",
         "No question is asked and the run ends `Status: done`"
       ]
     },
@@ -258,7 +258,7 @@
       "id": 14,
       "name": "herdr-eight-role-config-migrates-through-role-questions",
       "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.7.6\"`, backend `herdr`, and a `workers` mapping with the eight pre-0.7.7 roles on the Balanced preset. State which ledger entries run, what Tune asks, what it rejects, what it writes, and the final status. Do not mutate anything.",
-      "expected_output": "Tune walks v0.7.7, v0.8.0, and v0.8.1. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. It writes the two roles and `valcraft_version: \"0.8.1\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
+      "expected_output": "Tune walks v0.7.7, v0.8.0, v0.8.1, and v0.8.2. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. The v0.8.2 entry is skipped because every Balanced worker uses a known alias at an effort the catalog still allows. It writes the two roles and `valcraft_version: \"0.8.2\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -269,22 +269,23 @@
         "An eight-role Herdr mapping with an older version is classified as outdated, not as a shape failure needing the first-run flow",
         "The two missing Herdr roles are asked through the Custom role questions with the preset harness recommended",
         "A candidate where `spec` and `spec_review` share a harness is rejected",
-        "The roles and `valcraft_version: \"0.8.1\"` are written and committed together",
+        "The v0.8.2 entry is skipped because no Balanced worker uses xhigh, max, or Luna",
+        "The roles and `valcraft_version: \"0.8.2\"` are written and committed together",
         "A noninteractive run ends `configuration_required` and writes nothing"
       ]
     },
     {
       "id": 15,
       "name": "newer-recorded-version-stops-with-plugin-outdated",
-      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.12.0\"` while this plugin's ledger tops out at v0.8.1; the base is otherwise valid. Separately, a base recording exactly `\"0.8.1\"`. State what Tune does in each case. Do not mutate anything.",
-      "expected_output": "For 0.12.0, Tune compares component by component, finds the repository newer than the plugin, writes nothing, asks nothing, and ends `Status: blocked: plugin_outdated` naming both versions. For 0.8.1, the configuration is current and Tune shows the ordinary section menu.",
+      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.12.0\"` while this plugin's ledger tops out at v0.8.2; the base is otherwise valid. Separately, a base recording exactly `\"0.8.2\"`. State what Tune does in each case. Do not mutate anything.",
+      "expected_output": "For 0.12.0, Tune compares component by component, finds the repository newer than the plugin, writes nothing, asks nothing, and ends `Status: blocked: plugin_outdated` naming both versions. For 0.8.2, the configuration is current and Tune shows the ordinary section menu.",
       "files": [
         "SKILL.md",
         "references/config.md",
         "references/migrations.md"
       ],
       "assertions": [
-        "Version comparison is numeric per component, so 0.12.0 is newer than 0.8.1",
+        "Version comparison is numeric per component, so 0.12.0 is newer than 0.8.2",
         "A newer recorded version ends `plugin_outdated` with nothing written and no question asked",
         "An equal version shows the section menu with no migration"
       ]

@@ -4,41 +4,41 @@ foreman:
     workers:
       spec:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       spec_review:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       draft:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       plan_review:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       forge:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       code_review:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
       land:
         harness: claude
-        model: sonnet
+        model: claude-model-a
         effort: medium
       temper:
         harness: codex
-        model: gpt-5.6-sol
+        model: codex-model-b
         effort: high
       retro_review:
         harness: claude
-        model: opus
-        effort: xhigh
+        model: claude-model-b
+        effort: high
       evidence_review:
         harness: codex
-        model: gpt-5.6-terra
+        model: codex-model-a
         effort: medium
