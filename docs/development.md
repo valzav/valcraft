@@ -87,6 +87,10 @@ Foreman reads a producer report by its heading index, terminal status line, and 
 
 Forge runs targeted suites while iterating and the full gate once per pushed head. Land classifies checks only from applicable sources matched to the exact head and never runs a gate itself. A live operator message may declare standing decisions that answer a named owner question, the round-cap escalation, or an explicit-operation row in advance; Foreman applies one only on an exact subject match and records each application. Under Herdr a producer whose accepted report is a prepared mutation continuation receives that continuation in its own pane; remediation always spawns fresh.
 
+## Migrations
+
+`.valcraft/config.yaml` records `valcraft_version`, the plugin version the repository was last migrated to. Tune's [`migrations.md`](../plugins/valcraft/skills/valcraft-tune/references/migrations.md) ships with the skill and holds one heading per release, newest first, so every harness, including OpenCode, sees the current version without a manifest. `config.md` classifies an absent or older value as `outdated` and a newer one as `plugin outdated`; both are invalid, so the producers' existing delegation to Tune upgrades a repository without a version check of their own. Bare Tune on an outdated base runs the ledger's procedure, writes the newest version, and commits. `scripts/check-migrations.py` keeps the newest heading equal to the three manifest versions and every entry in the runnable shape; the version bump therefore lands in the same change as the entry.
+
 ## Coordination-contract drift
 
 Each report-producing skill owns its headings, terminal status grammar, and routing codes. Foreman's registry links to those contracts and owns only consumers, routes, backend returns, and named-state transitions.

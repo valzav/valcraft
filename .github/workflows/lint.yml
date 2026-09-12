@@ -26,6 +26,9 @@ jobs:
       - name: Check skill sizes against the Codex ceiling
         run: python3 scripts/check-skill-sizes.py
 
+      - name: Check the migration ledger matches the manifests
+        run: python3 scripts/check-migrations.py
+
       - name: Check coordination contracts
         run: |
           python3 scripts/check-coordination-contracts.py

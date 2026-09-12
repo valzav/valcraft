@@ -475,6 +475,22 @@
         "A drifted executing grant returns authority_drift before any outward mutation",
         "No baseline merge, force-push, reset, or history rewrite is proposed"
       ]
+    },
+    {
+      "id": 24,
+      "name": "outdated-configuration-delegates-to-tune-first",
+      "prompt": "/valcraft:valcraft-spec — create the feature contract from a local requirements document in a repository whose committed `.valcraft/config.yaml` is valid except that it records `valcraft_version: \"0.8.0\"` while the installed plugin's ledger is at v0.9.0. This run is unattended. State what Spec does before any source or workspace work, and how it ends. Do not mutate anything.",
+      "expected_output": "Spec validates the resolved configuration against config.md, classifies it as outdated, and invokes valcraft-tune before reading the source or touching the workspace. The only newer entry, v0.9.0, needs no answer, so Tune writes `valcraft_version: \"0.9.0\"`, commits the base on the checked-out branch, and returns `Status: done`; Spec resumes from that HEAD. Spec never edits `valcraft_version` itself. Had Tune returned a non-done status, Spec would end with `configuration_required` or `configuration_unresolved` quoting Tune's terminal line and write no artifact.",
+      "files": [
+        "SKILL.md",
+        "../valcraft-tune/references/config.md"
+      ],
+      "assertions": [
+        "An older `valcraft_version` is treated as invalid configuration and delegated to Tune before any workspace work",
+        "Spec never edits `valcraft_version` or runs a migration itself",
+        "A migration that needs no answer completes under an unattended run and Spec resumes from the post-migration HEAD",
+        "A non-done Tune result ends Spec with the Tune-derived configuration code and no artifact write"
+      ]
     }
   ]
 }

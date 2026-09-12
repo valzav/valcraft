@@ -1,11 +1,9 @@
-valcraft_version: "0.9.0"
-
 tracker:
   mode: local
 foreman:
   backend: subagents
   approval_mode: unattended
-  default_branch: dev
-  release_branch: main
+  default_branch: main
+  release_branch: null
 pull_requests:
   merge_strategy: squash

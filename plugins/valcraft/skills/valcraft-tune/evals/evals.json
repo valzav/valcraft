@@ -233,6 +233,61 @@
         "The known Cursor model accepts low through xhigh, while a free-form Cursor model accepts none through max",
         "The complete candidate preserves reviewer-producer harness independence before the immediate write"
       ]
+    },
+    {
+      "id": 13,
+      "name": "absent-version-migrates-and-records-current",
+      "prompt": "/valcraft:valcraft-tune — in evals/files/unversioned/, the committed base is complete and valid in every other respect but has no `valcraft_version` key. The operator invoked Tune with no arguments. Describe what Tune does, every file it writes, the exact YAML added, whether it commits, and which questions it asks. Do not mutate anything.",
+      "expected_output": "Tune classifies the base as outdated, not as absent or invalid, so the first-run flow does not run and no existing value is re-asked. It runs the migration procedure: the v0.9.0 entry applies and needs no answer; the v0.8.0 entries have Tune performs none and their Operator items are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.9.0\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md",
+        "evals/files/unversioned/.gitignore",
+        "evals/files/unversioned/.valcraft/config.yaml"
+      ],
+      "assertions": [
+        "An absent `valcraft_version` is classified as outdated and does not trigger the first-run flow",
+        "The v0.9.0 entry applies and the subagents backend skips the Herdr entry",
+        "Operator items from the v0.8.0 entries appear in the report verbatim",
+        "`valcraft_version: \"0.9.0\"` is written to the base and only that file is committed",
+        "No question is asked and the run ends `Status: done`"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "herdr-eight-role-config-migrates-through-role-questions",
+      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.7.6\"`, backend `herdr`, and a `workers` mapping with the eight pre-0.7.7 roles on the Balanced preset. State which ledger entries run, what Tune asks, what it rejects, what it writes, and the final status. Do not mutate anything.",
+      "expected_output": "Tune walks v0.7.7, v0.8.0, and v0.9.0. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. It writes the two roles and `valcraft_version: \"0.9.0\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Entries newer than 0.7.6 run in order from oldest to newest",
+        "An eight-role Herdr mapping with an older version is classified as outdated, not as a shape failure needing the first-run flow",
+        "The two missing Herdr roles are asked through the Custom role questions with the preset harness recommended",
+        "A candidate where `spec` and `spec_review` share a harness is rejected",
+        "The roles and `valcraft_version: \"0.9.0\"` are written and committed together",
+        "A noninteractive run ends `configuration_required` and writes nothing"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "newer-recorded-version-stops-with-plugin-outdated",
+      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.12.0\"` while this plugin's ledger tops out at v0.9.0; the base is otherwise valid. Separately, a base recording exactly `\"0.9.0\"`. State what Tune does in each case. Do not mutate anything.",
+      "expected_output": "For 0.12.0, Tune compares component by component, finds the repository newer than the plugin, writes nothing, asks nothing, and ends `Status: blocked: plugin_outdated` naming both versions. For 0.9.0, the configuration is current and Tune shows the ordinary section menu.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Version comparison is numeric per component, so 0.12.0 is newer than 0.9.0",
+        "A newer recorded version ends `plugin_outdated` with nothing written and no question asked",
+        "An equal version shows the section menu with no migration"
+      ]
     }
   ]
 }
