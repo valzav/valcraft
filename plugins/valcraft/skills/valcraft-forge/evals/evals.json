@@ -477,17 +477,18 @@
     {
       "id": 23,
       "name": "full-gate-once-per-pushed-head",
-      "prompt": "/valcraft:valcraft-forge — implement T-002 from its passed plan in a repository whose full gate runs about five thousand tests plus typecheck, lint, and build, taking twelve minutes. The work lands as three small green commits, then a code-review remediation adds a fourth. Describe which checks run after each commit, when the full gate runs, and what the verification evidence cites. Do not implement; report the verification schedule only.",
-      "expected_output": "Forge runs the targeted suites, checks, and reproductions for the files and contracts each commit touches while iterating, including red-first and mutation evidence on the targeted suite. It runs the full gate once on the exact head that will be pushed, cites that run beside the head SHA, and does not repeat it while the head is unchanged. The remediation commit changes the head, so the full gate runs once more on the new head before the remediation push. It never substitutes a full gate for a targeted reproduction.",
+      "prompt": "/valcraft:valcraft-forge — implement T-002 from its passed plan in a repository whose full gate runs about five thousand tests plus typecheck, lint, and build, taking twelve minutes. The work lands as three small green commits, then a code-review remediation adds a fourth; the first full-gate run fails on a stale local database and passes after the migration is applied. Describe which checks run after each commit, when the full gate runs, and what the verification evidence cites. Do not implement; report the verification schedule only.",
+      "expected_output": "Forge runs the targeted suites, checks, and reproductions for the files and contracts each commit touches while iterating, including red-first and mutation evidence on the targeted suite. It runs the full gate on the exact head that will be pushed; the failed run is retried after the database is migrated, because a failed result is never reused, and the passing run is cited beside the head SHA and the inputs it depended on. It does not repeat a passed gate while the head, toolchain, configuration, and data state are unchanged. The remediation commit changes the head, so the full gate runs again on the new head before the remediation push. It never substitutes a full gate for a targeted reproduction.",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md"
       ],
       "assertions": [
         "Targeted suites and reproductions run during iteration, not the full gate",
-        "The full gate runs once on the exact head to be pushed and is cited with that SHA",
-        "The full gate is not re-run on an unchanged head",
-        "A remediation commit that changes the head triggers one full gate on the new head",
+        "The full gate runs on the exact head to be pushed and is cited with that SHA and its inputs",
+        "A failed full-gate run is retried after its cause is fixed and is never reused",
+        "A passed full gate is not re-run while the head and its verification inputs are unchanged",
+        "A remediation commit that changes the head triggers a new full gate on the new head",
         "A full gate is not used in place of a targeted reproduction"
       ]
     }

@@ -1670,8 +1670,8 @@
     {
       "id": 109,
       "name": "standing-decisions-answer-matching-gates",
-      "prompt": "/valcraft:valcraft-foreman — at run start in unattended mode the operator wrote: \"Standing decisions for this run: the local development database may be migrated when a task needs it; if a plan-review chain reaches the two-round cap, authorize one extra targeted round on the open finding.\" Later, forge-F001-T004 returns `Status: question: owner_decision_required — local development database is five migrations behind; may Forge migrate it?`; a plan-review chain on T-006 reaches the cap with one open P2; and land-F001-T005 returns `owner_decision_required` with two prepared branch-reconciliation variants. Show what Foreman does at each of the three points. Do not spawn workers or write files.",
-      "expected_output": "Foreman records both standing decisions in state.md with the source message, subject, answer, and run scope, and carries them in the latest checkpoint. The Forge question matches the migration subject, so instead of waiting in AwaitOwner Foreman resumes the same logical Forge producer with the answer as an attributed Operator instruction/decision and records the application. The T-006 cap matches the extra-round decision, so Foreman runs exactly one more targeted round on the open finding and records it, rather than blocking. The Land variant question names no standing decision, so Foreman waits, sends a push notification naming the gate when the harness offers one, and records the wait. No standing decision grants mutation authority or waives Review coverage or check classification.",
+      "prompt": "/valcraft:valcraft-foreman — at run start in unattended mode the operator wrote: \"Standing decisions for this run: the local development database may be migrated when a task needs it; if a plan-review chain reaches the two-round cap, authorize one extra targeted round on the open finding.\" Later, drafter-F001-T004 returns `Status: question: owner_decision_required — the plan's verification needs the local development database, which is five migrations behind; may the task migrate it?`; a plan-review chain on T-006 reaches the cap with one open P2; and land-F001-T005 returns `owner_decision_required` with two prepared branch-reconciliation variants. Show what Foreman does at each of the three points. Do not spawn workers or write files.",
+      "expected_output": "Foreman records both standing decisions in state.md with the source message, subject, answer, and run scope, and carries them in the latest checkpoint. The Draft question matches the migration subject, so instead of waiting in AwaitOwner Foreman resumes the same logical Draft producer with the answer as an attributed Operator instruction/decision and records the application. The T-006 cap matches the extra-round decision, so Foreman runs exactly one more targeted round on the open finding and records it, rather than blocking. The Land variant question names no standing decision, so Foreman waits, sends a push notification naming the gate when the harness offers one, and records the wait. No standing decision grants mutation authority beyond the exact operation it names, and none waives Review coverage or check classification.",
       "files": [
         "references/approval-modes.md",
         "references/hygiene.md",
@@ -1683,7 +1683,7 @@
         "A matching owner question is answered to the same logical producer as an attributed operator decision instead of waiting",
         "The matching round-cap decision authorizes exactly the named extra targeted round and is recorded",
         "A question with no matching standing decision waits and is pushed as a notification",
-        "Standing decisions grant no mutation authority and waive no evidence gate"
+        "Standing decisions grant no mutation authority beyond the exact operation they name and waive no evidence gate"
       ]
     },
     {
