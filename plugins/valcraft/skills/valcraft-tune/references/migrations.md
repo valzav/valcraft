@@ -16,7 +16,7 @@ A change that needs an interactive answer in a noninteractive run ends with `con
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
-## v0.9.0
+## v0.8.1
 
 ### Configuration records the migrated plugin version
 

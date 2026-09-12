@@ -29,7 +29,7 @@ Validate in three steps: the base standalone against the shape below; the overla
 The base takes this shape and the root requires exactly `valcraft_version`, `tracker`, `foreman`, and `pull_requests`:
 
 ```yaml
-valcraft_version: "0.9.0"
+valcraft_version: "0.8.1"
 
 tracker:
   mode: local
