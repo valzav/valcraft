@@ -238,7 +238,7 @@
       "id": 13,
       "name": "absent-version-migrates-and-records-current",
       "prompt": "/valcraft:valcraft-tune — in evals/files/unversioned/, the committed base is complete and valid in every other respect but has no `valcraft_version` key. The operator invoked Tune with no arguments. Describe what Tune does, every file it writes, the exact YAML added, whether it commits, and which questions it asks. Do not mutate anything.",
-      "expected_output": "Tune classifies the base as outdated, not as absent or invalid, so the first-run flow does not run and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.0 entries have Tune performs none and their Operator items are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.1\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
+      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.1\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -247,7 +247,7 @@
         "evals/files/unversioned/.valcraft/config.yaml"
       ],
       "assertions": [
-        "An absent `valcraft_version` is classified as outdated and does not trigger the first-run flow",
+        "An absent `valcraft_version` is invalid with reason outdated, and the migration flow takes precedence over the first-run flow",
         "The v0.8.1 entry applies and the subagents backend skips the Herdr entry",
         "Operator items from the v0.8.0 entries appear in the report verbatim",
         "`valcraft_version: \"0.8.1\"` is written to the base and only that file is committed",

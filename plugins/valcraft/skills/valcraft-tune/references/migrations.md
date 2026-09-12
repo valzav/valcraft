@@ -12,7 +12,7 @@ Run this flow when `config.md` classifies the base as `outdated`. Bare `/valcraf
 4. Set `valcraft_version` to the newest heading. Validate the complete candidate, write it, and commit it under `SKILL.md`'s single-path base commit.
 5. Report every applied, skipped, and operator-owned item, then end with `Status: done`.
 
-A change that needs an interactive answer in a noninteractive run ends with `configuration_required` and writes nothing. No change performs a push, merge, tracker mutation, or other outward operation; such work is always an **Operator** item with its exact command.
+A migration whose applicable entries name no choice needs no interactive answer: the recorded version being older authorizes the version write and its single-path commit, in a direct or delegated run, attended or not. A change that needs an interactive answer in a noninteractive run ends with `configuration_required` and writes nothing. No change performs a push, merge, tracker mutation, or other outward operation; such work is always an **Operator** item with its exact command.
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
@@ -32,9 +32,9 @@ Entry shape: a `### <title>` heading, one paragraph stating what changed, then `
 
 Once a feature or quick contract is on the default branch, Spec amends it on the in-progress task's branch when the change is scoped to that task, or on a short-lived `spec/fNNN-amend-<sha>` branch cut from the default branch. Land deletes every merged head branch, including the initial `spec/fNNN-<slug>` branch. The landed-branch synchronization merge is removed.
 
-- Applies when: a `spec/fNNN-<slug>` or `spec/qNNN-<slug>` branch exists on the remote for a contract already present on the default branch.
-- Tune performs: none; Tune inspects no remote.
-- Operator: delete each such branch, for example `git push origin --delete spec/f001-<slug>`. Spec reports the branch as stale and never touches it. If branch protection forbids head-branch deletion, expect Land to report the deletion as a remaining operation after a successful merge.
+- Applies when: never on its own; Tune inspects no remote, so the operator checks the condition.
+- Tune performs: none.
+- Operator: list retained refs with `git ls-remote --heads origin 'spec/*'` and delete each `spec/fNNN-<slug>` or `spec/qNNN-<slug>` branch whose contract is already on the default branch, for example `git push origin --delete spec/f001-<slug>`. Spec reports the branch as stale and never touches it. If branch protection forbids head-branch deletion, expect Land to report the deletion as a remaining operation after a successful merge.
 
 ### Readiness requires recorded baseline verification and criterion ownership
 
