@@ -26,6 +26,8 @@ For a feature spec, verify that directory number equals frontmatter `id`, `Sourc
 
 For feature `tasks.md`, require every task to use `T-XXX`. Map every declared `FR-`, `AC-`, `NFR-`, and `BR-` to a verifying task. Check ownership of every substantive acceptance-criterion clause, including each enumerated surface or behavior; an ID appearing in a task is insufficient. Resolve every `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered requirements as material findings.
 
+When the assignment names Spec-owned R-IDs resolved on the task branch, pin the triplet blobs at the same full commit as the plan and re-run each of those R-IDs against them. Verify Spec's reported scope test against the predecessor-to-head diff using `feature-contract.md`'s `Amendment scope`; an out-of-scope hunk is a material finding owned by Spec. This closure check is the review of the amendment; no separate Spec Review runs.
+
 When `design.md` and `tasks.md` both exist, apply `feature-contract.md`'s complete implementation-readiness gate. Apply the substantive checks above to the whole triplet: independently verify the existing-code assumptions that determine its design and cross-check its behavior against the spec and task ownership. Use the recorded baseline and evidence as locators, not as a substitute for reproduction. Do not pass an unverified consequential claim by deferring it to a later task review. Proposed behavior still belongs to implementation; do not require it to exist at the baseline.
 
 For a retrospective report under `docs/.retro/`, apply Temper's `report-format.md` and `process.md` as the governing contract.

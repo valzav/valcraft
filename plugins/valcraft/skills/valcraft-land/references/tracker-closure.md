@@ -6,8 +6,8 @@ Reconcile live tracker and PR state before preparation, immediately before mutat
 
 | Target | Valid completion operations |
 | --- | --- |
-| Task PR | add the exact mode-valid completion tick before the final gate when applicable; merge the reviewed PR; then apply any mode-valid hosted close batch |
-| Spec PR | merge the reviewed PR; no task closure |
+| Task PR | add the exact mode-valid completion tick before the final gate when applicable; merge the reviewed PR and delete its head branch; then apply any mode-valid hosted close batch |
+| Spec PR | merge the reviewed PR and delete its head branch; no task closure |
 | Tracker-only feature or PRD | apply only the confirmed tracker close; invent no git target |
 | `not planned` task | record the governing reason and close or remove the task as its tracker contract requires; no merge without a real PR |
 | External completion | follow `record-and-close.md`, then apply only its real tracker closure |

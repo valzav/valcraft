@@ -44,7 +44,7 @@ Immediately before mutation, re-read every bound field and the clean local head.
 
 For an authorized push, send physical `HEAD` by non-force refspec to the canonical remote task ref. Verify that the remote ref equals the local head. Report an unsuccessful or unverifiable push as `push_failed`.
 
-Before PR create-or-update, query the exact repository, base ref, canonical head ref, and head SHA. Reuse one matching task PR. Create one only when none exists; stop when several match. Verify its identity, base, and head after mutation.
+Before PR create-or-update, query the exact repository, base ref, canonical head ref, and head SHA. Reuse one matching task PR. Create one only when none exists; stop when several match. The PR body cites the task identity and, for each Spec-owned commit the passed plan Review pinned, that commit and its R-IDs. Verify its identity, base, and head after mutation.
 
 If push succeeds before the PR operation fails, record that partial result. On resume, reconcile the canonical remote ref and PR state. Do not repeat the commit or push. Reuse a matching PR that appeared despite a failed response, or create one when none exists. Report an unsuccessful or unverifiable result as `pr_failed`.
 

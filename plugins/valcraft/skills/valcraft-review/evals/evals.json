@@ -585,6 +585,38 @@
         "The report uses the existing Review contract without partial-verdict machinery",
         "The spec-required, task-owned proposed endpoint raises no finding merely because it is not implemented"
       ]
+    },
+    {
+      "id": 29,
+      "name": "closure-check-covers-spec-routed-amendment",
+      "prompt": "/valcraft:valcraft-review — run the closure check for FEAT-014 T-003's plan at head X. The assignment names R-002, owned by Spec and resolved on the task branch, and Spec's report claims the scope test passed. Case (a): the predecessor-to-X diff changes only design text mapped to AC-007, which tasks.md assigns to T-003, and the plan. Case (b): the diff also edits T-005's line in tasks.md. State what is pinned, what is re-run, and the verdict. Do not edit files.",
+      "expected_output": "Review pins the plan and the triplet blobs at X, re-runs R-002 against the pinned blobs, and verifies the scope claim against the diff. Case (a) closes R-002 and, with the plan checks passing, passes. Case (b) records an out-of-scope hunk as a material finding owned by Spec. In neither case does Review require a separate Spec Review; the closure check is the review of the amendment.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The triplet blobs are pinned at the same full commit as the plan",
+        "R-002 is re-run against the pinned blobs, not accepted from Spec's report",
+        "Spec's scope claim is verified against the predecessor-to-head diff",
+        "A hunk outside the task's assigned criterion, design mapping, or task line is a material finding owned by Spec",
+        "No separate Spec Review is required for the amendment"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "task-pr-triplet-change-requires-pinned-spec-commit",
+      "prompt": "/valcraft:valcraft-review — review task PR #41 for FEAT-014 T-003 in code mode. Its commits are: a Spec-owned commit changing design.md and citing FEAT-014, T-003, and R-002, whose triplet blobs the passed plan Review pinned and which the PR body names with its R-ID; Forge commits citing T-003; and one Forge commit that also edits a sentence in spec.md. State how each triplet change is judged. Do not edit files.",
+      "expected_output": "The pinned Spec-owned commit named in the PR body is accepted as part of the task. The spec.md edit inside a Forge commit is a finding because it is not a Spec-owned commit the plan Review pinned. Ordinary code checks still apply to the Forge commits.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "A Spec-owned triplet commit is accepted only when the passed plan Review pinned its blobs and the PR body names it with its R-IDs",
+        "A triplet edit inside a Forge commit is a finding",
+        "Ordinary code-mode checks still apply to the rest of the PR"
+      ]
     }
   ]
 }

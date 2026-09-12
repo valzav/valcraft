@@ -245,6 +245,24 @@
         "Relevant fixture state has a proving check",
         "The static-page case adds no unrelated database or migration checklist"
       ]
+    },
+    {
+      "id": 12,
+      "name": "task-branch-behind-landed-amendment",
+      "prompt": "$valcraft:valcraft-draft — resume T-003's plan on feat/f014-t003-export-filters. Compare: (a) the branch holds only attributable plan commits and the selected baseline advanced by a squash-landed amendment to FEAT-014; (b) the branch also holds an attributable Spec amendment commit to design.md, and the landed amendment changed the same design.md lines; (c) the branch holds an unattributed code commit; (d) the assignment names Spec-owned R-002 resolved on this branch and the plan needs no change. State the branch action, the reported head, and the Review target. Do not write files.",
+      "expected_output": "Case (a) merges the exact baseline into the task branch without rewriting history; the merge head is a new Review target. Case (b) stops with workspace_not_ready because the design.md conflict lies outside the plan path; Draft resolves no triplet conflict. Case (c) stops on unattributed divergence. Case (d) re-validates the plan against the amended contract and reports the unchanged head, which is Spec's head, as the Review target. Draft never rebases, resets, or force-pushes.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md"
+      ],
+      "assertions": [
+        "A plan-only branch behind a landed amendment receives a non-rewriting merge of the exact baseline",
+        "The merge head is reported as a new Review target",
+        "A conflict outside the plan path, such as in design.md, returns workspace_not_ready and Draft resolves no triplet conflict",
+        "Unattributed history on the branch stops preparation",
+        "After an on-task-branch amendment, Draft re-validates the plan and reports the unchanged head when no plan line changes",
+        "No rebase, reset, or force-push is proposed"
+      ]
     }
   ]
 }

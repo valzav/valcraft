@@ -2,7 +2,7 @@
 
 Use this gate for every task and spec PR. It controls both merge and any closure that depends on a merge.
 
-For a spec PR, preserve the canonical remote Spec ref for later amendments. Do not include branch deletion in ordinary spec-PR landing. A separate explicit deletion instruction remains a separately bound operation; report a ref removed by that operation or by the host so the next Spec assignment can reconcile verified absence.
+Merging any PR — task, contract, or amendment — includes deleting its head branch; the merge grant covers the deletion. Reconcile an already-deleted branch as complete.
 
 ## Exact Review coverage
 

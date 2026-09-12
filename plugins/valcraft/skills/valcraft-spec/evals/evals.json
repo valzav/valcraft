@@ -442,36 +442,38 @@
     },
     {
       "id": 22,
-      "name": "squash-amendment-synchronizes-before-final-review",
-      "prompt": "/valcraft:valcraft-spec — prepare an amendment to FEAT-014. The clean canonical branch holds only attributable Spec history and the amendment. The recorded Land report and git artifacts prove its previous version landed by squash on the selected baseline. That baseline also contains completed task ticks and implementation changes; it is not an ancestor of the Spec branch. A previous Review pass and push grant cover the pre-synchronization head. The remote Spec ref is now verified absent. Compare this shared checkout with an isolated physical branch at the same predecessor, and state what happens if project policy forbids local merge commits. Do not mutate anything.",
-      "expected_output": "Spec synchronizes the exact selected baseline locally before preparing the final Review target, preserving landed changes and the amendment, with non-artifact paths matching the baseline. Both shared canonical and exact isolated physical branches may perform the synchronization. A new full head needs new Review and newly prepared exact authority; unchanged artifact blobs do not retain the old pass. Remote absence permits preparing a non-force branch-creating push to the canonical ref, never publishing the physical ref. Policy forbidding this merge returns owner_decision_required without an invented alternative.",
+      "name": "in-scope-amendment-rides-the-task-branch",
+      "prompt": "/valcraft:valcraft-spec — FEAT-014's contract is already on the selected main baseline. A Foreman assignment names task T-003's canonical branch feat/f014-t003-export-filters as the canonical branch, T-003's exact plan head as the predecessor, the plan Review report with Spec-owned R-002, and the fallback amendment branch. R-002: the design's text for AC-007, which tasks.md assigns to T-003, contradicts the spec. Describe placement, commit, and report for two fixes: (a) the correction changes only that AC-007 design text; (b) the correction must also split AC-007 between T-003 and T-005 in tasks.md. Do not mutate anything.",
+      "expected_output": "Spec writes the fix and applies the scope test to its staged diff. Fix (a) passes: Spec commits on the task branch with a subject citing FEAT-014, T-003, and R-002, reports commit target `task branch` and the exact head, prepares no push, projection, or PR beyond the assignment, and leaves closure to T-003's plan reviewer with no separate Spec Review. Fix (b) fails because a criterion becomes shared with T-005: Spec creates spec/f014-amend-<sha> from the exact reconciled baseline, commits there, reports commit target `amendment branch`, and the ordinary Review, publish, PR, and Land flow applies. In neither case does Spec merge the baseline into any branch or expect a retained remote Spec ref.",
       "files": [
         "SKILL.md",
         "references/delivery.md"
       ],
       "assertions": [
-        "Synchronization occurs in local preparation before the final Review target",
-        "Landed task ticks, implementation and accepted amendment are preserved",
-        "The merge requires new exact-head Review and fresh outward authority",
-        "Verified remote absence is bound in a non-force canonical-ref creation handoff",
-        "Shared and isolated branches follow the same ancestry rule without publishing the physical name",
-        "A policy prohibition returns owner_decision_required without silent branch replacement"
+        "The scope test is applied to the staged diff after the fix is written, not before",
+        "A fix confined to T-003's assigned criterion text commits on the task branch and reports commit target `task branch`",
+        "The task-branch commit subject cites FEAT-014, T-003, and R-002",
+        "No spec PR, push, projection, or separate Spec Review is prepared for the task-branch case",
+        "A criterion split across T-003 and T-005 fails the scope test and moves the fix to spec/f014-amend-<sha> cut from the exact baseline with commit target `amendment branch`",
+        "Spec merges no baseline into any branch and relies on no retained remote Spec ref"
       ]
     },
     {
       "id": 23,
-      "name": "synchronization-does-not-bypass-drift-or-ownership",
-      "prompt": "/valcraft:valcraft-spec — compare (a) executing an exact push grant when the live base changed, (b) local amendment preparation with a dirty checkout, (c) a diverged Spec branch containing unattributed code changes, and (d) a clean attributable branch whose selected baseline is already an ancestor. State the result and whether local synchronization is allowed. Do not mutate anything.",
-      "expected_output": "An executing grant with changed fields returns authority_drift before any merge or push. Dirty or unattributed divergence returns workspace_not_ready and preserves state. An already-integrated baseline requires no synchronization commit. Spec never uses the local synchronization exception to broaden a grant, reset state or rewrite history.",
+      "name": "amendment-branch-derivation-and-stale-local-refs",
+      "prompt": "/valcraft:valcraft-spec — compare standalone amendment preparation for landed FEAT-014 in four cases: (a) a stale local spec/f014-export-filters branch remains and no longer descends from the selected baseline; (b) the checkout is dirty with unattributed changes; (c) the contract is not yet present on the baseline; (d) an executing push grant finds the live base changed. State the branch used, the result, and whether any merge, reset, or deletion occurs. Do not mutate anything.",
+      "expected_output": "Case (a) derives spec/f014-amend-<sha> from the exact baseline head, reports the stale local branch, and leaves it untouched. Case (b) returns workspace_not_ready and preserves the state. Case (c) uses the canonical spec/f014-export-filters branch because the contract has not landed. Case (d) returns authority_drift before any push. Spec never merges the baseline into a landed branch, resets, force-pushes, deletes a branch, or rewrites history.",
       "files": [
         "SKILL.md",
         "references/delivery.md"
       ],
       "assertions": [
-        "Executing a drifted grant returns authority_drift before synchronization or outward mutation",
-        "Dirty or unattributed state is preserved and blocks workspace preparation",
-        "An ancestor baseline adds no unnecessary merge commit",
-        "No force-push, reset or history rewrite is proposed"
+        "A landed contract's amendment branch is spec/f014-amend-<sha> cut from the exact selected baseline head",
+        "A stale local Spec branch is reported and left untouched, never merged, reset, or deleted",
+        "Dirty or unattributed state returns workspace_not_ready and is preserved",
+        "An unlanded contract keeps the canonical spec/f014-<slug> branch",
+        "A drifted executing grant returns authority_drift before any outward mutation",
+        "No baseline merge, force-push, reset, or history rewrite is proposed"
       ]
     }
   ]

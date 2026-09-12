@@ -61,7 +61,7 @@ Use a second harness for Review when the backend offers one. Fresh context suppl
 
 [`references/loop.md`](references/loop.md) is authoritative.
 
-Takeover may begin with `Specifying -> SpecReview -> SpecLanding -> Ready`; feature triplets and quick-task contracts use this same Spec lifecycle, and Spec findings return to Specifying. `Ready -> Drafting -> PlanReview -> Implementing -> CodeReview -> Landing -> Ready` delivers one task. Findings return plan work to Draft and code work to Forge. Land owns stale-review, checks-pending, remediation-owner, merge, and closure results.
+Takeover may begin with `Specifying -> SpecReview -> SpecLanding -> Ready`; feature triplets and quick-task contracts use this same Spec lifecycle, and Spec findings return to Specifying, on the task branch for a selected task. `Ready -> Drafting -> PlanReview -> Implementing -> CodeReview -> Landing -> Ready` delivers one task. Findings return plan work to Draft and code work to Forge. Land owns stale-review, checks-pending, remediation-owner, merge, and closure results.
 
 After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a tracker-only Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `DurableHandoff` waits for attributed dirty work to become accessible; `Blocked` names other missing evidence, authority, or owner decisions.
 

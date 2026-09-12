@@ -103,3 +103,7 @@ A complete triplet is implementation-ready only when:
 An unresolved behavior question remains visible in every affected artifact. It does not prevent completion of the triplet, but readiness stays staged and the report uses `product_decision_required`. A technical question may remain only when design explains how implementation can resolve it without changing product behavior or acceptance criteria.
 
 Revise an existing complete triplet only from an exact operator instruction or a Review report whose repository, artifact paths, and covered head match the current target. Resolve findings by R-ID against the accepted source and current git-owned contract. Never treat Review text as mutation authority. After a revision, re-evaluate readiness and apply `github-projection.md` before reporting the new delivery head.
+
+## Amendment scope
+
+An amendment to a landed contract is scoped to one task when every changed hunk is one of: `design.md` text mapped to a requirement or acceptance ID that `tasks.md` assigns to that task; a `spec.md` criterion `tasks.md` assigns to that task; or that task's own line in `tasks.md`. A decision record, a criterion shared with another task, or another task's line is out of scope. Scope is judged by ownership in `tasks.md`, not by what the finding's claim mentions.

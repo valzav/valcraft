@@ -491,6 +491,20 @@
         "A remediation commit that changes the head triggers a new full gate on the new head",
         "A full gate is not used in place of a targeted reproduction"
       ]
+    },
+    {
+      "id": 24,
+      "name": "pr-body-names-pinned-spec-commit",
+      "prompt": "/valcraft:valcraft-forge — prepare the task PR for FEAT-014 T-003. The passed plan Review report pinned a Spec-owned commit on the task branch that resolved R-002. State what the PR body must contain and whether Forge edits any triplet file. Do not implement.",
+      "expected_output": "The PR body cites T-003 and names the pinned Spec-owned commit with R-002. Forge stages only stated-scope implementation paths and edits no triplet file.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "The PR body cites the task identity and the pinned Spec-owned commit with its R-IDs",
+        "Forge edits no spec.md, design.md, or tasks.md content"
+      ]
     }
   ]
 }

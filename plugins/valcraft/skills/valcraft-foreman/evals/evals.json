@@ -1707,6 +1707,24 @@
         "A missing or replaced occupant leads to a fresh spawn with the same logical identity",
         "Foreman executes no push or PR itself"
       ]
+    },
+    {
+      "id": 111,
+      "name": "spec-owned-plan-finding-rides-task-branch",
+      "prompt": "$valcraft:valcraft-foreman — PlanReview for FEAT-014 T-003 returns material findings: R-001 owned by Draft and R-002 owned by Spec. Route the round, name the Spec envelope fields, and follow each of two Spec reports: (a) commit target `task branch` at a new head; (b) commit target `amendment branch`. Do not spawn workers. Do not write files. Report only.",
+      "expected_output": "Foreman enters Specifying with T-003 still selected and dispatches Spec with the task's canonical branch as the canonical branch, T-003's exact plan head as the predecessor, the report path, R-002, and the amendment branch as the fallback. Report (a) enters Drafting with Spec's head as the predecessor and R-001 plus R-002 named; Draft's head then enters PlanReview as a closure check covering plan and triplet at one head, and a pass enters Implementing. No SpecReview or SpecLanding runs for (a). Report (b) enters SpecReview, then SpecLanding, then Ready, which selects T-003 first and enters Drafting so Draft reconciles the task branch with the landed amendment. Foreman edits no artifact and prepares no PR itself.",
+      "files": [
+        "references/loop.md",
+        "references/contracts.md",
+        "references/review-round.md"
+      ],
+      "assertions": [
+        "A Spec-owned plan finding enters Specifying with the task still selected, before Draft's findings",
+        "The Spec envelope names the task branch as canonical branch, the plan head as predecessor, the R-IDs, and the fallback amendment branch",
+        "Commit target `task branch` routes to Drafting, then a PlanReview closure at one head, then Implementing, with no SpecReview or SpecLanding",
+        "Commit target `amendment branch` routes through SpecReview and SpecLanding, and Ready re-selects T-003 into Drafting",
+        "Foreman performs no artifact edit, merge, or PR preparation"
+      ]
     }
   ]
 }

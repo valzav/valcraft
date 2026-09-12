@@ -276,18 +276,20 @@
     },
     {
       "id": 13,
-      "name": "spec-ref-retention-and-synchronized-head-coverage",
-      "prompt": "/valcraft:valcraft-land — prepare finalization of a spec PR for an open feature. The exact current head has passing Review and checks; mutation authority names only the configured squash merge. State the branch disposition after landing. Separately, consider a Spec synchronization merge after that Review which leaves the artifact blobs unchanged, and a host that already removed the ref. Do not mutate anything.",
-      "expected_output": "Ordinary spec landing preserves the canonical Spec ref and includes no branch deletion. The synchronized new head requires Review despite identical artifact blobs. If the host removed the ref, Land reports verified absence so a future Spec assignment can prepare canonical non-force recreation; it does not claim retention or reuse a stale remote head. Separate explicit deletion remains target-bound and is never inferred from merge authority.",
+      "name": "merge-deletes-head-branch-for-every-pr-kind",
+      "prompt": "/valcraft:valcraft-land — prepare finalization for three PRs whose exact heads have passing Review and checks; mutation authority names the configured squash merge for each: (a) task PR #41 on feat/f014-t003-export-filters, (b) the initial contract spec PR on spec/f014-export-filters, (c) an amendment spec PR on spec/f014-amend-9c79723. State the branch disposition after each landing, what happens when the host already deleted a branch, and whether any of the three closes a task. Do not mutate anything.",
+      "expected_output": "Each prepared merge includes deletion of its head branch under the merge grant; no spec ref is retained for later amendments. A branch the host already deleted is reconciled as complete without a retry. The task PR proceeds to its mode-valid closure batch; neither spec PR closes any task.",
       "files": [
         "SKILL.md",
-        "references/final-head-and-checks.md"
+        "references/final-head-and-checks.md",
+        "references/tracker-closure.md"
       ],
       "assertions": [
-        "Ordinary spec-PR landing preserves the canonical ref",
-        "Merge authority does not imply deletion authority",
-        "A synchronization merge requires Review of its new exact head even with identical artifact blobs",
-        "A ref removed by the host is reported as absent without fabricated retention or stale head claims"
+        "Task, contract, and amendment PR merges each include head-branch deletion",
+        "The merge grant covers the deletion; no separate deletion authority or retention exception is invented",
+        "No canonical Spec ref is preserved after a spec-PR landing",
+        "An already-deleted branch is reconciled as complete and not deleted again",
+        "A spec merge closes no task"
       ]
     },
     {

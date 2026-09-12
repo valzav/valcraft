@@ -53,6 +53,9 @@ Feature triplets and quick-task contracts use this same Spec lifecycle and evide
 | passing Spec verdict covering the current spec PR head            | `SpecLanding`    |
 | merged spec contract on the reconciled default branch without an exact current verdict | `SpecReview`     |
 | passing Spec verdict covering the merged contract on the reconciled default branch | `Ready`          |
+| Spec-owned plan finding open on the selected task                 | `Specifying`     |
+| on-task-branch amendment committed without Draft re-validation    | `Drafting`       |
+| committed Draft plan behind an amendment landed on the reconciled default branch | `Drafting`       |
 | selected eligible task with no plan                               | `Drafting`       |
 | attributed dirty task-plan paths owned by Draft                   | `Drafting`       |
 | committed Draft plan not yet accessible to the next Review worker | `Drafting`       |
@@ -72,9 +75,9 @@ Never restart Spec or Draft when the required current committed artifact exists.
 
 ## `Specifying`
 
-Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, the verified absence of the canonical remote Spec ref when the accepted Land report recorded it, and target-bound outward authority when granted. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
+Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. For a Spec-owned plan finding on the selected task, name the task's canonical branch as the canonical branch, its exact plan head as the predecessor, and the amendment branch as the fallback. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
 
-On `Status: done`, validate the artifact paths and exact head. Enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
+On `Status: done`, validate the artifact paths and exact head. A report with commit target `task branch` keeps the task selected and enters `Drafting`. Otherwise enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
 
 ## `SpecReview`
 
@@ -86,7 +89,7 @@ Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exac
 
 ## `Ready`
 
-Select the first eligible task in artifact order with satisfied dependencies and no hold. Apply the approval-mode pick gate. Record the reconciled predecessor SHA, canonical task branch, contract path, and intermediate in-progress tracker state. Move to `Drafting`.
+Select the first eligible task in artifact order with satisfied dependencies and no hold. A task left in progress by an amendment landing is selected first and keeps its recorded branch. Apply the approval-mode pick gate. Record the reconciled predecessor SHA, canonical task branch, contract path, and intermediate in-progress tracker state. Move to `Drafting`.
 
 When no eligible task remains:
 
@@ -96,13 +99,13 @@ When no eligible task remains:
 
 ## `Drafting`
 
-Dispatch `drafter-<identity>` with `valcraft-draft`, the task contract, predecessor SHA, canonical branch, backend physical branch when applicable, durable deferred-finding locators, and exact target-bound outward authority when granted. Foreman writes no plan and does not run MSW.
+Dispatch `drafter-<identity>` with `valcraft-draft`, the task contract, predecessor SHA, canonical branch, backend physical branch when applicable, durable deferred-finding locators, and exact target-bound outward authority when granted. After an on-task-branch amendment, the predecessor is Spec's reported head and the assignment names the Spec-owned R-IDs; Draft re-validates the plan against the amended contract and reports its revised or unchanged head. Foreman writes no plan and does not run MSW.
 
 On a complete `Status: done` Draft report, verify the committed plan path and exact head. Apply the prepared outward continuation in `contracts.md` when the next Review worker cannot access that exact commit. Enter `PlanReview` only when the Review worker can resolve the exact committed head. Route declared Draft codes through `contracts.md`.
 
 ## `PlanReview`
 
-Dispatch a fresh `plan-reviewer-<identity>` with `valcraft-review` in plan mode on the exact committed plan head. A pass enters `Implementing`. Material findings return the report path and R-IDs to Drafting. Apply [`review-round.md`](review-round.md) without deciding a finding. An exact-target mismatch or undeclared code stops.
+Dispatch a fresh `plan-reviewer-<identity>` with `valcraft-review` in plan mode on the exact committed plan head. A pass enters `Implementing`. Material findings return the report path and R-IDs to `Specifying` with the task still selected when a Spec-owned R-ID is open, and to Drafting otherwise. Draft's findings resolve after Spec's on the same branch; the closure check then covers the plan and triplet at one head. Apply [`review-round.md`](review-round.md) without deciding a finding. An exact-target mismatch or undeclared code stops.
 
 ## `Implementing`
 

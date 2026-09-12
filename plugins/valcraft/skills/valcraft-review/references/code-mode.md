@@ -18,7 +18,7 @@ Classify the pinned file list as **docs** when it touches only documentation, **
 
 ## Map the contract
 
-Feature commits cite `T-`, `FR-`, or plan `R-` IDs. Validate the governing feature `tasks.md` before mapping and require `T-XXX`. Quick commits cite `Q-NNN QT-XXX`; resolve the exact pair and dependencies through `quick.md`. Apply identity validation only to commits that contribute to the pinned review target. Earlier history may establish context, but it is not current work. Within the target, reject missing, legacy, mixed, malformed, or wrong-prefix identity instead of normalizing it. A change governed by no task or requirement is a finding.
+Feature commits cite `T-`, `FR-`, or plan `R-` IDs. Validate the governing feature `tasks.md` before mapping and require `T-XXX`. Quick commits cite `Q-NNN QT-XXX`; resolve the exact pair and dependencies through `quick.md`. Apply identity validation only to commits that contribute to the pinned review target. Earlier history may establish context, but it is not current work. Within the target, reject missing, legacy, mixed, malformed, or wrong-prefix identity instead of normalizing it. A change governed by no task or requirement is a finding. A task PR may change `spec.md`, `design.md`, `tasks.md`, or a quick file only in a Spec-owned commit whose triplet blobs the passed plan Review pinned and whose identity and R-IDs the PR body names; any other triplet change in a task PR is a finding.
 
 Require the passed task plan path and exact Review-passed plan commit for a non-trivial implementation. A code finding within that plan resolves in Forge. A finding that changes product scope, acceptance behavior, or the plan's declared approach resolves in Draft. Review invokes neither owner.
 
