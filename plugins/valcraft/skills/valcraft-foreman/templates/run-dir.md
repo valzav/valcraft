@@ -49,6 +49,7 @@ Append checkpoints with:
 - workflow target git identity, preserving `none` independently from an external-orchestrator transport-only workspace seed;
 - Review-covered SHA, current head, and producer-reported delta or check route;
 - approval decision and exact target-bound authority source;
+- standing operator decisions in force, each with its source message, subject, answer, scope, and applications;
 - intermediate tracker state, held questions, deferred-finding owner and durable locator, and feature confirmation;
 - recovery probes, observations, accessibility, dispositions, replacement identity, and every rejected stale return or report; and
 - each dated artifact's resolved date and authority.

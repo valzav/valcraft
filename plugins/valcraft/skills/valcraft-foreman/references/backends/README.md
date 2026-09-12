@@ -78,7 +78,8 @@ Keep only deviations that change dispatch, await, wake, or workspace behavior.
 | Herdr | the assignment envelope is passed as one argument value, never interpolated into a shell command string | dispatch | `transport:herdr-argv-envelope` | Foreman eval 84 |
 | Herdr | each role uses its configured harness, model, and effort while every Review uses a different harness from its producer | dispatch | `transport:herdr-cross-model-roles` | Foreman eval 74 |
 | Herdr | all roles share the orchestrator's checkout and canonical task branch | workspace | `transport:herdr-shared-checkout` | Foreman eval 75 |
-| Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
+| Herdr | a Review worker with material findings is kept active and receives its closure check in the same pane; remediation producers are always fresh | dispatch/await | `transport:herdr-review-continuity` | Foreman eval 85 |
+| Herdr | a producer whose accepted report is a prepared mutation continuation is kept active and receives that continuation in the same pane; remediation and every other assignment spawn fresh | dispatch/await | `transport:herdr-producer-continuity` | Foreman eval 110 |
 | Herdr | an escalated permission gate stays under foreground observation; an operator answer in the worker's pane resolves it through the worker's terminal return | await | `transport:herdr-gate-observed-in-pane` | Foreman eval 87 |
 
 The corresponding backend reference owns commands. Remove a row when the transport no longer deviates; do not preserve historical notes here.

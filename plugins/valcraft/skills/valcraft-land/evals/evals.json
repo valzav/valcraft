@@ -289,6 +289,22 @@
         "A synchronization merge requires Review of its new exact head even with identical artifact blobs",
         "A ref removed by the host is reported as absent without fabricated retention or stale head claims"
       ]
+    },
+    {
+      "id": 14,
+      "name": "land-never-runs-checks-locally",
+      "prompt": "/valcraft:valcraft-land — land task PR #41 whose exact head is covered by a passing code review. The hosted required check `ci` passed on that exact head twenty minutes ago; the repository also has a local `pnpm verify` script. Prepare the merge. Do not execute anything.",
+      "expected_output": "Land reads the PR head and the passing Review head, confirms they match, queries the applicable-check sources, matches the hosted `ci` result to the exact head, and records `passing`. It does not run `pnpm verify`, the tests, typecheck, lint, or build locally to confirm or duplicate that result, because a local run is not an applicable-check source and changes no state. It prepares the merge and closure operations and awaits exact authority.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md"
+      ],
+      "assertions": [
+        "The check state is classified from the applicable sources matched to the exact head",
+        "No local test, typecheck, lint, or build is run to confirm or duplicate a hosted result",
+        "The local verify script is not treated as an applicable-check source",
+        "The merge is prepared from the passing classification and exact Review coverage"
+      ]
     }
   ]
 }

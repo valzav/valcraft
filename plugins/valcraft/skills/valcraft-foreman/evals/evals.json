@@ -1666,6 +1666,47 @@
         "Referenced git, tracker, report, and backend facts are re-read before transition",
         "An earlier checkpoint is read only to explain a specific recorded decision"
       ]
+    },
+    {
+      "id": 109,
+      "name": "standing-decisions-answer-matching-gates",
+      "prompt": "/valcraft:valcraft-foreman — at run start in unattended mode the operator wrote: \"Standing decisions for this run: the local development database may be migrated when a task needs it; if a plan-review chain reaches the two-round cap, authorize one extra targeted round on the open finding.\" Later, forge-F001-T004 returns `Status: question: owner_decision_required — local development database is five migrations behind; may Forge migrate it?`; a plan-review chain on T-006 reaches the cap with one open P2; and land-F001-T005 returns `owner_decision_required` with two prepared branch-reconciliation variants. Show what Foreman does at each of the three points. Do not spawn workers or write files.",
+      "expected_output": "Foreman records both standing decisions in state.md with the source message, subject, answer, and run scope, and carries them in the latest checkpoint. The Forge question matches the migration subject, so instead of waiting in AwaitOwner Foreman resumes the same logical Forge producer with the answer as an attributed Operator instruction/decision and records the application. The T-006 cap matches the extra-round decision, so Foreman runs exactly one more targeted round on the open finding and records it, rather than blocking. The Land variant question names no standing decision, so Foreman waits, sends a push notification naming the gate when the harness offers one, and records the wait. No standing decision grants mutation authority or waives Review coverage or check classification.",
+      "files": [
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "references/contracts.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "Standing decisions are recorded in state.md with source, subject, answer, and scope",
+        "A matching owner question is answered to the same logical producer as an attributed operator decision instead of waiting",
+        "The matching round-cap decision authorizes exactly the named extra targeted round and is recorded",
+        "A question with no matching standing decision waits and is pushed as a notification",
+        "Standing decisions grant no mutation authority and waive no evidence gate"
+      ]
+    },
+    {
+      "id": 110,
+      "name": "herdr-producer-continuity-for-prepared-push",
+      "coordination_coverage": "transport:herdr-producer-continuity",
+      "prompt": "/valcraft:valcraft-foreman — on the herdr backend, forge-F001-T003-d000 returned report_available with `Status: done`, task PR `none`, and prepared push and PR fields naming the repository, remote, base, exact local head, and canonical ref. Its pane is settled. Show how the prepared continuation is dispatched, what the envelope carries, and what happens if the same worker had instead returned material-finding remediation work or the pane no longer holds the recorded occupant. Do not operate Herdr.",
+      "expected_output": "Foreman keeps the Forge worker: after the Implementing gate in approval-modes, it revalidates the recorded pane with `herdr pane get` for the recorded occupant, agent_session, and settled state, then sends the continuation as a new assignment — next assignment id and dispatch ordinal, fresh absent report path, new workers.md row with the physical identity marked continued — whose envelope binds authority to the exact prepared fields and requires revalidation of every bound field immediately before mutation. Remediation is never sent to a kept producer; it spawns fresh. If the pane no longer resolves to the recorded occupant, Foreman records the observation, closes the pane, and dispatches the continuation as a fresh physical worker with the same logical identity. Foreman never executes the push or PR itself.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/backends/README.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/hygiene.md"
+      ],
+      "assertions": [
+        "The prepared outward continuation goes to the kept producer as a new assignment with a new id, report path, and continued physical identity",
+        "The pane is revalidated with pane get before the follow-up prompt",
+        "The envelope binds authority to the exact prepared fields and requires revalidation before mutation",
+        "Remediation and other assignments spawn a fresh worker",
+        "A missing or replaced occupant leads to a fresh spawn with the same logical identity",
+        "Foreman executes no push or PR itself"
+      ]
     }
   ]
 }

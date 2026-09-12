@@ -33,7 +33,7 @@ After compaction, resume, takeover, or another context reset, repeat configurati
 
 ## Invariants
 
-- Start every dispatch with a fresh worker. Preserve its logical identity across recovery, but give every dispatch a new physical identity.
+- Start every dispatch with a fresh worker, except the backend-declared continuities in `hygiene.md`. Preserve its logical identity across recovery, but give every dispatch a new physical identity.
 - Keep only coordination state: active named state, exact artifact pointers, logical and physical worker identities, report paths, backend returns, gate decisions, and recovery observations.
 - Record a backend return before inspecting an active assignment's report. For `report_available`, read only the parts `contracts.md` names under Coordinator reads. The only exception is an exact standalone report the operator attributes during takeover; validate and record it as pre-run evidence under `contracts.md`.
 - Accept only the active assignment's attributed report path and logical and physical worker identity, or validated pre-run evidence during takeover. Reject stale, late, missing, or unattributed reports.

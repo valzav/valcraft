@@ -19,6 +19,7 @@
 
 - One active worker per named state and target. Every initial dispatch and respawn is fresh. Preserve logical identity across recovery; never reuse the physical worker. Adopted pre-run evidence creates no worker identity or lifecycle row.
 - A Review worker may handle its scoped closure check and second full round only when the backend keeps it active. A one-shot backend respawns it with the same logical identity and a new physical identity.
+- A producer may receive its own prepared outward continuation only when the backend keeps it active; remediation is always fresh.
 - Release terminal workers after their accepted report. Keep Land active while checks are pending. Never leave a worker active after its target completes.
 - Workspace cleanup belongs to the backend reference.
 

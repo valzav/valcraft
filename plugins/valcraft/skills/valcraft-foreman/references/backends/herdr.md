@@ -15,6 +15,7 @@ Workers share Foreman's checkout and canonical task branch. Isolation comes from
 | `harnesses` | Claude, Codex, and Cursor as configured per role; a missing configured harness fails readiness |
 | `release` | `herdr pane close <pane-id>` for the worker's own recorded pane; never `session stop`, `session delete`, or any pane the run does not own |
 | `review continuity` | kept active — a Review worker with material findings waits in its pane and receives its closure check and any second full round as follow-up prompts; released after the round's final report |
+| `producer continuity` | kept active — a producer whose accepted report is a prepared mutation continuation receives that continuation as a follow-up prompt; remediation and every other assignment use a fresh worker |
 | workspace | Foreman's checkout on the canonical task branch, shared and serial |
 
 ## Role configuration
@@ -175,7 +176,7 @@ Reconcile the recorded assignment checkpoint against the report and the exact oc
 
 Herdr keeps a pane's agent and conversation alive after a turn, so this backend keeps a Review worker for its own round as [`../hygiene.md`](../hygiene.md#workers) allows. Preserve Review independence and shared-checkout serialization as follows.
 
-1. **Who is kept.** Keep only a Review worker (`spec-reviewer`, `plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed, a producer (Spec, Draft, Forge, Temper), or Land. Remediation always uses a fresh producer to avoid anchoring on its prior choice.
+1. **Who is kept.** Keep only a Review worker (`spec-reviewer`, `plan-reviewer`, `code-reviewer`, `retro-reviewer`) whose accepted report returned material findings. This exception does not apply to a reviewer that passed or to Land. A producer is kept only under [Producer continuity](#producer-continuity); remediation always uses a fresh producer to avoid anchoring on its prior choice.
 2. **What waiting means.** The kept worker is settled (`idle` or `done`) and executes nothing. Between its report and its next prompt it touches no Git state, so the producer's remediation still runs alone in the shared checkout. Do not read from, prompt, or `send-keys` the waiting worker while the producer is active.
 3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — pane id and agent name — is the initial dispatch's, recorded again on the new row and marked continued. The agent name keeps its original ordinal; only the report path advances.
 4. **Revalidate before the follow-up prompt.** Require `herdr pane get <pane-id>` to resolve the recorded pane, `agent_session`, and settled occupant. A missing pane, different occupant, or null session means the kept worker is gone. Record that as an observation rather than a backend return because no assignment is active. Skip dead-worker inventory because the settled reviewer touched no Git state and the producer's commits are already recorded. Close the pane if it still exists and confirm it no longer resolves to the recorded name. Dispatch the closure check as a fresh physical worker with the same logical identity through [Spawn](#spawn), without the task-start gate because the producer's head is the expected mid-round state. Continuity is optional.
@@ -183,6 +184,14 @@ Herdr keeps a pane's agent and conversation alive after a turn, so this backend 
 6. **Release.** After the round's final report — a closure check with no open material finding, a second-round closure, or an escalation — release the pane as usual. A kept worker whose round ends in escalation is released with the escalation, not held for an owner decision.
 
 Submission, delivery confirmation, and return precedence are unchanged for a follow-up prompt; `agent prompt --wait` to the kept name is the same call with the same unconfirmed-delivery rule.
+
+## Producer continuity
+
+Herdr keeps a producer's pane alive after its report, so a Spec, Draft, or Forge worker whose accepted report is a prepared mutation continuation under [`../contracts.md`](../contracts.md#prepared-mutation-continuation) receives that continuation as a follow-up prompt instead of a fresh spawn. The continuation executes an operation whose every field the report already prepared and Foreman validated; no design choice remains to anchor on, which is why remediation stays fresh.
+
+1. **Who is kept.** Only a producer whose accepted report ends `Status: done` with a prepared outward target and no material finding, and only for that report's remaining operation set. Remediation, a new task, Land's `authority_required`, and every other assignment use a fresh worker.
+2. **Same continuity rules.** Waiting, follow-up assignment identity, revalidation before the prompt, and release follow [Review continuity](#review-continuity) rules 2, 3, 4, and 6 unchanged: a settled occupant that touches no Git state, a new assignment id and report path with the physical identity marked continued, `herdr pane get` revalidation, and a fresh spawn without continuity when the kept worker is gone.
+3. **Authority is in the envelope, not the memory.** The follow-up envelope carries the attributed authority bound to the exact prepared fields and requires the producer to revalidate every bound field immediately before mutation, exactly as a fresh dispatch would. The named state's gate in [`../approval-modes.md`](../approval-modes.md) applies before the follow-up prompt.
 
 ## Permission prompts
 

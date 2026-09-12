@@ -25,7 +25,7 @@ When Spec or Draft must publish its exact commit for the next Review worker, Spe
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
 3. Apply that named state's approval gate from `approval-modes.md`.
-4. Dispatch the same logical producer under a fresh physical identity and report path.
+4. Dispatch the same logical producer under a fresh physical identity and report path, or send the continuation to the kept producer as a new assignment when the backend declares producer continuity for prepared outward operations.
 5. Attribute newly granted authority to the exact prepared fields and operation set.
 6. Require the producer to revalidate every bound field immediately before mutation.
 

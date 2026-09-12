@@ -85,6 +85,8 @@ Draft names effective verification prerequisites; Forge proves the applicable en
 
 Foreman reads a producer report by its heading index, terminal status line, and the sections [Coordinator reads](../plugins/valcraft/skills/valcraft-foreman/references/contracts.md#coordinator-reads) names; the body stays on disk for the next worker. On resume it reads the latest checkpoint, not the log. Under a Claude Code controller the Herdr backend awaits through the harness's persistent background monitor and wakes on `agent wait` exit instead of re-arming a bounded foreground wait; the static check requires every coordinator-read row to name a registered message and only headings from that report's fingerprint.
 
+Forge runs targeted suites while iterating and the full gate once per pushed head. Land classifies checks only from applicable sources matched to the exact head and never runs a gate itself. A live operator message may declare standing decisions that answer a named owner question, the round-cap escalation, or an explicit-operation row in advance; Foreman applies one only on an exact subject match and records each application. Under Herdr a producer whose accepted report is a prepared mutation continuation receives that continuation in its own pane; remediation always spawns fresh.
+
 ## Coordination-contract drift
 
 Each report-producing skill owns its headings, terminal status grammar, and routing codes. Foreman's registry links to those contracts and owns only consumers, routes, backend returns, and named-state transitions.

@@ -38,7 +38,7 @@ Record exactly one state:
 - `missing-required` — an applicable configured or required check has no run on the exact head;
 - `none-applicable` — every source was available and none configures or requires a check.
 
-Only `passing` and `none-applicable` satisfy the gate. While an applicable check is pending, keep the current Land run active and recheck the same head; emit no terminal Land report or user-status gate. A backend `wait_timeout` is nonterminal and changes no Land state. A failed check enters the ownership classifier below. `missing-required` returns `missing_required_check` until authoritative evidence explains the missing trigger.
+Only `passing` and `none-applicable` satisfy the gate. A check result comes only from the applicable sources above, matched to the exact head. Land never runs a test, typecheck, lint, or build itself: a local run is not an applicable-check source, cannot confirm or replace a hosted result, and changes no state. While an applicable check is pending, keep the current Land run active and recheck the same head; emit no terminal Land report or user-status gate. A backend `wait_timeout` is nonterminal and changes no Land state. A failed check enters the ownership classifier below. `missing-required` returns `missing_required_check` until authoritative evidence explains the missing trigger.
 
 For a failed or missing check, record target kind, evidence, causal owner, and retryability. Route only when evidence proves ownership:
 
