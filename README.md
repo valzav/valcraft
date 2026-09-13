@@ -1,3 +1,8 @@
+<!-- markdownlint-disable-next-line MD041 -->
+<p align="center">
+  <img src="docs/assets/valcraft-banner.png" alt="valcraft — the Field Engineer helmet beside the lowercase valcraft wordmark" width="1280">
+</p>
+
 # valcraft
 
 Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor (Teams or Enterprise with marketplace-import authority). At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code, Codex, or Cursor session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
