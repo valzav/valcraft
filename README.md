@@ -5,7 +5,9 @@
 
 # valcraft
 
-Agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor (Teams or Enterprise with marketplace-import authority). At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code, Codex, or Cursor session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
+Valcraft is a software factory in your repository: it coordinates the work, keeps the requirements and decisions in ordinary files, and checks the code before shipping so you can see what was built and how it was verified.
+
+It ships as agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor (Teams or Enterprise with marketplace-import authority). At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code, Codex, or Cursor session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
 
 Status: alpha.
 

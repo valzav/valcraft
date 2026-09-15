@@ -1,7 +1,7 @@
 {
   "name": "valcraft",
   "version": "0.8.2",
-  "description": "Reusable agent skills: tune (repository configuration), cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
+  "description": "Valcraft is a software factory in your repository: it coordinates the work, keeps the requirements and decisions in ordinary files, and checks the code before shipping so you can see what was built and how it was verified. Skills: tune (repository configuration), cast (project framing), spec (feature and quick contracts), draft (task plans with MSW), forge (reviewed-task implementation and authorized task PRs), review (report-only plan, code, and evidence review), land (authorized finalization and tracker closure), foreman (named-state delivery coordination), temper (local retrospective production), hone (prompt refinement), distill (prompt distillation), and msw (MSW Kernel document judgment).",
   "author": {
     "name": "valcraft contributors"
   },
