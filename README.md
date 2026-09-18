@@ -1,151 +1,152 @@
 <!-- markdownlint-disable-next-line MD041 -->
 <p align="center">
-  <img src="docs/assets/valcraft-banner.png" alt="valcraft — the Field Engineer helmet beside the lowercase valcraft wordmark" width="1280">
+  <img src="docs/assets/valcraft-banner.png" alt="valcraft: the Field Engineer helmet beside the lowercase valcraft wordmark" width="1280">
 </p>
 
-# valcraft
+A software factory in your repository.
 
-Valcraft is a software factory in your repository: it coordinates the work, keeps the requirements and decisions in ordinary files, and checks the code before shipping so you can see what was built and how it was verified.
+Valcraft is a set of skills for coding agents. You describe what needs to be built; Valcraft coordinates planning, implementation, and independent review. The requirements, decisions, and progress stay with your code.
 
-It ships as agent skills for spec-driven delivery, packaged as one plugin for Claude Code, OpenAI Codex, OpenCode, and Cursor (Teams or Enterprise with marketplace-import authority). At the center is an agentic **delivery loop** — draft → review → forge → review → land — run over fresh-context worker agents, inside one Claude Code, Codex, or Cursor session or through an orchestrator over several instances. Around it: `cast` creates the project frame, `spec` creates every feature or quick contract, and `temper` learns from what shipped.
+You spend less time managing handoffs between agents. Work can continue across sessions and be shared with your team.
 
-Status: alpha.
+The skills run in Claude Code, OpenAI Codex, Cursor, or OpenCode, with no separate Valcraft executable or background service. Valcraft is in alpha. See [installation and platform support](#install).
 
-## Problems it addresses
+[Get started](#start-with-one-assignment) · [Skills at a glance](#skills-at-a-glance) · [Documentation](#documentation)
 
-| If you have seen this…                                              | valcraft's answer                                                                                                                                                                                  |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The agent forgets requirements between sessions and reinvents them. | `cast` establishes the project frame and `spec` writes git-owned contracts with stable IDs (`FR-`, `AC-`, `T-`, `ADR-`) that plans, commits, tests, and reviews cite. Context lives with the code. |
-| "Make X" turns into a pile of unreviewed code.                      | `foreman` coordinates independent plan and code reviews; `land` finalizes only the exact reviewed target, so implementer verification never becomes approval.                                      |
-| One long session runs out of context or reports work it never did.  | `foreman` keeps its own context small — every worker starts cold, reports land on disk, and a run resumes from the tracker, git, and those reports.                                                |
-| Either you approve every step, or the agent runs away.              | Approval modes (`attended`, `unattended`) decide which decisions wait for you. Some always do: release-branch writes, feature close, and escalations.                                              |
-| Task tracking drifts from what the specs say.                       | The specs are canonical; the tracker is a projection of them — the simple option is `tasks.md` checkboxes in the repo, or GitHub Issues with generated bodies and blocked-by links.                |
-| The same mistakes recur project after project.                      | `temper` runs an evidence-graded retrospective over a shipped feature and proposes standing rules for `AGENTS.md`; nothing is promoted on a single unverified incident.                            |
-| Prompts and skills bloat until the model ignores them.              | `hone`, `distill`, and `msw` refine, reduce, and judge prompt artifacts against a stated contract.                                                                                                 |
+## What changes when you build with Valcraft
 
-## Valcraft's SDD at a glance
+- Before coding starts, Valcraft turns your assignment into written requirements, acceptance criteria, and ordered tasks. Stable IDs link those requirements to plans, commits, tests, and reviews, so you can trace why a change exists and how it was checked.
+- Foreman handles the handoffs between agents. It dispatches workers and separate reviewers, reads their reports, and chooses the next step. It sends findings back for fixes and brings unresolved questions to you.
+- After the implementing agent runs its verification, a separate reviewer checks the change against the requirements. Findings need reproduced evidence. Fixes are checked again before the work can proceed to merge.
+- Land checks that the passing review covers the current pull request head. A change after review sends the pull request back to review.
+- Workers start each step with fresh context from project files. Foreman reads the report sections it needs to coordinate the work. A new session can recover that state from the files without inheriting the previous conversation.
+- Draft applies MSW to each plan: if removing a step still leaves the assignment fulfilled and verified, that step goes. Smaller changes can use one quick-task file instead of a full feature specification.
+- Temper examines a completed feature and proposes changes to how future work is done. A separate reviewer checks its retrospective. Applying a proposal takes separate work; the retrospective leaves your project rules unchanged.
 
-Valcraft treats spec-driven development as a repository data model, not a session ritual. Product intent, requirements, decisions, tasks, and evidence live in ordinary files with stable IDs. Agents can resume from those artifacts without inheriting another agent's conversation.
+This is spec-driven development: write down what the software must do, then plan, build, and check against that record. The process applies whether you write code yourself or prompt agents to build it. [How Valcraft works](docs/how-it-works.md) describes the data model, the owner of each file, and every step of the loop.
+
+## Is it for you?
+
+Valcraft fits projects you return to across sessions or share with teammates, especially when features have requirements to verify. Planning and independent reviews use agent work and tokens. They aim to catch mistakes and reduce repeated explanations and rework, but the total time and cost depend on the task.
+
+For a throwaway script, the full cycle may be more process than you need. You can adopt one piece first: use Review on an existing pull request, Draft to plan a defined task, or Cast to give an existing project its rules and structure. A quick task keeps a smaller change's specification in one file while retaining the delivery and review steps.
+
+Expect rough edges and changes between releases while Valcraft is in alpha.
+
+## Start with one assignment
+
+[Install Valcraft](#install), open your project's repository in your coding agent, and describe something you already need to ship. A requirements document such as `docs/prd.md` can be the starting point. Include the behavior you need, the constraints that matter, and how you will know it works.
+
+1. Ask Valcraft Cast to set up the repository. It creates or adapts the project rules, product brief, and directories for decisions and specifications. If configuration is missing, Cast invokes Tune to guide you through it. Spec writes the feature specification in the next step.
+2. Give Valcraft Spec your requirements document. It writes the requirements and acceptance criteria, the technical approach, and the tasks with their dependencies. For a small change, ask for a quick task. Resolve open product decisions before implementation.
+3. Ask Valcraft Foreman to work through the resulting tasks. It inspects the project and asks you to confirm where it should begin. It then dispatches workers and reviewers under your chosen approval mode.
+
+Foreman coordinates the task cycle below. Each step has a responsible agent and a result that can be checked.
 
 ```text
-product idea:
-  -> cast: ensure configuration, then create the SDD project frame
-    -> spec: create the first feature contract
-new feature or PRD:
-  -> spec: create a feature contract or quick task
-    -> foreman: infer and confirm the current state, then coordinate the remaining delivery
-      -> spec / review / land: establish the contract on the default branch when needed
-      -> draft: write the task plan, then apply msw
-      -> review: pass the task plan or return findings
-      -> forge: implement the task and produce verification evidence
-      -> review: pass the change or return reproduced findings
-      -> land: finalize the reviewed target and close tracker state
-      -> temper (feature only): write the local retrospective report (docs/.retro/, gitignored)
-        -> review: pass the report or return findings
+Plan → Review → Implement and verify → Review → Merge
+         ↓                               ↓
+      Revise plan                    Fix and re-check
 ```
 
-`foreman` can coordinate the delivery stages in one loop or take over work started with the individual skills. Without a verified active checkpoint, it inspects durable repository, tracker, PR, and report evidence, proposes the inferred state and next action, and waits for confirmation before creating a run. An exact checkpoint resumes without that takeover confirmation.
+Before task delivery, Foreman coordinates review and publication of the specification. After you confirm a feature is complete, it coordinates a retrospective and its review. Foreman uses worker reports to decide what happens next; the workers do the planning, coding, review, and merging.
 
-Each skill emits its own complete report only for its current invocation. A later Valcraft skill never replays an earlier skill's report. When prior state is relevant to the current target or handoff, it may instead show one short paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and a suggested next action; that summary is presentation, not routing evidence or mutation authority.
+Run these commands in sequence as each step completes. You can learn the other skills as you need them.
 
-### Primitives
+```text
+/valcraft-cast
+/valcraft-spec docs/prd.md
+/valcraft-foreman
+```
 
-- **Git-owned contract.** Accepted ADRs, `specs/`, and derived project docs define what the change must do, in that precedence order. A chat message can select or clarify work, but it does not silently replace the repository contract.
-- **Stable identity.** Features, requirements, acceptance criteria, tasks, decisions, and findings use IDs such as `FEAT-001`, `FR-001`, `AC-001`, `T-001`, `ADR-0001`, and `R-001`. A quick unit uses the qualified identity `Q-001 QT-001`. Plans, commits, reviews, and tracker records cite these IDs.
-- **One unit of work.** Delivery operates on one feature task, one quick task, or one explicitly scoped plan at a time. Dependencies are part of the task contract, not inferred from conversation order.
-- **Tracker as projection.** Git owns task definitions. Feature status can remain in `tasks.md` checkboxes or project to GitHub Issues; quick tasks always track locally. Tracker state never becomes a second source of requirements.
-- **Readiness before execution.** A feature needs a complete and consistent spec, design, and task decomposition. A quick task carries the same minimum contract in one file. Missing product decisions stop implementation rather than becoming guesses.
-- **Independent evidence.** Planning, implementation, and review use fresh contexts. `forge` verifies its work, but `review` independently decides whether the plan or code satisfies the contract. Findings close only when their reproductions pass.
+If the project already uses Valcraft, start a new feature with Spec. Foreman can also take over work you began with the individual skills.
 
-### Artifacts and skill ownership
+## Choose how much coordination to hand over
 
-- **Configuration:** the committed `.valcraft/config.yaml` is the repository's shared base — tracker, Foreman, branch, Herdr worker, and pull-request settings. The optional gitignored `.valcraft/config.local.yaml` overlay overrides the user-scoped keys (approval mode, backend, and backend-specific worker settings), so collaborators can keep personal approval and backend choices without touching the shared file. `tune` is the sole writer of both and can reconfigure one section at any time.
-- **Project frame:** `AGENTS.md` records standing development rules; `docs/product-brief.md` records product intent and boundaries. `cast` creates or retrofits them, and every delivery skill reads the applicable rules.
-- **Decision record:** `docs/architecture/adr/NNNN-*.md` captures consequential technical decisions and their consequences. `cast` establishes the ADR structure; `forge` and `review` treat accepted ADRs as the highest project authority.
-- **Feature contract:** `specs/NNN-<slug>/spec.md` owns requirements and acceptance criteria, `design.md` owns the technical realization, and `tasks.md` owns `T-XXX` decomposition and dependencies. `spec` creates or resumes the complete triplet from one accepted source, including the first MVP feature; `foreman`, `draft`, `forge`, `review`, and `land` deliver against it.
-- **Quick contract:** `specs/quick/NNN-<slug>.md` combines requirements, approach, and `QT-XXX` tasks for a change that does not need a feature triplet. `spec` creates it; the normal delivery and review skills use it as the complete contract.
-- **Delivery plan:** `docs/plans/*-plan.md` records implementation decisions for non-trivial work or remediation decisions for review findings. `draft` writes or revises the plan and applies `msw`; `review` checks its exact commit before `forge` implements it. Progress remains in the tracker rather than in the plan.
-- **Evidence and learning:** `forge` produces a verification handoff; `review` produces stable `R-XXX` findings and reproduced evidence; `land` owns final-head checks, authorized finalization, and tracker closure. `foreman` stores attributed worker reports while coordinating transitions. After feature closure, `temper` writes an append-only local report under the gitignored `docs/.retro/`; its synthesize mode aggregates those reports and, when evidence is corroborated across reports, offers the proposals to the operator as a selection.
+Attended mode pauses for task selection, passing reviews, and operations that need your approval. Unattended mode advances routine steps, including authorizing prepared pushes, pull requests, and ordinary merges into the default branch. Both modes require review.
 
-## Workflows
+Some decisions wait for you in either mode. [How Valcraft works](docs/how-it-works.md#approval-modes-and-authority) lists where your approval is required.
 
-### 1. The full loop: `cast` → `spec` → `foreman`
+You can also run the skills one by one and handle the handoffs yourself. The written requirements, plans, independent reviews, and verification stay the same. You get more control at the cost of more attention. You can learn the skills this way before handing coordination to Foreman.
 
-The default path for a new project or a new body of work.
+Workers run as native subagents in Claude Code, Codex, or Cursor, as fresh coding agents in Herdr panes, or as Agent Orchestrator sessions with a worktree each. [Where the workers run](docs/how-it-works.md#where-the-workers-run) compares the three.
 
-1. **`/valcraft:valcraft-cast`** — create or retrofit the project frame: README, configuration-free `AGENTS.md`, product brief, architecture and ADR structure, and the durable `specs/` root. Cast invokes `tune` when configuration is missing or invalid, records its exact proposal, and commits one clean baseline that includes `.valcraft/config.yaml` and the `.valcraft/` ignore pair. It hands the product brief to Spec and creates no feature triplet or quick task.
-2. **`/valcraft:valcraft-spec`** — give `spec` one accepted PRD or requirements source. It creates or resumes the complete `spec.md`, `design.md`, and `tasks.md` triplet, including the first MVP feature. For a smaller change, it creates one complete quick-task file under `specs/quick/`. Spec owns optional authorized tracker projection, branch push, and spec PR creation or update, then returns exact Review and Land targets.
-3. **`/valcraft:valcraft-foreman`** — say "start sprint" after Spec or at any later point through Temper. Foreman reads its complete settings from the resolved configuration; missing or invalid settings return to `tune` instead of triggering runtime guesses. With no verified active checkpoint, it finds the selected feature or quick task's earliest unproven state, previews the exact target, evidence, attributed dirty paths, inferred state, and next producer action, then waits for confirm, correct, or cancel even in unattended mode. It can resume Spec for an incomplete or unpublished contract, route an exact contract through Review and Land, or adopt exact later producer evidence before continuing the normal task loop: pick → Draft plan and MSW → Review plan → Forge implementation and authorized task PR → Review code → Land finalization and closure. When a feature closes, Foreman routes Temper's local retrospective report through Review; a pass completes the feature, and nothing is merged because the report is not in git. "deliver quick" applies the same takeover and task flow to `specs/quick/`. New feature and PRD intake still begins directly with Spec.
+## Keep the project ready for the next session or teammate
 
-   Run `/valcraft:valcraft-tune` at any time to reconfigure one section. Tune asks only genuinely open choices with the recommended simple option first, resolves the rest from existing configuration and repository evidence, and shows the exact saved YAML in its report. A user-scoped change can apply to everyone (committed) or just to you (local overlay). Manual Forge remains available without changing the scaffold.
+Requirements, acceptance criteria, design decisions, plans, and tasks are ordinary Markdown files in git. You can read and edit them with your usual tools and follow their history. The files remain useful if you remove Valcraft.
 
-   `foreman` can use native subagents on Claude Code, Codex, and Cursor. Claude Code wakes the parent turn when a worker completes; Codex waits in the foreground with `wait_agent`; Cursor keeps the parent turn active while the Task call holds. The Herdr backend can assign each role to Claude, Codex, or Cursor while preserving cross-harness Review independence. OpenCode has no worker backend. External orchestrators integrate through registered Foreman backends.
+Cast records the project rules in `AGENTS.md`, where agent sessions read them even when Foreman is not running. Those rules tell agents to cite the same requirement IDs and update affected specifications or decision records alongside their changes.
 
-### 2. Manual loop, one task at a time
+Task tracking can stay local as checkboxes in the repository. Teams can also use GitHub Issues to see feature tasks and their status in one place. The repository remains the source of requirements; quick tasks always track locally.
 
-Same contracts, you drive:
+A teammate can continue from the work you have pushed. Foreman proposes where to continue and asks for confirmation.
 
-1. `/valcraft:valcraft-cast`, then `/valcraft:valcraft-spec` as above.
-2. `/valcraft:valcraft-draft T-XXX` (or `Q-NNN QT-XXX`) — write or revise the task plan, apply MSW, verify the surviving plan, and commit that reviewable state. Run `/valcraft:valcraft-review` in plan mode on that exact commit; return findings to Draft by `R-ID`.
-3. `/valcraft:valcraft-forge T-XXX` — implement only from the passed plan review, verify the change, and prepare or create the authorized task PR. Run `/valcraft:valcraft-review` in code mode on the exact head; return findings to Forge by `R-ID`.
-4. `/valcraft:valcraft-land` — revalidate Review coverage and applicable checks, then perform only the authorized finalization and closure operations. In unattended mode, exact target-bound Land authority permits ordinary landing on native subagents, external orchestrators, and conforming future backends; Foreman never merges.
-5. `/valcraft:valcraft-temper` over the closed feature, then run `/valcraft:valcraft-review` in plan mode on the exact report path and content hash it returns. There is no PR and no Land step.
-
-Invoke Foreman at any point after Spec to hand over the remaining sequence. It confirms the inferred state and next action once, then continues autonomously under the configured approval mode and existing authority gates.
-
-## Prompt tooling
-
-- **`hone`** — refine a prompt, skill, or `AGENTS.md` against the current Claude and Codex prompting guides; deletion first, every addition justified.
-- **`distill`** — reduce a prompt or skill to goal, steps, constraints, and testable behaviors; a study or a leaner drop-in copy.
-- **`msw`** — apply the MSW Kernel to a markdown document: derive its contract, delete every claim the contract does not require, report what was cut and why. Kernel by "Fable at mega high monkey effort", published by [@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
+Team settings live in the committed configuration. Tune can also save personal approval and backend choices in a local overlay, so teammates can work differently without changing the shared settings.
 
 ## Skills at a glance
 
-| Skill | Claude Code | Codex | OpenCode | Cursor |
-| --- | --- | --- | --- | --- |
-| `tune` — adjust the shared configuration or your local overlay | `/valcraft:valcraft-tune` | `$valcraft:valcraft-tune` | `valcraft-tune` | `/valcraft-tune` |
-| `cast` — create or retrofit the project frame | `/valcraft:valcraft-cast` | `$valcraft:valcraft-cast` | `valcraft-cast` | `/valcraft-cast` |
-| `spec` — create a feature or quick contract | `/valcraft:valcraft-spec` | `$valcraft:valcraft-spec` | `valcraft-spec` | `/valcraft-spec` |
-| `draft` — write a task plan and apply MSW | `/valcraft:valcraft-draft` | `$valcraft:valcraft-draft` | `valcraft-draft` | `/valcraft-draft` |
-| `forge` — implement a reviewed task | `/valcraft:valcraft-forge` | `$valcraft:valcraft-forge` | `valcraft-forge` | `/valcraft-forge` |
-| `review` — review an exact plan, change, or evidence | `/valcraft:valcraft-review` | `$valcraft:valcraft-review` | `valcraft-review` | `/valcraft-review` |
-| `land` — finalize reviewed work and close tracker state | `/valcraft:valcraft-land` | `$valcraft:valcraft-land` | `valcraft-land` | `/valcraft-land` |
-| `foreman` — coordinate the delivery loop | `/valcraft:valcraft-foreman` | `$valcraft:valcraft-foreman` | `valcraft-foreman` | `/valcraft-foreman` |
-| `temper` — produce a local retrospective and handoff | `/valcraft:valcraft-temper` | `$valcraft:valcraft-temper` | `valcraft-temper` | `/valcraft-temper` |
-| `hone` — refine a prompt artifact | `/valcraft:valcraft-hone` | `$valcraft:valcraft-hone` | `valcraft-hone` | `/valcraft-hone` |
-| `distill` — reduce a prompt to its essence | `/valcraft:valcraft-distill` | `$valcraft:valcraft-distill` | `valcraft-distill` | `/valcraft-distill` |
-| `msw` — MSW Kernel over a document | `/valcraft:valcraft-msw` | `$valcraft:valcraft-msw` | `valcraft-msw` | `/valcraft-msw` |
+| Skill | What it helps you do |
+| --- | --- |
+| [Cast](plugins/valcraft/skills/valcraft-cast/SKILL.md) | Scaffold a new project or add the structure to an existing one. |
+| [Spec](plugins/valcraft/skills/valcraft-spec/SKILL.md) | Turn requirements into a feature specification or a quick task. |
+| [Foreman](plugins/valcraft/skills/valcraft-foreman/SKILL.md) | Coordinate delivery or pick up work already in progress. |
+| [Draft](plugins/valcraft/skills/valcraft-draft/SKILL.md) | Plan one task and remove work the assignment does not need. |
+| [Forge](plugins/valcraft/skills/valcraft-forge/SKILL.md) | Implement a reviewed task, verify it, and address review findings. |
+| [Review](plugins/valcraft/skills/valcraft-review/SKILL.md) | Independently check a specification, plan, code change, or completion evidence. |
+| [Land](plugins/valcraft/skills/valcraft-land/SKILL.md) | Verify review coverage and applicable checks, perform authorized merges, and close the task. |
+| [Temper](plugins/valcraft/skills/valcraft-temper/SKILL.md) | Review what happened during a completed feature and propose lessons for future work. |
+| [Tune](plugins/valcraft/skills/valcraft-tune/SKILL.md) | Configure task tracking, approval mode, and how workers run. |
+| [Hone](plugins/valcraft/skills/valcraft-hone/SKILL.md) | Refine a prompt, skill, or agent instruction file. |
+| [Distill](plugins/valcraft/skills/valcraft-distill/SKILL.md) | Reduce a prompt or skill while preserving the behavior it needs. |
+| [MSW](plugins/valcraft/skills/valcraft-msw/SKILL.md) | Check a document against its purpose and remove unnecessary work. |
 
-Skills also trigger from natural requests ("new project", "review this PR", "retrospective on feature 3"); the command is the explicit path. The skill name is `valcraft-<skill>` on every host. Claude Code and Codex prepend the `valcraft:` plugin namespace in their explicit forms, OpenCode loads the bare name through its `skill` tool, and Cursor uses `/valcraft-<skill>`. Cursor's built-in `/review` is not Valcraft Review; invoke `/valcraft-review`.
+Every skill uses the name `valcraft-<skill>`. Invoke it as `/valcraft:valcraft-<skill>` in Claude Code, `$valcraft:valcraft-<skill>` in Codex, or `/valcraft-<skill>` in Cursor. OpenCode loads the bare name through its `skill` tool. Natural requests can also trigger skills. In Cursor, use `/valcraft-review` for Valcraft Review; `/review` is Cursor's built-in command.
 
-## Compared with other SDD frameworks
-
-| Elsewhere                                                                                    | In valcraft                                                                                                                                                                                                                                                |
-| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An executable, scripts, and a setup step.                                                    | The skills are instruction-only: one plugin and no runtime dependency. `cast` writes the tracked project frame; `tune` writes the committed configuration and an optional ignored overlay.                                                                                       |
-| Specs and tasks live in the framework's own folders and formats.                             | Specs are ordinary files under `specs/`, tasks are checkboxes or GitHub Issues you already use, decisions are ADRs — readable and editable without the tool.                                                                                               |
-| SDD is a session ritual, not a project rule; work done outside it drifts from the specs.     | `cast` writes the discipline into `AGENTS.md`, so every agent session — inside the loop or not — cites IDs, updates the affected spec or ADR in the same change, and reviews against the same contract; `cast` retrofits an existing project the same way. |
-| Roles are personas and phases are ceremony — analyst hands off to PM hands off to architect. | Valcraft's roles are skills with contracts (`spec`, `draft`, `forge`, `review`, `land`, `temper`); independence comes from a fresh context per role, not a character sheet.                                                                                |
-| A dozen generated documents and a traceability matrix nobody reads.                          | The skeleton is small; every other artifact is opt-in with a stated trigger. IDs and links give traceability; the skills trim generated verbosity before committing.                                                                                       |
-| Adoption is all or nothing.                                                                  | Each skill runs alone: `draft` on one task, `review` on an exact target, `forge` on a passed plan, `land` on reviewed work, or `cast` to retrofit — the loop is there when you want it.                                                                    |
+The MSW Kernel is by "Fable at mega high monkey effort", published by [@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
 
 ## Install
 
-Claude Code:
+Choose the application you use for coding agents. Foreman's native subagent backend is available in Claude Code, Codex, and Cursor. OpenCode currently supports the individual skills without a Foreman worker backend. Installing through Cursor's marketplace requires a Teams or Enterprise plan and permission to import a marketplace.
+
+<details open>
+<summary>Claude Code</summary>
 
 ```bash
 claude plugin marketplace add valzav/valcraft
 claude plugin install valcraft@valcraft
 ```
 
-Codex (start a new session afterwards):
+</details>
+
+<details open>
+<summary>OpenAI Codex</summary>
 
 ```bash
 codex plugin marketplace add valzav/valcraft
 codex plugin add valcraft@valcraft
 ```
 
-OpenCode — add the skills source to `opencode.json` (project or global) and allow the `skill` tool; OpenCode fetches `index.json` and caches every skill file, refreshing a skill when its content changes:
+Start a new Codex session afterwards.
+
+</details>
+
+<details>
+<summary>Cursor</summary>
+
+Import the repository from the team dashboard under **Plugins → Add Marketplace**, or use the CLI:
+
+```bash
+agent plugin marketplace add https://github.com/valzav/valcraft
+```
+
+Then install `valcraft` from the Cursor Plugins UI. The CLI has no `plugin install` command. Use the repository as the marketplace source, not a skill directory.
+
+</details>
+
+<details>
+<summary>OpenCode</summary>
+
+Add the skills source to your project or global `opencode.json`:
 
 ```json
 {
@@ -159,52 +160,54 @@ OpenCode — add the skills source to `opencode.json` (project or global) and al
 }
 ```
 
-The URL form needs the repository to be public (raw GitHub answers anonymous requests only for public repositories). From a clone, use `"skills": { "paths": ["/path/to/valcraft/plugins/valcraft/skills"] }` instead. `foreman` has no OpenCode worker backend yet; the other skills run as they do elsewhere.
+The URL requires a public repository. To load from a clone, use `"skills": { "paths": ["/path/to/valcraft/plugins/valcraft/skills"] }` instead.
 
-Cursor Teams or Enterprise (marketplace-import authority). Import this git repository as a team marketplace from the dashboard **Plugins → Add Marketplace**, or add it from the CLI:
+</details>
 
-```bash
-agent plugin marketplace add https://github.com/valzav/valcraft
-```
+### Updating
 
-The CLI has no `plugin install` verb. After the marketplace is visible, install `valcraft` from the Cursor Plugins UI. Do not install from a skill directory, and do not point a `~/.cursor/skills` path at this repository.
+<details>
+<summary>Update commands and reload behavior</summary>
 
-## Update
-
-Claude Code — third-party marketplaces do not auto-update; every push is a new version:
+Claude Code:
 
 ```bash
 claude plugin marketplace update valcraft
 claude plugin update valcraft@valcraft
 ```
 
-Codex — refresh the marketplace snapshot and re-add, then start a new session:
+Codex, followed by a new session:
 
 ```bash
 codex plugin marketplace upgrade valcraft
 codex plugin add valcraft@valcraft
 ```
 
-OpenCode — nothing to run: the source is re-read at startup, and a skill whose `version` in `index.json` changed is re-downloaded (raw GitHub caches for a few minutes).
-
-Cursor — re-index the marketplace, then install or update the plugin from the user-scoped Plugins UI (`/plugins` → `valcraft` → Install/Update). If the re-index does not surface the new version, remove and re-add the marketplace with `agent plugin marketplace remove valcraft` followed by the `add` command above:
+Cursor:
 
 ```bash
 agent plugin marketplace update valcraft
 ```
 
-A marketplace install is a cached copy. It does not read later checkout edits.
+Then install or update Valcraft in the Plugins UI. If the new version does not appear, remove and re-add the marketplace before updating the plugin.
 
-## More
+OpenCode refreshes the source at startup and downloads skills whose version changed. A marketplace installation is a cached copy; edits in a local clone do not update it.
 
-- [docs/development.md](docs/development.md) — live editing, repository layout, packaging, evals.
-- [docs/glossary.md](docs/glossary.md) — the terms the skills share.
-- [migrations.md](plugins/valcraft/skills/valcraft-tune/references/migrations.md) — what each release changes for a repository that already uses Valcraft, and how bare `tune` applies it.
-- [models.md](plugins/valcraft/skills/valcraft-tune/references/models.md) — the model aliases, effort sets, and Herdr presets Tune offers; the only file to edit when a provider adds or retires a model.
+After upgrading Valcraft, run Tune to apply any configuration changes your project needs. See the [migration reference](plugins/valcraft/skills/valcraft-tune/references/migrations.md).
 
-## Contributing
+</details>
 
-Pull requests are welcome. The `lint` workflow must pass, and every shipped `SKILL.md` must stay at or below 8,000 UTF-8 bytes (the Codex limit; move detail into `references/`). [docs/development.md](docs/development.md) covers live editing and packaging.
+## Documentation
+
+- [How Valcraft works](docs/how-it-works.md): the data model, artifact owners, each step of the loop, required approvals, backends, and recovery.
+- [Configuration](plugins/valcraft/skills/valcraft-tune/references/config.md): shared settings, personal overrides, and setup choices.
+- [Glossary](docs/glossary.md): project files, roles, and terms used by the skills.
+- [Models and presets](plugins/valcraft/skills/valcraft-tune/references/models.md): model choices for worker roles.
+- [Development guide](docs/development.md): contributing, live editing, packaging, and evaluations. Pull requests are welcome; the repository's lint checks must pass.
+
+## Feedback and contact
+
+Report problems through [GitHub Issues](https://github.com/valzav/valcraft/issues). Follow the project on [Telegram](https://t.me/valcraftlab) or [X](https://x.com/valzav), or email [i@valzav.com](mailto:i@valzav.com).
 
 ## License
 
