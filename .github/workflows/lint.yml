@@ -34,6 +34,9 @@ jobs:
           python3 scripts/check-coordination-contracts.py
           python3 scripts/tests/test_check_coordination_contracts.py
 
+      - name: Test the Jev audit scripts
+        run: python3 scripts/tests/test_jev_audit.py
+
       - name: Parse JSON
         run: git ls-files '*.json' | xargs -I{} jq empty {}
 
