@@ -26,9 +26,9 @@
       "files": ["evals/files/import-spec/spec.md"],
       "assertions": [
         "The 30-second limit survives, with the gateway timeout named as its authority",
-        "The 3-retry count (FR-004) is deleted as a limit without authority",
-        "The 5 MB file-size cap (FR-005) is deleted as a limit without authority",
-        "The 10-FRs-per-spec authoring rule is deleted as a limit without authority",
+        "The 3-retry count (FR-004) is deleted: neither the count nor its value survives in the spec, including as a note or placeholder",
+        "The 5 MB file-size cap (FR-005) is deleted: neither the cap nor its value survives in the spec, including as a note or placeholder",
+        "The 10-FRs-per-spec authoring rule is deleted: neither the rule nor its value survives in the spec, including as a note or placeholder",
         "Deleted limits appear in the rejected-claims section, one line each, with the reason",
         "Surviving functional requirements are not rewritten",
         "No deleted limit is reintroduced as a recommendation or default"

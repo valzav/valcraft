@@ -647,7 +647,7 @@
         "A local PRD routes directly to Spec outside Foreman",
         "Foreman creates no run or worker and performs no artifact or PR work",
         "Foreman applies no runtime default and leaves the missing-configuration gate to Spec",
-        "No Cast approval relay or compatibility path remains"
+        "Foreman creates no approval relay and no compatibility path between Cast and the delivery loop; the PRD goes straight to Spec"
       ]
     },
     {
@@ -739,7 +739,7 @@
       ],
       "assertions": [
         "The external-orchestrator dispatch uses the backend-declared spawn command with project, harness, physical alias, and physical branch",
-        "The physical branch is unused and points at the predecessor's exact SHA before spawn",
+        "Before spawn, Foreman verifies that the physical branch is unused and points at the predecessor's exact SHA, and a branch at any other commit stops the spawn",
         "Stale and already-checked-out branches stop before worker creation",
         "The canonical remote task ref is revalidated and never force-pushed",
         "No legacy session-creation command is used"
@@ -1074,7 +1074,7 @@
       "assertions": [
         "The recorded pane from the checkpoint is verified and reused rather than replaced",
         "No second pane is split",
-        "The agent is started under the same collision-checked name and the dispatch continues",
+        "Foreman starts the agent in the recorded pane under the same collision-checked name, and the dispatch continues to the assignment",
         "The absent report path is read as pre-submission state, not as a failure",
         "The logical identity is preserved and no new dispatch ordinal is consumed"
       ]
@@ -1248,7 +1248,7 @@
         "The explicit --until states are justified because a bare agent wait also matches blocked and would return at once on the already-blocked worker",
         "The await timeout is kept below the controller's own command limit so the host returns wait_timeout instead of a lost handle",
         "A terminal return with the attributed report while the gate is open resolves the gate and is recorded as report_available",
-        "Leaving blocked without a report is idle_without_report, not a resolved gate",
+        "A worker that leaves blocked and settles without a report is recorded as the named state idle_without_report, not as a resolved gate",
         "A gate still standing when the bounded await returns wait_timeout remains at the gate"
       ]
     },
@@ -1286,11 +1286,11 @@
         "references/contracts.md"
       ],
       "assertions": [
-        "The unsettled prompt is recorded as permission_blocked and escalated, not answered",
+        "The record names the status permission_blocked for the unsettled prompt, and Foreman escalates the prompt without answering it",
         "After escalation the same background waiter is re-armed on the same session with SEEN=1 GATED=1 before the turn ends",
         "GATED=1 is justified because a default waiter re-checks the recorded blocked status before its first sleep and would return permission_blocked again immediately",
         "report_available while the gate is open resolves the gate and is recorded as such",
-        "Settling idle without a report is idle_without_report, not a resolved gate",
+        "A session that leaves blocked and settles idle without a report is recorded as the named state idle_without_report, not as a resolved gate",
         "A session still blocked at the recorded gate produces no waiter return; the gated waiter keeps polling instead of waking Foreman"
       ]
     },
