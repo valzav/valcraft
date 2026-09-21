@@ -33,21 +33,17 @@ The feature is complete when every applicable acceptance criterion is verified, 
      status and discussion. List position is not a dependency. Only
      `blocked by T-XXX` declares one.
 
-     Make every task concrete and verifiable. Name the behavior, file, or
-     subsystem it changes and the requirement or criterion it serves. Put tests
-     and operational work with the behavior they prove. -->
+     Make every task concrete and verifiable. Name the behavior or subsystem
+     it changes and the requirement or criterion it serves. Size each task as
+     one reviewable slice; one file is not a reason for one task. Put tests and
+     operational work with the behavior they prove, and add no task that only
+     verifies other tasks' work. -->
 
 ## Phase 1: <Foundation>
 
-- [ ] T-001 <Task>; verifies FR-001.
-- [ ] T-002 <Task>; supports AC-001.
+- [ ] T-001 <Subsystem slice with its checks>; verifies FR-001, AC-001.
 
-## Phase 2: <Core behavior>
+## Phase 2: <Core behavior and surface>
 
-- [ ] T-003 <Task>; verifies FR-002.
-- [ ] T-004 Add discriminating checks for <behavior>.
-
-## Phase 3: <Surface and verification>
-
-- [ ] T-005 <User-facing surface>; verifies AC-002.
-- [ ] T-006 Verify every acceptance criterion and update affected contracts.
+- [ ] T-002 <Behavior slice with its checks>; verifies FR-002, AC-002; blocked by T-001.
+- [ ] T-003 <User-facing surface with its checks>; verifies FR-003, AC-003; blocked by T-002.

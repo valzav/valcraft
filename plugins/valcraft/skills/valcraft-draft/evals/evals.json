@@ -263,6 +263,23 @@
         "After an on-task-branch amendment, Draft re-validates the plan and reports the unchanged head when no plan line changes",
         "No rebase, reset, or force-push is proposed"
       ]
+    },
+    {
+      "id": 13,
+      "name": "plan-cites-the-design-test-strategy",
+      "prompt": "/valcraft:valcraft-draft — plan verification for FEAT-006 T-002, which builds CSV export and completes AC-002. design.md's Test strategy entry for AC-002 reads: observation method, parse the downloaded file with the repository's CSV reader; guarded defect, a comma inside a title splits that title into two fields; failing input, a record whose title is `Tea, green`, whose parsed title must equal `Tea, green`; positive control, the three-record fixture parses to three records whose titles equal the fixture's titles. T-002 also adds a header row, which no Test strategy entry covers. State the verification content the plan needs; do not write files.",
+      "expected_output": "Draft cites the design's Test strategy entry for AC-002 and reuses its observation method, failing input, and positive control instead of designing a different check for the comma defect. It designs one new check, for the header row, and names that as a gap the Test strategy does not cover. Draft writes no file.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "references/baseline-facts.md"
+      ],
+      "assertions": [
+        "Draft cites the design's Test strategy entry for AC-002 as the source of the comma check",
+        "Draft reuses the entry's failing input `Tea, green` and its three-record positive control and designs no different check for the comma defect",
+        "Draft designs a new check for the header row and names it as a gap that no Test strategy entry covers",
+        "Draft writes no file"
+      ]
     }
   ]
 }

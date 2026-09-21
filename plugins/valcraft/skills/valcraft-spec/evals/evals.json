@@ -503,6 +503,47 @@
         "A migration that needs no answer completes under an unattended run and Spec resumes from the post-migration HEAD",
         "A non-done Tune result ends Spec with the Tune-derived configuration code and no artifact write"
       ]
+    },
+    {
+      "id": 25,
+      "name": "small-modules-group-into-reviewable-slices",
+      "prompt": "/valcraft:valcraft-spec — in evals/files/small-files-prd/, run `./prepare-eval.sh`, then create the feature contract from docs/palette-board-prd.md. This is a direct invocation with no outward-mutation authority.",
+      "expected_output": "Spec creates one specs/001-* directory with spec.md, design.md, and tasks.md. tasks.md delivers the hue table, palette, and generator modules in one task together with their unit checks, not in one task per module, and it contains no task whose only work is testing or verifying behavior that other tasks build: each check sits in the task that builds the behavior, and the task that completes a criterion verifies it. design.md's Test strategy gives every acceptance criterion an entry with the observation method, the defect the check guards, an input under which that defect fails the check, and a positive control on a correct build. It lists adversarial cases for the drag interaction, including a drag released outside the board and a click without movement. Spec performs no push, PR, or tracker operation.",
+      "files": [
+        "evals/files/small-files-prd/.gitignore",
+        "evals/files/small-files-prd/prepare-eval.sh",
+        "evals/files/small-files-prd/AGENTS.md",
+        "evals/files/small-files-prd/.valcraft/config.yaml",
+        "evals/files/small-files-prd/docs/product-brief.md",
+        "evals/files/small-files-prd/docs/palette-board-prd.md",
+        "evals/files/small-files-prd/specs/.gitkeep"
+      ],
+      "assertions": [
+        "Spec writes spec.md, design.md, and tasks.md under one specs/001-* directory",
+        "tasks.md delivers the hue table, the palette, and the generator modules in one task, not in one task per module",
+        "tasks.md contains no task whose only work is testing or verifying behavior that other tasks build",
+        "design.md's Test strategy gives every acceptance criterion an entry that names an observation method, the defect the check guards, an input under which that defect fails the check, and a positive control",
+        "design.md's Test strategy lists adversarial cases for the drag interaction, including a drag released outside the board and a click without movement",
+        "Spec performs no push, PR, or tracker operation"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "harness-bound-verification-route-is-replaced",
+      "prompt": "/valcraft:valcraft-spec — assess a complete FEAT-009 triplet at its exact selected baseline. All identities, dependencies, and criterion coverage validate. AC-003 requires that the browser console shows no error during a drag. design.md's Test strategy observes the console through a browser extension that only a Claude Code session can drive, and Verified baseline assumptions has no entry for that route. The resolved configuration's worker map assigns `forge` to Claude and `code_review` to Codex. State the local corrections the design needs. Do not mutate anything.",
+      "expected_output": "Spec states that the verification route must be verified before delivery starts and recorded under Verified baseline assumptions: the tool's name and version, its executable, and proof that it observes each class of event AC-003 needs, here console errors during a drag. It names Claude and Codex as the harnesses that must drive the route, from the worker map. It states that the extension route fails for the Codex code reviewer because it is bound to Claude Code's own tooling, and that the design must choose a route both harnesses can drive, such as a command-line browser driver. Spec mutates nothing.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "Spec requires the verification route to be recorded under Verified baseline assumptions with the tool's name and version, its executable, and proof of the event classes it observes",
+        "Spec names both Claude and Codex as harnesses that must drive the route, citing the worker map",
+        "Spec states that the Claude-only browser extension fails as a route for the Codex code reviewer",
+        "Spec requires a route that both harnesses can drive",
+        "Spec edits no file and performs no git or tracker operation"
+      ]
     }
   ]
 }

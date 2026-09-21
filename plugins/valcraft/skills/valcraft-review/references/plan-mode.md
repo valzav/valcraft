@@ -16,6 +16,8 @@ Read the blob at the pinned commit, or the file at the pinned hash. A newer comm
 - For every invariant, explain how its test could still pass if the property were false. Check ordering, state, and scheduling dependencies.
 - Reject textual delimiters as containment for untrusted content that can reproduce the marker. Require structural encoding at the plan boundary.
 - Trace each proposed failure through the actual dispatcher or handler before accepting its claimed outcome.
+- Reproduce a runtime-behavior claim by running that behavior. A reading of source or a numeric model is inference: label it as inference, and do not let it close a question that execution can settle.
+- Accept a task plan's citation of a reviewed `Test strategy` entry without deriving the check again. Review what the plan adds to or changes from that entry.
 - Reproduce mechanism claims against the exact tool or library version. Mutable documentation is not evidence. A mechanism-dependent accepted ADR without evidence is a finding; a conceptual ADR needs no Verification section.
 - Assess a configured value's necessity separately from its authority. A governed conflict is a finding. A necessary ungoverned value is implementation discretion whose behavior and evidence still require review.
 - Compare proposed work with goals and non-goals. Work no requirement asks for is scope creep.
@@ -24,11 +26,13 @@ Read the blob at the pinned commit, or the file at the pinned hash. A newer comm
 
 For a feature spec, verify that directory number equals frontmatter `id`, `Sources` contains exactly one canonical entry, and `spec_issue` matches tracker mode.
 
-For feature `tasks.md`, require every task to use `T-XXX`. Map every declared `FR-`, `AC-`, `NFR-`, and `BR-` to a verifying task. Check ownership of every substantive acceptance-criterion clause, including each enumerated surface or behavior; an ID appearing in a task is insufficient. Resolve every `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered requirements as material findings.
+For feature `tasks.md`, require every task to use `T-XXX`. Map every declared `FR-`, `AC-`, `NFR-`, and `BR-` to a verifying task. Check ownership of every substantive acceptance-criterion clause, including each enumerated surface or behavior; an ID appearing in a task is insufficient. Resolve every `blocked by T-XXX`. Report wrong prefixes, missing dependencies, and uncovered requirements as material findings. Apply `feature-contract.md`'s sizing rule: report as material findings neighboring tasks that share a subsystem and raise no separate review question with no stated reason for the split, and a task that only verifies behavior other tasks build.
 
 When the assignment names Spec-owned R-IDs resolved on the task branch, pin the triplet blobs at the same full commit as the plan and re-run each of those R-IDs against them. Verify Spec's reported scope test against the predecessor-to-head diff using `feature-contract.md`'s `Amendment scope`; an out-of-scope hunk is a material finding owned by Spec. This closure check is the review of the amendment; no separate Spec Review runs.
 
 When `design.md` and `tasks.md` both exist, apply `feature-contract.md`'s complete implementation-readiness gate. Apply the substantive checks above to the whole triplet: independently verify the existing-code assumptions that determine its design and cross-check its behavior against the spec and task ownership. Use the recorded baseline and evidence as locators, not as a substitute for reproduction. Do not pass an unverified consequential claim by deferring it to a later task review. Proposed behavior still belongs to implementation; do not require it to exist at the baseline.
+
+Judge the design's `Test strategy` once, here. Require an entry for each applicable acceptance criterion and invariant with all four fields. For each entry, decide whether the named check could pass with the guarded defect present and whether the observation method can record that defect class. Require the adversarial cases for each interaction or interface, and the recorded verification route when a criterion needs an observation tool that a worker must drive.
 
 For a retrospective report under `docs/.retro/`, apply Temper's `report-format.md` and `process.md` as the governing contract.
 

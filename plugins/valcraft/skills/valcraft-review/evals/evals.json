@@ -617,6 +617,29 @@
         "A triplet edit inside a Forge commit is a finding",
         "Ordinary code-mode checks still apply to the rest of the PR"
       ]
+    },
+    {
+      "id": 31,
+      "name": "plan-mode-task-sizing-and-test-strategy",
+      "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/sizing-and-test-strategy/, review the feature triplet under specs/001-tag-filter/.",
+      "expected_output": "Review selects plan mode and applies Spec's feature contract to the whole triplet. It reports as material findings that T-001, T-002, and T-003 split one filter subsystem into one task per file with no separate review question and no stated reason, and that T-005 and T-006 only verify behavior that other tasks build. It reports that design.md's Test strategy has no entry per acceptance criterion with an observation method, a guarded defect, a failing input, and a positive control, that it lists no adversarial cases for the chip toggle, and that the browser criterion AC-004 has no recorded verification route. It routes every finding to Spec and edits nothing.",
+      "files": [
+        "evals/files/sizing-and-test-strategy/AGENTS.md",
+        "evals/files/sizing-and-test-strategy/docs/tag-filter-prd.md",
+        "evals/files/sizing-and-test-strategy/docs/product-brief.md",
+        "evals/files/sizing-and-test-strategy/specs/001-tag-filter/spec.md",
+        "evals/files/sizing-and-test-strategy/specs/001-tag-filter/design.md",
+        "evals/files/sizing-and-test-strategy/specs/001-tag-filter/tasks.md"
+      ],
+      "assertions": [
+        "A material finding reports that T-001, T-002, and T-003 split the filter subsystem into one task per file with no stated reason for the split",
+        "A material finding reports that T-005 and T-006 only verify behavior that other tasks build",
+        "A material finding reports that design.md's Test strategy lacks a per-criterion entry with an observation method, a guarded defect, a failing input, and a positive control",
+        "A finding reports that design.md records no verification route for the browser criterion AC-004",
+        "Every finding names valcraft-spec as the owner of its resolution",
+        "The verdict is material findings, with stable R-NNN IDs in an auditable table",
+        "Review edits no file: it merges no task and rewrites no Test strategy"
+      ]
     }
   ]
 }

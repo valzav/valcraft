@@ -17,6 +17,6 @@ For each path the plan names as touched, created, or consumed:
 
 - A step that would create what already exists becomes a reconciliation step, or is removed.
 - A documented command binds to the committed name. When the documentation and the source of truth disagree, the plan names which one changes and why.
-- A verification step names what it discriminates. An exit status alone does not prove a linter inspected any file, a test ran any case, or a build emitted any artifact; state the observable that would differ if the step were vacuous.
+- A verification step names what it discriminates. An exit status alone does not prove a linter inspected any file, a test ran any case, or a build emitted any artifact; state the observable that would differ if the step were vacuous. A fixture that passes under both the correct and the defective rule discriminates nothing, and neither does an observation tool that cannot record the defect class: name the input that fails under the defect, and show that the tool records that class.
 
 Record the inspected paths, baseline SHA, and command used (`git cat-file -p <sha>:<path>`) in the plan's workspace section to prove the facts came from the commit rather than the working tree.
