@@ -1726,6 +1726,26 @@
         "Commit target `amendment branch` routes through SpecReview and SpecLanding, and Ready re-selects T-003 into Drafting",
         "Foreman performs no artifact edit, merge, or PR preparation"
       ]
+    },
+    {
+      "id": 112,
+      "name": "landed-task-continues-to-the-next-pick",
+      "prompt": "/valcraft:valcraft-foreman — unattended mode, herdr backend, Claude Code controller. FEAT-003 has T-001 to T-004 open with no dependencies between them. You have just accepted the Land report that completes T-001, and the default branch is reconciled. No worker is active and no background task is running. Say what you do next, step by step, up to the point where your turn ends, and quote anything you write to state.md about ending the turn. Do not spawn workers or write files.",
+      "expected_output": "Foreman records T-001's completion, returns to Ready, selects T-002 without an operator pick, moves to Drafting, and dispatches a fresh drafter in the same turn. It does not end the turn on a progress or status summary, because a landed task is not a reason to end a turn and nothing is armed to wake it. The turn ends only after delivery is confirmed and the background `herdr agent wait` is armed, and the checkpoint then carries `Turn end: await <harness task id>`. The other two reasons a turn may end are an open gate, recorded as `Turn end: gate <named state and decision>`, and run completion, recorded as `Turn end: complete`.",
+      "files": [
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/backends/herdr.md",
+        "templates/run-dir.md"
+      ],
+      "assertions": [
+        "After T-001 lands, Foreman returns to Ready, selects T-002, enters Drafting, and dispatches a fresh drafter in the same turn",
+        "Foreman does not end the turn with a progress report, a status summary, or a promise to report later",
+        "Foreman ends the turn only after it arms the background `herdr agent wait` for the drafter's assignment",
+        "Foreman's answer quotes `Turn end: await <harness task id>` as the line it appends to the latest state.md checkpoint before the turn ends",
+        "Foreman names `Turn end: gate` and `Turn end: complete` as the only other lines that let a turn end",
+        "Foreman requests no operator pick, status prompt, or continue prompt"
+      ]
     }
   ]
 }

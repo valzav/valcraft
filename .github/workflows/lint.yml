@@ -37,6 +37,9 @@ jobs:
       - name: Test the Jev audit scripts
         run: python3 scripts/tests/test_jev_audit.py
 
+      - name: Test the controller Stop hook
+        run: python3 scripts/tests/test_controller_stop_hook.py
+
       - name: Parse JSON
         run: git ls-files '*.json' | xargs -I{} jq empty {}
 

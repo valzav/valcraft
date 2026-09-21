@@ -43,6 +43,7 @@ Append checkpoints with:
 - the plugin revision of each dispatched skill at every dispatch, as that skill's `version` content hash from the plugin's `skills/index.json` together with the plugin manifest's release version string. The content hash is the canonical revision because it distinguishes snapshots that share a release version; the release version string is corroborating metadata and never substitutes for it. Record the revision as unavailable when `skills/index.json` cannot be read, rather than falling back to the base directory or the release version;
 - every backend return, its source, time, and terminal or nonterminal disposition;
 - the armed background await and its harness task id when the backend's wake is `event`, so a wake can be matched to its assignment and a stale await stopped;
+- the turn-end line that `loop.md` requires before every turn end;
 - accepted producer report path, terminal status, routing code or structured verdict, exact artifact or PR identity, and registry transition;
 - adopted pre-run report path, content hash, producer contract, exact target, predecessor plan or artifact, covered head or hash, validation result, and operator attribution, without an assignment, backend return, or worker row;
 - canonical and physical branch refs, exact local and remote SHAs, workspace seed SHA and kind, and synchronization classification;

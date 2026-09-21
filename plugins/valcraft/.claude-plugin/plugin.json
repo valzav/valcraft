@@ -8,5 +8,18 @@
   "homepage": "https://github.com/valzav/valcraft",
   "repository": "https://github.com/valzav/valcraft",
   "license": "MIT",
-  "keywords": ["skills", "sdd", "scaffold", "prompt-engineering"]
+  "keywords": ["skills", "sdd", "scaffold", "prompt-engineering"],
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/controller-stop.sh"]
+          }
+        ]
+      }
+    ]
+  }
 }
