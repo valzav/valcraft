@@ -17,7 +17,7 @@ updated: <YYYY-MM-DD>
 
 ## Verified baseline assumptions
 
-<One entry per existing-code fact the design depends on, checked at the exact baseline SHA: assumption, source locator, check performed, result. Correct the design before readiness when a check disproves the assumption. Proposed changes do not belong here.>
+<One entry per existing-code fact the design depends on, checked at the exact baseline SHA: assumption, source locator, check performed, result. When a criterion needs an observation tool that a worker must drive, add the verification route: tool and version, executable, the event classes it was shown to observe, and the harnesses that must drive it. Correct the design before readiness when a check disproves the assumption. Proposed changes do not belong here.>
 
 ## Impact on existing architecture
 
@@ -37,7 +37,7 @@ updated: <YYYY-MM-DD>
 
 ## Test strategy
 
-<Which checks prove each applicable acceptance criterion and invariant.>
+<One entry per applicable acceptance criterion and invariant: observation method, the defect the check guards, an input under which that defect fails the check, and the positive control on a correct build. Then, per interaction or interface, the adversarial cases the checks exercise.>
 
 ## Alternatives considered
 
