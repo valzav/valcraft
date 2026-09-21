@@ -6,6 +6,18 @@ For every Cursor worker, whether a native Task or a Herdr worker, bind the promp
 
 Only an explicit delivery command enters the loop.
 
+## Ending a turn
+
+A turn ends for one of three reasons. Before ending a turn, append the matching line, on its own line, to the latest `state.md` checkpoint:
+
+- `Turn end: await <harness task id>` when a background await is armed for the active assignment. This value is valid only on a backend whose `wake` is `event` or `poll`; a `foreground` await holds the turn open.
+- `Turn end: gate <named state and decision>` when a row of [`approval-modes.md`](approval-modes.md) that resolves to wait, `Blocked`, or `DurableHandoff` is open to the operator.
+- `Turn end: complete` when the run is over.
+
+When none of the three is true, perform the next transition instead of ending the turn. A landed task, an accepted report, and a progress summary are not reasons to end a turn. The takeover confirmation waits before the run directory exists and records no line.
+
+On a Claude Code controller that holds the Herdr lease, the plugin's Stop hook blocks a turn that ends with no armed `herdr agent wait` and no `gate` or `complete` line in the latest checkpoint.
+
 ## Takeover bootstrap
 
 Resume a verified active Foreman checkpoint without another confirmation. When no checkpoint can resume, inspect the repository before creating a run.

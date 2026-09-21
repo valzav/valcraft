@@ -9,7 +9,7 @@ Valcraft is a set of skills for coding agents. You describe what needs to be bui
 
 You spend less time managing handoffs between agents. Work can continue across sessions and be shared with your team.
 
-The skills run in Claude Code, OpenAI Codex, Cursor, or OpenCode, with no separate Valcraft executable or background service. Valcraft is in alpha. See [installation and platform support](#install).
+The skills run in Claude Code, OpenAI Codex, Cursor, or OpenCode, with no separate Valcraft executable or background service. The Claude Code plugin includes one small shell hook that keeps an unattended run from stalling. Valcraft is in alpha. See [installation and platform support](#install).
 
 [Get started](#start-with-one-assignment) · [Skills at a glance](#skills-at-a-glance) · [Documentation](#documentation)
 
@@ -115,6 +115,8 @@ Choose the application you use for coding agents. Foreman's native subagent back
 claude plugin marketplace add valzav/valcraft
 claude plugin install valcraft@valcraft
 ```
+
+The Claude Code plugin registers one Stop hook, a POSIX shell script. It keeps a Foreman controller or a Cast run from ending its turn in the middle of a run, and it lets every other session stop. See [docs/development.md](docs/development.md#packaging).
 
 </details>
 
