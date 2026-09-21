@@ -29,7 +29,7 @@
       ],
       "assertions": [
         "Source skill directory is not modified",
-        "The destination matches the active harness: ~/.agents/skills/report-writer/ under Codex, ~/.claude/skills/report-writer/ under Claude Code, or ~/.cursor/skills/report-writer/ under Cursor",
+        "The destination is the active harness's skills directory under the run's HOME, and the report names that path: .agents/skills/report-writer/ under Codex, .claude/skills/report-writer/ under Claude Code, or .cursor/skills/report-writer/ under Cursor",
         "The complete directory is copied to the destination, then only its SKILL.md replaced — references/format.md exists at the destination unchanged",
         "Cleaned SKILL.md preserves the frontmatter name and description",
         "The Summary/Progress/Blockers contract, the references/format.md reference, and the reports/ save path survive",

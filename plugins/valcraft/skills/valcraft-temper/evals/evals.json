@@ -135,7 +135,7 @@
       "assertions": [
         "Derivative evidence is collapsed before grading so the normalize theme stays B with one root incident",
         "The verification-observable theme re-grades to A on two independent root incidents from two distinct reports",
-        "Only the A-grade, multi-report theme is escalated; the B theme is reported without a menu entry",
+        "Only the multi-report theme is escalated; the single-report theme is reported without a menu entry",
         "The menu is one multi-select question naming the rule, its target, grade, and contributing reports",
         "The operator's choice is recorded in Operator selection with an application step for accepted items, and Temper applies and commits nothing"
       ]

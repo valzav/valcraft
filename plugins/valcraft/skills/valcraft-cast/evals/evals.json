@@ -118,7 +118,7 @@
         "references/scaffold.md"
       ],
       "assertions": [
-        "The recorded proposal binds the exact scaffold delta and one baseline commit as one local mutation",
+        "The recorded proposal lists every path of the scaffold delta and the ignore pair, and states that the frame lands as exactly one baseline commit",
         "Missing commit readiness causes no project-frame write, commit, or push and leaves the worktree clean apart from Tune's written base file",
         "Tune's written base `.valcraft/config.yaml` persists for a later run",
         "The report contains no product-brief or baseline-head handoff claim",

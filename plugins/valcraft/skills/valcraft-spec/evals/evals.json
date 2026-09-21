@@ -392,7 +392,7 @@
         "The outward stage alone reports workspace_not_ready when live remote and hosting authority are unavailable",
         "The exact local triplet commit and Review target remain preserved while Land target stays none",
         "Repository, remote, default branch, canonical remote head, projection, push, and PR targets remain unresolved rather than fabricated",
-        "Spec performs no fetch, projection, push, reset, rebase, merge, force-push, PR, tracker, or closure mutation",
+        "Spec performs no fetch, projection, push, PR, tracker, or closure mutation, and no reset, rebase, merge, or force-push of any ref, including a reset of the baseline ref to undo its own commit",
         "The triplet commit is on the canonical Spec branch spec/f001-bookmark-import",
         "The baseline ref main still points at the fixture baseline commit after the run"
       ]
