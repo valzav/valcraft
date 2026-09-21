@@ -1,6 +1,6 @@
 # Named-state delivery loop
 
-This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
+This reference owns Foreman's state machine. Every dispatch uses the envelope in [`contracts.md`](contracts.md). Stamp every `state.md` checkpoint with the output of `date`, captured in the shell call that appends it, as [`../templates/run-dir.md`](../templates/run-dir.md) requires; never compose a time. After recording each transition in `state.md`, update the harness progress list per SKILL.md's display rule.
 
 For every Cursor worker, whether a native Task or a Herdr worker, bind the prompt to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. Do not slash-invoke `valcraft-review` or `/review`. Cursor's built-in `/review` is not Valcraft Review.
 
