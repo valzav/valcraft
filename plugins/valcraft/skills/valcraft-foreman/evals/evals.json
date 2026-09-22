@@ -1571,8 +1571,8 @@
       "id": 104,
       "name": "herdr-exit-before-first-submission",
       "coordination_coverage": "transport:herdr-startup-exit",
-      "prompt": "/valcraft:valcraft-foreman — Herdr returned a pane and a ready Codex launch. No assignment has been submitted. The next pane observation shows a plain shell, a null agent_session and a completed CLI-update restart banner; the checkout matches its pre-launch state. Prepare the next action. Also consider a live blocked occupant and a restart that exhausts the existing startup-attempt allowance. Do not operate Herdr.",
-      "expected_output": "Foreman verifies the occupant and agent_session before first submission. For the proven exit with no submission and unchanged checkout, it records a startup observation and restarts in the same pane with identical native arguments, records the new session identity and checks readiness before prompting. A live blocked occupant follows permission handling instead. Startup uses the owner-established two-attempt rule and escalates when exhausted; it invents no new return code or retry count.",
+      "prompt": "/valcraft:valcraft-foreman — Herdr returned a pane and a ready Codex launch. No assignment has been submitted. The next pane observation shows a plain shell, a null agent_session and a completed CLI-update restart banner; the checkout matches its pre-launch state. Prepare the next action. After the restart, `herdr pane get` reports the expected agent name, agent codex, status idle, and a null agent_session. Also consider a live blocked occupant and a restart that exhausts the existing startup-attempt allowance. Do not operate Herdr.",
+      "expected_output": "Foreman verifies the occupant before first submission. For the proven exit with no submission and unchanged checkout, it records a startup observation and restarts in the same pane with identical native arguments. The restarted occupant is a ready Codex worker even with a null agent_session, because Codex assigns its session on its first turn: Foreman submits, reads agent_session when the occupant is first observed working, and records it before any later revalidation. A live blocked occupant follows permission handling instead. Startup uses the owner-established two-attempt rule and escalates when exhausted; it invents no new return code or retry count.",
       "files": [
         "SKILL.md",
         "references/backends/herdr.md",
@@ -1582,7 +1582,8 @@
       "assertions": [
         "The plain shell with null agent_session is not a ready worker",
         "The proven pre-submission exit can restart in the same pane using identical arguments",
-        "The new agent_session is recorded and verified before submission",
+        "A settled Codex occupant with the expected name and a null agent_session is ready for first submission",
+        "The Codex agent_session is recorded at delivery confirmation, when the occupant is first observed working, before any later revalidation",
         "The event is a startup observation rather than a fabricated producer report",
         "A blocked live worker receives permission handling rather than restart",
         "The existing two-attempt policy governs startup and exhaustion escalates"
