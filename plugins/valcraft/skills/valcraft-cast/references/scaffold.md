@@ -62,13 +62,13 @@ Do not write Valcraft configuration into generated `AGENTS.md`. Tune owns `.valc
 
 Add an optional artifact only when its trigger is real. A triggered artifact is included without asking — the trigger is the justification — and is named in the recorded proposal:
 
-| Add                           | Trigger                                                                                                      |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `docs/glossary.md`            | Domain terms must remain stable.                                                                             |
-| `docs/system-requirements.md` | Cross-cutting requirements outgrow the brief.                                                                |
-| `docs/use-cases/uc-NNN-*.md`  | Product steering requires narrative scenarios.                                                               |
-| `docs/status.md`              | Necessary non-secret observations are absent from git and cannot be queried from the authoritative platform. |
-| `contracts/` and its README   | A real public API, event, or service boundary exists.                                                        |
+| Add | Trigger |
+| --- | --- |
+| `docs/glossary.md` | Domain terms must remain stable. |
+| `docs/system-requirements.md` | Cross-cutting requirements outgrow the brief. |
+| `docs/use-cases/uc-NNN-*.md` | Product steering requires narrative scenarios. |
+| `docs/status.md` | Necessary non-secret observations are absent from git and cannot be queried from the authoritative platform. |
+| `contracts/` and its README | A real public API, event, or service boundary exists. |
 
 Create `docs/status.md` only from `templates/status.md`. Render its conditional pointers in README and AGENTS only when the file exists. The snapshot is context, never authority; current repository and platform state wins.
 

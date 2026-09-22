@@ -8,11 +8,11 @@ Each harness lists its known model aliases with the effort each alias accepts, t
 
 ### Claude (`harness: claude`)
 
-| Alias    | Allowed effort          |
-| -------- | ----------------------- |
+| Alias | Allowed effort |
+| --- | --- |
 | `sonnet` | `low`, `medium`, `high` |
-| `fable`  | `low`, `medium`, `high` |
-| `opus`   | `low`, `medium`, `high` |
+| `fable` | `low`, `medium`, `high` |
+| `opus` | `low`, `medium`, `high` |
 
 Free-form alias effort: `low`, `medium`, or `high`.
 
@@ -20,18 +20,18 @@ Free-form alias effort: `low`, `medium`, or `high`.
 
 Aliases are listed from the most capable model down.
 
-| Alias           | Allowed effort                   |
-| --------------- | -------------------------------- |
-| `gpt-6-astra`   | `low`, `medium`, `high`, `ultra` |
-| `gpt-5.6-sol`   | `low`, `medium`, `high`, `ultra` |
+| Alias | Allowed effort |
+| --- | --- |
+| `gpt-6-astra` | `low`, `medium`, `high`, `ultra` |
+| `gpt-5.6-sol` | `low`, `medium`, `high`, `ultra` |
 | `gpt-5.6-terra` | `low`, `medium`, `high`, `ultra` |
 
 Free-form alias effort: `low`, `medium`, `high`, or `ultra`. Runtime readiness still verifies model availability.
 
 ### Cursor (`harness: cursor`)
 
-| Alias             | Allowed effort          |
-| ----------------- | ----------------------- |
+| Alias | Allowed effort |
+| --- | --- |
 | `cursor-grok-4.6` | `low`, `medium`, `high` |
 
 Free-form alias effort: `none`, `low`, `medium`, or `high`.
@@ -42,10 +42,10 @@ A Cursor model value names a base model alias, not a complete catalog slug. The 
 
 Each preset assigns one model and effort per harness. The role-to-harness split is the same for every preset and lives in `config.md`; a preset fills in the model and effort for every role on that harness.
 
-| Preset     | Claude        | Codex                | Summary for the operator                                                                      |
-| ---------- | ------------- | -------------------- | --------------------------------------------------------------------------------------------- |
-| `Balanced` | `opus` medium | `gpt-5.6-sol` high   | use Claude Opus at medium and Codex Sol at high effort with independent reviewers             |
-| `Quality`  | `fable` high  | `gpt-6-astra` high   | use Claude Fable and Codex Astra at high effort with the same independent role split          |
-| `Economy`  | `sonnet` high | `gpt-5.6-sol` medium | use Claude Sonnet at high and Codex Sol at medium effort with the same independent role split |
+| Preset | Claude | Codex | Summary for the operator |
+| --- | --- | --- | --- |
+| `Balanced` | `opus` medium | `gpt-5.6-sol` high | use Claude Opus at medium and Codex Sol at high effort with independent reviewers |
+| `Quality` | `fable` high | `gpt-6-astra` high | use Claude Fable and Codex Astra at high effort with the same independent role split |
+| `Economy` | `sonnet` high | `gpt-5.6-sol` medium | use Claude Sonnet at high and Codex Sol at medium effort with the same independent role split |
 
 `Balanced` is the recommended preset. In the Custom flow, its model for the chosen harness is the recommended model; for Cursor, which no preset uses, `cursor-grok-4.6` is the recommended model. `medium` is the recommended effort for every model.

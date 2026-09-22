@@ -55,33 +55,33 @@ Route only from verified producer reports and exact targets:
 
 Feature triplets and quick-task contracts use this same Spec lifecycle and evidence map.
 
-| Durable evidence                                                  | Named state      |
-| ----------------------------------------------------------------- | ---------------- |
-| partial, unready, or attributed dirty feature or quick contract   | `Specifying`     |
-| Spec findings or a proven Spec-owned check failure                | `Specifying`     |
-| ready exact contract not accessible to the next Review worker     | `Specifying`     |
-| ready exact contract without an exact current verdict             | `SpecReview`     |
-| passing Spec verdict without a landable spec PR                   | `Specifying`     |
-| passing Spec verdict covering the current spec PR head            | `SpecLanding`    |
-| merged spec contract on the reconciled default branch without an exact current verdict | `SpecReview`     |
-| passing Spec verdict covering the merged contract on the reconciled default branch | `Ready`          |
-| Spec-owned plan finding open on the selected task                 | `Specifying`     |
-| on-task-branch amendment committed without Draft re-validation    | `Drafting`       |
-| committed Draft plan behind an amendment landed on the reconciled default branch | `Drafting`       |
-| selected eligible task with no plan                               | `Drafting`       |
-| attributed dirty task-plan paths owned by Draft                   | `Drafting`       |
-| committed Draft plan not yet accessible to the next Review worker | `Drafting`       |
-| committed Draft plan without an exact plan verdict                | `PlanReview`     |
-| exact passing plan verdict without Forge output                   | `Implementing`   |
-| attributed dirty task-code paths owned by Forge                   | `Implementing`   |
-| Forge implementation head with required task PR still prepared    | `Implementing`   |
-| Forge task PR head without an exact code verdict                  | `CodeReview`     |
-| passing code verdict covering the current PR head                 | `Landing`        |
-| Land evidence record without fresh sufficiency verdict            | `EvidenceReview` |
-| confirmed feature not yet closed by Land                          | `FeatureClose`   |
-| feature closure complete without a retrospective report           | `Retrospective`  |
-| attributed dirty retrospective report owned by Temper             | `Retrospective`  |
-| Temper report without an exact verdict                            | `RetroReview`    |
+| Durable evidence | Named state |
+| --- | --- |
+| partial, unready, or attributed dirty feature or quick contract | `Specifying` |
+| Spec findings or a proven Spec-owned check failure | `Specifying` |
+| ready exact contract not accessible to the next Review worker | `Specifying` |
+| ready exact contract without an exact current verdict | `SpecReview` |
+| passing Spec verdict without a landable spec PR | `Specifying` |
+| passing Spec verdict covering the current spec PR head | `SpecLanding` |
+| merged spec contract on the reconciled default branch without an exact current verdict | `SpecReview` |
+| passing Spec verdict covering the merged contract on the reconciled default branch | `Ready` |
+| Spec-owned plan finding open on the selected task | `Specifying` |
+| on-task-branch amendment committed without Draft re-validation | `Drafting` |
+| committed Draft plan behind an amendment landed on the reconciled default branch | `Drafting` |
+| selected eligible task with no plan | `Drafting` |
+| attributed dirty task-plan paths owned by Draft | `Drafting` |
+| committed Draft plan not yet accessible to the next Review worker | `Drafting` |
+| committed Draft plan without an exact plan verdict | `PlanReview` |
+| exact passing plan verdict without Forge output | `Implementing` |
+| attributed dirty task-code paths owned by Forge | `Implementing` |
+| Forge implementation head with required task PR still prepared | `Implementing` |
+| Forge task PR head without an exact code verdict | `CodeReview` |
+| passing code verdict covering the current PR head | `Landing` |
+| Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
+| confirmed feature not yet closed by Land | `FeatureClose` |
+| feature closure complete without a retrospective report | `Retrospective` |
+| attributed dirty retrospective report owned by Temper | `Retrospective` |
+| Temper report without an exact verdict | `RetroReview` |
 
 Never restart Spec or Draft when the required current committed artifact exists. Preserve a passing Spec verdict across publication only when the resulting exact head is unchanged. Never infer Review coverage from a branch, PR number, or earlier verdict.
 

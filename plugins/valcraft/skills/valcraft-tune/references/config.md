@@ -122,18 +122,18 @@ Then show the presets from [`models.md`](models.md) as a list, `Balanced (Recomm
 
 Every preset uses this harness split:
 
-| Role              | Harness |
-| ----------------- | ------- |
-| `spec`            | Codex   |
-| `spec_review`     | Claude  |
-| `draft`           | Codex   |
-| `plan_review`     | Claude  |
-| `forge`           | Claude  |
-| `code_review`     | Codex   |
-| `land`            | Claude  |
-| `temper`          | Claude  |
-| `retro_review`    | Codex   |
-| `evidence_review` | Codex   |
+| Role | Harness |
+| --- | --- |
+| `spec` | Codex |
+| `spec_review` | Claude |
+| `draft` | Codex |
+| `plan_review` | Claude |
+| `forge` | Claude |
+| `code_review` | Codex |
+| `land` | Claude |
+| `temper` | Claude |
+| `retro_review` | Codex |
+| `evidence_review` | Codex |
 
 For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; put the preset harness for that role first and mark it recommended. After the harness choice, offer that harness's known models from `models.md` with its recommended model first and marked recommended, followed by the other known aliases and `Enter another model alias`. Offer `Medium (Recommended)` first for effort, then every other effort `models.md` allows for the selected known model. For a free-form model, use its harness's free-form effort set. Explain every effort in plain language. Revalidate all five independence pairs after the last role; do not silently change a conflicting answer.
 
