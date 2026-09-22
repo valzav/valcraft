@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.3
+
+### Controller checkpoints record how each turn ends
+
+Before a Foreman controller ends a turn, the latest `state.md` checkpoint must carry the line that `valcraft-foreman/references/loop.md` defines: `Turn end: await <harness task id>`, `Turn end: gate <named state and decision>`, or `Turn end: complete`. On Claude Code, the plugin's Stop hook blocks the first stop of the lease-holding controller whose latest checkpoint carries none of these and whose session has no armed `herdr agent wait`. The rule reaches an active run at its next turn end; checkpoints written before this release stay as written.
+
+- Applies when: never on its own; a Foreman run resumed under this release carries it at its next turn end.
+- Tune performs: none; the delivery loop carries the change.
+- Operator: none.
+
 ## v0.8.2
 
 ### Model catalog drops Luna and the xhigh and max efforts
