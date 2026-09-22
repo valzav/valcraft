@@ -145,6 +145,19 @@ class ControllerStopHookTests(unittest.TestCase):
         )
         self.assert_blocks(payload(last_assistant_message=message), "next transition")
 
+    def test_task_description_naming_the_wait_does_not_count_as_one(self) -> None:
+        self.claim()
+        self.checkpoints("## CP-027 T-001 LANDED; -> Ready\n")
+        follower = {
+            "id": "log-follower",
+            "type": "shell",
+            "status": "running",
+            "description": "Follow diagnostic output for herdr agent wait",
+            "command": "tail -f /tmp/worker.log",
+        }
+        self.assert_blocks(payload(background_tasks=[follower]), "next transition")
+        self.assert_allows(payload(background_tasks=[follower, AWAIT]))
+
     def test_gate_and_completion_may_stop(self) -> None:
         self.claim()
         for line in (
@@ -168,6 +181,29 @@ class ControllerStopHookTests(unittest.TestCase):
         self.assert_blocks(payload(), "next transition")
         self.assert_allows(payload(background_tasks=None))
 
+    def test_unreadable_checkpoint_may_stop(self) -> None:
+        self.claim()
+        self.checkpoints("## CP-027 T-001 LANDED; -> Ready\n")
+        self.assert_blocks(payload(), "next transition")
+        state = self.foreman / "2026-09-20-001" / "state.md"
+        state.chmod(0)
+        if os.access(state, os.R_OK):
+            self.skipTest("this user reads a mode-000 file")
+        self.assert_allows(payload())
+
+    def test_unreadable_lease_may_stop(self) -> None:
+        self.claim(session=WORKER)
+        config = self.root / ".valcraft" / "config.yaml"
+        config.write_text("valcraft_version: 0.8.3\n")
+        self.assert_blocks(
+            payload(last_assistant_message="Status: done"), "continue the Cast run"
+        )
+        lease = self.foreman / "controller.lock.1"
+        lease.chmod(0)
+        if os.access(lease, os.R_OK):
+            self.skipTest("this user reads a mode-000 file")
+        self.assert_allows(payload(last_assistant_message="Status: done"))
+
     def test_controller_before_its_first_checkpoint_may_stop(self) -> None:
         self.claim()
         self.assert_allows(payload())
@@ -189,6 +225,15 @@ class ControllerStopHookTests(unittest.TestCase):
                 )
         self.assert_allows(
             payload(last_assistant_message="Which tracker mode do you want?")
+        )
+
+    def test_cast_beside_a_retained_dead_lease_is_blocked(self) -> None:
+        # An interrupted Foreman run left its lease; this session never owned it.
+        self.claim(session=WORKER)
+        config = self.root / ".valcraft" / "config.yaml"
+        config.write_text("valcraft_version: 0.8.3\n")
+        self.assert_blocks(
+            payload(last_assistant_message="Status: done"), "continue the Cast run"
         )
 
     def test_committed_base_under_status_done_may_stop(self) -> None:

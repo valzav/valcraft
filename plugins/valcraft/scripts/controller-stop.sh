@@ -38,7 +38,18 @@ for f in "$root"/.valcraft/foreman/controller.lock.*; do
 	fi
 done
 
-if [ -z "$lease" ]; then
+# The lease records the controller's agent_session, which Herdr reads from
+# Claude Code's session id. A worker, an unrelated session, and a Cast run
+# beside the lease of an interrupted Foreman run are not the owner.
+owner=no
+if [ -n "$lease" ]; then
+	[ -r "$lease" ] || exit 0
+	for id in $(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$lease"); do
+		case "$in" in *"\"session_id\":\"$id\""*) owner=yes ;; esac
+	done
+fi
+
+if [ "$owner" = no ]; then
 	# Cast check. A direct Tune run commits the base, and Cast's own
 	# "Status: done" follows its baseline commit. An uncommitted base under a
 	# final "Status: done" means a nested Tune report ended the turn.
@@ -50,18 +61,13 @@ if [ -z "$lease" ]; then
 	block "The turn ended on Status: done while .valcraft/config.yaml is uncommitted. If a Cast run is active in this session, that line closed the nested Tune report, which is an intermediate result: continue the Cast run with fact gathering in this turn."
 fi
 
-# The lease records the controller's agent_session, which Herdr reads from
-# Claude Code's session id. A worker or an unrelated session is not the owner.
-owner=no
-for id in $(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$lease"); do
-	case "$in" in *"\"session_id\":\"$id\""*) owner=yes ;; esac
-done
-[ "$owner" = yes ] || exit 0
-
-# An armed await will wake the controller. Drop the one free-text field first
-# so its prose cannot imitate a background task entry.
-tasks=$(printf '%s' "$in" | sed -E 's/"last_assistant_message":"([^"\\]|\\.)*"//')
-case "$tasks" in *'herdr agent wait'*) exit 0 ;; esac
+# An armed await will wake the controller. Only a shell task's command counts:
+# the final message and a task description are free text that can name the
+# wait without arming it. A quote inside either is escaped, so the bare key
+# below occurs only where Claude Code writes it.
+case "$(printf '%s' "$in" | grep -oE '"command":"([^"\\]|\\.)*"')" in
+*'herdr agent wait'*) exit 0 ;;
+esac
 
 # Before this controller's first checkpoint, the only reason to stop is the
 # takeover confirmation, which waits on the operator.
@@ -69,11 +75,12 @@ state=$(ls -t "$root"/.valcraft/foreman/*/state.md 2>/dev/null | head -n 1)
 [ -n "$state" ] || exit 0
 [ "$state" -nt "$lease" ] || exit 0
 
+# A checkpoint this script cannot read is not evidence of a missing line.
 turn_end=$(awk '
   /^## CP-/ { line = "" }
   /^[[:space:]]*([-*][[:space:]]+)?`?Turn end: / { line = $0 }
   END { print line }
-' "$state")
+' "$state" 2>/dev/null) || exit 0
 case "$turn_end" in
 *'Turn end: gate '* | *'Turn end: complete'*) exit 0 ;;
 *'Turn end: await '*)
