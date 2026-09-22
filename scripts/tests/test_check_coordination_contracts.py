@@ -202,20 +202,20 @@ class CoordinationContractCheckTests(unittest.TestCase):
         self.assert_check_fails("Herdr role configuration row has 2 columns")
 
     def test_malformed_tune_preset_row_fails(self) -> None:
-        row = "| `spec`            | Codex   |\n"
+        row = "| `spec` | Codex |\n"
         self.replace(TUNE_CONFIG, row, row + "| `handoff` | Codex | extra |\n")
         self.assert_check_fails("Tune Herdr preset row has 3 columns")
 
     def test_duplicate_tune_preset_role_fails(self) -> None:
-        row = "| `spec`            | Codex   |\n"
+        row = "| `spec` | Codex |\n"
         self.replace(TUNE_CONFIG, row, row * 2)
         self.assert_check_fails("Tune Herdr preset differs")
 
     def test_tune_preset_harness_drift_fails(self) -> None:
         self.replace(
             TUNE_CONFIG,
-            "| `spec_review`     | Claude  |",
-            "| `spec_review`     | Codex   |",
+            "| `spec_review` | Claude |",
+            "| `spec_review` | Codex |",
         )
         self.assert_check_fails("Tune Herdr preset differs")
 
