@@ -1764,7 +1764,8 @@
         "Drafting revises the plan against the amended entry before any implementation",
         "The PlanReview closure check covers the plan and triplet at one head and is the review of the amendment",
         "Implementing verifies the criterion the amended way, then the code Review closure check covers the new head",
-        "No separate Spec Review runs for the amendment"
+        "No separate Spec Review runs for the amendment",
+        "R-001 is not sent to Forge before the amendment has landed and been reviewed"
       ]
     }
   ]
