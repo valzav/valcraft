@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "00c8367e75877c7a",
+      "version": "e11a953c5514bb01",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -127,7 +127,7 @@
     },
     {
       "name": "valcraft-temper",
-      "version": "1f52de857aa3fa89",
+      "version": "5d61d59fe3466ac0",
       "files": [
         "SKILL.md",
         "references/process.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "8b2a7c969dbc331b",
+      "version": "bf8acda09f67b5b0",
       "files": [
         "SKILL.md",
         "references/config.md",

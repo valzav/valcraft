@@ -12,7 +12,7 @@ Read this reference after corpus preflight and before examining evidence. It own
 
 ## Analyze mode
 
-1. **Preflight the corpus** per `../SKILL.md`, and name the evidence sources available and absent for this corpus.
+1. **Preflight the corpus** per `../SKILL.md`, and name the evidence sources available and absent for this corpus. When a Foreman run delivered the corpus, read its run directory's `workers.md` for each assignment's envelope file and transcript path; a readable transcript is the direct run evidence an A- or B-grade upstream candidate requires, and a `pending`, `unavailable`, or unreadable one, or a row written without the column, is listed under not examined.
 2. **Inventory.** One row per unit: what it was, its review history (rounds, finding IDs, clean passes), and the examination depth this run gives it.
 3. **Examine.** For each unit examined deeply: what escaped its gates, what a gate caught, what the implementer self-caught, and what the evidence shows versus what the record claims. Write the strongest incidents up as case studies with verbatim citations and full incident records.
 4. **Extract lesson candidates.** Each candidate gets a stable ID (`L-001`, `L-002`, …), a one-line rule statement, its incident records, its grade, and its stage attribution. Separate prompt-line candidates from structural findings — an observation about the process's design that no single rule fixes is reported as a structural finding, not forced into rule shape.

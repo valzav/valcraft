@@ -48,7 +48,7 @@ new feature or PRD:
 | Plan or code review report | Foreman's run directory, or the reply of a direct run | `review` | Each finding has an `R-` ID, a severity, a claim, evidence, and a resolution. The report includes the reproductions and one verdict: `pass`, `material findings`, or `blocked`. `review` never edits. |
 | Evidence-sufficiency report | Foreman's run directory, or the reply of a direct run | `review` | One row per acceptance criterion, its evidence and verification, and an overall `sufficient` or `insufficient` verdict. An incomplete review reports a blocked status. It checks completion evidence, not the implementation. |
 | Retrospective | `docs/.retro/`, gitignored | `temper` | A local report pinned by its path and content hash. It is never committed or merged. |
-| Run state | `.valcraft/foreman/<run-id>/`, gitignored | `foreman` | `state.md` holds the checkpoints, `workers.md` lists every dispatch, and each worker writes one report file. These files let you audit or resume the run. |
+| Run state | `.valcraft/foreman/<run-id>/`, gitignored | `foreman` | `state.md` holds the checkpoints, `workers.md` lists every dispatch with its transcript path, each assignment's envelope is saved beside its report, and each worker writes one report file. These files let you audit or resume the run. |
 
 Cast, Spec, Draft, Forge, Review, Land, and Temper define fixed report headings and a terminal `Status:` line. Each skill owns its allowed statuses and codes. Foreman and the prompt tools have their own reporting formats. References: [coordination contracts](../plugins/valcraft/skills/valcraft-foreman/references/contracts.md), [evidence review](../plugins/valcraft/skills/valcraft-review/references/evidence-mode.md).
 
