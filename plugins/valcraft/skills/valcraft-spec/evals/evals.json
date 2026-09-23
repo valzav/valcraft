@@ -549,7 +549,7 @@
       "id": 27,
       "name": "perceptual-criterion-becomes-a-worker-measured-check",
       "prompt": "/valcraft:valcraft-spec — write the design's Test strategy entry for NFR-001 of FEAT-010, whose source reads: 'Orbiting the camera renders without visible stutter in Chrome on the reference machine.' The recorded verification route is agent-browser headless, with requestAnimationFrame timestamps readable through its eval command. The source gives no frame-time number. Show the entry for an attended run and for an unattended run, and state who observes the criterion during delivery. Do not create files.",
-      "expected_output": "Spec writes an observation method a worker drives itself: a scripted orbit through the recorded route with requestAnimationFrame intervals recorded, the defect it guards, a failing input, and a positive control. It never names the operator's perception or a headed viewing session as the observer. Attended, it asks the operator for the frame-interval threshold and records the answer as an operator decision; unattended, it records the measurement as evidence with no gate and names the missing threshold under open questions. Forge and code Review observe the criterion through the route.",
+      "expected_output": "Spec writes an observation method a worker drives itself: a scripted orbit through the recorded route with requestAnimationFrame intervals recorded, the defect it guards, a failing input, and a positive control. It never names the operator's perception or an attended viewing session as the observer. Attended, it asks the operator for the frame-interval threshold and records the answer as an operator decision; unattended, it records the measurement as evidence with no gate and names the missing threshold under open questions. Forge and code Review observe the criterion through the route.",
       "files": [
         "SKILL.md",
         "references/feature-contract.md",
@@ -557,7 +557,7 @@
       ],
       "assertions": [
         "The observation method is a scripted orbit through the recorded route with frame intervals recorded, driven by a worker",
-        "No entry names the operator's perception or a headed viewing session as the observer",
+        "No entry names the operator's perception or an attended viewing session as the observer",
         "Attended, Spec asks the operator for the missing threshold and records the answer as an operator decision",
         "Unattended, Spec records the measurement as evidence with no gate and lists the missing threshold as an open question",
         "The entry keeps the defect guarded, a failing input, and a positive control"

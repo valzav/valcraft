@@ -1747,6 +1747,25 @@
         "Foreman names `Turn end: gate` and `Turn end: complete` as the only other lines that let a turn end",
         "Foreman requests no operator pick, status prompt, or continue prompt"
       ]
+    },
+    {
+      "id": 114,
+      "name": "code-review-spec-owned-finding-routes-through-specifying",
+      "prompt": "/valcraft:valcraft-foreman — in CodeReview for FEAT-010 T-002, the code reviewer's report returns material findings: R-001, a P1 owned by Forge, and R-002, a P1 owned by Spec because the design's Test strategy entry for NFR-001 names the operator as the judge and no worker can observe it through the recorded route. State the named-state sequence Foreman runs from here until Landing, which producer handles each R-ID, on which branch, and which review check covers the amended triplet. Do not operate any backend.",
+      "expected_output": "Foreman returns R-002 to Specifying with T-002 still selected; Spec amends the design entry on the task branch. Drafting then revises the plan against the amended entry, the PlanReview closure check covers the plan and triplet at one head and re-runs R-002 there, Implementing has Forge resolve R-001 and verify NFR-001 the amended way, and the code Review closure check covers the new head before Landing. Spec's amendment is not reviewed by a separate Spec Review, and R-001 is not sent to Forge before the amendment lands.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/review-round.md",
+        "../valcraft-review/references/plan-mode.md"
+      ],
+      "assertions": [
+        "The Spec-owned R-ID returns to Specifying with the task still selected, and the amendment lands on the task branch",
+        "Drafting revises the plan against the amended entry before any implementation",
+        "The PlanReview closure check covers the plan and triplet at one head and is the review of the amendment",
+        "Implementing verifies the criterion the amended way, then the code Review closure check covers the new head",
+        "No separate Spec Review runs for the amendment"
+      ]
     }
   ]
 }
