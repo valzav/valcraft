@@ -505,6 +505,22 @@
         "The PR body cites the task identity and the pinned Spec-owned commit with its R-IDs",
         "Forge edits no spec.md, design.md, or tasks.md content"
       ]
+    },
+    {
+      "id": 25,
+      "name": "forge-observes-ui-criteria-itself",
+      "prompt": "/valcraft:valcraft-forge — implementing FEAT-010 T-002, the orbit camera. The NFR-001 design entry requires no animation frame longer than three display refresh intervals during a scripted orbit, observed through the recorded agent-browser headless route. State how Forge verifies NFR-001 before handoff, what the report's verification evidence records, what Forge does if it cannot watch a headed window, and what it does if no route is available. Do not implement.",
+      "expected_output": "Forge runs the scripted orbit itself through the recorded headless route, reads the requestAnimationFrame intervals, and records the measured values and the bound as verification evidence with the environment prerequisites. A headed window is not needed and is never requested. Forge never asks the operator or Review to judge the criterion. With no route available it reports the code-only exception rather than a deferred judgment.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "Forge runs the scripted orbit itself through the recorded route and records the measured intervals as evidence",
+        "Forge never asks the operator or Review to judge the criterion",
+        "A headed window is not required",
+        "With no route available, Forge reports the code-only exception"
+      ]
     }
   ]
 }

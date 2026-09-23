@@ -127,7 +127,7 @@ A complete Forge report whose task PR is still `none` applies the prepared outwa
 
 ## `CodeReview`
 
-Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode on the Forge report's exact repository, PR, base, and head. A pass covering the current head enters `Landing`. Material findings return to Implementing by R-ID. Apply [`review-round.md`](review-round.md). A stale target stops or takes the producer's declared mismatch route; Foreman never reviews the delta.
+Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode on the Forge report's exact repository, PR, base, and head. A pass covering the current head enters `Landing`. Material findings return to Implementing by R-ID. A Spec-owned R-ID returns to Specifying with the task still selected; the amendment lands on the task branch, then Drafting revises the plan against it, the PlanReview closure check covers plan and triplet at one head, Implementing verifies against the amended entry, and the code Review closure check follows. Apply [`review-round.md`](review-round.md). A stale target stops or takes the producer's declared mismatch route; Foreman never reviews the delta.
 
 ## `Landing`
 

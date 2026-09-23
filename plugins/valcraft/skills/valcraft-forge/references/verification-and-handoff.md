@@ -23,7 +23,7 @@ Before accepting verification results, establish the effective environment prere
 - Force an interleaving when checked state can change before an action.
 - Test that empty, partial, or default success output cannot replace real data.
 - Read raw command or CI output when a wrapper may hide failure.
-- Verify UI changes in a running browser when available; otherwise report the code-only exception.
+- Verify UI criteria yourself through the recorded verification route, headless when the route allows it. Never defer a UI judgment to the operator or to Review. When no route is available, report the code-only exception.
 
 Update affected git-owned contracts and documentation in the same change. Verify branch claims against the final code. Confirm no secret or consumer-specific material was added.
 

@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.4
+
+### Every criterion is observed by a worker
+
+A design's `Test strategy` entry may no longer name an operator's perception or an attended viewing session as its observation method. `valcraft-spec/references/feature-contract.md` requires a method a worker drives through the recorded verification route, with a perceptual source criterion translated into a scripted measurement. Plan Review reports the old form as a material finding, and Forge and code Review observe UI criteria themselves instead of deferring to the operator.
+
+- Applies when: a landed `design.md` `Test strategy` entry names an operator judgment, an attended viewing session, or any observation no worker can make through the recorded route.
+- Tune performs: none; the next Spec amendment on that feature replaces the entry, and plan Review requires it.
+- Operator: none.
+
 ## v0.8.3
 
 ### Controller checkpoints record how each turn ends
