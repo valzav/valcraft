@@ -640,6 +640,38 @@
         "The verdict is material findings, with stable R-NNN IDs in an auditable table",
         "Review edits no file: it merges no task and rewrites no Test strategy"
       ]
+    },
+    {
+      "id": 32,
+      "name": "plan-mode-rejects-operator-judged-observation",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. Every Test strategy entry carries all four fields. The NFR-001 entry reads: 'Observation: record requestAnimationFrame intervals during a scripted orbit as evidence. Visible stutter is judged in headed Chrome on the reference machine by the operator. No numeric gate.' State the verdict for that entry, its severity, and its owner. Do not edit anything.",
+      "expected_output": "Review reports the NFR-001 entry as a material finding owned by Spec, because its observation method names an operator's perception and a headed viewing session that no worker can perform through the recorded route. The presence of all four fields does not save it. The triplet does not pass while that finding is open; the other entries are judged on their own merits.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The NFR-001 entry is a material finding, not informational",
+        "The finding is owned by Spec",
+        "The reason is that the observation names an operator's perception or a headed session that no worker can drive through the route",
+        "Four complete fields do not make the entry pass"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "code-mode-observes-ui-criteria-through-the-route",
+      "prompt": "/valcraft:valcraft-review — code-mode review of PR #7 for FEAT-010 T-002 at its exact head. The design's recorded verification route is agent-browser headless with requestAnimationFrame timestamps readable through eval, and the NFR-001 entry requires no animation frame longer than three display refresh intervals during a scripted orbit. The reviewer's harness cannot open a headed window. State how NFR-001 is verified, what the report returns if the measurement fails, and what the report returns if the entry instead named the operator as the judge. Do not run anything.",
+      "expected_output": "Review runs the scripted orbit itself through the headless route and reads the intervals; a headed window is not needed. A measurement over the bound is a material finding routed to Forge. Review never returns review_blocked to obtain an operator's perception: an entry that names the operator as judge is a material finding owned by Spec, and the criterion is otherwise observed through the route.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "Review observes NFR-001 itself through the headless route",
+        "A measurement over the bound is a material finding to Forge, not a block",
+        "review_blocked is never returned to obtain an operator's perception",
+        "An entry naming the operator as judge is a material finding owned by Spec"
+      ]
     }
   ]
 }

@@ -30,6 +30,7 @@ Require the passed task plan path and exact Review-passed plan commit for a non-
 - Hunt success paths that return empty, partial, or default output and then replace real data.
 - Combine orthogonal input dimensions; independent cases do not prove their intersections.
 - Re-run the load-bearing verification and read raw output rather than trusting a wrapper or CI mark.
+- Observe UI criteria yourself through the recorded verification route, headless when the route allows it. Never return `review_blocked` to obtain an operator's perception; a criterion whose design entry cannot be observed through the route is a material finding owned by Spec.
 - Inspect every immutable pinned action's source and defaults at that revision.
 - Exercise every failure mode named by a finding before closure.
 - Report behavior no requirement requests as scope creep.
