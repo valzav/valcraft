@@ -69,6 +69,16 @@ The physical worker is the returned pane id in the recorded session, plus the li
 
 Derive the agent name from the canonical logical identity and dispatch ordinal, normalized to Herdr's `[a-z][a-z0-9_-]{0,31}` contract, and collision-check it against `agent list` and every `workers.md` row before use. Record session, workspace, tab, pane, agent name, harness, dispatch ordinal, and report path.
 
+### Transcript path
+
+Each harness writes the session transcript under its own home, named by the `agent_session` value that `herdr pane get` reports:
+
+- Claude: `$CLAUDE_CONFIG_DIR`, or `~/.claude`, then `projects/<checkout path with every / and . replaced by ->/<agent_session>.jsonl`.
+- Codex: `$CODEX_HOME`, or `~/.codex`, then `sessions/<YYYY>/<MM>/<DD>/rollout-<start time>-<agent_session>.jsonl`, dated by the session's start.
+- Cursor: `~/.cursor/projects/<project directory>/agent-transcripts/<agent_session>/<agent_session>.jsonl`, where Cursor abbreviates the project directory name for long paths.
+
+Locate the file by the session value, never by rebuilding a directory name: match `projects/*/<agent_session>.jsonl`, `sessions/*/*/*/rollout-*-<agent_session>.jsonl`, or `projects/*/agent-transcripts/<agent_session>/*.jsonl` under the harness home, and record the single match as the `workers.md` transcript path. Record it when the session is read: at the pre-submission check for Claude and Cursor, and at delivery confirmation for Codex, which assigns its session on the first turn. Record `unavailable` when no file matches, and never guess a path. Foreman does not read the transcript during the run.
+
 ## Spawn
 
 Record each transition in `state.md` before attempting the next, so an interrupted call can be reconciled without creating a second worker.

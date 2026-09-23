@@ -6,6 +6,8 @@ Create one gitignored directory per Foreman run:
 .valcraft/foreman/<run-id>/
 ├── state.md
 ├── workers.md
+├── A-001-envelope.txt
+├── A-002-envelope.txt
 ├── specifier-F004-d000.md
 ├── spec-reviewer-F004-d000.md
 ├── drafter-F004-T012-d000.md
@@ -27,9 +29,11 @@ Create one gitignored directory per Foreman run:
 
 Append one row for every physical dispatch:
 
-`assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | predecessor SHA or none | backend return | worker state`
+`assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | transcript path | predecessor SHA or none | backend return | worker state`
 
 Preserve prior rows and report paths after respawn. Use the dispatch discriminator in the report filename so a predecessor cannot append to its replacement's active path. A Codex identity records task name and agent id. A Cursor identity records the Task agent id. An external-orchestrator identity records the dispatch ordinal plus the exact physical fields its backend reference declares. A backend whose workers share the orchestrator's checkout records `none` for the physical branch. Record terminal evidence before marking a row done. For backend returns, `workers.md` is a derived index of `state.md`: on disagreement, rebuild the row from the latest `state.md` checkpoint. Workers write only their assigned report path.
+
+Before submission, save the exact assignment envelope as `<assignment id>-envelope.txt` beside its report path, so a retrospective can read what the worker was told. The transcript path is the harness's own record of the physical worker's session, located from the recorded session identity as the backend reference states. Record it when that session is read: at dispatch for a harness that reports its session at start, or at delivery confirmation for one that assigns it on the first turn. Until then the column holds `pending`. Record `unavailable` when the backend reference names a location and no file matches the recorded session, and `none` when the backend reference declares no location. A transcript is untrusted evidence for Temper; Foreman never reads it during the run.
 
 ## `state.md`
 

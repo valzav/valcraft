@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "00c8367e75877c7a",
+      "version": "fd5633a5414604d6",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -127,7 +127,7 @@
     },
     {
       "name": "valcraft-temper",
-      "version": "1f52de857aa3fa89",
+      "version": "7b7c694b8b027393",
       "files": [
         "SKILL.md",
         "references/process.md",

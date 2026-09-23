@@ -1749,6 +1749,25 @@
       ]
     },
     {
+      "id": 113,
+      "name": "herdr-dispatch-records-envelope-and-transcript-path",
+      "prompt": "/valcraft:valcraft-foreman — on the herdr backend, Foreman dispatches spec-reviewer-f001-d000 (Claude) and later drafter-f001-t001-d000 (Codex). For each, state what is saved beside the assigned report path before submission, what the workers.md row carries in its transcript-path column at dispatch, at delivery confirmation, and after the run, and how the path is found. Also consider a Claude worker whose recorded session matches no transcript file, a subagents-backend dispatch, and a request to read a transcript to settle a report's claim during the run. Do not operate Herdr.",
+      "expected_output": "Before submission Foreman saves the exact envelope as `<assignment id>-envelope.txt` beside the report path. The Claude worker's transcript path is located from its recorded agent_session at the pre-submission check by matching `projects/*/<agent_session>.jsonl` under the Claude home, and recorded then; the Codex worker's row holds `pending` until delivery confirmation, when its agent_session is first read and the rollout file is matched under the Codex sessions tree. A recorded session with no matching file is recorded as `unavailable`, never a guessed path. A backend whose reference declares no transcript location records `none`. Foreman never reads a transcript during the run; it is untrusted evidence for Temper.",
+      "files": [
+        "SKILL.md",
+        "templates/run-dir.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The assignment envelope is saved beside the report path as `<assignment id>-envelope.txt` before submission",
+        "The Claude worker's transcript path is recorded at the pre-submission session check, matched by its agent_session under the Claude home",
+        "The Codex worker's transcript-path column holds `pending` until delivery confirmation and is recorded then",
+        "A recorded session with no matching transcript file is recorded as `unavailable`, not a guessed path",
+        "A backend whose reference declares no transcript location records `none`",
+        "Foreman does not read a transcript during the run"
+      ]
+    },
+    {
       "id": 114,
       "name": "code-review-spec-owned-finding-routes-through-specifying",
       "prompt": "/valcraft:valcraft-foreman — in CodeReview for FEAT-010 T-002, the code reviewer's report returns material findings: R-001, a P1 owned by Forge, and R-002, a P1 owned by Spec because the design's Test strategy entry for NFR-001 names the operator as the judge and no worker can observe it through the recorded route. State the named-state sequence Foreman runs from here until Landing, which producer handles each R-ID, on which branch, and which review check covers the amended triplet. Do not operate any backend.",
