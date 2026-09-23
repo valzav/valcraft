@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.7
+
+### The verification route is proven per event class
+
+A design's verification route under `Verified baseline assumptions` records, for each event class the criteria need, a planted instance and the command that captured it, as `valcraft-spec/references/feature-contract.md` defines. Spec derives the classes from each criterion's wording, counting every kind of entry the named surface shows, and records a class no command captured under open questions. Each `Test strategy` entry that observes through the route names the class and command it relies on, and plan Review reports an entry that relies on an unproven class as a material finding owned by Spec.
+
+- Applies when: a landed `design.md` records a verification route without a planted instance and capturing command for each event class its criteria need.
+- Tune performs: none; the next Spec amendment on that feature adds the proof, and plan Review requires it.
+- Operator: none.
+
 ## v0.8.6
 
 ### Balanced runs spec and plan review at high effort

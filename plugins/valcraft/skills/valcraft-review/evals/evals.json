@@ -673,6 +673,23 @@
         "review_blocked is never returned to obtain an operator's perception",
         "An entry naming the operator as judge is a material finding owned by Spec"
       ]
+    },
+    {
+      "id": 34,
+      "name": "plan-mode-rejects-an-entry-relying-on-an-unproven-event-class",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. NFR-002 reads: 'Loading the page and playing through the three scenarios MUST produce no errors in the browser console.' The design's verification route entry records agent-browser 0.27.0 at /usr/local/bin/agent-browser, driving headless Chrome; the Claude and Codex workers both drive it as a shell CLI, with proof that a planted `console.error` call appeared in `agent-browser console` and that `agent-browser eval` and `agent-browser screenshot` work. The NFR-002 Test strategy entry carries all four fields and reads: 'Observation: after every browser check, `agent-browser console` and `agent-browser errors` show no errors. Defect guarded: an error thrown or logged during play. Failing input: a handler that throws. Positive control: a clean build shows empty output.' State your verdict on the NFR-002 entry with its severity and owner, and what the design must change. Do not edit anything.",
+      "expected_output": "Review reports a material finding owned by Spec. A browser console shows console calls, uncaught exceptions, and failed resource loads. The recorded proof covers only console calls: the entry relies on `agent-browser errors` with no planted-instance proof, and it observes failed resource loads through no command at all, so a missing asset would pass the check. Four complete fields do not save it. The design must record a planted instance and capturing command for each missing class and observe each class through its proven command, or record a class no command captures under open questions.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The NFR-002 entry is a material finding owned by Spec",
+        "The reason includes that the entry relies on `agent-browser errors`, which has no planted-instance proof in the route entry",
+        "The reason includes that failed resource loads are a kind of console entry the entry observes through no proven command, so a missing asset would pass",
+        "Four complete fields do not make the entry pass",
+        "The required fix is a planted instance and capturing command for each missing class with the entry observing each class through its proven command, or an open question for a class no command captures"
+      ]
     }
   ]
 }

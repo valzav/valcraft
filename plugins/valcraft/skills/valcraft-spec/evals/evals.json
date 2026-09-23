@@ -491,8 +491,8 @@
     {
       "id": 24,
       "name": "outdated-configuration-delegates-to-tune-first",
-      "prompt": "/valcraft:valcraft-spec — create the feature contract from a local requirements document in a repository whose committed `.valcraft/config.yaml` is valid except that it records `valcraft_version: \"0.8.0\"` while the installed plugin's ledger is at v0.8.6; the backend is subagents. This run is unattended. State what Spec does before any source or workspace work, and how it ends. Do not mutate anything.",
-      "expected_output": "Spec validates the resolved configuration against config.md, classifies it as outdated, and invokes valcraft-tune before reading the source or touching the workspace. The newer entries need no answer: v0.8.1 only records the version, v0.8.2 does not apply without Herdr workers, v0.8.3 performs nothing, v0.8.4 and v0.8.5 perform nothing, and v0.8.6 does not apply without Herdr workers, so Tune writes `valcraft_version: \"0.8.6\"`, commits the base on the checked-out branch, and returns `Status: done`; Spec resumes from that HEAD. Spec never edits `valcraft_version` itself. Had Tune returned a non-done status, Spec would end with `configuration_required` or `configuration_unresolved` quoting Tune's terminal line and write no artifact.",
+      "prompt": "/valcraft:valcraft-spec — create the feature contract from a local requirements document in a repository whose committed `.valcraft/config.yaml` is valid except that it records `valcraft_version: \"0.8.0\"` while the installed plugin's ledger is at v0.8.7; the backend is subagents. This run is unattended. State what Spec does before any source or workspace work, and how it ends. Do not mutate anything.",
+      "expected_output": "Spec validates the resolved configuration against config.md, classifies it as outdated, and invokes valcraft-tune before reading the source or touching the workspace. The newer entries need no answer: v0.8.1 only records the version, v0.8.2 does not apply without Herdr workers, v0.8.3 performs nothing, v0.8.4 and v0.8.5 perform nothing, v0.8.6 does not apply without Herdr workers, and v0.8.7 performs nothing, so Tune writes `valcraft_version: \"0.8.7\"`, commits the base on the checked-out branch, and returns `Status: done`; Spec resumes from that HEAD. Spec never edits `valcraft_version` itself. Had Tune returned a non-done status, Spec would end with `configuration_required` or `configuration_unresolved` quoting Tune's terminal line and write no artifact.",
       "files": [
         "SKILL.md",
         "../valcraft-tune/references/config.md"
@@ -561,6 +561,24 @@
         "Attended, Spec asks the operator for the missing threshold and records the answer as an operator decision",
         "Unattended, Spec records the measurement as evidence with no gate and lists the missing threshold as an open question",
         "The entry keeps the defect guarded, a failing input, and a positive control"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "route-proof-covers-each-event-class-the-criterion-names",
+      "prompt": "/valcraft:valcraft-spec — record the browser verification route for FEAT-010 and write the Test strategy entry for NFR-002, whose source reads: 'Loading the page and playing through the three scenarios produces no errors in the browser console.' The route is agent-browser 0.27.0 at /usr/local/bin/agent-browser, driving headless Chrome; the Claude and Codex workers both drive it as a shell CLI. The probe so far, on a page served over local HTTP: a planted `console.error('probe')` call appeared in `agent-browser console`, `agent-browser eval` returned page state, and `agent-browser screenshot` wrote a PNG. Show the route entry, the NFR-002 entry, and anything that must happen before readiness. Do not create files.",
+      "expected_output": "Spec derives the event classes from the criterion's wording and counts every kind of entry a browser console shows: the page's console calls, uncaught exceptions, and failed resource loads. The recorded probe proves only console calls, so the route entry lists uncaught exceptions and failed resource loads as not yet proven. Before readiness Spec plants a thrown error and a request for a missing file and records the command that captures each, or records a class no command captures under open questions. The NFR-002 entry names the class and capturing command it relies on for each class, never cites `agent-browser console` alone for the whole criterion, and never cites the route for an unproven class.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "Uncaught exceptions and failed resource loads are derived as event classes of the criterion, alongside console calls",
+        "The route entry records that the probe proves only console calls and that the other classes are not yet proven",
+        "Before readiness, Spec plants an instance of each unproven class and records the capturing command, or records a class no command captures under open questions",
+        "The NFR-002 entry never relies on `agent-browser console` alone for the whole criterion and never cites the route for an unproven class",
+        "The NFR-002 entry names the event class and capturing command for each class it relies on"
       ]
     }
   ]
