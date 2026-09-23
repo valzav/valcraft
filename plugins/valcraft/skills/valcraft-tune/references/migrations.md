@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.5
+
+### Run directories record the assignment envelope and transcript path
+
+A Foreman run directory's `workers.md` row gains a `transcript path` column after `assigned report path`, and each assignment's exact envelope is saved as `<assignment id>-envelope.txt` beside its report before submission, as `valcraft-foreman/templates/run-dir.md` defines. The column holds `pending` from dispatch, and Foreman locates the harness transcript when the row's terminal evidence is recorded. Temper reads the envelope and transcript as the direct run evidence of a Foreman-delivered corpus.
+
+- Applies when: never on its own; a Foreman run resumed under this release records the column and envelope from its next dispatch, and Temper lists a row written without the column under not examined.
+- Tune performs: none; the delivery loop carries the change.
+- Operator: none.
+
 ## v0.8.4
 
 ### Every criterion is observed by a worker

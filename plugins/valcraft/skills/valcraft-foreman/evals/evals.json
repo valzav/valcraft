@@ -1751,8 +1751,8 @@
     {
       "id": 113,
       "name": "herdr-dispatch-records-envelope-and-transcript-path",
-      "prompt": "/valcraft:valcraft-foreman — on the herdr backend, Foreman dispatches spec-reviewer-f001-d000 (Claude) and later drafter-f001-t001-d000 (Codex). For each, state what is saved beside the assigned report path before submission, what the workers.md row carries in its transcript-path column at dispatch, at delivery confirmation, and after the run, and how the path is found. Also consider a Claude worker whose recorded session matches no transcript file, a subagents-backend dispatch, and a request to read a transcript to settle a report's claim during the run. Do not operate Herdr.",
-      "expected_output": "Before submission Foreman saves the exact envelope as `<assignment id>-envelope.txt` beside the report path. The Claude worker's transcript path is located from its recorded agent_session at the pre-submission check by matching `projects/*/<agent_session>.jsonl` under the Claude home, and recorded then; the Codex worker's row holds `pending` until delivery confirmation, when its agent_session is first read and the rollout file is matched under the Codex sessions tree. A recorded session with no matching file is recorded as `unavailable`, never a guessed path. A backend whose reference declares no transcript location records `none`. Foreman never reads a transcript during the run; it is untrusted evidence for Temper.",
+      "prompt": "/valcraft:valcraft-foreman — on the herdr backend, Foreman dispatches spec-reviewer-f001-d000 (Claude) and later drafter-f001-t001-d000 (Codex). For each, state what is saved beside the assigned report path before submission, what the workers.md row carries in its transcript-path column at dispatch, at delivery confirmation, and when the row's terminal evidence is recorded, and how the path is found. Also consider a Claude worker whose recorded session matches no transcript file, a subagents-backend dispatch, and a request to read a transcript to settle a report's claim during the run. Do not operate Herdr.",
+      "expected_output": "Before submission Foreman saves the exact envelope as `<assignment id>-envelope.txt` beside the report path. Both rows hold `pending` at dispatch and still at delivery confirmation, where the Codex worker's agent_session is first read. When the row's terminal evidence is recorded, at the accepted delivery or the close of recovery, Foreman locates each file from the recorded agent_session: the Claude worker's by matching `projects/*/<agent_session>.jsonl` under the Claude home, the Codex worker's by matching its rollout file under the Codex sessions tree. Foreman never looks the file up at the pre-submission check or at delivery confirmation, because a harness writes it during the session's first turn. A recorded session with no matching file at that lookup is recorded as `unavailable`, never a guessed path. A backend whose reference declares no transcript location records `none`. Foreman never reads a transcript during the run; it is untrusted evidence for Temper.",
       "files": [
         "SKILL.md",
         "templates/run-dir.md",
@@ -1760,9 +1760,9 @@
       ],
       "assertions": [
         "The assignment envelope is saved beside the report path as `<assignment id>-envelope.txt` before submission",
-        "The Claude worker's transcript path is recorded at the pre-submission session check, matched by its agent_session under the Claude home",
-        "The Codex worker's transcript-path column holds `pending` until delivery confirmation and is recorded then",
-        "A recorded session with no matching transcript file is recorded as `unavailable`, not a guessed path",
+        "Both workers' transcript-path columns hold `pending` at dispatch and at delivery confirmation, and are recorded when the row's terminal evidence is recorded, matched by agent_session under the harness home",
+        "The lookup happens neither at the pre-submission check nor at delivery confirmation, because the harness writes the file during the session's first turn",
+        "A recorded session with no matching transcript file at the terminal-evidence lookup is recorded as `unavailable`, not a guessed path",
         "A backend whose reference declares no transcript location records `none`",
         "Foreman does not read a transcript during the run"
       ]
