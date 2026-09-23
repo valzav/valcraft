@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.6
+
+### Balanced runs spec and plan review at high effort
+
+The `Balanced` preset in `valcraft-tune/references/models.md` now sets `spec_review` and `plan_review` to Claude `opus` at `high`; its other Claude roles stay at `medium`, and `Quality` and `Economy` are unchanged. The Custom flow recommends `high` for every review role. A configuration records resolved worker values, not the preset that produced them, so an existing configuration keeps the efforts it records.
+
+- Applies when: the resolved `foreman.herdr.workers` map has `spec_review` or `plan_review` at an effort below `high`.
+- Tune performs: none; a recorded effort may be a deliberate Custom choice.
+- Operator: to adopt the new `Balanced` reviewer effort, run `/valcraft-tune`, choose `Herdr workers`, and select `Balanced` again, or set `effort: high` for `spec_review` and `plan_review` through `Custom`.
+
 ## v0.8.5
 
 ### Run directories record the assignment envelope and transcript path

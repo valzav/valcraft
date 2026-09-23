@@ -40,12 +40,12 @@ A Cursor model value names a base model alias, not a complete catalog slug. The 
 
 ## Herdr presets
 
-Each preset assigns one model and effort per harness. The role-to-harness split is the same for every preset and lives in `config.md`; a preset fills in the model and effort for every role on that harness.
+Each preset assigns one model and effort per harness, except where its row names a role. The role-to-harness split is the same for every preset and lives in `config.md`; a preset fills in the model and effort for every role on that harness.
 
 | Preset | Claude | Codex | Summary for the operator |
 | --- | --- | --- | --- |
-| `Balanced` | `opus` medium | `gpt-5.6-sol` high | use Claude Opus at medium and Codex Sol at high effort with independent reviewers |
+| `Balanced` | `opus` medium; `opus` high for `spec_review` and `plan_review` | `gpt-5.6-sol` high | use Claude Opus at medium, Claude Opus at high for spec and plan review, and Codex Sol at high effort with independent reviewers |
 | `Quality` | `fable` high | `gpt-6-astra` high | use Claude Fable and Codex Astra at high effort with the same independent role split |
 | `Economy` | `sonnet` high | `gpt-5.6-sol` medium | use Claude Sonnet at high and Codex Sol at medium effort with the same independent role split |
 
-`Balanced` is the recommended preset. In the Custom flow, its model for the chosen harness is the recommended model; for Cursor, which no preset uses, `cursor-grok-4.6` is the recommended model. `medium` is the recommended effort for every model.
+`Balanced` is the recommended preset. In the Custom flow, its model for the chosen harness is the recommended model; for Cursor, which no preset uses, `cursor-grok-4.6` is the recommended model. `high` is the recommended effort for the review roles `spec_review`, `plan_review`, `code_review`, `retro_review`, and `evidence_review`, and `medium` for every other role.
