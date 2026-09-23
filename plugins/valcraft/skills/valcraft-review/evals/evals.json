@@ -645,7 +645,7 @@
       "id": 32,
       "name": "plan-mode-rejects-operator-judged-observation",
       "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. Every Test strategy entry carries all four fields. The NFR-001 entry reads: 'Observation: record requestAnimationFrame intervals during a scripted orbit as evidence. Visible stutter is judged in headed Chrome on the reference machine by the operator. No numeric gate.' State the verdict for that entry, its severity, and its owner. Do not edit anything.",
-      "expected_output": "Review reports the NFR-001 entry as a material finding owned by Spec, because its observation method names an operator's perception and a headed viewing session that no worker can perform through the recorded route. The presence of all four fields does not save it. The triplet does not pass while that finding is open; the other entries are judged on their own merits.",
+      "expected_output": "Review reports the NFR-001 entry as a material finding owned by Spec, because its observation method names an operator's perception and a headed viewing session that no worker can perform through the recorded route. The presence of all four fields does not save it. The triplet does not pass while that finding is open; the other entries are judged on their own merits. The absence of a numeric gate is not itself the defect: an unattended run may record the measurement as evidence and list the missing threshold as an open question.",
       "files": [
         "SKILL.md",
         "references/plan-mode.md"
@@ -654,7 +654,8 @@
         "The NFR-001 entry is a material finding, not informational",
         "The finding is owned by Spec",
         "The reason is that the observation names an operator's perception or a headed session that no worker can drive through the route",
-        "Four complete fields do not make the entry pass"
+        "Four complete fields do not make the entry pass",
+        "The absence of a numeric gate is not itself a defect; the missing threshold belongs under open questions, not in a demand for a threshold"
       ]
     },
     {
