@@ -20,6 +20,7 @@ Behavioral evals prove the state machine. The future coordination drift check on
 | A Land merge grant binds the head-branch deletion with the merge | 119 |
 | Unattended Spec and plan Review findings return to their owner without an operator stop | 120 |
 | Unattended Foreman settles a sourced product question or threshold as a Foreman decision; process limits and conflicting sources wait | 121, 122 |
+| Every checkpoint carries the run's Foreman decisions, so a resumed controller lists them all at FeatureClose | 123 |
 | Resume exact Draft, Review, Forge, and PR evidence into PlanReview, Implementing, CodeReview, and Landing | 57 |
 | Prepared Draft, Forge, and Temper heads resume the same producer before Review | 65 |
 | Incomplete producer report is re-requested without Foreman reconstruction | 2 |

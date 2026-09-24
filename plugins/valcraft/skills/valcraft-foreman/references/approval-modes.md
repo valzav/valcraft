@@ -44,7 +44,7 @@ In an unattended run, Foreman first tries to settle a producer's `product_decisi
 
 1. Read the project's own sources: the requirements source, the product brief, root `AGENTS.md`, accepted ADRs, the committed contract, recorded operator decisions, and repository evidence, including the measured evidence the producer reports.
 2. Decide only when those sources support one answer. For a product threshold, the derivation from the sources or the measured evidence is the support.
-3. Record in `state.md` the question, the answer, each cited source, and a short rationale. Return the answer to the same logical producer as an attributed `Foreman decision` item.
+3. Record in `state.md` the question, the answer, each cited source, and a short rationale. Every later checkpoint carries the complete inventory of the run's Foreman decisions, so a resumed controller holds them all. Return the answer to the same logical producer as an attributed `Foreman decision` item.
 4. Escalate to `AwaitOwner` as usual when the sources conflict, when no source supports one answer over another, or when the answer would contradict a recorded operator decision.
 
 A Foreman decision is never outward-mutation authority. It never answers a process limit (a cap, retry or round count, timeout, or budget on how the work is done), takeover, authority, release-branch safety, the FeatureClose confirmation, or any other row that always waits. Attended mode always waits for the operator. When Foreman requests the operator's FeatureClose confirmation, list every Foreman decision of the run with its answer and cited sources.

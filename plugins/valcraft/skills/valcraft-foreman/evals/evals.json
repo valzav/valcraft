@@ -1924,6 +1924,24 @@
         "(b) Foreman waits for the operator because a rerun count is a process limit",
         "(c) Foreman waits for the operator because the PRD and the product brief conflict"
       ]
+    },
+    {
+      "id": 123,
+      "name": "foreman-decisions-across-checkpoints-and-resume",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-001. Its `state.md` recorded two Foreman decisions: at CP-012, the targeting ray passes through water (sources: `docs/prd.md` water rule, AC-005); at CP-025, the minimum terrain height span is 9 levels (sources: PRD 'clearly different heights', 16-block world, measured seed). Checkpoints CP-026 to CP-040 followed. (1) Foreman now writes CP-041 after T-003's code Review passes: list every field group CP-041 must carry that concerns decisions. (2) Later the controller's context is reset and a fresh controller resumes from the latest checkpoint after T-003 lands. State what it reads to find the run's decisions and what its FeatureClose confirmation request to the operator contains about them. Do not mutate anything.",
+      "expected_output": "(1) CP-041 carries the standing operator decisions in force and the complete inventory of the run's Foreman decisions: both the CP-012 water-targeting decision and the CP-025 terrain-span decision, each with its question, answer, cited sources, and recording checkpoint. (2) The resumed controller reads the latest checkpoint, which carries that full inventory, so it needs no earlier checkpoint to find the decisions. Its FeatureClose confirmation request lists both Foreman decisions with their answers and cited sources before asking the operator to confirm the feature.",
+      "files": [
+        "references/approval-modes.md",
+        "templates/run-dir.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "CP-041 carries both Foreman decisions, each with its question, answer, sources, and recording checkpoint",
+        "CP-041 also carries the standing operator decisions in force as its own field group",
+        "The resumed controller finds the decisions in the latest checkpoint alone",
+        "The FeatureClose confirmation request lists both Foreman decisions with answers and sources",
+        "The request asks the operator to confirm the feature as a whole; the listed Foreman decisions are disclosed for review, not put to a separate per-decision approval that blocks the close"
+      ]
     }
   ]
 }

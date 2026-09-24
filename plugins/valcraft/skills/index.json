@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "f23b473fbc16ad45",
+      "version": "7fec31274da2c8c7",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
