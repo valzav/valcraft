@@ -171,6 +171,14 @@ The URL requires a public repository. To load from a clone, use `"skills": { "pa
 <details>
 <summary>Update commands and reload behavior</summary>
 
+To update every installed harness at once, run `scripts/update-valcraft.sh` from a clone, or download it, read it, and run it. It runs the commands below for each CLI that already has the `valcraft` marketplace and skips the rest. `--dry-run` prints the commands instead.
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/valzav/valcraft/main/scripts/update-valcraft.sh
+sh update-valcraft.sh --dry-run
+sh update-valcraft.sh
+```
+
 Claude Code:
 
 ```bash
