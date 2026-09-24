@@ -1,7 +1,7 @@
 ---
 id: FEAT-001
 title: Invite links
-status: draft
+status: complete
 spec_issue: null
 created: 2026-08-16
 updated: 2026-08-16
@@ -25,5 +25,5 @@ An admin creates an invite link for a workspace. The link expires; an expired li
 
 ## Acceptance criteria
 
-- [ ] AC-001: Creating a link returns a URL-safe token and an expiry exactly 7 days after creation.
-- [ ] AC-002: Using an expired token raises `ExpiredInvite` and writes no membership.
+- [x] AC-001: Creating a link returns a URL-safe token and an expiry exactly 7 days after creation.
+- [x] AC-002: Using an expired token raises `ExpiredInvite` and writes no membership.

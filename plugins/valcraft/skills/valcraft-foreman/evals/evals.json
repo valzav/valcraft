@@ -258,7 +258,7 @@
       "id": 11,
       "name": "temper-runs-once-at-feature-close",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .valcraft/foreman/run-feature-closed/ and take the next loop step.",
-      "expected_output": "Foreman verifies Land completed the operator-confirmed feature close, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
+      "expected_output": "Foreman verifies Land completed the operator-confirmed feature close, including feature-close PR #9 merged into `dev` as 4444444444444444444444444444444444444444, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, `dev` at 4444444444444444444444444444444444444444, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
       "files": [
         "evals/files/loop-done/AGENTS.md",
         "evals/files/loop-done/.valcraft/config.yaml",
