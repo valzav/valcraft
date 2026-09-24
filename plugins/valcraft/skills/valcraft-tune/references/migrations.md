@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.11
+
+### Forge pushes and opens the task pull request in its first assignment
+
+In a Foreman run, Forge's dispatch may carry push and task pull request authority bound to every target field except the head it has yet to produce. Forge pushes only the clean head its full gate passed on, descending from the passed plan, and returns `authority_drift` when the remote task branch moved after dispatch. Unattended runs carry this grant by default; attended runs carry it only when the operator already granted that operation.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.10
 
 ### Unattended runs route review findings to their owner, and Foreman settles sourced decisions

@@ -33,6 +33,18 @@ Attended mode waits unless the live operator already granted the exact operation
 
 Spec and Draft advance to Review only when the next Review worker can access their exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it enters SpecLanding with a current exact spec PR, or returns to Specifying until Spec reports a landable exact PR; it remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
 
+## Ref-bound Forge grant
+
+A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. This is the one grant that binds a head by condition instead of by SHA. Bind every other field exactly:
+
+- repository and remote identity;
+- authoritative base ref and SHA;
+- canonical remote task ref and its observed remote head, including absence;
+- PR base and head refs, and the existing task PR identity or its absence; and
+- the operation set: non-force push of the canonical task ref, and task-PR creation or update.
+
+The bound head is the clean local head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged. A remediation dispatch binds the currently pushed head as the observed remote head and the existing task PR identity. Forge revalidates every bound field immediately before mutation and returns `authority_drift` on any change. A Forge report without a task PR still takes the prepared continuation above.
+
 ## Message registry
 
 | Message | Producer | Consumer | Authoritative report contract | Active state | `done` transition |

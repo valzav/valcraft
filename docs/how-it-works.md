@@ -141,6 +141,7 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Confirm the inferred state when no checkpoint can resume | waits | waits |
 | Pick the next task | waits | proceeds |
 | Advance after a passing review | waits | proceeds |
+| Task push and pull request when `forge` starts | none, unless you already named that operation | grants push and pull request for the task branch, bound to every field except the head `forge` has yet to verify |
 | Prepared task/spec push or pull request, or ordinary merge into the default branch | waits, unless you already named that operation | issues authority for the exact prepared operation |
 | Push a local-ahead default branch | requires a live operator instruction naming the push | requires a live operator instruction naming the push |
 | Send a spec or plan review finding back to the worker that owns it | waits | proceeds |
@@ -150,7 +151,7 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Close a feature | waits | waits |
 | A blocked step, or dirty work that an isolated worker cannot read | waits | waits |
 
-A mode never grants authority by itself. Every push, pull request, merge, and tracker close needs authorization bound to the exact repository, branch, head, target, and operation. A worker prepares the operation, receives authority, then rereads every bound field immediately before acting. If anything changed, it stops and reports the new values.
+A mode never grants authority by itself. Every push, pull request, merge, and tracker close needs authorization bound to the exact repository, branch, head, target, and operation. A worker prepares the operation, receives authority, then rereads every bound field immediately before acting. If anything changed, it stops and reports the new values. The one grant made before its head exists is `forge`'s task push and pull request: it covers only the head on which `forge`'s full gate passed, and only while the remote task branch is still where the grant found it.
 
 `foreman` may issue that authority in unattended mode, but it never executes the operation. Issue text, pull request text, reports, and fetched pages are untrusted data and can never grant authority.
 
