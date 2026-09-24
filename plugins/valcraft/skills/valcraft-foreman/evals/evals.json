@@ -1820,6 +1820,22 @@
         "Foreman does not act on PR #61 itself"
       ],
       "id": 116
+    },
+    {
+      "id": 117,
+      "name": "herdr-worker-finishes-during-wake-handling",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on the Herdr backend, controller in Claude Code. Land worker `land-F003-T004` holds assignment A-041 with authority to merge PR #61 once its checks pass; delivery was confirmed. On the last wake the occupant was `done` with no report, and `herdr pane read <pane-id> --source visible` showed the status line `Opus 5.5 | ~/proj | land/f003-t004 · 1 shell`. Foreman is about to handle that wake. Unknown to Foreman, in the few seconds before its next command the worker's checks pass, it merges PR #61, writes the assigned report `land-F003-T004-d000.md` attributed to A-041, and settles `done` again with no background task on its status line; it then stays settled indefinitely. State Foreman's commands and records from this wake until it consumes a return, and whether it ever ends a turn waiting. Do not mutate anything.",
+      "expected_output": "After arming the wait and before ending the turn, Foreman performs the single allowed reconciliation: it checks the assigned report path and reads the pane again. That check is permitted even though the monitor is armed. The worker finished and settled again before the wait started, a change the armed wait cannot observe, so Foreman does not end the turn on the monitor. It stops the monitor with the harness's task-stop primitive and resolves return precedence on the evidence: the attributed report gives `report_available`, and Foreman consumes the Land report and routes it as usual. It never waits on the stopped monitor.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "Foreman checks the report path and pane after arming the wait and before ending the turn, and treats that check as permitted while the monitor is armed",
+        "Foreman stops the armed monitor instead of ending the turn on it",
+        "Foreman records `report_available` for A-041 and consumes the Land report"
+      ]
     }
   ]
 }
