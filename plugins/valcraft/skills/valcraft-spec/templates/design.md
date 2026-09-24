@@ -17,7 +17,7 @@ updated: <YYYY-MM-DD>
 
 ## Verified baseline assumptions
 
-<One entry per existing-code fact the design depends on, checked at the exact baseline SHA: assumption, source locator, check performed, result. When a criterion needs an observation tool that a worker must drive, add the verification route: tool and version, executable, the event classes it was shown to observe, and the harnesses that must drive it. Correct the design before readiness when a check disproves the assumption. Proposed changes do not belong here.>
+<One entry per existing-code fact the design depends on, checked at the exact baseline SHA: assumption, source locator, check performed, result. When a criterion needs an observation tool that a worker must drive, add the verification route: tool and version, executable, each event class the criteria need with its planted instance and the command that captured it, any class no command captured, and the harnesses that must drive it. Correct the design before readiness when a check disproves the assumption. Proposed changes do not belong here.>
 
 ## Impact on existing architecture
 
