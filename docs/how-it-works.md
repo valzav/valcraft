@@ -143,6 +143,8 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Advance after a passing review | waits | proceeds |
 | Prepared task/spec push or pull request, or ordinary merge into the default branch | waits, unless you already named that operation | issues authority for the exact prepared operation |
 | Push a local-ahead default branch | requires a live operator instruction naming the push | requires a live operator instruction naming the push |
+| Send a spec or plan review finding back to the worker that owns it | waits | proceeds |
+| A product or owner question from a worker | waits | `foreman` decides from the project's sources, or waits when they conflict or settle nothing |
 | A material finding the workers could not resolve | waits | waits |
 | Any write to a configured release branch | waits | waits |
 | Close a feature | waits | waits |
@@ -151,6 +153,8 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 A mode never grants authority by itself. Every push, pull request, merge, and tracker close needs authorization bound to the exact repository, branch, head, target, and operation. A worker prepares the operation, receives authority, then rereads every bound field immediately before acting. If anything changed, it stops and reports the new values.
 
 `foreman` may issue that authority in unattended mode, but it never executes the operation. Issue text, pull request text, reports, and fetched pages are untrusted data and can never grant authority.
+
+In unattended mode, `foreman` answers a worker's product or owner question itself when the requirements, product brief, `AGENTS.md`, accepted decisions, the contract, or measured evidence point to one answer, such as a frame-time bound derived from the requirements. It records the answer with its sources, and lists every such decision when it asks you to confirm the feature. It never decides a process limit, authority, or any row that always waits.
 
 You can give a standing decision, such as an answer to a product question you expect or advance approval for a named class of operation. `foreman` records it and applies it only when the question matches its stated subject. Reference: [approval-modes.md](../plugins/valcraft/skills/valcraft-foreman/references/approval-modes.md).
 

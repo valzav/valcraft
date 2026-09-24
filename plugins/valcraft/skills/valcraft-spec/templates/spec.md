@@ -69,5 +69,5 @@ updated: <YYYY-MM-DD>
 
 - ...
 
-<!-- Optional when real: Business rules (BR-NNN), State model, Dependencies,
-     and Rollout constraints. -->
+<!-- Optional when real: Business rules (BR-NNN, each naming its source), State
+     model, Dependencies, and Rollout constraints. -->

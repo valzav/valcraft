@@ -9,12 +9,12 @@ The valid `foreman.approval_mode` in the resolved configuration controls coordin
 | takeover without a verified active checkpoint: confirm inferred state and next action | wait | wait |
 | `Specifying`: exact projection, transfer, push, or spec-PR operation prepared | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `SpecReview`: passing verdict advances | wait | proceed |
-| `SpecReview`: unresolved material finding | wait | wait |
+| `SpecReview`: unresolved material finding | wait | proceed to the owning producer |
 | `SpecLanding`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
 | `Ready`: confirm selected task | wait | proceed |
 | `Drafting`: exact plan transfer required for the next Review worker | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `PlanReview`: passing verdict advances | wait | proceed |
-| `PlanReview`: unresolved material finding | wait | wait |
+| `PlanReview`: unresolved material finding | wait | proceed to the owning producer |
 | `Implementing`: prepared exact task push and PR | wait unless already explicit | issue exact target-bound authority after prepared-field validation |
 | `CodeReview`: passing verdict advances | wait | proceed |
 | `Landing`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
@@ -37,6 +37,17 @@ A standing decision may answer:
 - a `wait unless already explicit` row, by naming the exact operation class in advance.
 
 Apply a standing decision only when the raised question's subject matches the decision's stated subject. A partial or adjacent match waits. Record each application with the gate, the decision, and the result. A standing decision never waives exact Review coverage, Land's check classification, missing evidence, unavailable applicability sources, release-branch safety, or takeover confirmation, and it grants no mutation authority beyond the exact operation it names.
+
+## Foreman decisions
+
+In an unattended run, Foreman first tries to settle a producer's `product_decision_required` or `owner_decision_required` question itself, before the question waits in `AwaitOwner`. A product threshold, the measurable bound that makes a requirement checkable, is such a question.
+
+1. Read the project's own sources: the requirements source, the product brief, root `AGENTS.md`, accepted ADRs, the committed contract, recorded operator decisions, and repository evidence, including the measured evidence the producer reports.
+2. Decide only when those sources support one answer. For a product threshold, the derivation from the sources or the measured evidence is the support.
+3. Record in `state.md` the question, the answer, each cited source, and a short rationale. Every later checkpoint carries the complete inventory of the run's Foreman decisions, so a resumed controller holds them all. Return the answer to the same logical producer as an attributed `Foreman decision` item.
+4. Escalate to `AwaitOwner` as usual when the sources conflict, when no source supports one answer over another, or when the answer would contradict a recorded operator decision.
+
+A Foreman decision is never outward-mutation authority. It never answers a process limit (a cap, retry or round count, timeout, or budget on how the work is done), takeover, authority, release-branch safety, the FeatureClose confirmation, or any other row that always waits. Attended mode always waits for the operator. When Foreman requests the operator's FeatureClose confirmation, list every Foreman decision of the run with its answer and cited sources.
 
 ## Rules in every mode
 

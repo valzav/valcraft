@@ -1836,6 +1836,112 @@
         "Foreman stops the armed monitor instead of ending the turn on it",
         "Foreman records `report_available` for A-041 and consumes the Land report"
       ]
+    },
+    {
+      "id": 118,
+      "name": "herdr-codex-worker-first-submission",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on the Herdr backend. Foreman has just started Codex worker `drafter-F002-T001-d000` in pane `w9:p4` for assignment A-030 and has written its envelope. `herdr pane get w9:p4` reports agent name `drafter-f002-t001-d000`, agent `codex`, status `done`, and `agent_session` null. `herdr pane read w9:p4 --source visible` shows only these lines:\n\n```\n>_ OpenAI Codex (v0.154.0)\n  model: gpt-5.6-sol high   directory: ~/proj\n⚠ 1 hook failed to load; see ~/.codex/log\n```\n\nState what Foreman does next, up to and including the submission of A-030. Do not mutate anything.",
+      "expected_output": "The worker is not yet ready: a settled status and a null session are expected for a new Codex worker, but the pane shows no Codex input prompt, so Codex is still starting and a prompt submitted now can be lost. Foreman does not submit A-030 yet. It keeps reading the pane until Codex's empty input prompt appears, then submits A-030, and confirms delivery when the occupant is observed `working`, reading and recording `agent_session` then. Nothing has been submitted, so there is no `dispatch_error` and no restart at this point.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "Foreman does not submit A-030 while the pane shows no Codex input prompt",
+        "Foreman waits for Codex's empty input prompt to appear in the pane before submitting",
+        "After submitting, Foreman confirms delivery by an observed `working` state and records `agent_session` then",
+        "Foreman records no `dispatch_error` and does not restart the worker at this point"
+      ]
+    },
+    {
+      "id": 119,
+      "name": "spec-landing-authority-operation-set",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run is in SpecLanding for FEAT-004. Spec Review passed the triplet at head `aaaa111111111111111111111111111111111111` on branch `spec/f004-offline-sync`. Foreman has validated live: spec PR #4 in `acme/app` is open and mergeable, its head is that SHA, its base is `main` at `bbbb222222222222222222222222222222222222`, and `pull_requests.merge_strategy` is `squash`. Write the exact attributed authority item Foreman puts in the Land assignment envelope, then state what Land may and may not do under it. Do not mutate anything.",
+      "expected_output": "The attributed Foreman authority binds repository `acme/app`, PR #4, head `spec/f004-offline-sync` at aaaa111111111111111111111111111111111111, base `main` at bbbb222222222222222222222222222222222222, and the squash strategy, and its operation set is the squash merge of PR #4 together with deleting its head branch `spec/f004-offline-sync`, because Land's merge contract includes that deletion. It does not exclude the branch deletion. It requires Land to revalidate every bound field before mutating and to report `authority_drift` on any change. Land may merge and delete the head branch; it may not push, edit the PR, or change tracker state.",
+      "files": [
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/loop.md",
+        "../valcraft-land/references/final-head-and-checks.md"
+      ],
+      "assertions": [
+        "The authority binds the repository, PR #4, the exact head and base SHAs, and the squash strategy",
+        "The operation set includes deleting the head branch `spec/f004-offline-sync` together with the merge",
+        "The authority does not exclude branch deletion",
+        "Land must revalidate every bound field before mutating"
+      ]
+    },
+    {
+      "id": 120,
+      "name": "unattended-plan-findings-next-step",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run. Plan Review of FEAT-002 T-001 returned `verdict: material findings; open: R-001:P2 Draft, R-002:P2 Draft, R-003:P2 Draft` at plan head `cccc333333333333333333333333333333333333`. It is round one, no R-ID is Spec-owned, and no producer has asked any question. State Foreman's next transition and action, and whether the operator is involved. Do not mutate anything.",
+      "expected_output": "In unattended mode the PlanReview material-finding gate proceeds to the owning producer: Foreman returns the Review report path and R-001 to R-003 to Drafting and dispatches Draft to resolve them by R-ID, with the task still selected. It does not stop for the operator. After Draft's resolution the same Review role runs a closure check; the round cap and second-round triggers are unchanged. Foreman does not decide or dismiss any finding.",
+      "files": [
+        "references/approval-modes.md",
+        "references/loop.md",
+        "references/review-round.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "Foreman routes R-001 to R-003 to Drafting and dispatches Draft",
+        "Foreman does not wait for the operator before that dispatch",
+        "A closure check by the same Review role follows Draft's resolution",
+        "Foreman does not decide or dismiss any finding"
+      ]
+    },
+    {
+      "id": 121,
+      "name": "spec-product-question-in-unattended-run",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run is in Specifying for FEAT-001. Spec's report ends `Status: question: product_decision_required — whether the pointer's targeting ray passes through water to the lake bed`. The requirements source `docs/prd.md` says: 'Water cannot be targeted for removal or placement.' and acceptance criterion 5 reads: 'Left-clicking a block removes it, including a block on the lake bed under the water.' No other source mentions water targeting, and the operator has recorded no decision on it. State what Foreman does and what the Spec assignment carries next. Do not mutate anything.",
+      "expected_output": "In unattended mode Foreman first tries to settle the question from the project's sources before waiting. The PRD supports one answer: water is never targeted, and criterion 5 requires removing a block under the water, so the ray passes through water to the lake bed. Foreman records the question, the answer, the cited PRD lines, and a short rationale in `state.md`, and returns the answer to the same logical Spec producer as an attributed `Foreman decision` item in a new assignment. It does not wait in AwaitOwner and does not treat the decision as outward authority. The decision is listed later when Foreman requests the operator's FeatureClose confirmation.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Foreman settles the question itself instead of waiting in AwaitOwner",
+        "The answer is that the targeting ray passes through water to the lake bed, citing the PRD's water rule and criterion 5",
+        "Foreman records the question, answer, sources, and rationale in `state.md`",
+        "The next Spec assignment carries the answer as an attributed `Foreman decision`, not as outward authority",
+        "The decision is to be listed at the FeatureClose confirmation"
+      ]
+    },
+    {
+      "id": 122,
+      "name": "unattended-producer-questions-three-cases",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run receives three producer questions in turn. State for each whether Foreman answers it itself or waits for the operator, and why. Do not mutate anything.\n\n(a) Spec: `product_decision_required` — NFR-003 needs a minimum terrain height span; the PRD says 'the terrain rises in stepped slopes to clearly different heights' in a world up to 16 blocks high, and Spec's measured prototype seed spans 9 levels.\n(b) Draft: `owner_decision_required` — how many automatic reruns a flaky browser test gets before the plan treats it as failed; no source mentions reruns.\n(c) Spec: `product_decision_required` — which camera the page opens with; `docs/prd.md` requires an orbit camera, while `docs/product-brief.md` says the product opens in first person. The operator has recorded no decision.",
+      "expected_output": "(a) Foreman answers it: a necessary product threshold is a product decision, and the PRD wording, the 16-block world, and the measured 9-level seed support one derived value, so Foreman records a minimum span with its derivation and sources in `state.md` and returns it to Spec as a `Foreman decision`. (b) Foreman waits for the operator: a rerun count is a process limit on how the work is done, which is never a Foreman decision. (c) Foreman waits for the operator: the PRD and the product brief conflict, so no single answer is supported. Both (b) and (c) enter AwaitOwner.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "../valcraft-msw/references/kernel.md"
+      ],
+      "assertions": [
+        "(a) Foreman decides a minimum span itself, recording its derivation from the PRD wording, the world height, and the measured seed",
+        "(a) The answer returns to Spec as a `Foreman decision`",
+        "(b) Foreman waits for the operator because a rerun count is a process limit",
+        "(c) Foreman waits for the operator because the PRD and the product brief conflict"
+      ]
+    },
+    {
+      "id": 123,
+      "name": "foreman-decisions-across-checkpoints-and-resume",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-001. Its `state.md` recorded two Foreman decisions: at CP-012, the targeting ray passes through water (sources: `docs/prd.md` water rule, AC-005); at CP-025, the minimum terrain height span is 9 levels (sources: PRD 'clearly different heights', 16-block world, measured seed). Checkpoints CP-026 to CP-040 followed. (1) Foreman now writes CP-041 after T-003's code Review passes: list every field group CP-041 must carry that concerns decisions. (2) Later the controller's context is reset and a fresh controller resumes from the latest checkpoint after T-003 lands. State what it reads to find the run's decisions and what its FeatureClose confirmation request to the operator contains about them. Do not mutate anything.",
+      "expected_output": "(1) CP-041 carries the standing operator decisions in force and the complete inventory of the run's Foreman decisions: both the CP-012 water-targeting decision and the CP-025 terrain-span decision, each with its question, answer, cited sources, and recording checkpoint. (2) The resumed controller reads the latest checkpoint, which carries that full inventory, so it needs no earlier checkpoint to find the decisions. Its FeatureClose confirmation request lists both Foreman decisions with their answers and cited sources before asking the operator to confirm the feature.",
+      "files": [
+        "references/approval-modes.md",
+        "templates/run-dir.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "CP-041 carries both Foreman decisions, each with its question, answer, sources, and recording checkpoint",
+        "CP-041 also carries the standing operator decisions in force as its own field group",
+        "The resumed controller finds the decisions in the latest checkpoint alone",
+        "The FeatureClose confirmation request lists both Foreman decisions with answers and sources",
+        "The request asks the operator to confirm the feature as a whole; the listed Foreman decisions are disclosed for review, not put to a separate per-decision approval that blocks the close"
+      ]
     }
   ]
 }

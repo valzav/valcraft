@@ -10,7 +10,7 @@ Send every worker these fields in order:
 2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
 3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
 4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, or `Foreman observation`, with its source and scope. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, `Foreman decision`, or `Foreman observation`, with its source and scope. A `Foreman decision` carries the answer and cited sources recorded under `approval-modes.md`'s Foreman decisions. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set. A Land merge grant's operation set includes deleting the merged PR's head branch, as `../../valcraft-land/references/final-head-and-checks.md` defines; never exclude it.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
@@ -75,6 +75,8 @@ The open finding rows carry the severity, claim, evidence, and resolution that `
 ## Declared outcome routing
 
 Each declared code has one transition. The detail after `—` never changes it.
+
+In an unattended run, a `product_decision_required` or `owner_decision_required` routed to `AwaitOwner` first takes the Foreman decisions step in [`approval-modes.md`](approval-modes.md); it waits only when that step escalates.
 
 ### Cast
 
