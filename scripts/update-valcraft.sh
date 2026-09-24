@@ -2,8 +2,10 @@
 # Update an installed Valcraft plugin in every coding-agent CLI that has it.
 #
 # Runs the update commands from the README's "Updating" section for each
-# harness whose CLI is on PATH and already has the `valcraft` marketplace.
-# It never adds a marketplace or installs a plugin that is not there.
+# harness that already has Valcraft: an installed plugin in Claude Code and
+# Codex, the `valcraft` marketplace in Cursor. It never adds a marketplace or
+# installs a plugin that is not there. A CLI that cannot report its state
+# counts as a failure.
 #
 # Usage: sh scripts/update-valcraft.sh [--dry-run]
 #   --dry-run  print the commands instead of running them
@@ -15,7 +17,7 @@ case "${1:-}" in
 --dry-run) dry_run=1 ;;
 "") ;;
 -h | --help)
-	/usr/bin/sed -n '2,10p' "$0" | /usr/bin/sed 's/^# \{0,1\}//'
+	/usr/bin/sed -n '2,12p' "$0" | /usr/bin/sed 's/^# \{0,1\}//'
 	exit 0
 	;;
 *)
@@ -41,43 +43,63 @@ run() {
 	"$@"
 }
 
-have() { command -v "$1" >/dev/null 2>&1; }
+fail() {
+	failed="$failed
+  - $1"
+}
+
+# found NAME PATTERN COMMAND...: succeed when COMMAND's output shows an
+# installed Valcraft. A missing CLI or a non-matching listing is a skip; a
+# listing command that fails is a failure, never a skip.
+found() {
+	name=$1
+	pattern=$2
+	shift 2
+	if ! command -v "$1" >/dev/null 2>&1; then
+		printf '%s: skipped, `%s` not on PATH\n' "$name" "$1"
+		return 1
+	fi
+	if ! out=$("$@" 2>&1); then
+		printf '%s: `%s` failed:\n%s\n' "$name" "$*" "$out" >&2
+		fail "$name: could not read installed state"
+		return 1
+	fi
+	if printf '%s\n' "$out" | grep -Eq "$pattern"; then
+		printf '%s\n' "$name"
+		return 0
+	fi
+	printf '%s: skipped, Valcraft not installed\n' "$name"
+	return 1
+}
 
 # Claude Code: refresh the marketplace, then update the installed plugin.
-if have claude && claude plugin list 2>/dev/null | grep -q 'valcraft@valcraft'; then
-	printf 'Claude Code\n'
+if found "Claude Code" 'valcraft@valcraft' claude plugin list; then
 	if run claude plugin marketplace update valcraft && run claude plugin update valcraft@valcraft; then
 		note "Claude Code: restart open sessions"
 	else
-		failed="$failed claude"
+		fail "Claude Code: update failed"
 	fi
-else
-	printf 'Claude Code: skipped, no valcraft@valcraft installed\n'
 fi
 
-# Codex: refresh the Git marketplace snapshot, then reinstall from it.
-if have codex && codex plugin marketplace list 2>/dev/null | grep -q '^valcraft[[:space:]]'; then
-	printf 'Codex\n'
+# Codex: refresh the Git marketplace snapshot, then reinstall from it. Gate on
+# the installed-plugin listing, because `plugin add` would also install a
+# plugin that was deliberately removed.
+if found "Codex" '^valcraft@valcraft[[:space:]]+installed' codex plugin list; then
 	if run codex plugin marketplace upgrade valcraft && run codex plugin add valcraft@valcraft; then
 		note "Codex: start a new session"
 	else
-		failed="$failed codex"
+		fail "Codex: update failed"
 	fi
-else
-	printf 'Codex: skipped, no valcraft marketplace configured\n'
 fi
 
-# Cursor: the CLI can only re-index the marketplace; the plugin itself is
-# updated from the Plugins UI.
-if have agent && agent plugin marketplace list 2>/dev/null | grep -q '^valcraft[[:space:]]'; then
-	printf 'Cursor\n'
+# Cursor: the CLI can only re-index the marketplace, which installs nothing;
+# the plugin itself is updated from the Plugins UI.
+if found "Cursor" '^valcraft[[:space:]]' agent plugin marketplace list; then
 	if run agent plugin marketplace update valcraft; then
 		note "Cursor: update valcraft in the Plugins UI"
 	else
-		failed="$failed cursor"
+		fail "Cursor: marketplace update failed"
 	fi
-else
-	printf 'Cursor: skipped, no valcraft marketplace configured\n'
 fi
 
 printf '\n'
