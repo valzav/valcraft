@@ -548,8 +548,8 @@
     {
       "id": 27,
       "name": "perceptual-criterion-becomes-a-worker-measured-check",
-      "prompt": "/valcraft:valcraft-spec — write the design's Test strategy entry for NFR-001 of FEAT-010, whose source reads: 'Orbiting the camera renders without visible stutter in Chrome on the reference machine.' The recorded verification route is agent-browser headless, with requestAnimationFrame timestamps readable through its eval command. The source gives no frame-time number. Show the entry for an attended run and for an unattended run, and state who observes the criterion during delivery. Do not create files.",
-      "expected_output": "Spec writes an observation method a worker drives itself: a scripted orbit through the recorded route with requestAnimationFrame intervals recorded, the defect it guards, a failing input, and a positive control. It never names the operator's perception or an attended viewing session as the observer. Attended, it asks the operator for the frame-interval threshold and records the answer as an operator decision; unattended, it records the measurement as evidence with no gate and names the missing threshold under open questions. Forge and code Review observe the criterion through the route.",
+      "prompt": "/valcraft:valcraft-spec — write the design's Test strategy entry for NFR-001 of FEAT-010, whose source reads: 'Orbiting the camera renders without visible stutter in Chrome on the reference machine.' The recorded verification route is agent-browser headless, with requestAnimationFrame timestamps readable through its eval command. The source gives no frame-time number. Show what Spec does about the missing threshold in a direct invocation and in a Foreman assignment of an unattended run, then the entry, and state who observes the criterion during delivery. Do not create files.",
+      "expected_output": "Spec writes an observation method a worker drives itself: a scripted orbit through the recorded route with requestAnimationFrame intervals recorded, the defect it guards, a failing input, and a positive control. It never names the operator's perception or an attended viewing session as the observer. In a direct invocation it asks the operator for the frame-interval threshold and records the answer as an operator decision; in a Foreman assignment it returns `product_decision_required` naming the missing threshold, NFR-001, and the measured frame intervals, and applies the answer the assignment returns. Forge and code Review observe the criterion through the route.",
       "files": [
         "SKILL.md",
         "references/feature-contract.md",
@@ -558,8 +558,8 @@
       "assertions": [
         "The observation method is a scripted orbit through the recorded route with frame intervals recorded, driven by a worker",
         "No entry names the operator's perception or an attended viewing session as the observer",
-        "Attended, Spec asks the operator for the missing threshold and records the answer as an operator decision",
-        "Unattended, Spec records the measurement as evidence with no gate and lists the missing threshold as an open question",
+        "In a direct invocation, Spec asks the operator for the missing threshold and records the answer as an operator decision",
+        "In a Foreman assignment, Spec returns `product_decision_required` naming the missing threshold, its criterion, and the measured evidence, instead of an ungated entry",
         "The entry keeps the defect guarded, a failing input, and a positive control"
       ]
     },
@@ -597,6 +597,23 @@
         "The report lists the T-003 hunk under `Workspace` with R-003"
       ],
       "id": 29
+    },
+    {
+      "id": 30,
+      "name": "business-rules-added-during-revision",
+      "prompt": "/valcraft:valcraft-spec — a Foreman assignment in an unattended run asks Spec to resolve Spec Review findings on FEAT-001. `spec.md` has a `## Business rules` section whose `### Operator decisions` subsection records BR-001 to BR-007, each decided by the operator on 2026-09-24. Resolving R-009 requires a new rule that the lake is one orthogonally connected body of water, which follows from FR-003's 'a lake enclosed by land'. The assignment also carries an attributed `Foreman decision` from run 2026-09-24-f001: the pointer's targeting ray passes through water to the lake bed, citing the PRD's water rule and AC-005. Show the business-rule entries Spec adds and where they go. Do not create files.",
+      "expected_output": "Spec adds two rules. BR-008, the connected-lake rule, records its source as Spec's derivation from FR-003 (and R-009). BR-009, the water-targeting rule, records its source as the attributed Foreman decision of run 2026-09-24-f001 with its cited PRD sources. Neither goes under `### Operator decisions`, and Spec does not widen that heading to hold them; the operator decisions keep only BR-001 to BR-007. The Foreman decision settles the behavior-changing water-targeting question for readiness in this unattended run.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/spec.md"
+      ],
+      "assertions": [
+        "The connected-lake rule records Spec's derivation from FR-003 as its source",
+        "The water-targeting rule records the Foreman decision as its source, naming the run",
+        "Neither new rule is placed under or relabeled as an operator decision, and the Operator decisions heading is not widened",
+        "The Foreman decision is treated as settling the water-targeting question for readiness"
+      ]
     }
   ]
 }

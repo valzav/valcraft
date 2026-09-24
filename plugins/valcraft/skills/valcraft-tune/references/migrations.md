@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.10
+
+### Unattended runs route review findings to their owner, and Foreman settles sourced decisions
+
+In an unattended run, a Spec or plan Review material finding returns to its owning producer without waiting for the operator. A producer's product or owner question, including a necessary product threshold, is first settled by Foreman when the project's sources or measured evidence support one answer; Foreman records the answer with its sources, passes it as an attributed `Foreman decision`, and lists every such decision at the feature-close confirmation. Conflicting or silent sources still wait for the operator, and process limits remain the owner's. Spec records the source of each business rule and treats a Foreman decision as settling a behavior-changing assumption in an unattended run.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none; switch to `attended` to keep every product and owner question and every Spec or plan finding round with the operator.
+
 ## v0.8.9
 
 ### A base behind only by releases that change nothing stays valid

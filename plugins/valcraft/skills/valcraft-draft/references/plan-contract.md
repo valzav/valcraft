@@ -60,7 +60,7 @@ For verification that depends on a running application, fixtures, or external st
 
 Do not put execution progress in the plan. Do not edit implementation source, feature or quick-task checkboxes, tracker state, review records, or any artifact outside the plan. Do not schedule the task's own `T-XXX` or `QT-XXX` checkbox transition, or its tracker close, as a step for any role: Land performs it at close under `../../valcraft-land/references/tracker-closure.md`.
 
-After every plan write or revision, invoke `valcraft-msw` on that plan. Read its complete report and verify that the surviving plan still satisfies the task contract. A product decision that MSW exposes reports `product_decision_required`; a necessary limit or other owner choice reports `owner_decision_required`. Do not commit a plan as reviewable while either question remains.
+After every plan write or revision, invoke `valcraft-msw` on that plan. Read its complete report and verify that the surviving plan still satisfies the task contract. A product decision that MSW exposes, including a necessary product threshold with no sourced value, reports `product_decision_required`; a necessary process limit or other owner choice reports `owner_decision_required`. Do not commit a plan as reviewable while either question remains.
 
 Commit each reviewable plan state. Stage only the plan path and inspect the staged diff. The commit subject cites the feature `T-XXX` or canonical `Q-NNN QT-XXX`; a review remediation subject also cites every resolved `R-NNN`. Record the full commit SHA and subject line in the report so its task and R-ID citations are visible. Verify that the plan blob at that commit matches the reported Review target.
 

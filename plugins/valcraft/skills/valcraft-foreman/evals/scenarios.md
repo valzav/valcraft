@@ -17,6 +17,9 @@ Behavioral evals prove the state machine. The future coordination drift check on
 | Herdr maps Specifying and SpecReview through configured independent workers and keeps Spec Review continuity | 101 |
 | Land partial completion returns spec PR, task PR, and feature-close targets to their owning states | 102 |
 | FeatureClose issues exact close-PR authority unattended; `review_required` on a feature-close PR is Blocked | 115 |
+| A Land merge grant binds the head-branch deletion with the merge | 119 |
+| Unattended Spec and plan Review findings return to their owner without an operator stop | 120 |
+| Unattended Foreman settles a sourced product question or threshold as a Foreman decision; process limits and conflicting sources wait | 121, 122 |
 | Resume exact Draft, Review, Forge, and PR evidence into PlanReview, Implementing, CodeReview, and Landing | 57 |
 | Prepared Draft, Forge, and Temper heads resume the same producer before Review | 65 |
 | Incomplete producer report is re-requested without Foreman reconstruction | 2 |
@@ -64,6 +67,7 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | Seven Herdr observations map to the six returns; `unknown` proves nothing and `done` is not success | 76 |
 | A settled Herdr worker whose status line shows its own running background task is an observation, not `idle_without_report` | 116 |
 | A report written before the re-armed Herdr wait starts is reconciled right after arming, and the monitor is stopped | 117 |
+| A new Codex worker is submitted to only after its input prompt renders | 118 |
 | An unknown submission reconciles report, occupant, and state before anything is sent | 77 |
 | A partial spawn resumes its recorded pane instead of splitting a second one | 78 |
 | A released worker's late signal is an observation and its late report is rejected on attribution | 79 |
