@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.8
+
+### Feature close ticks the acceptance criteria and completes the triplet
+
+The `AC-` checkboxes in `spec.md` and the frontmatter `status` of `spec.md`, `design.md`, and `tasks.md` are completion records that Land sets at feature close, as `valcraft-land/references/tracker-closure.md` defines. After the operator confirms a feature, Land lands one feature-close PR on the `close/fNNN-<slug>` branch. It ticks each criterion whose citing tasks are all closed, lists any other criterion in its report, and changes `status: draft` to `status: complete` in the three files. The PR's delta holds only those marks, so it merges without Review once the applicable checks pass. Spec never changes either mark, and `draft` and `complete` are the only `status` values.
+
+- Applies when: never on its own; the next feature close on this version lands the close PR.
+- Tune performs: none.
+- Operator: none; a feature closed before this release keeps its unticked criteria and `draft` status unless it is edited through an ordinary reviewed change.
+
 ## v0.8.7
 
 ### The verification route is proven per event class

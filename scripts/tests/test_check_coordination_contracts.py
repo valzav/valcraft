@@ -264,8 +264,8 @@ class CoordinationContractCheckTests(unittest.TestCase):
     def test_partial_completion_definition_drift_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "tracker-only feature or PRD closure to FeatureClose",
-            "tracker-only feature or PRD closure to Landing",
+            "feature or PRD closure to FeatureClose",
+            "feature or PRD closure to Landing",
         )
         self.assert_check_fails(
             "PartialCompletionByTarget definition is missing or drifted"

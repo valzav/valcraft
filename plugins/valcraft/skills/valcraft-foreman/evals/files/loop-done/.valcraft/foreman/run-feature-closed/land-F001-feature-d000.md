@@ -2,7 +2,7 @@
 
 ### Target
 
-tracker-only feature close for FEAT-001 after operator confirmation; default branch head 3333333333333333333333333333333333333333
+feature close for FEAT-001 after operator confirmation; default branch head 3333333333333333333333333333333333333333
 
 ### Authoritative state
 
