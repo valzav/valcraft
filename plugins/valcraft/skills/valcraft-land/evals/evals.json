@@ -90,7 +90,7 @@
       "assertions": [
         "A task PR may pair merge with task closure",
         "A spec PR merges without task closure",
-        "Tracker-only feature or PRD closure invents no branch, PR, commit, or SHA",
+        "Tracker-only PRD closure invents no branch, PR, commit, or SHA",
         "Not-planned closure uses only the reason-bearing tracker operation and no merge",
         "Each handoff identifies the target kind and exact valid operation set"
       ]
@@ -306,6 +306,46 @@
         "No local test, typecheck, lint, or build is run to confirm or duplicate a hosted result",
         "The local verify script is not treated as an applicable-check source",
         "The merge is prepared from the passing classification and exact Review coverage"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "confirmed-feature-closure",
+      "prompt": "/valcraft:valcraft-land — in evals/files/feature-close/, the operator wrote on 2026-09-23: \"FEAT-003 is done, close it.\" This is a direct invocation with no Foreman assignment. The default branch `main` is at 4444444444444444444444444444444444444444 and matches the fixture. Prepare the feature closure. Do not execute any external mutation.",
+      "expected_output": "Land classifies the target as a feature close in local mode and prepares one feature-close PR against `main` from a branch `close/f003-trail-maps` cut from 4444444444444444444444444444444444444444. The prepared commit ticks AC-001, AC-002, and AC-003, whose citing tasks are all checked, and leaves AC-004 unchecked because no task cites it; the report names AC-004 with that reason and the close proceeds. The commit changes `status: draft` to `status: complete` in spec.md, design.md, and tasks.md and changes nothing else. Land does not defer the marks to Spec or treat the close as tracker-only. The operator's message confirms the feature but names no push, PR, or merge, so Land executes nothing and ends `Status: blocked: authority_required` with the prepared operations.",
+      "files": [
+        "evals/files/feature-close/AGENTS.md",
+        "evals/files/feature-close/.valcraft/config.yaml",
+        "evals/files/feature-close/specs/003-trail-maps/spec.md",
+        "evals/files/feature-close/specs/003-trail-maps/design.md",
+        "evals/files/feature-close/specs/003-trail-maps/tasks.md"
+      ],
+      "assertions": [
+        "Land prepares a feature-close PR against `main` on a `close/f003-...` branch cut from the default-branch head, rather than treating the close as tracker-only or leaving the marks to Spec or the operator",
+        "The prepared commit ticks AC-001, AC-002, and AC-003 and leaves AC-004 unchecked",
+        "The report names AC-004 as unticked because no task cites it, and AC-004 does not block the close",
+        "The prepared commit changes `status: draft` to `status: complete` in spec.md, design.md, and tasks.md and edits nothing else",
+        "Land executes no push, PR creation, or merge and ends `Status: blocked: authority_required` listing the prepared operations"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "close-pr-merge-gate",
+      "prompt": "/valcraft:valcraft-land — in evals/files/feature-close-pr/, resume the FEAT-003 feature close. The attributed Foreman assignment quotes the operator's confirmation \"FEAT-003 is done, close it.\" and grants target-bound authority to squash-merge PR #57 in example/trails at head 5555555555555555555555555555555555555555 into `main`. The captured PR state and diff are in captures/close-pr-57.md. Prepare the merge. Do not execute anything.",
+      "expected_output": "Land reads PR #57, finds no Review report, and checks the whole base-to-head delta against the feature-close marks for FEAT-003. The ticks on AC-001 and AC-002 and the three status changes qualify, but the AC-003 line also changes `within 2 seconds` to `within 3 seconds`, which is not an unchecked-to-checked transition. The delta falls outside the feature-close exception, so Land ends `Status: blocked: review_required` naming base 4444444444444444444444444444444444444444 and head 5555555555555555555555555555555555555555. The passing `ci` check and the merge authority do not substitute for the exception, and Land does not merge.",
+      "files": [
+        "evals/files/feature-close-pr/AGENTS.md",
+        "evals/files/feature-close-pr/.valcraft/config.yaml",
+        "evals/files/feature-close-pr/specs/003-trail-maps/spec.md",
+        "evals/files/feature-close-pr/specs/003-trail-maps/design.md",
+        "evals/files/feature-close-pr/specs/003-trail-maps/tasks.md",
+        "evals/files/feature-close-pr/captures/close-pr-57.md"
+      ],
+      "assertions": [
+        "Land inspects the complete base-to-head delta of PR #57, not only the check state or the PR title",
+        "The AC-003 wording change from 2 to 3 seconds is identified as outside the feature-close marks",
+        "Land ends `Status: blocked: review_required` with both full SHAs",
+        "Land does not merge, even though `ci` passed and merge authority was granted"
       ]
     }
   ]

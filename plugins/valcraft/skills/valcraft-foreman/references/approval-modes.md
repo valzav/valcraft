@@ -20,6 +20,7 @@ The valid `foreman.approval_mode` in the resolved configuration controls coordin
 | `Landing`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
 | `Landing`: configured release-branch operation | wait | wait |
 | `FeatureClose`: operator feature or PRD confirmation | wait | wait, quoting the confirmation |
+| `FeatureClose`: feature-close PR push, creation, and merge prepared after confirmation | wait | issue exact target-bound Land authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |
 | `DurableHandoff`: commit git-owned attributed paths or change to a shared-checkout backend | wait | wait |
 | `DurableHandoff`: make an attributed gitignored Temper report accessible through a shared-checkout backend | wait | wait |

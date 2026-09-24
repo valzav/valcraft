@@ -155,7 +155,7 @@ The return re-enters `Landing` carrying the whole ownership listed there — fin
 
 ## `FeatureClose`
 
-Dispatch tracker-only Land with the exact feature or PRD target and the operator's quoted confirmation. Land closes only the authorized real tracker target. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
+Dispatch Land with the exact feature or PRD target and the operator's quoted confirmation. For a feature, Land prepares the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`; issue its exact push, PR, and merge authority under the FeatureClose gate in [`approval-modes.md`](approval-modes.md), then resume the same Land producer. Land closes only the authorized real tracker target. Keep a pending check on the close PR under the same await discipline as `Landing`. Route Land codes through the registry in `contracts.md`. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
 
 ## `Retrospective`
 

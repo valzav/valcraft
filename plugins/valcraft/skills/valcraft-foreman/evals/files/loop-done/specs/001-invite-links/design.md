@@ -1,6 +1,6 @@
 ---
 feature: FEAT-001
-status: draft
+status: complete
 created: 2026-08-16
 updated: 2026-08-16
 ---

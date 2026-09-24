@@ -726,9 +726,8 @@ def check_target_kind_routing(
             f"observed={transition}"
         )
     definition = (
-        "`PartialCompletionByTarget` means spec PR to SpecLanding, tracker-only "
-        "feature or PRD closure to FeatureClose, and every other Land target to "
-        "Landing."
+        "`PartialCompletionByTarget` means spec PR to SpecLanding, feature or PRD "
+        "closure to FeatureClose, and every other Land target to Landing."
     )
     if definition not in contracts_text:
         errors.append("PartialCompletionByTarget definition is missing or drifted")

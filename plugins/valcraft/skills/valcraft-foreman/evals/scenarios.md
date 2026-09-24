@@ -15,7 +15,8 @@ Behavioral evals prove the state machine. The future coordination drift check on
 | A merged contract still requires exact Spec Review, then advances directly to Ready | 99 |
 | An isolated backend cannot use commit as the handoff for a gitignored Temper report | 100 |
 | Herdr maps Specifying and SpecReview through configured independent workers and keeps Spec Review continuity | 101 |
-| Land partial completion returns spec PR, task PR, and tracker-only feature targets to their owning states | 102 |
+| Land partial completion returns spec PR, task PR, and feature-close targets to their owning states | 102 |
+| FeatureClose issues exact close-PR authority unattended; `review_required` on a feature-close PR is Blocked | 115 |
 | Resume exact Draft, Review, Forge, and PR evidence into PlanReview, Implementing, CodeReview, and Landing | 57 |
 | Prepared Draft, Forge, and Temper heads resume the same producer before Review | 65 |
 | Incomplete producer report is re-requested without Foreman reconstruction | 2 |

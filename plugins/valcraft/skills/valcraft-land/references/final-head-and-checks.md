@@ -1,6 +1,6 @@
 # Final head and checks
 
-Use this gate for every task and spec PR. It controls both merge and any closure that depends on a merge.
+Use this gate for every task, spec, and feature-close PR. It controls both merge and any closure that depends on a merge.
 
 Merging any PR — task, contract, or amendment — includes deleting its head branch; the merge grant covers the deletion. Reconcile an already-deleted branch as complete.
 
@@ -17,6 +17,8 @@ For that exact tick:
 3. push without force;
 4. re-read the PR head; and
 5. classify applicable checks on that new head.
+
+A feature-close PR has no Review report. Its whole delta against its base must be exactly the completion marks `tracker-closure.md` defines for that feature: unchecked-to-checked `AC-` transitions in its `spec.md` and `status: draft` to `status: complete` in its three files. Such a delta needs no Review.
 
 Any other delta returns `review_required` with the two full SHAs and exact delta target. After a Review-driven change, restart this comparison.
 
@@ -44,7 +46,8 @@ For a failed or missing check, record target kind, evidence, causal owner, and r
 
 - task PR → `check_failure_task` for Forge;
 - spec PR → `check_failure_spec` for Spec or its direct caller;
+- feature-close PR → `external_blocked`, because its delta carries only completion marks;
 
 External, configuration, and unresolved failures return `external_blocked`. Never infer an artifact owner from the target kind alone.
 
-The merge gate passes only when Review covers the exact final head, or the exact completion-tick exception applies, and the state is `passing` or `none-applicable`.
+The merge gate passes only when Review covers the exact final head, or the exact completion-tick or feature-close exception applies, and the state is `passing` or `none-applicable`.

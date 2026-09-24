@@ -8,7 +8,8 @@ Reconcile live tracker and PR state before preparation, immediately before mutat
 | --- | --- |
 | Task PR | add the exact mode-valid completion tick before the final gate when applicable; merge the reviewed PR and delete its head branch; then apply any mode-valid hosted close batch |
 | Spec PR | merge the reviewed PR and delete its head branch; no task closure |
-| Tracker-only feature or PRD | apply only the confirmed tracker close; invent no git target |
+| Feature close | merge the feature-close PR below; then, in `github` mode, apply the confirmed hosted close |
+| Tracker-only PRD | apply only the confirmed tracker close; invent no git target |
 | `not planned` task | record the governing reason and close or remove the task as its tracker contract requires; no merge without a real PR |
 | External completion | follow `record-and-close.md`, then apply only its real tracker closure |
 
@@ -23,6 +24,17 @@ Resolve the tracker mode from the committed `.valcraft/config.yaml` before prepa
 - In every tracker mode, a selected `Q-NNN QT-XXX` closes through its exact unchecked-to-checked transition in the quick-task file. Apply the exception in `final-head-and-checks.md`. Do not edit adjacent content or create a hosted quick-task close batch. A completed quick file needs no feature confirmation or retrospective.
 
 For `not planned`, follow the committed tracker contract. Record the deciding reason. Do not invent a task PR or completed implementation.
+
+## Feature close
+
+A confirmed feature close records completion in the feature's committed triplet through one feature-close PR against the default branch:
+
+1. Resolve the reconciled default-branch head and the feature's `spec.md`, `design.md`, and `tasks.md` on it.
+2. For each `AC-` in `spec.md`, collect the `tasks.md` lines that cite it. Tick the criterion when at least one task cites it and every citing task is closed: checked in `local` mode, a closed issue in `github` mode. Leave every other criterion unchecked and list it in the report with its reason. An unticked criterion does not block the close.
+3. Prepare one commit on the branch `close/fNNN-<slug>`, cut from that head. The commit contains only the unchecked-to-checked `AC-` transitions from step 2 and `status: draft` to `status: complete` in each of the three files. When nothing would change, prepare no branch or PR.
+4. Push the branch without force, create the PR, and merge it with the configured strategy under the gate in `final-head-and-checks.md`.
+
+The operator's confirmation for the feature and Foreman's target-bound grant authorize these exact operations; a direct invocation needs the operator to name them. Reconcile a merged close PR as complete and never open a second one.
 
 ## Hosted tracker batches
 

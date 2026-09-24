@@ -18,7 +18,7 @@ Resolve one target:
 
 - task PR;
 - spec PR;
-- tracker-only feature or PRD closure;
+- feature close or tracker-only PRD closure;
 - `not planned` task closure; or
 - external completion for one open feature or quick task.
 

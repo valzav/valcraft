@@ -258,7 +258,7 @@
       "id": 11,
       "name": "temper-runs-once-at-feature-close",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .valcraft/foreman/run-feature-closed/ and take the next loop step.",
-      "expected_output": "Foreman verifies tracker-only Land completed the operator-confirmed feature close, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
+      "expected_output": "Foreman verifies Land completed the operator-confirmed feature close, including feature-close PR #9 merged into `dev` as 4444444444444444444444444444444444444444, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, `dev` at 4444444444444444444444444444444444444444, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
       "files": [
         "evals/files/loop-done/AGENTS.md",
         "evals/files/loop-done/.valcraft/config.yaml",
@@ -1531,8 +1531,8 @@
     {
       "id": 102,
       "name": "land-partial-completion-routes-by-target-kind",
-      "prompt": "/valcraft:valcraft-foreman — compare three accepted Land reports with Status blocked: partial_completion. Report (a) is for spec PR #61 in SpecLanding and completed the merge but still has an exact tracker operation remaining. Report (b) is for task PR #62 in Landing and completed the merge but still has an exact tracker operation remaining. Report (c) is for tracker-only feature close FEAT-012 in FeatureClose and completed one tracker operation but still has an exact tracker operation remaining. State the transition and next assignment for each. Do not mutate anything.",
-      "expected_output": "Foreman routes all three reports through the one PartialCompletionByTarget transition. The spec PR target returns to SpecLanding; the task PR target returns to Landing; the tracker-only feature close returns to FeatureClose. Each route dispatches Land again with a fresh physical identity, the accepted report, reconciled authoritative state, and only the exact remaining operation. Foreman never sends the spec PR or feature close into task Landing, reconstructs the report, or executes the remaining operation.",
+      "prompt": "/valcraft:valcraft-foreman — compare three accepted Land reports with Status blocked: partial_completion. Report (a) is for spec PR #61 in SpecLanding and completed the merge but still has an exact tracker operation remaining. Report (b) is for task PR #62 in Landing and completed the merge but still has an exact tracker operation remaining. Report (c) is for feature close FEAT-012 in FeatureClose and completed one tracker operation but still has an exact tracker operation remaining. State the transition and next assignment for each. Do not mutate anything.",
+      "expected_output": "Foreman routes all three reports through the one PartialCompletionByTarget transition. The spec PR target returns to SpecLanding; the task PR target returns to Landing; the feature close returns to FeatureClose. Each route dispatches Land again with a fresh physical identity, the accepted report, reconciled authoritative state, and only the exact remaining operation. Foreman never sends the spec PR or feature close into task Landing, reconstructs the report, or executes the remaining operation.",
       "files": [
         "references/contracts.md",
         "references/loop.md"
@@ -1541,7 +1541,7 @@
         "All three reports use the single PartialCompletionByTarget transition",
         "A spec PR partial completion returns to SpecLanding",
         "A task PR partial completion returns to Landing",
-        "A tracker-only feature or PRD partial completion returns to FeatureClose",
+        "A feature or PRD partial completion returns to FeatureClose",
         "Land resumes under a fresh physical identity with only exact remaining operations",
         "Foreman never routes a spec PR or feature close into task Landing or executes the remaining operation"
       ]
@@ -1785,6 +1785,23 @@
         "Implementing verifies the criterion the amended way, then the code Review closure check covers the new head",
         "No separate Spec Review runs for the amendment",
         "R-001 is not sent to Forge before the amendment has landed and been reviewed"
+      ]
+    },
+    {
+      "id": 115,
+      "name": "feature-close-land-report-routing",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run is in FeatureClose for FEAT-012 on the default branch `main`. `state.md` records the operator's confirmation \"FEAT-012 is done, close it.\" Two accepted Land reports arrived in turn. Report (a): `Status: blocked: authority_required` with prepared operations: push branch `close/f012-offline-sync` at local head 7777777777777777777777777777777777777777 without force, create a PR into `main`, and squash-merge it. Report (b), after Foreman's next step: `Status: blocked: review_required` for feature-close PR #88 at head 8888888888888888888888888888888888888888. State Foreman's transition and next action for each report. Do not mutate anything.",
+      "expected_output": "For (a), the confirmation is recorded and the run is unattended, so Foreman validates the prepared fields and issues exact target-bound authority for the push of `close/f012-offline-sync` at 7777777777777777777777777777777777777777, the PR into `main`, and its squash merge, without asking the operator again. It stays in FeatureClose and resumes the same logical Land producer under a new assignment. For (b), a `review_required` on a feature-close PR routes through ReviewByTarget to Blocked, because only completion marks may reach that PR without Review; Foreman does not dispatch CodeReview or SpecReview and names the PR and head in the Blocked record. Foreman never pushes, creates, or merges the PR and never edits the triplet.",
+      "files": [
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "For (a), Foreman issues exact target-bound push, PR, and merge authority for the prepared close branch without a new operator question",
+        "For (a), Foreman stays in FeatureClose and resumes the same logical Land producer",
+        "For (b), Foreman enters Blocked and does not dispatch CodeReview or SpecReview",
+        "Foreman never pushes, creates, or merges the PR and never edits spec.md, design.md, or tasks.md"
       ]
     }
   ]
