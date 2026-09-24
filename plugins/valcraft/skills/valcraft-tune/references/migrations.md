@@ -4,7 +4,7 @@ This ledger is the record of what each plugin release changes for a repository t
 
 ## Procedure
 
-Run this flow when `config.md` classifies the base as `outdated`. Bare `/valcraft-tune` reaches it through that classification; a producer skill reaches it by delegating an invalid configuration to Tune.
+Run this flow when `config.md` classifies the base as `outdated` or `behind`. Bare `/valcraft-tune` reaches it through either classification; a producer skill reaches it by delegating an invalid configuration to Tune. A `behind` base is valid, so no producer delegates it; the next Tune run on it, for any reason, advances it. Under a `behind` base every walked entry performs nothing, so the flow writes the version, copies the Operator items, and commits.
 
 1. Read `valcraft_version` from the base. An absent key is older than every entry.
 2. Walk the release headings from the oldest one newer than the recorded version to the newest. Under each, evaluate every change's **Applies when** against the repository without mutating anything.
@@ -15,6 +15,16 @@ Run this flow when `config.md` classifies the base as `outdated`. Bare `/valcraf
 A migration whose applicable entries name no choice needs no interactive answer: the recorded version being older authorizes the version write and its single-path commit, in a direct or delegated run, attended or not. A change that needs an interactive answer in a noninteractive run ends with `configuration_required` and writes nothing. No change performs a push, merge, tracker mutation, or other outward operation; such work is always an **Operator** item with its exact command.
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
+
+## v0.8.9
+
+### A base behind only by releases that change nothing stays valid
+
+A committed `valcraft_version` older than the plugin is valid, classified `behind`, when every ledger entry newer than it says `Tune performs: none`, as `config.md` defines. Skills proceed on such a base without delegating to Tune, and the next Tune run advances the recorded version. A base with any newer entry that performs something stays `outdated` and still delegates.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none; Operator items of the releases a `behind` base skips appear in the next Tune report.
 
 ## v0.8.8
 

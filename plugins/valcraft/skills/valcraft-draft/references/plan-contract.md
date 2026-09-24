@@ -58,7 +58,7 @@ For a feature task, cite the design's `Test strategy` entry for each criterion t
 
 For verification that depends on a running application, fixtures, or external state, name the effective prerequisites and the checks that establish them. A setup command states intent, not proof. Browser verification must identify how it will establish that the tested application is the intended candidate. Include URL, origin, data, or schema checks only when the test depends on them.
 
-Do not put execution progress in the plan. Do not edit implementation source, feature or quick-task checkboxes, tracker state, review records, or any artifact outside the plan.
+Do not put execution progress in the plan. Do not edit implementation source, feature or quick-task checkboxes, tracker state, review records, or any artifact outside the plan. Do not schedule the task's own `T-XXX` or `QT-XXX` checkbox transition, or its tracker close, as a step for any role: Land performs it at close under `../../valcraft-land/references/tracker-closure.md`.
 
 After every plan write or revision, invoke `valcraft-msw` on that plan. Read its complete report and verify that the surviving plan still satisfies the task contract. A product decision that MSW exposes reports `product_decision_required`; a necessary limit or other owner choice reports `owner_decision_required`. Do not commit a plan as reviewable while either question remains.
 

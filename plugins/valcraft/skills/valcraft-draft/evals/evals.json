@@ -280,6 +280,28 @@
         "Draft designs a new check for the header row and names it as a gap that no Test strategy entry covers",
         "Draft writes no file"
       ]
+    },
+    {
+      "name": "plan-steps-through-task-handoff",
+      "prompt": "/valcraft:valcraft-draft — in evals/files/feature-task/, the repository uses the local tracker. Outline the implementation plan for T-002 of specs/001-report-export/: list its ordered steps from the first code change through handoff, and name the role that performs each step. Do not write files.",
+      "expected_output": "The plan's steps cover implementation and verification of T-002 performed by Forge, ending at Forge's handoff. No step changes T-002's checkbox in `tasks.md`, for Forge or any other role; if the plan mentions closure it names Land as the role that ticks T-002 at close. Draft writes no file.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "evals/files/feature-task/AGENTS.md",
+        "evals/files/feature-task/docs/product-brief.md",
+        "evals/files/feature-task/specs/001-report-export/spec.md",
+        "evals/files/feature-task/specs/001-report-export/design.md",
+        "evals/files/feature-task/specs/001-report-export/tasks.md",
+        "evals/files/feature-task/src/export.py"
+      ],
+      "assertions": [
+        "The plan's steps implement and verify T-002 and end at Forge's handoff, each naming Forge as the performing role",
+        "No plan step ticks T-002's checkbox in `tasks.md` for any role",
+        "Any mention of closing T-002 names Land as the role that performs it",
+        "Draft writes no file"
+      ],
+      "id": 14
     }
   ]
 }

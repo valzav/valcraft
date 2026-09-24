@@ -1803,6 +1803,23 @@
         "For (b), Foreman enters Blocked and does not dispatch CodeReview or SpecReview",
         "Foreman never pushes, creates, or merges the PR and never edits spec.md, design.md, or tasks.md"
       ]
+    },
+    {
+      "name": "herdr-settled-land-worker-status-line",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on the Herdr backend, controller in Claude Code. Assignment A-041 dispatched Land worker `land-F003-T004` with authority to merge PR #61 once its checks pass; delivery was confirmed by an observed `working` state. The background `herdr agent wait` now exits with the occupant `done`. The assigned report path does not exist. `herdr pane get` shows the recorded occupant and its recorded `agent_session`. The last lines of `herdr pane read <pane-id> --source visible` are:\n\n```\n❯\n────────────────────────────────────────\n  Opus 5.5 | ~/proj | land/f003-t004 · 1 shell\n```\n\nState what Foreman records for this wake and its next action. Do not mutate anything.",
+      "expected_output": "The status line reports a running background task of the worker's own (`1 shell`), so the settled state is not `idle_without_report`. Foreman records an observation, not a return, keeps A-041 active with the same physical worker, and re-arms the wait with `--until working --until blocked`; when that wake reports `working`, it re-arms the ordinary set. It does not enter WorkerRecovery, close the pane, or dispatch a replacement Land worker, and it does not merge or check the PR itself.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The wake is recorded as an observation, not as `idle_without_report` or any other return",
+        "Foreman re-arms the wait on the same worker with `--until working --until blocked`",
+        "Foreman does not enter WorkerRecovery, close the pane, or dispatch a replacement",
+        "Foreman does not act on PR #61 itself"
+      ],
+      "id": 116
     }
   ]
 }

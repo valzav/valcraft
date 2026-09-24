@@ -62,6 +62,7 @@ Claude Code's event completion is covered by eval 7. Codex's foreground continua
 | Every role resolves to its mapped harness; a missing mapped harness fails readiness instead of substituting the other | 74 |
 | A dirty shared checkout stops the dispatch; release closes only the worker's own Herdr pane and changes no Git state | 75 |
 | Seven Herdr observations map to the six returns; `unknown` proves nothing and `done` is not success | 76 |
+| A settled Herdr worker whose status line shows its own running background task is an observation, not `idle_without_report` | 116 |
 | An unknown submission reconciles report, occupant, and state before anything is sent | 77 |
 | A partial spawn resumes its recorded pane instead of splitting a second one | 78 |
 | A released worker's late signal is an observation and its late report is rejected on attribution | 79 |

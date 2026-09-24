@@ -580,6 +580,23 @@
         "The NFR-002 entry never relies on `agent-browser console` alone for the whole criterion and never cites the route for an unproven class",
         "The NFR-002 entry names the event class and capturing command for each class it relies on"
       ]
+    },
+    {
+      "name": "plan-finding-resolution-spanning-two-tasks",
+      "prompt": "/valcraft:valcraft-spec — a Foreman assignment names Spec-owned finding R-003 from the plan Review of FEAT-005 T-002. It names the task branch `task/f005-t002-offline-queue` at plan head 1111111111111111111111111111111111111111 as the canonical branch, and `spec/f005-amend-2222222` cut from default-branch head 2222222222222222222222222222222222222222 as the fallback amendment branch. R-003 reads: AC-004 cannot be observed within T-002 because it needs the sync endpoint that T-003 builds; move AC-004 to T-003. In `tasks.md`, T-002's line cites AC-003 and AC-004, and T-003's line cites AC-005. State which hunks Spec writes, where it commits them, and what its report records. Do not mutate anything.",
+      "expected_output": "Resolving R-003 requires two hunks: removing AC-004 from T-002's line and adding AC-004 to T-003's line. The assignment's Spec-owned finding authorizes both, so Spec does not refuse or ask. The T-003 hunk is another task's line, so the scope test fails, and the whole amendment is committed on the fallback amendment branch `spec/f005-amend-2222222` cut from 2222222222222222222222222222222222222222, not on the task branch. The report gives commit target `amendment branch` and lists the T-003 hunk under `Workspace` with R-003 as the finding that requires it. The ordinary Review, publish, PR, and Land flow follows. Spec changes nothing no named finding requires.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "references/delivery.md"
+      ],
+      "assertions": [
+        "Spec writes both hunks, including the edit to T-003's line, under the assignment's authority without refusing or asking",
+        "The scope test fails because of the T-003 hunk",
+        "The amendment is committed on the fallback amendment branch, not the task branch",
+        "The report lists the T-003 hunk under `Workspace` with R-003"
+      ],
+      "id": 29
     }
   ]
 }

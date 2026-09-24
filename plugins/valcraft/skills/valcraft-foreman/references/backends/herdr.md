@@ -167,7 +167,7 @@ On every wake, resolve in this order and record exactly one return:
 1. A signal bound to a physical identity whose assignment already reached a terminal return is **not** a return. Record it as an observation against the released worker and continue awaiting the active one.
 2. An attributed change to the assigned report path — `report_available`.
 3. A current host prompt on the recorded pane, or a submission rejected with `agent_blocked` — `permission_blocked`.
-4. A settled occupant (`idle` or `done`) whose delivery was confirmed, with no report — `idle_without_report`.
+4. A settled occupant (`idle` or `done`) whose delivery was confirmed, with no report — `idle_without_report`. Before recording it, read the pane with `herdr pane read <pane-id> --source visible`. When the harness status line reports a running background task of the worker's own, such as Claude Code's `1 shell` or `1 monitor`, the worker is still on the assignment, typically waiting on checks. Record an observation instead of a return and re-arm with `--until working --until blocked`; when that wake reports `working`, re-arm the ordinary set.
 5. `agent_not_found`, or a pane whose occupant is not the recorded one — `dead`.
 6. `agent_prompt_stalled`, a settled occupant whose delivery was never confirmed, or a transport or command failure — `dispatch_error`.
 7. The host timeout with the same worker still active — `wait_timeout`, nonterminal; re-arm in the same parent turn.

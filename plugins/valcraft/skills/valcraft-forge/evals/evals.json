@@ -521,6 +521,23 @@
         "A headed window is not required",
         "With no route available, Forge reports the code-only exception"
       ]
+    },
+    {
+      "name": "forge-reads-an-older-recorded-version",
+      "prompt": "/valcraft:valcraft-forge — implement FEAT-004 T-003 in a local-mode repository with a complete committed base and no overlay. The installed plugin's ledger tops out at v0.8.9. Case A: the base records `valcraft_version: \"0.8.5\"` and is valid in every other respect. Case B: the base records `valcraft_version: \"0.8.1\"` and is valid in every other respect. For each case, state whether Forge continues to its task gate or invokes Tune, and why. Do not implement.",
+      "expected_output": "In case A every ledger entry newer than 0.8.5 (v0.8.6 through v0.8.9) says `Tune performs: none`, so the base is valid and classified behind; Forge continues to its task gate without invoking Tune and edits no configuration. In case B the v0.8.2 entry performs a configuration change, so the base is invalid with reason outdated; Forge invokes Tune for the configuration and resumes only after `Status: done`.",
+      "files": [
+        "SKILL.md",
+        "../valcraft-tune/references/config.md",
+        "../valcraft-tune/references/migrations.md"
+      ],
+      "assertions": [
+        "Case A is valid because every entry after 0.8.5 says `Tune performs: none`",
+        "In case A Forge continues to its task gate without invoking Tune or editing configuration",
+        "Case B is outdated because a newer entry performs a change",
+        "In case B Forge invokes Tune and resumes only after `Status: done`"
+      ],
+      "id": 26
     }
   ]
 }
