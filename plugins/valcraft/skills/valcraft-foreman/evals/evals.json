@@ -1803,6 +1803,39 @@
         "For (b), Foreman enters Blocked and does not dispatch CodeReview or SpecReview",
         "Foreman never pushes, creates, or merges the PR and never edits spec.md, design.md, or tasks.md"
       ]
+    },
+    {
+      "name": "herdr-settled-land-worker-status-line",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on the Herdr backend, controller in Claude Code. Assignment A-041 dispatched Land worker `land-F003-T004` with authority to merge PR #61 once its checks pass; delivery was confirmed by an observed `working` state. The background `herdr agent wait` now exits with the occupant `done`. The assigned report path does not exist. `herdr pane get` shows the recorded occupant and its recorded `agent_session`. The last lines of `herdr pane read <pane-id> --source visible` are:\n\n```\n❯\n────────────────────────────────────────\n  Opus 5.5 | ~/proj | land/f003-t004 · 1 shell\n```\n\nState what Foreman records for this wake and its next action. Do not mutate anything.",
+      "expected_output": "The status line reports a running background task of the worker's own (`1 shell`), so the settled state is not `idle_without_report`. Foreman records an observation, not a return, keeps A-041 active with the same physical worker, and re-arms the wait with `--until working --until blocked`; when that wake reports `working`, it re-arms the ordinary set. It does not enter WorkerRecovery, close the pane, or dispatch a replacement Land worker, and it does not merge or check the PR itself.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "The wake is recorded as an observation, not as `idle_without_report` or any other return",
+        "Foreman re-arms the wait on the same worker with `--until working --until blocked`",
+        "Foreman does not enter WorkerRecovery, close the pane, or dispatch a replacement",
+        "Foreman does not act on PR #61 itself"
+      ],
+      "id": 116
+    },
+    {
+      "id": 117,
+      "name": "herdr-worker-finishes-during-wake-handling",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on the Herdr backend, controller in Claude Code. Land worker `land-F003-T004` holds assignment A-041 with authority to merge PR #61 once its checks pass; delivery was confirmed. On the last wake the occupant was `done` with no report, and `herdr pane read <pane-id> --source visible` showed the status line `Opus 5.5 | ~/proj | land/f003-t004 · 1 shell`. Foreman is about to handle that wake. Unknown to Foreman, in the few seconds before its next command the worker's checks pass, it merges PR #61, writes the assigned report `land-F003-T004-d000.md` attributed to A-041, and settles `done` again with no background task on its status line; it then stays settled indefinitely. State Foreman's commands and records from this wake until it consumes a return, and whether it ever ends a turn waiting. Do not mutate anything.",
+      "expected_output": "After arming the wait and before ending the turn, Foreman performs the single allowed reconciliation: it checks the assigned report path and reads the pane again. That check is permitted even though the monitor is armed. The worker finished and settled again before the wait started, a change the armed wait cannot observe, so Foreman does not end the turn on the monitor. It stops the monitor with the harness's task-stop primitive and resolves return precedence on the evidence: the attributed report gives `report_available`, and Foreman consumes the Land report and routes it as usual. It never waits on the stopped monitor.",
+      "files": [
+        "references/backends/herdr.md",
+        "references/loop.md",
+        "references/contracts.md"
+      ],
+      "assertions": [
+        "Foreman checks the report path and pane after arming the wait and before ending the turn, and treats that check as permitted while the monitor is armed",
+        "Foreman stops the armed monitor instead of ending the turn on it",
+        "Foreman records `report_available` for A-041 and consumes the Land report"
+      ]
     }
   ]
 }

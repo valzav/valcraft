@@ -90,10 +90,11 @@ Reviewer independence is structural. On the resolved configuration, require diff
 `valcraft_version` is a string of three dot-separated non-negative integers: the plugin version this repository was last migrated to. The current plugin version is the newest `## vX.Y.Z` heading in [`migrations.md`](migrations.md). Compare the two component by component as integers.
 
 - Equal: valid.
-- Absent or older: invalid, reason `outdated`, even when the shape also fails, because ledger entries may repair the shape. Tune resolves it with the migration flow in `migrations.md`; the first-run flow does not run for an outdated base. Any invalidity that remains after the migration flow takes the ordinary repair path.
+- Older, when every entry under every heading newer than the recorded version says `Tune performs: none`: valid, classified `behind`. No release since the recorded version requires a configuration change, so every reader proceeds without delegating to Tune. Judge by that label alone; a reader never evaluates `Applies when`.
+- Absent, or older with any other entry: invalid, reason `outdated`, even when the shape also fails, because ledger entries may repair the shape. Tune resolves it with the migration flow in `migrations.md`; the first-run flow does not run for an outdated base. Any invalidity that remains after the migration flow takes the ordinary repair path.
 - Newer: invalid, reason `plugin outdated`. The installed plugin is older than the repository; Tune writes nothing and reports `plugin_outdated`.
 
-Every reader delegates either reason to Tune through its existing invalid-configuration rule and never edits the key. First run and full repair write the current plugin version without asking. Reconfiguration preserves the recorded value; only the migration flow advances it.
+Every reader delegates either invalid reason to Tune through its existing invalid-configuration rule and never edits the key. First run and full repair write the current plugin version without asking. Only the migration flow advances a recorded value. Any Tune run on a `behind` base runs that flow first, then the requested work; reconfiguration otherwise preserves the recorded value.
 
 ## Question flow
 
