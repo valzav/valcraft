@@ -722,7 +722,8 @@
         "A material finding owned by Spec names T-001's test-collection separation as lacking a check T-001 can run",
         "The finding explains that E-CHECKS does not cover it because E-CHECKS belongs to T-003 or its failing input needs a file that exists only after T-002",
         "The resolution gives T-001 a discriminating check constructible at its own head, such as a planted temporary spec file",
-        "The reviewer does not pass the Test strategy on the strength of E-CHECKS"
+        "The reviewer does not pass the Test strategy on the strength of E-CHECKS",
+        "No proposed resolution, including an offered alternative, leaves T-001's separation obligation unchecked until a later task"
       ]
     }
   ]
