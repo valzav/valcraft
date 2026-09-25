@@ -319,6 +319,43 @@
         "Draft designs no different check for the parsing defect",
         "Draft writes no file"
       ]
+    },
+    {
+      "id": 16,
+      "name": "plan-scope-for-a-scaffold-task",
+      "prompt": "/valcraft:valcraft-draft — state the touched and deliberately untouched scope for the plan of FEAT-001 T-001. The task line reads: \"T-001: scaffold the TypeScript app: `package.json`, `vite.config.ts`, `src/main.ts`, `test/smoke.test.ts`; AC-001 the dev server renders an empty canvas.\" The baseline commit holds `AGENTS.md`, `README.md`, `docs/architecture.md`, `specs/001-grid-editor/{requirements,design,tasks}.md`, and no application code. The root `AGENTS.md` lists `README.md` and `docs/architecture.md` as the project documents. Its Layout section says \"Application code: not created yet.\" Its Commands section says \"Develop: TBD until `package.json` exists.\" `README.md` says \"Status: planning only; there is no code to run.\" `docs/architecture.md` describes the target module layout (`src/grid/`, `src/render/`, `src/input/`) that later tasks create. Do not write files.",
+      "expected_output": "The touched scope lists the four scaffold files and also `AGENTS.md` and `README.md`, naming the statements T-001 makes false: the Layout line \"Application code: not created yet\", the Commands line \"Develop: TBD until `package.json` exists\", and README's \"planning only; there is no code to run\". Neither document appears in the untouched scope. `docs/architecture.md` is not touched, because T-001 makes none of its statements false. The feature triplet stays out of the task's scope. Draft writes no file.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "references/baseline-facts.md"
+      ],
+      "assertions": [
+        "The touched scope includes `AGENTS.md` and names at least its Layout statement and its Commands statement as statements T-001 makes false",
+        "The touched scope includes `README.md` and names its \"planning only\" status statement",
+        "Neither `AGENTS.md` nor `README.md` appears in the deliberately untouched scope",
+        "`docs/architecture.md` is not in the touched scope",
+        "The feature triplet under `specs/001-grid-editor/` is not in the touched scope",
+        "Draft writes no file"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "plan-checks-for-shared-constants",
+      "prompt": "/valcraft:valcraft-draft — plan verification for quick task Q-001 QT-001, which builds the world model. Its acceptance criteria: AC-001 the world is 32 blocks wide, 16 tall, and 32 deep; AC-002 the block palette is grass `#5a9e3a`, dirt `#8b5a2b`, stone `#7d7d7d`, and log `#6b4a2b`. The plan's implementation step creates `src/world/constants.ts` exporting `WORLD_W`, `WORLD_H`, `WORLD_D`, and `PALETTE`, so generation, meshing, and tests share one definition. The project runs Vitest. State the verification content the plan needs for AC-001 and AC-002, including where each test gets its expected values. Do not write files.",
+      "expected_output": "Each check takes its expected values from the acceptance criteria, stated as literals in the test: 32, 16, and 32 for the dimensions, and the four named colours for the palette. The plan says the tests must not import `WORLD_W`, `WORLD_H`, `WORLD_D`, or `PALETTE` as their expected values, because a test that compares the implementation with itself passes whatever the constants hold. It names a failing input, such as `WORLD_W = 31` or log set to dirt's colour, that the checks detect. Draft writes no file.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md",
+        "references/baseline-facts.md"
+      ],
+      "assertions": [
+        "The AC-001 check states the expected dimensions 32, 16, and 32 as literals from the criterion",
+        "The AC-002 check states the four expected colours as literals from the criterion",
+        "The plan explicitly rules out taking expected values from `src/world/constants.ts` (importing `WORLD_W`/`WORLD_H`/`WORLD_D` or `PALETTE` into the assertions)",
+        "The plan names a wrong constant value, such as a changed dimension or a swapped palette entry, that the checks would fail on",
+        "Draft writes no file"
+      ]
     }
   ]
 }

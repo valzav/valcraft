@@ -90,7 +90,7 @@ A new contract goes through its own review and pull request, then `land` merges 
 
 `foreman` picks the first eligible task in artifact order, respecting dependencies, holds, and tracker state. An in-progress task returning from an amendment landing takes priority and keeps its recorded branch. The selected task goes through these steps:
 
-1. `draft` writes the plan under `docs/plans/`, runs `msw` over it after every write, and commits it. `msw` deletes any step whose removal would still leave the task complete and verified.
+1. `draft` writes the plan under `docs/plans/`, runs `msw` over it after every write, and commits it. `msw` deletes any step whose removal would still leave the task complete and verified. The plan's touched scope includes every committed project document the task makes false, and its checks take expected values from the contract, never from the code under test.
 2. `review` checks the plan at that exact commit.
 3. `forge` starts from the reviewed plan commit. It implements in small commits that cite the task ID, runs the repository's full set of tests and checks on the exact head it will push, and opens the task pull request once it is authorized.
 4. `review` checks the change at the exact head of the pull request.

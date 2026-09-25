@@ -49,10 +49,12 @@ The plan must contain the smallest implementation-ready contract that proves the
 
 - the exact task identity and authoritative artifacts;
 - the requirements, acceptance criteria, ADRs, and invariants it must preserve;
-- touched and deliberately untouched scope;
+- touched and deliberately untouched scope, where touched scope includes every committed project document whose statements the task makes false;
 - implementation steps tied to concrete repository locations and contract IDs;
 - verification that maps to the criteria and attempts to violate negative or boundary claims; and
 - open decisions or blockers, with none stated when there are none.
+
+To find those documents, check the documents the root `AGENTS.md` names, and `README.md`, against the planned change at the baseline. Name each statement the task makes false and the document that states it. Never list such a document as untouched. This rule does not cover the feature triplet, which only Spec amends.
 
 For a feature task, cite the design's `Test strategy` entry by its ID for each criterion the plan verifies instead of designing a new check. Do not restate the entry's check; a restatement can drop its quantifiers. A complete entry already carries its fixture prerequisites, the proof that its observation records the defect, and the evidence that separates a pass from a vacuous run, so this reference's verification rules add nothing to it. Add a step to an entry only where the entry lacks something those rules require, state only that addition, and name it as the entry's gap. Design a check only for a step that no entry covers, and name that gap in the plan.
 

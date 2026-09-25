@@ -30,7 +30,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "d05112a6880143d3",
+      "version": "8fd8e6c7f80e8f3a",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -61,7 +61,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "223575b0d303b9ba",
+      "version": "d2e10713ecb9f954",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "caf4dfbe10f9ecdb",
+      "version": "8380d704b6e8b018",
       "files": [
         "SKILL.md",
         "references/config.md",
