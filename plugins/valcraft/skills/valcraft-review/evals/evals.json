@@ -725,6 +725,22 @@
         "The reviewer does not pass the Test strategy on the strength of E-CHECKS",
         "No proposed resolution, including an offered alternative, leaves T-001's separation obligation unchecked until a later task"
       ]
+    },
+    {
+      "id": 37,
+      "name": "test-strategy-on-a-resumed-feature",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-014 triplet at its pinned commit. Foreman took over this feature after a plugin upgrade and routed it to Spec Review because no current verdict exists; the triplet has not changed since it was written. Every other section already passed. design.md's Test strategy entries each record an observation method, a guarded defect, a failing input, and a positive control. U-SORT (AC-001, 'every list of up to 1,000 items sorts ascending by price, ties by name'): 'Observation: sort fixture lists and compare with the expected order. Guarded defect: a comparator that ignores the name tiebreak. Failing input: two items with equal price and names in reverse order. Positive control: the fixture lists sort to their expected orders.' U-EMPTY (AC-002, 'an empty list renders the empty-state message'): 'Observation: render with an empty list and read the message element. Guarded defect: the list renders nothing. Failing input: an empty list. Positive control: the message element holds the empty-state text.' Report your findings on the Test strategy with severity and owner, and state whether the triplet passes.",
+      "expected_output": "The entries lack the domain field that the current feature contract requires, and a triplet written before the upgrade gets no exemption. Each entry is a material finding owned by Spec, or one Spec finding covering both, requiring the domain and its covering method. For U-SORT the domain is every list of up to 1,000 items, with prices and names as free variables; fixture lists alone need a stated derivation or enumeration argument, such as covering length 0, 1, the maximum, and ties at every position, or a property check over generated lists. U-EMPTY's domain is the single empty-list state, covered completely, so its gap is the missing field. The triplet does not pass while the findings are open.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The reviewer requires the domain field on these entries even though the triplet predates the upgrade and has not changed",
+        "The missing domain is a material finding owned by Spec",
+        "The U-SORT finding names what its domain must cover: lists up to 1,000 items with price and name as free variables, not only the fixture lists",
+        "The triplet does not pass while the findings are open"
+      ]
     }
   ]
 }

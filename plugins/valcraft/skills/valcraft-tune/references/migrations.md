@@ -22,9 +22,9 @@ Entry shape: a `### <title>` heading, one paragraph stating what changed, then `
 
 Each design `Test strategy` entry gains a fifth field, the domain: the population and free variables its criterion ranges over, and how the check covers them by complete enumeration, a derived worst-case bound, or selected cases with a derivation that the extrema lie among them. Every verifiable task-line obligation needs a discriminating check its owning task can run at its own head. Spec Review rejects entries that miss either, and plans cite entries by ID without restating them.
 
-- Applies when: a design's Test strategy is next written or revised; an existing triplet is not revalidated until then.
+- Applies when: Spec writes or revises a design's Test strategy, or Spec Review judges a design whose entries lack the domain field. Spec Review returns such a design to Spec as a material finding, including an existing feature that re-enters Spec Review, and Spec adds the field.
 - Tune performs: none.
-- Operator: none.
+- Operator: none; a feature in flight that re-enters Spec Review after the upgrade takes one Spec remediation round for its Test strategy.
 
 ## v0.8.11
 
