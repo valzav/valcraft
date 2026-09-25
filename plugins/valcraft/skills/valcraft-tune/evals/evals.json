@@ -349,7 +349,7 @@
       "id": 19,
       "name": "browser-discovery-await-in-a-worker-pane",
       "prompt": "/valcraft:valcraft-tune — browser tools discovery is under way on a Herdr configuration whose worker map uses Claude and Codex. Tune runs in Claude inside a pane of the active session and has already recorded Claude's entry in place. It started agent `tune-browser-codex` in pane `p7`, confirmed it ready, and sent the discovery task naming result file `/tmp/tune-browser-9c1/codex.yaml`. That call now returns `wait_timeout`; `herdr pane get p7` shows the agent `working`, and the result file does not exist yet. Later the agent settles `idle`, and the result file holds a valid entry for `agent-browser` 0.27.0 at `/usr/local/bin/agent-browser`, an executable that exists. State each step Tune takes from the `wait_timeout` return until discovery ends, including every herdr command, what it records, and when the pane is closed. Do not mutate anything.",
-      "expected_output": "On `wait_timeout` Tune neither reads the result file nor closes the pane, and it does not resend the task: it re-arms with `herdr agent wait tune-browser-codex --timeout <ms>` until the agent settles. After the agent settles `idle`, Tune reads `/tmp/tune-browser-9c1/codex.yaml`, validates it, confirms the executable exists, and closes the pane with `herdr pane close p7`. It records the Codex entry beside the Claude entry under `browser` in `.valcraft/config.local.yaml`.",
+      "expected_output": "On `wait_timeout` Tune neither reads the result file nor closes the pane, and it does not resend the task: it re-arms with `herdr agent wait tune-browser-codex --timeout <ms>` until the agent settles. After the agent settles `idle`, Tune reads `/tmp/tune-browser-9c1/codex.yaml` and closes the pane with `herdr pane close p7`, then validates the entry and confirms the executable exists. It records the Codex entry beside the Claude entry under `browser` in `.valcraft/config.local.yaml`.",
       "files": [
         "SKILL.md",
         "references/config.md"
@@ -357,7 +357,7 @@
       "assertions": [
         "On `wait_timeout` Tune does not read the result file and does not close pane `p7`",
         "Tune re-arms with `herdr agent wait` on the same agent and never resends the discovery task",
-        "Only after the agent settles does Tune read and validate the result file, then close `p7` with `herdr pane close`",
+        "Only after the agent settles does Tune read the result file and close `p7` with `herdr pane close`; it validates the entry before recording it",
         "The Codex entry for `agent-browser` 0.27.0 is recorded under `browser` in `.valcraft/config.local.yaml`, beside Claude's entry"
       ]
     }
