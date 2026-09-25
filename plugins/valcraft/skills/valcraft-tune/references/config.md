@@ -193,11 +193,11 @@ Browser discovery records, for each harness in the resolved Herdr worker map, on
 
 Each harness performs this task:
 
-1. Find the browser tool you used most recently, in your own harness's session history on this machine. Only a tool installed outside temporary directories qualifies; a copy an earlier session left in a temporary directory does not.
+1. Find the browser tool you used most recently, in your own harness's session history on this machine, that runs as a command, because every harness can share it. Take the most recent harness tool only when the history holds no qualifying command tool. Only a tool installed outside temporary directories qualifies; a copy an earlier session left in a temporary directory does not.
 2. Create a new temporary directory outside the repository. Write a local HTML page there with a unique title.
 3. Serve that directory over HTTP on the loopback address `127.0.0.1` only.
 4. Open the page's loopback URL with the tool, and read its title back. Use no other network access.
-5. When the tool fails the check, or you found none in step 1, try another browser tool available to you now. Stop when one passes or none remains.
+5. When the tool fails the check, or you found none in step 1, try another browser tool available to you now, a command tool before a harness tool. Stop when one passes or none remains.
 6. Stop the server. Install nothing and change no configuration. Write nothing outside that temporary directory and the result file.
 7. Write the result file: one entry in the [browser record](#browser-record) shape for the tool that passed, or `none: <reason>` when no tool passed the check.
 

@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.15
+
+### Task lines name each obligation's check, and a check guards plausible mistakes only
+
+Each verifiable obligation in a `tasks.md` task line is followed by the ID of the `Test strategy` entry that checks it at that task's head, and Spec Review lists every task obligation and design invariant with its check. A check's domain covers defects an implementer following the design could introduce by mistake, not forms written only to circumvent it; Review raises an uncovered form only when an ordinary change produces it. Browser discovery prefers a command tool that every harness can share.
+
+- Applies when: Spec writes or revises a feature's `tasks.md`, or Spec Review judges a task line whose obligations name no check. Spec Review returns such a triplet to Spec as a material finding, including an existing feature that re-enters Spec Review, and Spec adds the check IDs.
+- Tune performs: none.
+- Operator: none; a feature in flight that re-enters Spec Review after the upgrade takes one Spec remediation round for its task lines.
+
 ## v0.8.14
 
 ### Tune records each harness's working browser tool
