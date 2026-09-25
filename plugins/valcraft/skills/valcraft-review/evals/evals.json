@@ -741,6 +741,38 @@
         "The U-SORT finding names what its domain must cover: lists up to 1,000 items with price and name as free variables, not only the fixture lists",
         "The triplet does not pass while the findings are open"
       ]
+    },
+    {
+      "id": 38,
+      "name": "plan-review-feat-021-test-strategy",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-021 triplet at its pinned commit; judge the Test strategy against tasks.md and the design, and report in Review's plan-mode format. design.md, Approach: 'The simulation core under `src/core/` is plain TypeScript with no renderer or DOM dependency, so it runs in Node tests; only `src/view/` imports the renderer.' design.md, Constants: `GRID = 24`, `TICK_MS = 50`. tasks.md: 'T-001 Project setup and the renderer-free simulation core (`src/core/`), with U-GRID and U-TICK; verifies FR-001, FR-002.' 'T-002 Render the grid with the renderer in `src/view/`, with E-DRAW; verifies FR-003; blocked by T-001.' Test strategy entries, each with all five fields and a domain: U-GRID (FR-001) enumerates all 24 × 24 cells and checks their initial state against the literal table in the design. U-TICK (FR-002) advances a seeded simulation 200 ticks and compares every tick's state with a precomputed literal fixture. E-DRAW (FR-003) screenshots the page through the recorded browser route and compares cell colours with the palette literals. Every entry's covering method matches its domain.",
+      "expected_output": "Under Checks performed, the report lists T-001's verifiable obligations from its task line — project setup, the simulation core, and that the core is renderer-free — and T-002's rendering obligation, each with its covering check ID or none; it also lists the design's invariant that `src/core/` has no renderer or DOM dependency with its check or none. The renderer-free core obligation and the invariant have no check: a material finding owned by Spec, because a `src/core/` module importing the renderer or reading a DOM global still passes U-GRID, U-TICK, and E-DRAW. The resolution gives T-001 a discriminating check it can run at its own head. The triplet does not pass while the finding is open.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Under Checks performed the report lists, per task, the verifiable obligations of T-001's and T-002's task lines, each with its covering check ID or none",
+        "The report lists the design's invariant that `src/core/` has no renderer or DOM dependency, with its check or none",
+        "A material finding owned by Spec names the renderer-free core obligation or invariant as having no discriminating check",
+        "The resolution gives T-001 a check it can run at its own head, and the triplet does not pass while the finding is open"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "plan-review-feat-022-u-bound",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of one FEAT-022 Test strategy entry; everything else passed. Design facts: `tsconfig.json` sets `module: \"ESNext\"` and `verbatimModuleSyntax: true`, and the committed lint configuration rejects `require` calls. `src/core/` modules may import local helpers from `src/shared/`. Entry U-BOUND (NFR-002: the simulation core has no renderer dependency): 'Observation: a Vitest suite parses every `.ts` file under `src/core/` and inspects each static import and export-from declaration and each dynamic `import()` whose argument is a string literal; it fails when a specifier is `three` or starts with `three/`. Guarded defect: any dependency of the core on the renderer. Failing input: a planted `src/core/probe.ts` with `import { Vector3 } from \"three\"` fails the suite. Positive control: the committed core passes. Domain: every static import, export-from, and string-literal dynamic import in files under `src/core/`, enumerated completely.' Report each finding on this entry with severity and owner, and state for each candidate gap whether you raise it and why.",
+      "expected_output": "Material finding owned by Spec: the domain stops at files under `src/core/`, but a core module may import a `src/shared/` helper that itself imports `three`; that is an ordinary change an implementer following the design could make, and U-BOUND passes with the dependency present. The entry must follow local imports through `src/shared/` or cover that closure. A dynamic import with a computed specifier, such as a name assembled at runtime, is not raised as a finding, because only deliberate circumvention writes it. A `require('three')` call is not raised, because the design's lint configuration rejects it. The guarded-defect wording 'any dependency' claims more than the method covers; that overclaim is a note or folded into the material finding, not a separate material finding about circumvention forms.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "A material finding owned by Spec names the uncovered local dependency path through `src/shared/` into `three`",
+        "A dynamic import with a computed or runtime-assembled specifier is not raised as a material finding",
+        "A `require` call is not raised as a material finding, because the design's lint configuration rejects it",
+        "The entry's overclaim ('any dependency' or 'enumerated completely') is not raised as its own material finding about circumvention forms"
+      ]
     }
   ]
 }

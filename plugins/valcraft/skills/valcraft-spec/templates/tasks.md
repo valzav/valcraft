@@ -35,13 +35,15 @@ The feature is complete when every applicable acceptance criterion is verified, 
 
      Make every task concrete and verifiable. Name the behavior or subsystem
      it changes and the requirement or criterion it serves. Size each task as
-     one reviewable slice; one file is not a reason for one task. Put tests and
+     one reviewable slice; one file is not a reason for one task. Follow each
+     verifiable obligation in the task text with the ID of the Test strategy
+     entry that checks it at this task's head. Put tests and
      operational work with the behavior they prove, and add no task that only
      verifies other tasks' work. -->
 
 ## Phase 1: <Foundation>
 
-- [ ] T-001 <Subsystem slice with its checks>; verifies FR-001, AC-001.
+- [ ] T-001 <Subsystem slice, each verifiable obligation followed by its check ID (TS-001)>; verifies FR-001, AC-001.
 
 ## Phase 2: <Core behavior and surface>
 

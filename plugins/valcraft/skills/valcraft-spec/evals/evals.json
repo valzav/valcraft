@@ -649,6 +649,24 @@
         "Spec's report names the missing Codex entry and points to Tune's `Browser tools` section to fill it",
         "Spec still plants and captures each event class (console calls, uncaught exceptions, failed resource loads) rather than relying on the record's proof"
       ]
+    },
+    {
+      "id": 33,
+      "name": "test-strategy-entry-feat-023-nfr-002",
+      "prompt": "/valcraft:valcraft-spec — write the Test strategy entry and the T-001 task line for FEAT-023's rule NFR-002: 'the simulation core under `src/core/` has no renderer or DOM dependency'. T-001 creates the project and the core. Design facts: `tsconfig.json` sets `module: \"ESNext\"`, `verbatimModuleSyntax: true`, and a no-DOM `lib`; the committed lint configuration rejects `require` calls; core modules may import local helpers from `src/shared/`. Show the entry with all five fields and the T-001 task line. Do not create files.",
+      "expected_output": "The entry's domain states exactly what the method proves covered, here by complete enumeration: static imports, export-from declarations, and string-literal dynamic imports in `src/core/` files and the local modules they reach through `src/shared/`, plus DOM globals caught by the no-DOM compile. It does not claim to catch any conceivable form: it names runtime-assembled specifiers as outside the domain because only deliberate circumvention writes them, and `require` as excluded by the lint configuration. The T-001 task line follows the renderer-free core obligation with the entry's ID.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md",
+        "templates/tasks.md"
+      ],
+      "assertions": [
+        "The entry's domain lists the import forms the method enumerates and follows local imports through `src/shared/`",
+        "The entry does not claim its check catches any or every renderer dependency beyond the forms its method enumerates",
+        "The entry treats runtime-assembled specifiers as outside the domain because only deliberate circumvention writes them, or `require` as excluded by the lint configuration",
+        "The T-001 task line names the renderer-free core obligation followed by the entry's check ID"
+      ]
     }
   ]
 }

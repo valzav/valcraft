@@ -238,7 +238,7 @@
       "id": 13,
       "name": "absent-version-migrates-and-records-current",
       "prompt": "/valcraft:valcraft-tune — in evals/files/unversioned/, the committed base is complete and valid in every other respect but has no `valcraft_version` key. The operator invoked Tune with no arguments. Describe what Tune does, every file it writes, the exact YAML added, whether it commits, and which questions it asks. Do not mutate anything.",
-      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.2 entry is skipped because there are no Herdr workers; the v0.8.3, v0.8.4, and v0.8.5 entries perform nothing; the v0.8.6 entry is skipped because there are no Herdr workers; the v0.8.7 entry performs nothing; the v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, and v0.8.14 entries perform nothing; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.14\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
+      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.2 entry is skipped because there are no Herdr workers; the v0.8.3, v0.8.4, and v0.8.5 entries perform nothing; the v0.8.6 entry is skipped because there are no Herdr workers; the v0.8.7 entry performs nothing; the v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, and v0.8.15 entries perform nothing; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.15\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -250,7 +250,7 @@
         "An absent `valcraft_version` is invalid with reason outdated, and the migration flow takes precedence over the first-run flow",
         "The v0.8.1 entry applies and the subagents backend skips every Herdr entry: v0.7.7, v0.8.2, and v0.8.6",
         "Operator items from the v0.8.0 entries appear in the report verbatim",
-        "`valcraft_version: \"0.8.14\"` is written to the base and only that file is committed",
+        "`valcraft_version: \"0.8.15\"` is written to the base and only that file is committed",
         "No question is asked and the run ends `Status: done`"
       ]
     },
@@ -258,7 +258,7 @@
       "id": 14,
       "name": "herdr-eight-role-config-migrates-through-role-questions",
       "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.7.6\"`, backend `herdr`, and a `workers` mapping with the eight pre-0.7.7 roles on the Balanced preset of that release: every Claude role, including `plan_review`, records model `sonnet` at effort `medium`, and every Codex role records `gpt-5.6-terra` at effort `medium`. State which ledger entries run, what Tune asks, what it rejects, what it writes, and the final status. Do not mutate anything.",
-      "expected_output": "Tune walks v0.7.7, v0.8.0, v0.8.1, v0.8.2, v0.8.3, v0.8.4, v0.8.5, v0.8.6, v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, and v0.8.14. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively and High recommended for `spec_review`, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. The v0.8.2 entry is skipped because every Balanced worker uses a known alias at an effort the catalog still allows. The v0.8.3, v0.8.4, and v0.8.5 entries perform nothing. The v0.8.6 entry applies because `plan_review` records medium; it performs nothing, and its Operator item is copied into the report verbatim. The v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, and v0.8.14 entries perform nothing. It writes the two roles and `valcraft_version: \"0.8.14\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
+      "expected_output": "Tune walks v0.7.7, v0.8.0, v0.8.1, v0.8.2, v0.8.3, v0.8.4, v0.8.5, v0.8.6, v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, and v0.8.15. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively and High recommended for `spec_review`, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. The v0.8.2 entry is skipped because every Balanced worker uses a known alias at an effort the catalog still allows. The v0.8.3, v0.8.4, and v0.8.5 entries perform nothing. The v0.8.6 entry applies because `plan_review` records medium; it performs nothing, and its Operator item is copied into the report verbatim. The v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, and v0.8.15 entries perform nothing. It writes the two roles and `valcraft_version: \"0.8.15\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -271,30 +271,30 @@
         "A candidate where `spec` and `spec_review` share a harness is rejected",
         "The v0.8.2 entry is skipped because no Balanced worker uses xhigh, max, or Luna",
         "The v0.8.6 entry applies to the medium `plan_review`, changes nothing, and its Operator item appears in the report verbatim",
-        "The roles and `valcraft_version: \"0.8.14\"` are written and committed together",
+        "The roles and `valcraft_version: \"0.8.15\"` are written and committed together",
         "A noninteractive run ends `configuration_required` and writes nothing"
       ]
     },
     {
       "id": 15,
       "name": "newer-recorded-version-stops-with-plugin-outdated",
-      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.12.0\"` while this plugin's ledger tops out at v0.8.14; the base is otherwise valid. Separately, a base recording exactly `\"0.8.14\"`. State what Tune does in each case. Do not mutate anything.",
-      "expected_output": "For 0.12.0, Tune compares component by component, finds the repository newer than the plugin, writes nothing, asks nothing, and ends `Status: blocked: plugin_outdated` naming both versions. For 0.8.14, the configuration is current and Tune shows the ordinary section menu.",
+      "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.12.0\"` while this plugin's ledger tops out at v0.8.15; the base is otherwise valid. Separately, a base recording exactly `\"0.8.15\"`. State what Tune does in each case. Do not mutate anything.",
+      "expected_output": "For 0.12.0, Tune compares component by component, finds the repository newer than the plugin, writes nothing, asks nothing, and ends `Status: blocked: plugin_outdated` naming both versions. For 0.8.15, the configuration is current and Tune shows the ordinary section menu.",
       "files": [
         "SKILL.md",
         "references/config.md",
         "references/migrations.md"
       ],
       "assertions": [
-        "Version comparison is numeric per component, so 0.12.0 is newer than 0.8.14",
+        "Version comparison is numeric per component, so 0.12.0 is newer than 0.8.15",
         "A newer recorded version ends `plugin_outdated` with nothing written and no question asked",
         "An equal version shows the section menu with no migration"
       ]
     },
     {
       "name": "older-recorded-versions-under-the-current-ledger",
-      "prompt": "/valcraft:valcraft-tune — bare invocation in two repositories, each with a committed base that is complete and valid in every other respect, local tracker, subagents backend, no overlay. This plugin's ledger tops out at v0.8.14. Repository A records `valcraft_version: \"0.8.8\"`. Repository B records `valcraft_version: \"0.8.1\"`. For each, state how Tune classifies the base, what it asks, what it writes and commits, and in what order. Do not mutate anything.",
-      "expected_output": "A's base is valid and classified behind, because every newer entry, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, and v0.8.14, says `Tune performs: none`. A Tune run on a behind base runs the migration flow first: it writes `valcraft_version: \"0.8.14\"` without a question, commits only `.valcraft/config.yaml`, and then shows the ordinary section menu for the bare invocation. B's base is invalid with reason outdated, because the v0.8.2 entry's Tune performs is not none; the classification reads that label alone even though the entry is later skipped for a subagents backend. Tune runs the migration flow, skips the Herdr entries, writes `valcraft_version: \"0.8.14\"`, commits only the base, and ends `Status: done`.",
+      "prompt": "/valcraft:valcraft-tune — bare invocation in two repositories, each with a committed base that is complete and valid in every other respect, local tracker, subagents backend, no overlay. This plugin's ledger tops out at v0.8.15. Repository A records `valcraft_version: \"0.8.8\"`. Repository B records `valcraft_version: \"0.8.1\"`. For each, state how Tune classifies the base, what it asks, what it writes and commits, and in what order. Do not mutate anything.",
+      "expected_output": "A's base is valid and classified behind, because every newer entry, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, and v0.8.15, says `Tune performs: none`. A Tune run on a behind base runs the migration flow first: it writes `valcraft_version: \"0.8.15\"` without a question, commits only `.valcraft/config.yaml`, and then shows the ordinary section menu for the bare invocation. B's base is invalid with reason outdated, because the v0.8.2 entry's Tune performs is not none; the classification reads that label alone even though the entry is later skipped for a subagents backend. Tune runs the migration flow, skips the Herdr entries, writes `valcraft_version: \"0.8.15\"`, commits only the base, and ends `Status: done`.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -302,9 +302,9 @@
       ],
       "assertions": [
         "A's base at 0.8.8 is valid and classified behind because every newer entry says `Tune performs: none`",
-        "For A, Tune writes and commits `valcraft_version: \"0.8.14\"` with no question before the section menu",
+        "For A, Tune writes and commits `valcraft_version: \"0.8.15\"` with no question before the section menu",
         "B's base at 0.8.1 is outdated because the v0.8.2 entry's Tune performs is not none, judged by the label regardless of the subagents backend",
-        "For B, Tune runs the migration flow, writes `valcraft_version: \"0.8.14\"`, commits only `.valcraft/config.yaml`, and ends `Status: done`"
+        "For B, Tune runs the migration flow, writes `valcraft_version: \"0.8.15\"`, commits only `.valcraft/config.yaml`, and ends `Status: done`"
       ],
       "id": 16
     },
@@ -359,6 +359,21 @@
         "Tune re-arms with `herdr agent wait` on the same agent and never resends the discovery task",
         "Only after the agent settles does Tune read the result file and close `p7` with `herdr pane close`; it validates the entry before recording it",
         "The Codex entry for `agent-browser` 0.27.0 is recorded under `browser` in `.valcraft/config.local.yaml`, beside Claude's entry"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "browser-discovery-two-tools-in-history",
+      "prompt": "/valcraft:valcraft-tune — you are the Codex harness performing Tune's browser discovery task for this machine. Your session history shows two browser tools that both still work and both load a page served on `127.0.0.1`: this morning you used `cua_repl`, a browser tool only Codex provides; yesterday you used `agent-browser` 0.27.0, a command at `/usr/local/bin/agent-browser`. State which tool you record and the exact result-file entry. Do not mutate anything.",
+      "expected_output": "The discovery task records `agent-browser`, because it takes the most recent command tool, which every harness can share, before a harness tool. The entry: tool agent-browser, kind command, version \"0.27.0\", executable /usr/local/bin/agent-browser, and a one-line proof of reading the page title over 127.0.0.1.",
+      "files": [
+        "SKILL.md",
+        "references/config.md"
+      ],
+      "assertions": [
+        "The recorded tool is `agent-browser`, not `cua_repl`",
+        "The reason given is that a command tool every harness can share takes precedence over a more recent harness-only tool",
+        "The entry has kind `command`, version \"0.27.0\", and executable `/usr/local/bin/agent-browser`"
       ]
     }
   ]
