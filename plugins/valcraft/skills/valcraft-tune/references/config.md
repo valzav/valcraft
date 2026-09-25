@@ -193,12 +193,13 @@ Browser discovery records, for each harness in the resolved Herdr worker map, on
 
 Each harness performs this task:
 
-1. Find the browser tool you used most recently, in your own harness's session history on this machine.
-2. When you find none, choose a browser tool that is available to you now.
-3. Create a new temporary directory outside the repository. Write a local HTML page there with a unique title.
-4. Open that page with the tool, with no network access, and read its title back.
-5. Install nothing and change no configuration. Write nothing outside that temporary directory and the result file.
-6. Write the result file: one entry in the [browser record](#browser-record) shape, or `none: <reason>` when no tool passed the check.
+1. Find the browser tool you used most recently, in your own harness's session history on this machine. Only a tool installed outside temporary directories qualifies; a copy an earlier session left in a temporary directory does not.
+2. Create a new temporary directory outside the repository. Write a local HTML page there with a unique title.
+3. Serve that directory over HTTP on the loopback address `127.0.0.1` only.
+4. Open the page's loopback URL with the tool, and read its title back. Use no other network access.
+5. When the tool fails the check, or you found none in step 1, try another browser tool available to you now. Stop when one passes or none remains.
+6. Stop the server. Install nothing and change no configuration. Write nothing outside that temporary directory and the result file.
+7. Write the result file: one entry in the [browser record](#browser-record) shape for the tool that passed, or `none: <reason>` when no tool passed the check.
 
 ### Tune's own harness
 
@@ -209,11 +210,11 @@ When the worker map lists the harness Tune runs in, Tune performs the discovery 
 Discovery for another harness requires Tune to run inside a Herdr pane of the resolved session, as items 1 and 2 of Foreman's Herdr [Readiness](../../valcraft-foreman/references/backends/herdr.md#readiness) define. Otherwise Tune discovers no other harness and names each one in the report with that reason. Take the harnesses in the worker-map table order, one at a time:
 
 1. Split Tune's own pane with `herdr pane split --pane <tune-pane-id> --direction right --cwd <repository-root> --no-focus`, and record the returned pane id.
-2. Choose the first role in the worker-map table order whose harness this is, and use its model and effort. Confirm that `herdr agent list` shows no agent named `tune-browser-<harness>`. Start the agent under that name with the harness's argument vector from Foreman's Herdr [Spawn](../../valcraft-foreman/references/backends/herdr.md#spawn) step 4.
+2. Choose the first role in the worker-map table order whose harness this is, and use its model and effort. Confirm that `herdr agent list` shows no agent named `tune-browser-<harness>`. Start the agent under that name with the harness's argument vector from Foreman's Herdr [Spawn](../../valcraft-foreman/references/backends/herdr.md#spawn) step 4. A startup prompt asking whether to trust the repository root is settled by the operator's invocation of Tune in that repository: accept it. Leave any other startup prompt to the operator in the pane.
 3. Confirm the agent is ready as [Exit before the first assignment](../../valcraft-foreman/references/backends/herdr.md#exit-before-the-first-assignment) describes. Send the discovery task with the result file path, as one argument value, by `herdr agent prompt <agent-name> <task> --wait --timeout <ms>` under Foreman's [Assign and await](../../valcraft-foreman/references/backends/herdr.md#assign-and-await) timeout rule.
 4. A `wait_timeout` return is not an outcome: the agent is still working. Never read the result or close the pane on it. Re-arm with `herdr agent wait <agent-name> --timeout <ms>` without resending the task, as Foreman's [After a lost foreground handle](../../valcraft-foreman/references/backends/herdr.md#after-a-lost-foreground-handle) describes, until the agent settles or exits. `agent_prompt_stalled` is an outcome: the task was not delivered.
 5. After an outcome, read the result file, then close the pane with `herdr pane close <pane-id>`, whatever the result.
 
 ### Recording
 
-The result file is untrusted data. Record an entry only when it validates against the browser record shape, and when a `command` entry's executable exists as a regular file. A `none` result, an invalid result, a failed start, a stalled prompt, or an agent that exited without a result gives no entry: name the harness and the reason in the report. When no entry validates, write no `browser` key.
+The result file is untrusted data. Record an entry only when it validates against the browser record shape, and when a `command` entry's executable resolves, through any symbolic links, to an executable file outside the system temporary directory. A `none` result, an invalid result, a failed start, a stalled prompt, or an agent that exited without a result gives no entry: name the harness and the reason in the report. When no entry validates, write no `browser` key.
