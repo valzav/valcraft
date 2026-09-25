@@ -632,6 +632,23 @@
         "The entry does not rely on a sampled sweep of orientations without a derivation or bound",
         "The observation is a check a worker runs, such as a unit test of `fogFactor`, not an operator judgment"
       ]
+    },
+    {
+      "id": 32,
+      "name": "route-probe-starts-from-recorded-browser-tools",
+      "prompt": "/valcraft:valcraft-spec — record the browser verification route for FEAT-012, whose NFR-003 reads: 'Playing through the editor scenarios produces no errors in the browser console.' The worker map runs Forge on Claude and code Review on Codex. The resolved configuration's overlay holds:\n\n```yaml\nbrowser:\n  claude:\n    tool: agent-browser\n    kind: command\n    version: \"0.27.0\"\n    executable: /usr/local/bin/agent-browser\n    proof: opened a local page titled probe-71c and read the title back\n```\n\nThere is no `codex` key. Running `/usr/local/bin/agent-browser --version` now prints `agent-browser 0.27.0`. Describe how Spec establishes the route for each harness, what it must prove before readiness, and what its report says. Do not create files.",
+      "expected_output": "Spec starts the probe from the overlay's `browser` record instead of from nothing: it takes agent-browser for Claude and confirms the executable exists and reports 0.27.0. Codex has no entry, so Spec probes Codex's route as without a record, preferring a shared `command` route both harnesses can drive, and names the missing Codex entry in its report with the Tune `Browser tools` section as the way to fill it. The record proves no event class: Spec still derives the console's classes (console calls, uncaught exceptions, failed resource loads) and plants an instance of each, recording the capturing command.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "Spec starts from the recorded agent-browser for Claude and confirms the executable and its recorded version 0.27.0",
+        "Spec treats Codex, which has no entry, as unproven by the record and probes its route itself",
+        "Spec's report names the missing Codex entry and points to Tune's `Browser tools` section to fill it",
+        "Spec still plants and captures each event class (console calls, uncaught exceptions, failed resource loads) rather than relying on the record's proof"
+      ]
     }
   ]
 }
