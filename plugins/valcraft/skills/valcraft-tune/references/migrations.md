@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.12
+
+### Test strategy entries state the domain they cover
+
+Each design `Test strategy` entry gains a fifth field, the domain: the population and free variables its criterion ranges over, and how the check covers them by complete enumeration, a derived worst-case bound, or selected cases with a derivation that the extrema lie among them. Every verifiable task-line obligation needs a discriminating check its owning task can run at its own head. Spec Review rejects entries that miss either, and plans cite entries by ID without restating them.
+
+- Applies when: a design's Test strategy is next written or revised; an existing triplet is not revalidated until then.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.11
 
 ### Forge pushes and opens the task pull request in its first assignment
