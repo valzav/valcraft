@@ -121,7 +121,7 @@ Dispatch a fresh `plan-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 ## `Implementing`
 
-Dispatch `forge-<identity>` with `valcraft-forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and target-bound push and task-PR authority when granted. Forge owns implementation, code-finding remediation, verification, push, and task-PR preparation or creation.
+Dispatch `forge-<identity>` with `valcraft-forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and the ref-bound Forge grant from `contracts.md` when the `Implementing` gate allows it. Forge owns implementation, code-finding remediation, verification, push, and task-PR preparation or creation.
 
 A complete Forge report whose task PR is still `none` applies the prepared outward continuation in `contracts.md` and remains in `Implementing`. Enter `CodeReview` only after Forge reports one exact task PR and its exact Review target. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
 

@@ -1942,6 +1942,42 @@
         "The FeatureClose confirmation request lists both Foreman decisions with answers and sources",
         "The request asks the operator to confirm the feature as a whole; the listed Foreman decisions are disclosed for review, not put to a separate per-decision approval that blocks the close"
       ]
+    },
+    {
+      "id": 124,
+      "name": "forge-dispatch-outward-item",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-002 on a GitHub repository `acme/tiles` with remote `origin`, default branch `main` at `4b1e0c7d2a9f8e6b5c4d3a2f1e0d9c8b7a6f5e4d`. PlanReview just passed the plan for T-002 at plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`. The canonical task branch `task/f002-t002` does not exist on `origin`, and no task PR exists. (1) Foreman now dispatches Forge. Write out the attributed-context item of the assignment envelope that concerns outward operations, field by field, or state that there is none and why. (2) Later, code Review of PR #7 (head `task/f002-t002` at `9f3c2e1d0a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d`) returns material finding R-004 owned by Forge, and Foreman dispatches Forge for remediation. Write out the same item for that dispatch. Do not mutate anything.",
+      "expected_output": "(1) The Implementing gate in unattended mode carries the ref-bound Forge grant in the first dispatch; Foreman does not wait for a prepared Forge report. The grant binds repository `acme/tiles` and remote `origin`; base ref `main` at `4b1e0c7…`; canonical remote task ref `task/f002-t002` with its observed remote head absent; PR base `main` and head `task/f002-t002`, with no existing task PR; and the operation set non-force push of the canonical task ref plus task-PR creation. It names no implementation head SHA: the head is bound by condition, the clean local head on which Forge's full gate passed, descending from plan commit `8d3f2a1…` with the plan blob unchanged. Forge revalidates every field before mutation and returns `authority_drift` on a change. (2) The remediation dispatch carries the same kind of grant, binding the currently pushed head `9f3c2e1…` as the observed remote head and the existing PR #7, with the operation set non-force push and task-PR update. In both cases Foreman itself pushes and creates nothing.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "The first Forge dispatch carries push and task-PR authority itself, instead of waiting for Forge to report a prepared head",
+        "The first grant binds repository and remote, base ref `main` with its SHA, the canonical task ref `task/f002-t002` with its remote head recorded as absent, PR base and head refs, and the absence of a task PR",
+        "The first grant's operation set is non-force push plus task-PR creation",
+        "The first grant names no implementation head SHA and binds the head by condition: the clean head on which Forge's full gate passed, descending from plan commit `8d3f2a1…` with the plan unchanged",
+        "The remediation grant binds `9f3c2e1…` as the observed remote head and PR #7, with push and PR update",
+        "Foreman states it executes no push or PR operation itself"
+      ]
+    },
+    {
+      "id": 125,
+      "name": "forge-dispatch-outward-item-attended",
+      "prompt": "/valcraft:valcraft-foreman — an `attended` run of FEAT-002 on `acme/tiles`. PlanReview passed T-002's plan at commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`; the canonical task branch `task/f002-t002` does not exist on `origin` and no task PR exists. Case A: the operator has said nothing about pushes in this run. Case B: at run start the operator wrote \"Standing decision for this feature: Forge may push its task branches and open task PRs against main.\" For each case, state whether Forge's dispatch carries any push or task-PR authority, and what happens when Forge later reports a verified local head with task PR `none`. Do not mutate anything.",
+      "expected_output": "Case A: attended mode carries no push or task-PR authority in the Forge dispatch, because the operator granted none. When Forge reports a verified head with task PR `none`, Foreman records the prepared fields, stays in Implementing, and waits for the operator at the prepared task push and PR gate; after the operator grants the exact operation, the same logical Forge producer receives it. Case B: the standing decision names the operation class in advance, so the Forge dispatch carries the ref-bound Forge grant (every target field bound, the head bound by the condition that Forge's full gate passed on it), and Foreman records the standing decision's application in `state.md`. Forge then pushes and opens the PR within its first assignment, so the prepared-continuation wait does not arise unless Forge returns without a PR.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "In case A the Forge dispatch carries no push or task-PR authority",
+        "In case A a verified head with task PR `none` keeps the run in Implementing and waits for the operator before authority is issued",
+        "In case B the dispatch carries the ref-bound grant because the standing decision named that operation class, and the grant binds the head by condition (the head on which Forge's full gate passed), not by a SHA or by branch alone",
+        "In case B Foreman records the application of the standing decision"
+      ]
     }
   ]
 }

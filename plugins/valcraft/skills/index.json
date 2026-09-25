@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "7fec31274da2c8c7",
+      "version": "d261389354bed53d",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -61,7 +61,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "6df0ff0c04d9a9f6",
+      "version": "223575b0d303b9ba",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "0ff8056ab2cec364",
+      "version": "04aefd3168512314",
       "files": [
         "SKILL.md",
         "references/config.md",

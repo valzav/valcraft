@@ -538,6 +538,42 @@
         "In case B Forge invokes Tune and resumes only after `Status: done`"
       ],
       "id": 26
+    },
+    {
+      "id": 27,
+      "name": "forge-outward-steps-with-foreman-field",
+      "prompt": "/valcraft:valcraft-forge — a Foreman-dispatched assignment for FEAT-002 T-002 on `acme/tiles`. Its attributed-context item reads: \"Foreman assignment field: ref-bound Forge grant. Repository `acme/tiles`, remote `origin`. Base `main` at `4b1e0c7d2a9f8e6b5c4d3a2f1e0d9c8b7a6f5e4d`. Canonical task ref `task/f002-t002`, observed remote head: absent. PR base `main`, head `task/f002-t002`, existing task PR: none. Operations: non-force push of `task/f002-t002`; task-PR creation. Head: the clean local head on which your full gate passed, descending from plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c` with the plan unchanged.\" Assume implementation is complete: the full gate passed on clean local head `c0ffee1234567890abcdef1234567890abcdef12`, which descends from the plan commit with the plan blob unchanged. When you check, `origin` still has no `task/f002-t002` and no matching PR exists. Describe every outward step Forge takes in this same assignment, in order, and what its report's `Outward mutations` and `Review target` sections record. Do not mutate anything.",
+      "expected_output": "Forge accepts the grant as Foreman-attributed authority and does not ask for further authority or return a prepared handoff. Immediately before mutation it re-reads every bound field and the clean local head, confirming the remote task ref is still absent; any change to a bound field, including a moved base, stops the mutation with `authority_drift` and the head meets the grant's condition. It pushes physical `HEAD` by non-force refspec to `task/f002-t002` and verifies the remote ref equals `c0ffee1…`. It queries PRs for the exact repository, base, head ref, and head SHA, finds none, creates one task PR citing the task identity, and verifies its identity, base, and head. `Outward mutations` names the grant as ref-bound and records the pushed head `c0ffee1…` and the PR; `Review target` names the PR identity, base `main` and its SHA, and head `c0ffee1…`. The report ends `Status: done`.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "Forge pushes and creates the PR in this assignment without asking for more authority or returning a prepared handoff",
+        "Right before the push Forge re-reads every bound field, including the base, and stops with `authority_drift` on any change, not only on a moved task ref",
+        "After the push Forge verifies the remote ref equals `c0ffee1…`",
+        "Forge queries for a matching PR, creates exactly one, and verifies its identity, base, and head",
+        "`Outward mutations` names the grant as ref-bound and records head `c0ffee1…`, and `Review target` names the PR",
+        "The report ends with the terminal line `Status: done`"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "forge-outward-steps-three-cases",
+      "prompt": "/valcraft:valcraft-forge — Foreman-dispatched assignments for FEAT-002 T-002 on `acme/tiles`, plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`. Cases A and B carry the ref-bound Forge grant from Foreman: canonical task ref `task/f002-t002` observed absent on `origin`, no task PR, operations non-force push and task-PR creation, head bound to the clean local head on which the full gate passed, descending from the plan commit. Case A: the full gate passed on clean head `c0ffee12…`; just before pushing, Forge finds `origin/task/f002-t002` now exists at `1234abcd…`. Case B: the full gate passed on `c0ffee12…`, then Forge added a one-line commit `d00d5678…` and is about to push it without rerunning the gate. Case C: the assignment carries no outward authority at all; the full gate passed on `c0ffee12…`. For each case, state what Forge does outwardly and how its run ends. Do not mutate anything.",
+      "expected_output": "Case A: the observed remote head no longer matches the bound absence, so Forge performs no push and no PR operation and returns the live target as a new prepared handoff with `authority_drift`. Case B: the grant covers only a head on which the full gate passed; `d00d5678…` has not passed it, so Forge runs the full gate on that exact head before any push and pushes only if it passes; it never pushes the ungated head under the grant. Case C: without authority Forge keeps the verified local commit, performs no push or PR operation, and returns the exact prepared push and PR handoff with task PR `none` and `Status: done`.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "In case A Forge pushes nothing and returns `authority_drift` with the live target as a prepared handoff",
+        "In case B Forge does not push `d00d5678…` under the grant until the full gate passes on that exact head",
+        "In case C Forge performs no push or PR operation",
+        "In case C Forge returns the prepared push and PR handoff with task PR `none` and ends `Status: done`"
+      ]
     }
   ]
 }
