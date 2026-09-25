@@ -42,6 +42,8 @@ Accept authority only from the live operator-message channel or an attributed au
 
 Immediately before mutation, re-read every bound field and the clean local head. Under a ref-bound grant, the canonical remote head must still equal the bound observed head. On any change, perform no outward mutation. Return the live target as a new prepared handoff with `authority_drift`; fresh authority must bind it. Never merge, rebase, reset, force-push, publish an external-orchestrator physical branch, or substitute a remote or ref.
 
+Attributed authority is the go-ahead; it needs no confirmation. When every bound field revalidates and the head meets the grant, perform the authorized operations in the same assignment. Do not ask the operator or the controller whether to proceed. Stop only on a failed revalidation, with `authority_drift`.
+
 For an authorized push, send physical `HEAD` by non-force refspec to the canonical remote task ref. Verify that the remote ref equals the local head. Report an unsuccessful or unverifiable push as `push_failed`.
 
 Before PR create-or-update, query the exact repository, base ref, canonical head ref, and head SHA. Reuse one matching task PR. Create one only when none exists; stop when several match. The PR body cites the task identity and, for each Spec-owned commit the passed plan Review pinned, that commit and its R-IDs. Verify its identity, base, and head after mutation.

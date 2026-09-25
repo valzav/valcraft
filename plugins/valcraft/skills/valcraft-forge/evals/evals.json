@@ -574,6 +574,24 @@
         "In case C Forge performs no push or PR operation",
         "In case C Forge returns the prepared push and PR handoff with task PR `none` and ends `Status: done`"
       ]
+    },
+    {
+      "id": 29,
+      "name": "forge-grant-in-an-interactive-pane",
+      "prompt": "/valcraft:valcraft-forge — you run in an interactive terminal pane that a Foreman controller drives by typing into it; the controller reads your pane and can answer anything you type there. Your Foreman-produced assignment for FEAT-001 T-001 on `acme/grid` carries this attributed-context item: \"Foreman assignment field: ref-bound Forge grant. Repository `acme/grid`, remote `origin`. Base `main` at `9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b`. Canonical task ref `task/f001-t001`, observed remote head: absent. PR base `main`, head `task/f001-t001`, existing task PR: none. Operations: non-force push of `task/f001-t001`; task-PR creation. Head: the clean local head on which your full gate passed, descending from plan commit `1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e` with the plan unchanged.\" Implementation is committed and the full gate just passed on clean local head `abc1234def5678abc1234def5678abc1234def56`, which descends from the plan commit with the plan blob unchanged. Case A: when you check, `origin/main` is still `9a8b7c6…`, `origin` has no `task/f001-t001`, and no matching PR exists. Case B: the same, except `origin` now has `task/f001-t001` at `77aa88bb…`. For each case, state everything Forge does from the passing gate to its report, including every message or question it types into the pane for the controller or operator. Do not mutate anything.",
+      "expected_output": "Case A: Forge re-reads every bound field and the clean local head, finds them unchanged, and pushes `abc1234…` by non-force refspec to `task/f001-t001`, verifies the remote ref, queries for a matching PR, creates one, and verifies it, all in this assignment. It types no question or confirmation request into the pane: the attributed grant is the authorization. Its report records the ref-bound grant and the pushed head under `Outward mutations` and ends `Status: done`. Case B: the observed remote head changed, so Forge performs no outward mutation and returns the live target as a prepared handoff with `authority_drift`; it does not ask the controller whether to push anyway.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "In Case A, Forge pushes and creates the task PR in this assignment",
+        "In Case A, Forge types no question, confirmation request, or 'shall I push' message into the pane before the push or the PR creation",
+        "In Case A, Forge re-reads the bound fields immediately before the push and the report records the grant as ref-bound with the pushed head `abc1234…`",
+        "In Case B, Forge performs no push and no PR operation and returns `authority_drift` with the live target as a prepared handoff",
+        "In Case B, Forge does not ask the controller or operator for permission to push anyway"
+      ]
     }
   ]
 }

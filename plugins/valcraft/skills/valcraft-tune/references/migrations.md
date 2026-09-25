@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.13
+
+### Forge uses its grant without asking, and plans cover stale documents and contract-sourced test values
+
+Forge performs an attributed push or pull request grant without asking for confirmation once every bound field revalidates. A task plan's touched scope includes every committed project document the task makes false, and its checks take expected values from the contract instead of importing them from the code under test.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.12
 
 ### Test strategy entries state the domain they cover
