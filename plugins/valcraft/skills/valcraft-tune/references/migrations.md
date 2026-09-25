@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.14
+
+### Tune records each harness's working browser tool
+
+On a Herdr configuration, Tune can record in the user-local overlay one browser tool that each configured harness proved it can drive on this machine. Tune's own harness answers in place; each other harness answers in a new Herdr pane. Spec starts its verification-route probe from that record. The operator can skip the step; without a record, Spec probes as before.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: optional — on a Herdr configuration, run `/valcraft-tune` and choose the `Browser tools` section to record each harness's browser tool for Spec.
+
 ## v0.8.13
 
 ### Forge uses its grant without asking, and plans cover stale documents and contract-sourced test values

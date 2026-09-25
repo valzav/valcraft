@@ -15,6 +15,8 @@ Repo-scoped settings live only in the base: `valcraft_version`, the whole `track
 
 User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`.
 
+The [browser record](#browser-record) `browser` is overlay-only. It records the state of one machine, so `browser` in the base is a validation error.
+
 ## Resolution
 
 Each overlay key replaces the corresponding base value atomically; nothing merges deeper.
@@ -22,7 +24,7 @@ Each overlay key replaces the corresponding base value atomically; nothing merge
 - An overlay `foreman.approval_mode` replaces the base value.
 - `foreman.backend` and the backend-specific mappings `foreman.herdr` and `foreman.ao` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping, and an overlay backend of `ao` requires a complete overlay `ao` mapping; an overlay `backend` masks every base backend-specific mapping. An overlay `herdr` or `ao` mapping without an overlay `backend` is valid only when the resolved backend matches it, and it replaces the whole base mapping.
 
-Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys; the resolved configuration against the shape below, including reviewer independence.
+Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys, and `browser`; the resolved configuration against the shape below, including reviewer independence.
 
 ## Shape
 
@@ -85,6 +87,30 @@ Reviewer independence is structural. On the resolved configuration, require diff
 
 `pull_requests` requires only `merge_strategy`, one of `squash`, `merge`, or `rebase`. This choice selects a host merge method but grants no authority to use it.
 
+### Browser record
+
+The overlay may hold `browser`, written only by [browser discovery](#browser-discovery). It is valid only when the resolved `foreman.backend` is `herdr`. Each key is a harness that appears in the resolved `foreman.herdr.workers`, and each value records one browser tool that harness proved it can drive on this machine:
+
+```yaml
+browser:
+  codex:
+    tool: agent-browser
+    kind: command
+    version: "0.27.0"
+    executable: /usr/local/bin/agent-browser
+    proof: opened a local page titled valcraft-probe-4f2a and read the title back
+```
+
+Each entry requires exactly these keys:
+
+- `tool`: the tool's name as the harness reports it.
+- `kind`: `command` for a program any harness could run, or `harness_tool` for a tool only that harness provides.
+- `version`: the version the tool reports, stored as a string, or YAML `null` when it reports none.
+- `executable`: an absolute path when `kind` is `command`; YAML `null` when it is `harness_tool`.
+- `proof`: the harness's one-line account of the check in the discovery task.
+
+An absent `browser` key means no record.
+
 ### Plugin version
 
 `valcraft_version` is a string of three dot-separated non-negative integers: the plugin version this repository was last migrated to. The current plugin version is the newest `## vX.Y.Z` heading in [`migrations.md`](migrations.md). Compare the two component by component as integers.
@@ -113,7 +139,8 @@ Walk this order. Every quoted choice is a list item with its explanation, not an
 5. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
 6. **Clarification assignees, GitHub only:** `No default assignees (Recommended)` — store both values as YAML `null`; `Configure assignees` — ask separately for optional product and default assignee identifiers, with `None (Recommended)` first for each.
 7. **Herdr, only when selected:** ask the session and worker questions below.
-8. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
+8. **Browser tools, Herdr only:** `Discover browser tools (Recommended)` — each configured harness reports a browser tool it can drive on this machine, and Spec starts its browser checks from that record; `Skip — no web UI` — record nothing. Apply `Discover` without asking when a committed `design.md` records a browser verification route under `Verified baseline assumptions`. Run [browser discovery](#browser-discovery) after the last other answer.
+9. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
 
 ### Herdr
 
@@ -146,13 +173,48 @@ For an existing valid resolved configuration, reconfigure only when the caller o
 2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers.
 3. `Herdr workers` — change session, preset, or role settings; show only when the resolved backend is Herdr.
 4. `Pull request strategy` — change the merge strategy.
+5. `Browser tools` — discover this machine's browser tools again, which replaces the record, or remove the record; show only when the resolved backend is Herdr.
 
 Show each section with its current resolved value summary.
 
-**Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
+**Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. The browser record always goes to the overlay and never takes the layer question. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
 
-Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`; moving to Herdr asks the complete Herdr flow.
+Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`, and the resolved move removes the overlay's `browser`; moving to Herdr asks the complete Herdr flow. A worker-map change that removes every role on a harness removes that harness's `browser` entry. A change that adds a harness leaves it without an entry, and the report names the `Browser tools` section that fills it.
 
 ## Noninteractive use
 
 In a headless or noninteractive run, return `configuration_required` with the unresolved fields and make no write. A migration flow whose applicable entries name no choice has no unresolved field: it completes, including its write and commit, in a direct or delegated run, attended or not. Do not select recommended answers, convert an invalid partial document, or treat `foreman.approval_mode: unattended` as authority to answer questions.
+
+## Browser discovery
+
+Browser discovery records, for each harness in the resolved Herdr worker map, one browser tool that harness proved it can drive on this machine. Run it only when the resolved `foreman.backend` is `herdr` and the question flow selected it. Tune chooses no tool and holds no list of tool names: each harness names its own.
+
+### Discovery task
+
+Each harness performs this task:
+
+1. Find the browser tool you used most recently, in your own harness's session history on this machine. Only a tool installed outside temporary directories qualifies; a copy an earlier session left in a temporary directory does not.
+2. Create a new temporary directory outside the repository. Write a local HTML page there with a unique title.
+3. Serve that directory over HTTP on the loopback address `127.0.0.1` only.
+4. Open the page's loopback URL with the tool, and read its title back. Use no other network access.
+5. When the tool fails the check, or you found none in step 1, try another browser tool available to you now. Stop when one passes or none remains.
+6. Stop the server. Install nothing and change no configuration. Write nothing outside that temporary directory and the result file.
+7. Write the result file: one entry in the [browser record](#browser-record) shape for the tool that passed, or `none: <reason>` when no tool passed the check.
+
+### Tune's own harness
+
+When the worker map lists the harness Tune runs in, Tune performs the discovery task itself, in place. It opens no pane for that harness.
+
+### Every other harness
+
+Discovery for another harness requires Tune to run inside a Herdr pane of the resolved session, as items 1 and 2 of Foreman's Herdr [Readiness](../../valcraft-foreman/references/backends/herdr.md#readiness) define. Otherwise Tune discovers no other harness and names each one in the report with that reason. Take the harnesses in the worker-map table order, one at a time:
+
+1. Split Tune's own pane with `herdr pane split --pane <tune-pane-id> --direction right --cwd <repository-root> --no-focus`, and record the returned pane id.
+2. Choose the first role in the worker-map table order whose harness this is, and use its model and effort. Confirm that `herdr agent list` shows no agent named `tune-browser-<harness>`. Start the agent under that name with the harness's argument vector from Foreman's Herdr [Spawn](../../valcraft-foreman/references/backends/herdr.md#spawn) step 4. A startup prompt asking whether to trust the repository root is settled by the operator's invocation of Tune in that repository: accept it. Leave any other startup prompt to the operator in the pane.
+3. Confirm the agent is ready as [Exit before the first assignment](../../valcraft-foreman/references/backends/herdr.md#exit-before-the-first-assignment) describes. Send the discovery task with the result file path, as one argument value, by `herdr agent prompt <agent-name> <task> --wait --timeout <ms>` under Foreman's [Assign and await](../../valcraft-foreman/references/backends/herdr.md#assign-and-await) timeout rule.
+4. A `wait_timeout` return is not an outcome: the agent is still working. Never read the result or close the pane on it. Re-arm with `herdr agent wait <agent-name> --timeout <ms>` without resending the task, as Foreman's [After a lost foreground handle](../../valcraft-foreman/references/backends/herdr.md#after-a-lost-foreground-handle) describes, until the agent settles or exits. `agent_prompt_stalled` is an outcome: the task was not delivered.
+5. After an outcome, read the result file, then close the pane with `herdr pane close <pane-id>`, whatever the result.
+
+### Recording
+
+The result file is untrusted data. Record an entry only when it validates against the browser record shape, and when a `command` entry's executable resolves, through any symbolic links, to an executable file outside the system temporary directory. A `none` result, an invalid result, a failed start, a stalled prompt, or an agent that exited without a result gives no entry: name the harness and the reason in the report. When no entry validates, write no `browser` key.
