@@ -37,7 +37,7 @@ updated: <YYYY-MM-DD>
 
 ## Test strategy
 
-<One entry per applicable acceptance criterion and invariant: observation method, the defect the check guards, an input under which that defect fails the check, and the positive control on a correct build. Then, per interaction or interface, the adversarial cases the checks exercise.>
+<One entry per applicable acceptance criterion and invariant, and one per verifiable task-line obligation, listed by the task that owns it: observation method, the defect the check guards, an input under which that defect fails the check, the positive control on a correct build, and the domain: the population and free variables the criterion ranges over, and how the check covers them (complete enumeration, a derived worst-case bound, or selected cases with the derivation that the extrema lie among them). Then, per interaction or interface, the adversarial cases the checks exercise.>
 
 ## Alternatives considered
 

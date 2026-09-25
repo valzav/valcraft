@@ -54,7 +54,7 @@ The plan must contain the smallest implementation-ready contract that proves the
 - verification that maps to the criteria and attempts to violate negative or boundary claims; and
 - open decisions or blockers, with none stated when there are none.
 
-For a feature task, cite the design's `Test strategy` entry for each criterion the plan verifies instead of designing a new check. Design a check only for a step that no entry covers, and name that gap in the plan.
+For a feature task, cite the design's `Test strategy` entry by its ID for each criterion the plan verifies instead of designing a new check. Do not restate the entry's check; a restatement can drop its quantifiers. A complete entry already carries its fixture prerequisites, the proof that its observation records the defect, and the evidence that separates a pass from a vacuous run, so this reference's verification rules add nothing to it. Add a step to an entry only where the entry lacks something those rules require, state only that addition, and name it as the entry's gap. Design a check only for a step that no entry covers, and name that gap in the plan.
 
 For verification that depends on a running application, fixtures, or external state, name the effective prerequisites and the checks that establish them. A setup command states intent, not proof. Browser verification must identify how it will establish that the tested application is the intended candidate. Include URL, origin, data, or schema checks only when the test depends on them.
 

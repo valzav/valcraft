@@ -30,7 +30,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "6c9582b9b598a298",
+      "version": "d05112a6880143d3",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -100,7 +100,7 @@
     },
     {
       "name": "valcraft-review",
-      "version": "5dc6d6276333d29e",
+      "version": "79f111246fce6d1c",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -111,7 +111,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "d2bf4b9a497a5e77",
+      "version": "7acd149cd75a784b",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "04aefd3168512314",
+      "version": "caf4dfbe10f9ecdb",
       "files": [
         "SKILL.md",
         "references/config.md",

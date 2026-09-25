@@ -644,8 +644,8 @@
     {
       "id": 32,
       "name": "plan-mode-rejects-operator-judged-observation",
-      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. Every Test strategy entry carries all four fields. The NFR-001 entry reads: 'Observation: record requestAnimationFrame intervals during a scripted orbit as evidence. Visible stutter is judged in headed Chrome on the reference machine by the operator. No numeric gate.' State the verdict for that entry, its severity, and its owner. Do not edit anything.",
-      "expected_output": "Review reports the NFR-001 entry as a material finding owned by Spec, because its observation method names an operator's perception and an attended viewing session that no worker can perform through the recorded route. The presence of all four fields does not save it. The triplet does not pass while that finding is open; the other entries are judged on their own merits. The absence of a numeric gate is not itself the defect: the missing threshold is a product decision that belongs under open questions.",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. Every Test strategy entry carries all five fields. The NFR-001 entry reads: 'Observation: record requestAnimationFrame intervals during a scripted orbit as evidence. Visible stutter is judged in headed Chrome on the reference machine by the operator. No numeric gate.' State the verdict for that entry, its severity, and its owner. Do not edit anything.",
+      "expected_output": "Review reports the NFR-001 entry as a material finding owned by Spec, because its observation method names an operator's perception and an attended viewing session that no worker can perform through the recorded route. The presence of all five fields does not save it. The triplet does not pass while that finding is open; the other entries are judged on their own merits. The absence of a numeric gate is not itself the defect: the missing threshold is a product decision that belongs under open questions.",
       "files": [
         "SKILL.md",
         "references/plan-mode.md"
@@ -677,7 +677,7 @@
     {
       "id": 34,
       "name": "plan-mode-rejects-an-entry-relying-on-an-unproven-event-class",
-      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. NFR-002 reads: 'Loading the page and playing through the three scenarios MUST produce no errors in the browser console.' The design's verification route entry records agent-browser 0.27.0 at /usr/local/bin/agent-browser, driving headless Chrome; the Claude and Codex workers both drive it as a shell CLI, with proof that a planted `console.error` call appeared in `agent-browser console` and that `agent-browser eval` and `agent-browser screenshot` work. The NFR-002 Test strategy entry carries all four fields and reads: 'Observation: after every browser check, `agent-browser console` and `agent-browser errors` show no errors. Defect guarded: an error thrown or logged during play. Failing input: a handler that throws. Positive control: a clean build shows empty output.' State your verdict on the NFR-002 entry with its severity and owner, and what the design must change. Do not edit anything.",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-010 triplet at its pinned commit. NFR-002 reads: 'Loading the page and playing through the three scenarios MUST produce no errors in the browser console.' The design's verification route entry records agent-browser 0.27.0 at /usr/local/bin/agent-browser, driving headless Chrome; the Claude and Codex workers both drive it as a shell CLI, with proof that a planted `console.error` call appeared in `agent-browser console` and that `agent-browser eval` and `agent-browser screenshot` work. The NFR-002 Test strategy entry carries all five fields and reads: 'Observation: after every browser check, `agent-browser console` and `agent-browser errors` show no errors. Defect guarded: an error thrown or logged during play. Failing input: a handler that throws. Positive control: a clean build shows empty output.' State your verdict on the NFR-002 entry with its severity and owner, and what the design must change. Do not edit anything.",
       "expected_output": "Review reports a material finding owned by Spec. A browser console shows console calls, uncaught exceptions, and failed resource loads. The recorded proof covers only console calls: the entry relies on `agent-browser errors` with no planted-instance proof, and it observes failed resource loads through no command at all, so a missing asset would pass the check. Four complete fields do not save it. The design must record a planted instance and capturing command for each missing class and observe each class through its proven command, or record a class no command captures under open questions.",
       "files": [
         "SKILL.md",
@@ -689,6 +689,57 @@
         "The reason includes that failed resource loads are a kind of console entry the entry observes through no proven command, so a missing asset would pass",
         "Four complete fields do not make the entry pass",
         "The required fix is a planted instance and capturing command for each missing class with the entry observing each class through its proven command, or an open question for a class no command captures"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "test-strategy-fog-and-span-entries",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-012 triplet's Test strategy at its pinned commit; every other section already passed. The world is 32 by 16 by 32 blocks and the orbit camera always looks at the world center `(16, 8, 16)`; its azimuth is unrestricted and its polar angle ranges from 10° to 80°; its distance `d` ranges from `minDistance` 30 to `maxDistance` 120. design.md defines fog relative to the camera: `near = d`, `far = d + FOG_SPAN` with `FOG_SPAN = 40`, and each block's fog factor is `smoothstep(near, far, viewDepth)`, where `viewDepth` is the block center's depth along the camera's forward axis. design.md defines a column's surface height as its highest non-air cell, water included; lake columns hold water up to `SEA_LEVEL`. spec.md: AC-008 'At the farthest zoom, from every reachable orbit orientation, every block's fog factor stays below 0.6.' BR-001 'Surface heights of land columns span at least 6 levels.' Test strategy entries: U-FOG (AC-008): 'Observation: at `minDistance`, the opening distance 60, and `maxDistance`, compute the fog factor of every block center with the default orientation (azimuth 0°, polar 60°) and require the maximum below 0.6. Guarded defect: fixed fog distances that swallow the world at maximum zoom. Failing input: setting `far` close to `near`. Positive control: the configured span gives a maximum of 0.39 at all three distances. Domain: every block center, over the camera distance range, covered by its two endpoints and the opening distance.' U-GEN (BR-001): 'Observation: compute every column's surface height from generated storage and require the heights to span at least 6 levels. Guarded defect: a flat heightmap. Failing input: a constant heightmap. Positive control: the app-seed world spans 8 levels. Domain: every column of the generated world, enumerated completely.' Report your findings on these two entries with severity and owner.",
+      "expected_output": "Two material findings owned by Spec. U-FOG: under camera-relative fog, `viewDepth - near` equals the block's offset from the target along the forward axis, which does not depend on `d`, so the three distances test one state three times; the factor depends on orbit orientation, which AC-008 quantifies over (every azimuth, polar 10° to 80°) and the entry fixes at one orientation. The reviewer reproduces this with a scratch computation, for example identical maxima across distances and a higher maximum at a diagonal orientation: about 0.618 near azimuth 225° and polar 70°, which violates AC-008 while the default orientation gives 0.39. The covering method must be a derived worst-case bound, such as the largest block distance from the target, or selected orientations with a derivation of where the maximum lies; an unjustified sweep would not suffice. U-GEN: the entry's population is every column with water included, while BR-001 covers land columns only, so lake columns at `SEA_LEVEL` can supply span that land lacks; the check must measure land columns only. The triplet does not pass while either finding is open.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "U-FOG is a material finding owned by Spec because the fog factor does not depend on camera distance under this formula, so the three distances test one state",
+        "The U-FOG finding names orbit orientation as the free variable AC-008 quantifies over and the entry omits",
+        "The reviewer supports the U-FOG finding with a scratch computation or explicit derivation from the formula showing distance independence or orientation dependence",
+        "The U-FOG resolution requires a derived worst-case bound or selected orientations with a derivation of where the maximum lies, not a plain orientation sweep",
+        "U-GEN is a material finding owned by Spec because its population includes water columns while BR-001 covers land columns only",
+        "The triplet does not pass while either finding is open"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "test-strategy-and-task-lines",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-013 triplet at its pinned commit, judging the Test strategy against tasks.md; every other section already passed. tasks.md: 'T-001 Create the TypeScript project (`npm test` runs the unit runner, `npm run test:e2e` runs the browser runner, separate unit and browser test collection) and the core module, with U-CORE; verifies FR-001 and FR-002.' 'T-002 Render the page and add the browser suite with E-OPEN; verifies FR-003; blocked by T-001.' 'T-003 Add editing with E-EDIT and E-CHECKS; verifies FR-004 and NFR-004; blocked by T-002.' Test strategy entries, each with all five fields: U-CORE (FR-001, FR-002) unit tests of the core module. E-OPEN (FR-003) the browser suite loads the page and checks the first frame. E-EDIT (FR-004) browser edits. E-CHECKS (NFR-004): 'Observation: export the committed tree to a fresh directory and run `npm ci`, `npm test`, and `npm run build`. Guarded defect: a missing lockfile, overlapping unit and browser test collection, a type error, or a failing build hidden by the development workspace. Failing input: a browser `*.spec.ts` file under `e2e/` inside the unit runner's include set makes `npm test` fail. Positive control: the committed tree installs, tests, and builds cleanly.' No file under `e2e/` exists until T-002. Report your findings on the Test strategy with severity and owner.",
+      "expected_output": "A material finding owned by Spec: T-001's task line assigns separate unit and browser test collection, but T-001 lists no check that can fail when that separation is misconfigured. E-CHECKS guards overlapping collection, but it belongs to T-003, and its failing input needs a browser spec file that no task creates before T-002, so T-001 cannot run it at its own head. The later entry does not cover T-001's obligation. The resolution gives T-001 a discriminating check it can run at its head, for example planting a temporary `e2e/probe.spec.ts` and requiring the unit runner to exclude it and the browser runner to list it. The triplet does not pass while the finding is open.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "A material finding owned by Spec names T-001's test-collection separation as lacking a check T-001 can run",
+        "The finding explains that E-CHECKS does not cover it because E-CHECKS belongs to T-003 or its failing input needs a file that exists only after T-002",
+        "The resolution gives T-001 a discriminating check constructible at its own head, such as a planted temporary spec file",
+        "The reviewer does not pass the Test strategy on the strength of E-CHECKS",
+        "No proposed resolution, including an offered alternative, leaves T-001's separation obligation unchecked until a later task"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "test-strategy-on-a-resumed-feature",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-014 triplet at its pinned commit. Foreman took over this feature after a plugin upgrade and routed it to Spec Review because no current verdict exists; the triplet has not changed since it was written. Every other section already passed. design.md's Test strategy entries each record an observation method, a guarded defect, a failing input, and a positive control. U-SORT (AC-001, 'every list of up to 1,000 items sorts ascending by price, ties by name'): 'Observation: sort fixture lists and compare with the expected order. Guarded defect: a comparator that ignores the name tiebreak. Failing input: two items with equal price and names in reverse order. Positive control: the fixture lists sort to their expected orders.' U-EMPTY (AC-002, 'an empty list renders the empty-state message'): 'Observation: render with an empty list and read the message element. Guarded defect: the list renders nothing. Failing input: an empty list. Positive control: the message element holds the empty-state text.' Report your findings on the Test strategy with severity and owner, and state whether the triplet passes.",
+      "expected_output": "The entries lack the domain field that the current feature contract requires, and a triplet written before the upgrade gets no exemption. Each entry is a material finding owned by Spec, or one Spec finding covering both, requiring the domain and its covering method. For U-SORT the domain is every list of up to 1,000 items, with prices and names as free variables; fixture lists alone need a stated derivation or enumeration argument, such as covering length 0, 1, the maximum, and ties at every position, or a property check over generated lists. U-EMPTY's domain is the single empty-list state, covered completely, so its gap is the missing field. The triplet does not pass while the findings are open.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The reviewer requires the domain field on these entries even though the triplet predates the upgrade and has not changed",
+        "The missing domain is a material finding owned by Spec",
+        "The U-SORT finding names what its domain must cover: lists up to 1,000 items with price and name as free variables, not only the fixture lists",
+        "The triplet does not pass while the findings are open"
       ]
     }
   ]

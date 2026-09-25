@@ -614,6 +614,24 @@
         "Neither new rule is placed under or relabeled as an operator decision, and the Operator decisions heading is not widened",
         "The Foreman decision is treated as settling the water-targeting question for readiness"
       ]
+    },
+    {
+      "id": 31,
+      "name": "fog-criterion-test-strategy-entry",
+      "prompt": "/valcraft:valcraft-spec — write the design's Test strategy entry for FEAT-012 AC-008 only; do not write files. The world is 32 by 16 by 32 blocks and the orbit camera always looks at the world center `(16, 8, 16)`; its azimuth is unrestricted and its polar angle ranges from 10° to 80°; its distance `d` ranges from 30 to 120. The design's fog is camera-relative: `near = d`, `far = d + FOG_SPAN` with `FOG_SPAN = 40`, and each block's fog factor is `smoothstep(near, far, viewDepth)`, where `viewDepth` is the block center's depth along the camera's forward axis. The world core exposes `fogFactor` as a pure function testable in the unit runner. AC-008: 'At the farthest zoom, from every reachable orbit orientation, every block's fog factor stays below 0.65.' Write the complete entry.",
+      "expected_output": "The entry carries the observation method (a unit test computing `fogFactor` through the world core), the guarded defect, a failing input, a positive control, and the domain. The domain names every block center and every reachable orientation (azimuth over the full circle, polar 10° to 80°) at the farthest zoom, and notes that `viewDepth - near` does not depend on `d`. The covering method is a derived worst-case bound, such as requiring `smoothstep(0, FOG_SPAN, R) < 0.65` where `R` is the largest distance from a block center to the target (about 23.2, giving about 0.618), because the forward offset of any block is at most its distance from the target for every orientation; or selected orientations with a derivation that the maximum lies among them. A plain azimuth or polar sweep without such a derivation or bound is not the covering method, because a maximum can fall between samples.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "The entry carries an observation method, guarded defect, failing input, positive control, and domain",
+        "The domain names every block and every reachable orbit orientation, including the polar range, not only camera distance",
+        "The covering method is a derived worst-case bound, or selected orientations with a stated derivation that the maximum lies among them",
+        "The entry does not rely on a sampled sweep of orientations without a derivation or bound",
+        "The observation is a check a worker runs, such as a unit test of `fogFactor`, not an operator judgment"
+      ]
     }
   ]
 }
