@@ -356,6 +356,22 @@
         "The plan names a wrong constant value, such as a changed dimension or a swapped palette entry, that the checks would fail on",
         "Draft writes no file"
       ]
+    },
+    {
+      "id": 18,
+      "name": "quick-plan-cites-entries-and-states-scope-as-search",
+      "prompt": "/valcraft:valcraft-draft — outline the verification section and the touched-documents statement of the plan for `Q-012 QT-002` (correct the comments; verifies AC-002). Its quick file has FR-002 'Every code comment that states the old release behavior MUST be corrected; the search is `git grep -n -i \"abandon releases\"` and the phrase \"regardless of owner\".' and TS-002 (AC-002) with all five fields, whose domain is that search's result at the head. At the baseline the search hits `src/worker.rs`, `src/attempt.rs`, and `tests/it/attempt.rs`. Show how the plan cites the check and how it states which documents the task touches. Do not create files.",
+      "expected_output": "The plan cites TS-002 by ID for AC-002 and does not restate its check. It states its scope as the named search, lists the three baseline hits as what the search found, and does not list any of them as untouched.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md"
+      ],
+      "assertions": [
+        "The plan cites TS-002 by ID and does not restate its check",
+        "The plan states its scope as the named search and presents the three baseline hits as found items, not as the closed set",
+        "No document the search hits is listed as untouched",
+        "No file is created"
+      ]
     }
   ]
 }

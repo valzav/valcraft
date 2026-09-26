@@ -82,6 +82,8 @@ Read `../templates/spec.md`, `../templates/design.md`, and `../templates/tasks.m
 
 `spec.md` owns product intent. Preserve every supported source requirement. State the problem, goals and non-goals, user scenarios, functional requirements, applicable quality requirements, edge behavior, observable acceptance criteria, assumptions, and open questions. Keep implementation choices out unless the source states a genuine external constraint.
 
+When the change makes a statement in another git-owned document false, such as documentation, a code comment, test documentation, or contract prose, state the correction as an open obligation over every such statement. Name the search that finds them: the superseded behavior in words, the symbol, or the term. The statements found at the baseline may follow as examples. Write the acceptance criterion against the search result at the head, never against the listed items; a list closes the obligation and lets an implementer satisfy the criterion while a false statement stands.
+
 Record the source of each business rule (`BR-NNN`): the requirements source, a dated operator decision, an attributed `Foreman decision`, or Spec's own derivation. Never record a derived rule as an operator or Foreman decision, including by widening a heading that groups decisions.
 
 The `AC-` checkboxes in `spec.md` and the frontmatter `status` of `spec.md`, `design.md`, and `tasks.md` are completion records, not product intent. Spec writes every criterion unchecked and every `status` as `draft`, and never changes either. Land sets them at feature close, as [`../../valcraft-land/references/tracker-closure.md`](../../valcraft-land/references/tracker-closure.md) defines. `draft` and `complete` are the only `status` values.

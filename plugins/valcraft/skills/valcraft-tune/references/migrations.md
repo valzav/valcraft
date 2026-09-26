@@ -16,6 +16,24 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.17
+
+### A superseded-statement obligation stays open
+
+Spec states a correction of statements the change makes false as an open obligation: it names the search that finds them and writes the acceptance criterion against the search result, never against a listed set. A quick file applies the same rule. Draft states a plan's scope over such statements as the search it names, not as the list it found.
+
+- Applies when: never on its own; a criterion scoped to a listed set is a material finding at the artifact's next review.
+- Tune performs: none.
+- Operator: none.
+
+### Quick files carry a Test strategy entry per acceptance criterion
+
+A quick file has a `Verification` section with one `Test strategy` entry per `AC-`, in the five-field shape `feature-contract.md` defines, whose failing input is constructible at the head of the `QT-` task that verifies the criterion. Draft cites these entries as it cites a design's. Spec Review judges them under its `Test strategy` rules and lists each `QT-` task's obligations with their checks.
+
+- Applies when: Spec writes or revises a quick file, or Spec Review judges a quick file with an unchecked `QT-` task and no `Verification` section. Review returns such a file to Spec as a material finding.
+- Tune performs: none.
+- Operator: none; a quick file in flight takes one Spec remediation round at its next Spec Review.
+
 ## v0.8.16
 
 ### An obligation's check must fail at its own task's head
