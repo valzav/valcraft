@@ -176,7 +176,7 @@
       "id": 8,
       "name": "plan-mode-quick-file-identity-and-coverage",
       "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/quick-plan/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
-      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; this is a coverage gap separate from readiness. The file has no Verification section, so neither criterion has a Test strategy entry; that is a material finding owned by Spec. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
+      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; that is its own finding on the Tasks section, and readiness is judged against quick.md's list, whose Verification bullet a criterion with no verifying task cannot meet. The file has no Verification section, so neither criterion has a Test strategy entry; that is a material finding owned by Spec. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
       "files": [
         "evals/files/quick-plan/AGENTS.md",
         "evals/files/quick-plan/docs/product-brief.md",
@@ -188,7 +188,7 @@
         "A material finding cites quick.md's identity rule: filename prefix 003 does not match id: Q-002",
         "A finding reports AC-002 as unverified by any task because QT-001 covers only AC-001, as a coverage gap in the Tasks section",
         "A material finding owned by Spec reports that the file has no Verification section, so neither AC-001 nor AC-002 has a Test strategy entry",
-        "The coverage gap is not attributed to quick.md's readiness rule; readiness is judged separately on quick.md's own terms",
+        "The coverage gap is its own finding on the Tasks section; the readiness judgment cites quick.md's own list, including its Verification bullet, and invents no other condition",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
         "No file is edited and no fix is committed"
       ]
