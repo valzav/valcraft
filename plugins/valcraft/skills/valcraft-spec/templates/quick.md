@@ -27,6 +27,14 @@ created: <YYYY-MM-DD>
 
 ...
 
+## Verification
+
+<!-- One Test strategy entry per AC-, as feature-contract.md defines it. TS- IDs
+     restart in each quick file. The failing input must be constructible at the
+     head of the QT- task that verifies the criterion. -->
+
+- TS-001 (AC-001): Observation: <method a worker drives>. Guarded defect: <the mistake an implementer could make>. Failing input: <input under which that defect makes the check fail>. Positive control: <the check passing on a correct build>. Domain: <what the criterion ranges over and how the check covers it>.
+
 ## Tasks
 
 <!-- Checkbox status is authoritative in every tracker mode. Cite a task as

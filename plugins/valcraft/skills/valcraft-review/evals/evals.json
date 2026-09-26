@@ -789,6 +789,22 @@
         "The resolution gives T-001 a check that fails at its own head, such as a manifest assertion, and does not propose moving the `plotkit` obligation to T-002",
         "The review does not flag TS-001 or TS-002 as unable to fail at T-001's head"
       ]
+    },
+    {
+      "id": 41,
+      "name": "plan-review-quick-file-closed-list-and-half-guard",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of quick file `specs/quick/012-attempt-ownership.md` at its pinned commit; report in Review's plan-mode format. The file: FR-001 'A stale worker's abandon MUST NOT release an attempt a live successor holds.' FR-002 'Every code comment that states the old release behavior MUST be corrected. These are the `claim` arm comment in `src/worker.rs` and the `release` doc in `src/attempt.rs`.' AC-001 'With two workers, the stale worker's abandon leaves the successor's attempt held; cases: the successor finishes, then the stale abandon runs.' AC-002 'The comments named in FR-002 describe the new behavior.' Verification: TS-001 (AC-001) 'Observation: integration test. Guarded defect: abandon releases regardless of owner. Failing input: successor finishes, stale abandon runs, attempt released. Positive control: attempt stays held. Domain: two workers, one attempt.' TS-002 (AC-002) 'Observation: read the two comments. Guarded defect: a comment still states old behavior. Failing input: either comment unchanged. Positive control: both updated. Domain: the two comments.' Tasks: 'QT-001 Implement the ownership guard; verifies AC-001.' 'QT-002 Correct the comments; verifies AC-002; blocked by QT-001.' The baseline also holds a comment in `tests/it/attempt.rs` reading 'a stale abandon releases the attempt', which FR-002 does not list.",
+      "expected_output": "Two material findings owned by Spec. First, FR-002, AC-002, and TS-002 close the obligation to two comments while the baseline test comment is also made false; the resolution states the obligation as a search with the criterion and the entry's domain written against its result. Second, every AC-001 case finishes the successor before the stale abandon, so a guard that refuses release only when the successor has finished passes all cases while releasing a running successor's attempt; the resolution adds an interleaving where the successor still runs when the stale abandon runs. Under Checks performed, QT-001 pairs with TS-001 and QT-002 with TS-002, each with its failing input and whether it is constructible at that task's head. Nothing is edited.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "A material finding owned by Spec says FR-002 and AC-002 close the obligation to a list and names the omitted baseline test comment; its resolution states the obligation as a search with the criterion written against the search result",
+        "A material finding owned by Spec says every AC-001 case finishes the successor first, so a guard keyed on the successor's status alone passes; its resolution adds an interleaving where the successor still runs when the stale abandon runs",
+        "The Checks performed list pairs QT-001 with TS-001 and QT-002 with TS-002, each with its failing input",
+        "No file is edited and no fix is committed"
+      ]
     }
   ]
 }

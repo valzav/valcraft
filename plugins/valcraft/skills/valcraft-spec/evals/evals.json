@@ -683,6 +683,25 @@
         "The answer explains that TS-004's failing input needs built code importing `plotkit`, which exists only from T-002's head",
         "Each verifiable obligation in both task lines is followed by a check ID whose failing input can be constructed at that task's head"
       ]
+    },
+    {
+      "id": 35,
+      "name": "quick-file-open-obligation-and-verification-entries",
+      "prompt": "/valcraft:valcraft-spec — write the Requirements and Verification sections of a quick file (local tracker) for this brief: the pending-claim drain must stamp each drained row with its revision's visibility stamp instead of the current stamp. At the baseline, the `Stamp` doc comment in `src/claims.rs`, the drain section of `docs/claims.md`, and a test doc comment in `tests/drain.rs` reading 'inherits the current stamp' all describe the current-stamp behavior. Show the FR-, AC-, and TS- items. Do not create files.",
+      "expected_output": "One FR- states the stamping behavior and another states the correction of every statement of the superseded behavior as an open obligation that names the search finding them, such as the phrases 'current stamp' and 'inherits the current'; the three baseline statements follow as examples. The correction's AC- is written against the search result at the head, not against the listed statements. Each AC- has one TS- entry with all five fields. The stamping entry's failing input is a drained row whose revision stamp differs from the current stamp, so a drain that writes the current stamp fails it; its domain covers every drained row.",
+      "files": [
+        "SKILL.md",
+        "references/quick.md",
+        "references/feature-contract.md",
+        "templates/quick.md"
+      ],
+      "assertions": [
+        "The correction obligation names a search that finds the superseded statements and the acceptance criterion is written against that search's result at the head, not against the listed statements",
+        "The three baseline statements appear as examples found at the baseline, not as the criterion's scope",
+        "Each AC- has a TS- entry carrying observation, guarded defect, failing input, positive control, and domain",
+        "The stamping entry's failing input is a case where the revision stamp differs from the current stamp, so a drain that writes the current stamp fails the check",
+        "No file is created"
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Quick tasks
 
-A quick task is a change too small for a feature triplet but still delivered through the working loop. It is one file, `specs/quick/<NNN>-<slug>.md`, from `../templates/quick.md`: frontmatter `id: Q-NNN`, then `Sources`, `Requirements` (`FR-` and `AC-`), `Approach`, and `Tasks` (checkbox `QT-` items). Spec owns this complete contract.
+A quick task is a change too small for a feature triplet but still delivered through the working loop. It is one file, `specs/quick/<NNN>-<slug>.md`, from `../templates/quick.md`: frontmatter `id: Q-NNN`, then `Sources`, `Requirements` (`FR-` and `AC-`), `Approach`, `Verification` (one `Test strategy` entry per `AC-`), and `Tasks` (checkbox `QT-` items). Spec owns this complete contract.
 
 ## Reservation and routing
 
@@ -25,7 +25,7 @@ Derive a task-delivery branch as `feat/q007-qt001-<slug>` and a logical worker o
 
 Apply `feature-contract.md` source trust and provenance rules. A quick task also accepts `operator request, <YYYY-MM-DD>` when the request arrived as a message with no document. Keep exactly one source item.
 
-State the required behavior in `Requirements`, with at least one observable `AC-`. In `Approach`, state how the change will produce that behavior and what stays untouched. Do not copy mutable environment, deployment, or managed-service status. Link to `docs/status.md` when an observation matters; the snapshot never defines target behavior, acceptance criteria, task state, or authority.
+State the required behavior in `Requirements`, with at least one observable `AC-`. State a correction of statements the change makes false as `feature-contract.md` requires: an open obligation with the search that finds them, and the criterion written against the search result. In `Approach`, state how the change will produce that behavior and what stays untouched. In `Verification`, design one `Test strategy` entry per `AC-`, as `feature-contract.md` defines the entry, with `TS-` IDs that restart per quick file. The entry's failing input must be constructible at the head of the `QT-` task that verifies the criterion; the criterion's entry is that task's check, so task lines carry no check ID. Do not copy mutable environment, deployment, or managed-service status. Link to `docs/status.md` when an observation matters; the snapshot never defines target behavior, acceptance criteria, task state, or authority.
 
 Use one or a few concrete checkbox `QT-` tasks. Preserve supported source requirements. Record assumptions and open questions instead of inventing behavior. Quick-task plan names remain semantic; never add `quick` solely because the source is a quick task.
 
@@ -37,6 +37,7 @@ A quick task is implementation-ready when:
 
 - `Requirements` has project-specific content and at least one observable `AC-`;
 - `Approach` states the intended behavior and mechanism in the file's own words;
+- `Verification` has one complete `Test strategy` entry per `AC-`, each with a failing input constructible at the head of the verifying `QT-` task;
 - `Tasks` contains at least one valid `QT-` item; and
 - no assumption or open question can change behavior or an acceptance criterion unless the operator explicitly accepted it.
 
