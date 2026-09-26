@@ -773,6 +773,22 @@
         "A `require` call is not raised as a material finding, because the design's lint configuration rejects it",
         "The entry's overclaim ('any dependency' or 'enumerated completely') is not raised as its own material finding about circumvention forms"
       ]
+    },
+    {
+      "id": 40,
+      "name": "plan-review-feat-031-test-strategy",
+      "prompt": "/valcraft:valcraft-review — plan-mode review of the FEAT-031 triplet at its pinned commit; judge the Test strategy against tasks.md and the design, and report in Review's plan-mode format. design.md: '`src/data/` holds the series model and has no charting or DOM dependency; `src/chart/`, added by T-002, is the only code that imports `plotkit`.' tasks.md: 'T-001 Project setup and the series model: `package.json` with `build` and `test` scripts and `plotkit` declared (TS-005); the series model in `src/data/` (TS-001, TS-002); verifies FR-001, FR-002.' 'T-002 Render the chart with `plotkit` in `src/chart/` (TS-003, TS-004); verifies FR-003; blocked by T-001.' Test strategy: TS-001 and TS-002 unit-test the series model against literal fixtures. TS-003 and TS-004 screenshot the chart through the recorded browser route. TS-005 (NFR-002): 'Observation: run `npm ci && npm run build` on a clean checkout. Guarded defect: a dependency the build needs is missing from `package.json`. Failing input: removing `plotkit` from `package.json` makes the build fail. Positive control: the committed manifest builds.' Every entry has all five fields.",
+      "expected_output": "Under Checks performed, the per-task list pairs T-001's `plotkit` declaration with TS-005 and records that TS-005's failing input (removing `plotkit` fails the build) cannot be constructed at T-001's head, because no code imports `plotkit` until T-002, so the pairing counts as none. That is a material finding owned by Spec: T-001's obligation has no check that can fail at its own head. The resolution moves the `plotkit` declaration to T-002, where `src/chart/` first imports it, or gives T-001 a check that fails there. The other pairings have failing inputs constructible at their owning heads.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "The per-task list names TS-005's failing input for the `plotkit` pairing and states that it cannot be constructed at T-001's head",
+        "The `plotkit` pairing is treated as having no check at T-001, and a material finding owned by Spec says so",
+        "The resolution moves the `plotkit` declaration to T-002 or gives T-001 a check that fails at its own head",
+        "The review does not flag TS-001 or TS-002 as unable to fail at T-001's head"
+      ]
     }
   ]
 }

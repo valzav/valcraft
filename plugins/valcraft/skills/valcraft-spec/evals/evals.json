@@ -667,6 +667,22 @@
         "The entry treats runtime-assembled specifiers as outside the domain because only deliberate circumvention writes them, or `require` as excluded by the lint configuration",
         "The T-001 task line names the renderer-free core obligation followed by the entry's check ID"
       ]
+    },
+    {
+      "id": 34,
+      "name": "task-lines-feat-032",
+      "prompt": "/valcraft:valcraft-spec — write the two task lines of `tasks.md` for FEAT-032 (local tracker). T-001 creates the project (`package.json` with `build` and `test` scripts and a committed lockfile) and the pure series model in `src/data/`. T-002 renders the chart in `src/chart/` using the `plotkit` package, which no code outside `src/chart/` may import. The design's Test strategy has: TS-001 and TS-002, unit tests of the series model; TS-003, a browser screenshot check of the chart; TS-004, 'run `npm ci && npm run build` on a clean checkout; failing input: removing a dependency the built code imports from `package.json` makes the build fail'. Show both task lines with the check ID beside each verifiable obligation, and say where the `plotkit` dependency declaration goes and why. Do not create files.",
+      "expected_output": "The `plotkit` declaration belongs to T-002, because TS-004's failing input needs built code that imports `plotkit`, which exists only from T-002's head; at T-001 removing `plotkit` changes nothing. T-001's line cites TS-001 and TS-002 for the series model and TS-004 only for dependencies the T-001 build actually imports, or none. T-002's line declares `plotkit` and cites TS-004 beside it along with TS-003.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/tasks.md"
+      ],
+      "assertions": [
+        "The `plotkit` dependency declaration is placed in T-002's task line, not T-001's",
+        "The reason given is that TS-004's failing input needs built code importing `plotkit`, which exists only from T-002's head",
+        "Each verifiable obligation in both task lines is followed by a check ID whose failing input can be constructed at that task's head"
+      ]
     }
   ]
 }
