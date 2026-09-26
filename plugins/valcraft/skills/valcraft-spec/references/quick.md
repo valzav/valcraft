@@ -1,6 +1,6 @@
 # Quick tasks
 
-A quick task is a change too small for a feature triplet but still delivered through the working loop. It is one file, `specs/quick/<NNN>-<slug>.md`, from `../templates/quick.md`: frontmatter `id: Q-NNN`, then `Sources`, `Requirements` (`FR-` and `AC-`), `Approach`, and `Tasks` (checkbox `QT-` items). Spec owns this complete contract.
+A quick task is a change too small for a feature triplet but still delivered through the working loop. It is one file, `specs/quick/<NNN>-<slug>.md`, from `../templates/quick.md`: frontmatter `id: Q-NNN`, then `Sources`, `Requirements` (`FR-` and `AC-`), `Approach`, `Verification` (one `Test strategy` entry per `AC-`), and `Tasks` (checkbox `QT-` items). Spec owns this complete contract.
 
 ## Reservation and routing
 
