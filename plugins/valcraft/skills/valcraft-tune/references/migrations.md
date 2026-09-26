@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.16
+
+### An obligation's check must fail at its own task's head
+
+Spec confirms that each check cited beside a task-line obligation has a failing input constructible at that task's head, and otherwise gives the obligation a check that fails there or moves it to the first task that can. Spec Review's per-task list names each pairing's failing input and whether it is constructible at the owning head.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.15
 
 ### Task lines name each obligation's check, and a check guards plausible mistakes only
