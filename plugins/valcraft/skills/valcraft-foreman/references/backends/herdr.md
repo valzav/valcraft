@@ -128,7 +128,7 @@ herdr agent prompt <agent-name> <envelope> --wait --timeout <ms>
 
 Keep `--timeout` below the controller's own command limit. A Claude Code controller's shell tool kills a command that outlives that limit (2 minutes by default; both tetris drills saw it as exit 144), which turns an ordinary await into a lost handle and a reconciliation instead of a plain `wait_timeout` re-arm. Re-arming is cheap; reconciliation is not. The same bound applies to standalone `agent wait`.
 
-The envelope carries tracker, repository, and report text this run treats as untrusted. Inside a double-quoted shell string, `$(…)`, backticks, and `${…}` in that text execute in the **controller's** shell before Herdr receives the prompt. Build the call as an argument vector, or single-quote with no expansion. Never interpolate the envelope into a double-quoted command string, and never let a quoting choice alter its bytes.
+The envelope carries tracker, repository, and report text this run treats as untrusted. Inside a double-quoted shell string, `$(…)`, backticks, and `${…}` in that text execute in the **controller's** shell before Herdr receives the prompt. Build the call as an argument vector, or single-quote with no expansion. Never interpolate the envelope into a double-quoted command string, and never let a quoting choice alter its bytes. If neither form can carry the envelope byte-for-byte, submit nothing and stop the affected assignment; never deliver a modified envelope.
 
 ### Delivery is not confirmed by a successful return
 
