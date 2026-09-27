@@ -1189,7 +1189,8 @@
         "The worker receives the substitution, backtick, and quote characters unchanged",
         "Command substitution in untrusted envelope text is identified as executing in the controller's shell",
         "No shell expansion of envelope content is treated as acceptable",
-        "A quoting path that would alter the envelope's bytes is rejected in favour of an argument vector or single-quoting with no expansion"
+        "A quoting path that would alter the envelope's bytes is rejected in favour of an argument vector or single-quoting with no expansion",
+        "When no quoting path can carry the envelope byte-for-byte, nothing is submitted and the assignment stops rather than delivering a modified envelope"
       ]
     },
     {
