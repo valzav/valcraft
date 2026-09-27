@@ -175,18 +175,20 @@
     {
       "id": 8,
       "name": "plan-mode-quick-file-identity-and-coverage",
-      "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/quick-file/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
-      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; this is a coverage gap separate from readiness. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
+      "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/quick-plan/, review the quick task specs/quick/003-export-retry-button.md before implementation.",
+      "expected_output": "Review selects plan mode, loads quick.md, and reports material findings. The filename prefix 003 conflicts with id Q-002. AC-002 has no verifying task because QT-001 covers only AC-001; that is its own finding on the Tasks section, and readiness is judged against quick.md's list, whose Verification bullet a criterion with no verifying task cannot meet. The file has no Verification section, so neither criterion has a Test strategy entry; that is a material finding owned by Spec. Review otherwise recognizes QT-001 as the required quick prefix. Findings use stable R-IDs and the verdict is material findings; nothing is edited or committed.",
       "files": [
-        "evals/files/quick-file/AGENTS.md",
-        "evals/files/quick-file/docs/product-brief.md",
-        "evals/files/quick-file/specs/quick/003-export-retry-button.md"
+        "evals/files/quick-plan/AGENTS.md",
+        "evals/files/quick-plan/docs/product-brief.md",
+        "evals/files/quick-plan/specs/quick/003-export-retry-button.md",
+        "evals/files/quick-plan/prepare-eval.sh"
       ],
       "assertions": [
         "Review loads the cast quick reference and applies its identity rule to the file",
         "A material finding cites quick.md's identity rule: filename prefix 003 does not match id: Q-002",
         "A finding reports AC-002 as unverified by any task because QT-001 covers only AC-001, as a coverage gap in the Tasks section",
-        "The coverage gap is not attributed to quick.md's readiness rule; readiness is judged separately on quick.md's own terms",
+        "A material finding owned by Spec reports that the file has no Verification section, so neither AC-001 nor AC-002 has a Test strategy entry",
+        "The coverage gap is its own finding on the Tasks section; the readiness judgment cites quick.md's own list, including its Verification bullet, and invents no other condition",
         "The verdict is material findings, with an auditable table carrying stable R-NNN IDs",
         "No file is edited and no fix is committed"
       ]
@@ -203,7 +205,8 @@
         "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
         "evals/files/quick-file/code-project/specs/quick/002-dependent.md",
         "evals/files/quick-file/code-project/commit-log.txt",
-        "evals/files/quick-file/code-project/changes.diff"
+        "evals/files/quick-file/code-project/changes.diff",
+        "evals/files/quick-file/code-project/prepare-eval.sh"
       ],
       "assertions": [
         "Review maps Q-002 QT-001 to the Q-002 file, not the repeated QT-001 in Q-001",
@@ -223,7 +226,8 @@
         "evals/files/quick-file/invalid-project/specs/quick/009-invalid.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
-        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md",
+        "evals/files/quick-file/invalid-project/prepare-eval.sh"
       ],
       "assertions": [
         "Review reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
@@ -242,7 +246,8 @@
         "evals/files/quick-file/code-project/docs/product-brief.md",
         "evals/files/quick-file/code-project/docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md",
         "evals/files/quick-file/code-project/specs/quick/001-foundation.md",
-        "evals/files/quick-file/code-project/specs/quick/002-dependent.md"
+        "evals/files/quick-file/code-project/specs/quick/002-dependent.md",
+        "evals/files/quick-file/code-project/prepare-eval.sh"
       ],
       "assertions": [
         "Review preserves semantic type fix and slug dependent-behavior",
@@ -334,7 +339,8 @@
         "evals/files/quick-file/invalid-project/docs/product-brief.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
-        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md"
+        "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md",
+        "evals/files/quick-file/invalid-project/prepare-eval.sh"
       ],
       "assertions": [
         "Review reports QT-001 as a material wrong-prefix finding on the direct feature target",
@@ -352,7 +358,8 @@
         "evals/files/quick-file/invalid-project/specs/001-feature/spec.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/design.md",
         "evals/files/quick-file/invalid-project/specs/001-feature/tasks.md",
-        "references/code-mode.md"
+        "references/code-mode.md",
+        "evals/files/quick-file/invalid-project/prepare-eval.sh"
       ],
       "assertions": [
         "Code-mode mapping validates the governing feature tasks.md directly",
