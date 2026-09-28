@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.19
+
+### Spec fixes design-owned values under a checkable constraint
+
+When a requirement, rule, or design statement constrains values the design chooses, and the constraint can be evaluated before implementation, Spec fixes those values in the design and records the check that shows they satisfy it. An unfixed value set under such a constraint fails the readiness gate, so Spec Review reports it as a material finding owned by Spec.
+
+- Applies when: never on its own; a design that leaves such values unfixed receives a material finding at its next Spec Review.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.18
 
 ### Spec Review reproduces the tool behavior a proposed command depends on

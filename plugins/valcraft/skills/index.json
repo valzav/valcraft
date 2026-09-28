@@ -111,7 +111,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "2e70189b683fb379",
+      "version": "910a3edc83da02a5",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "225bd90f17475e26",
+      "version": "2249a8ad64b7eff6",
       "files": [
         "SKILL.md",
         "references/config.md",

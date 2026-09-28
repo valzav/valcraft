@@ -702,6 +702,23 @@
         "The stamping entry's failing input is a case where the revision stamp differs from the current stamp, so a drain that writes the current stamp fails the check",
         "No file is created"
       ]
+    },
+    {
+      "id": 36,
+      "name": "design-fixes-constrained-palette",
+      "prompt": "/valcraft:valcraft-spec — write the `design.md` palette interface and its Test strategy entry for FEAT-040. The feature draws a line chart with six series. BR-002 reads: 'The six series colors are pairwise at least 30 apart in CIE76 ΔE, computed in CIELAB from sRGB with a D65 white point. Source: operator decision, 2026-09-28.' No source or operator decision names the colors. T-001 builds `src/palette.js` and its tests. Show the palette interface text and the entry with all five fields. Do not create files.",
+      "expected_output": "The design fixes all six series colors as concrete sRGB values in the palette interface; it does not describe the palette only as 'colors satisfying BR-002' or leave the choice to T-001. Spec evaluates BR-002 on those values with a computation it runs in a scratch environment and records the check and its result, such as the minimum pairwise ΔE across the fifteen pairs, beside the values. The values actually satisfy BR-002. The Test strategy entry keeps all five fields, enumerates the fifteen pairs as its domain, and uses the fixed palette as its positive control.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "The palette interface fixes all six series colors as concrete sRGB values instead of leaving them to implementation",
+        "Beside the values, the design records a computation of BR-002 on them and its result, and the run shows that computation was executed",
+        "Every one of the fifteen pairs of the stated colors is at least 30 apart in CIE76 ΔE (sRGB, D65); verify by computing it",
+        "The Test strategy entry has all five fields, covers the fifteen pairs, and names the fixed palette as its positive control"
+      ]
     }
   ]
 }
