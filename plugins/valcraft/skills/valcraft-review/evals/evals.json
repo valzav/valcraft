@@ -817,7 +817,7 @@
       "id": 42,
       "name": "plan-review-proposed-command-runtime-mechanism",
       "prompt": "/valcraft:valcraft-review — in the project at evals/files/proposed-command/, run its prepare-eval.sh, then review the FEAT-001 feature contract (specs/001-word-count/spec.md, design.md, and tasks.md) at the commit it prints, before any implementation exists.",
-      "expected_output": "Review selects plan mode, pins the triplet at the printed commit, and applies the implementation-readiness gate. The design fixes the test script as `node --test test/` and records Node.js v24.19.0 (VB-001). On that runtime the test runner treats a positional argument as a file, so the command fails to load the directory as a module and exits nonzero whatever the tests contain; TS-003's positive control can never pass. Review reproduces this in a scratch package on the recorded runtime, reports it as a material finding owned by Spec with the command and exit status, and proposes an argument form the runtime accepts, such as `node --test 'test/*.test.js'` or a bare `node --test`. It does not reject the `start` script, the tests, or any proposed command merely because the implementation does not yet exist. The verdict is material findings. Nothing is edited.",
+      "expected_output": "Review selects plan mode, pins the triplet at the printed commit, and applies the implementation-readiness gate. The design fixes the test script as `node --test test/` and records Node.js v24.19.0 (VB-001). On that runtime the test runner treats a positional argument as a file, so the command fails to load the directory as a module and exits nonzero whatever the tests contain; TS-003's positive control can never pass. Review reproduces this in a scratch package on the recorded runtime, reports it as a material finding owned by Spec with the command and exit status, and proposes an argument form the runtime accepts, such as `node --test 'test/*.test.js'` or a bare `node --test`. It does not reject the command-line module, the tests, or any other proposed interface merely because the implementation does not yet exist. The rest of the triplet has no material defect. The verdict is material findings. Nothing is edited.",
       "files": [
         "SKILL.md",
         "references/plan-mode.md",
@@ -836,7 +836,7 @@
         "A material finding owned by Spec names the test script `node --test test/` and states that it fails on the recorded Node.js v24.19.0 regardless of the tests' content",
         "The finding cites a scratch execution of the command on the recorded runtime with its exit status, not documentation, recall, or reasoning alone",
         "The resolution proposes a test-script argument form the recorded runtime accepts, such as a glob pattern or a bare `node --test`",
-        "No finding rejects the `start` script, the tests, or any proposed command merely because the implementation does not exist at the baseline",
+        "No finding rejects the command-line module, the tests, or any proposed interface merely because the implementation does not exist at the baseline",
         "The verdict is material findings",
         "No file is edited and no fix is committed"
       ]
