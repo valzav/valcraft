@@ -15,7 +15,7 @@ A `countWords` function and a command-line module, both plain ES modules, tested
 
 The baseline is the repository's root commit, which adds this design.
 
-- VB-001, runtime. Assumption: development and CI run Node.js v24.19.0. Locator: `.nvmrc`. Check: `node --version`. Result: `v24.19.0`.
+- VB-001, runtime. Assumption: development runs Node.js v24.19.0. Locator: `.nvmrc`. Check: `node --version`. Result: `v24.19.0`.
 - VB-002, empty baseline. Assumption: no `package.json`, `src/`, or `test/` exists, so every file below is new. Check: `git ls-files` at the baseline. Result: it lists no `package.json` and nothing under `src/` or `test/`.
 
 ## Impact on existing architecture
@@ -46,7 +46,7 @@ It has no `dependencies`, `devDependencies`, `optionalDependencies`, or `peerDep
 
 - `countWords(text: string): number` splits on `/[ \t\n\r]+/` and counts the non-empty pieces.
 - `run(args: string[], io: { readFile(path): string, stdout: { write(s) }, stderr: { write(s) } }): number` reads `args[0]` with `io.readFile`, writes the count and one newline to `io.stdout`, and returns 0.
-- Command line: `node src/cli.js <path>`. When `src/cli.js` is the entry module, it calls `run(process.argv.slice(2), …)` with `readFileSync(path, 'utf8')` and the process streams, and sets `process.exitCode` to the result.
+- Command line: `node src/cli.js <path>`. When `src/cli.js` is the entry module, it calls `run(process.argv.slice(2), { readFile: (path) => readFileSync(path, 'utf8'), stdout: process.stdout, stderr: process.stderr })` and sets `process.exitCode` to the result.
 
 ## Failure handling
 
