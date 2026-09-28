@@ -63,7 +63,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "7d7c553385581d92",
+      "version": "c5e29e14441609fb",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -104,7 +104,7 @@
     },
     {
       "name": "valcraft-review",
-      "version": "371df447a52aa19f",
+      "version": "0f781274d58387ea",
       "files": [
         "SKILL.md",
         "references/code-mode.md",

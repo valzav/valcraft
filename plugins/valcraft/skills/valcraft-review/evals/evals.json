@@ -219,7 +219,7 @@
       "id": 10,
       "name": "plan-mode-rejects-invalid-quick-and-feature-prefixes",
       "prompt": "/valcraft:valcraft-review — in evals/files/quick-file/invalid-project/, review specs/quick/009-invalid.md and its stored dependency contract before implementation.",
-      "expected_output": "Review reports material grammar findings before readiness: mixed QT/T tasks, legacy T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing QT-999 in Q-009, missing Q-404, and QT-001 in feature tasks.md. It performs no legacy mapping and does not edit files.",
+      "expected_output": "Review reports material grammar findings before readiness: mixed QT/T tasks, feature-only T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing QT-999 in Q-009, missing Q-404, and QT-001 in feature tasks.md. It maps no invalid identity to a valid one and does not edit files.",
       "files": [
         "evals/files/quick-file/invalid-project/AGENTS.md",
         "evals/files/quick-file/invalid-project/docs/product-brief.md",
@@ -230,7 +230,7 @@
         "evals/files/quick-file/invalid-project/prepare-eval.sh"
       ],
       "assertions": [
-        "Review reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Review reports feature-only T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
         "Review reports QT-001 in feature tasks.md as a wrong-prefix feature task",
         "The verdict is material findings before readiness or implementation",
         "No compatibility mapping or edit occurs"

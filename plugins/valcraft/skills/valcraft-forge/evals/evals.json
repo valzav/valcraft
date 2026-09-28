@@ -196,7 +196,7 @@
       "id": 9,
       "name": "invalid-quick-prefixes-stop-forge",
       "prompt": "/valcraft:valcraft-forge — in evals/files/quick-multi/invalid-project/, implement Q-009. This run is unattended.",
-      "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with legacy T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map legacy IDs, or change the workspace.",
+      "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with feature-only T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map invalid IDs to valid ones, or change the workspace.",
       "files": [
         "evals/files/quick-multi/invalid-project/AGENTS.md",
         "evals/files/quick-multi/invalid-project/.valcraft/config.yaml",
@@ -204,7 +204,7 @@
         "evals/files/quick-multi/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
-        "Forge reports legacy T-002, mixed prefixes, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Forge reports feature-only T-002, mixed prefixes, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
         "Forge stops before eligibility, implementation, or handoff",
         "No compatibility mapping, fallback, migration, or GitHub lookup occurs"
       ]
@@ -239,7 +239,7 @@
       ],
       "assertions": [
         "Bare T-001 searches feature tasks.md only",
-        "The quick QT-001 is not a match and no legacy quick lookup occurs",
+        "The quick QT-001 is not a match and no quick-file T-ID lookup occurs",
         "Forge stops before implementation because no feature task resolves"
       ]
     },
