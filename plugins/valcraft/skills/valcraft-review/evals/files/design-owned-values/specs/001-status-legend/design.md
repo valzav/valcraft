@@ -46,8 +46,8 @@ All files are new:
 
 It has no `dependencies`, `devDependencies`, `optionalDependencies`, or `peerDependencies` key; `node:test` and `node:assert` ship with Node.js (NFR-001).
 
-- `STATUSES`: the frozen array `['PASS', 'FAIL', 'SKIP', 'WARN', 'INFO']` (FR-001).
-- `PALETTE`: a frozen object mapping each name in `STATUSES` to an sRGB color `[r, g, b]` of integers from 0 to 255 whose five colors satisfy BR-001.
+- `STATUSES`: the array `['PASS', 'FAIL', 'SKIP', 'WARN', 'INFO']` (FR-001).
+- `PALETTE`: an object mapping each name in `STATUSES` to an sRGB color `[r, g, b]` of integers from 0 to 255 whose five colors satisfy BR-001.
 - `formatLine(name: string, rgb: [number, number, number]): string` returns `` `\x1b[38;2;${r};${g};${b}m${name}\x1b[0m\n` ``.
 - `legendLines(): string` returns `STATUSES.map((name) => formatLine(name, PALETTE[name])).join('')`.
 - Command line: `node src/cli.js`. When `src/cli.js` is the entry module, it calls `process.stdout.write(legendLines())` and leaves the exit status at 0. It reads no arguments.
@@ -77,17 +77,17 @@ Task T-001 owns every entry.
   - Positive control: the design's formatter and entry pass every case.
   - Domain: the five statuses, enumerated, each checked for its position, name, and color; and the command line with and without arguments.
 - TS-002 (AC-002, BR-001), distinct colors.
-  - Observation: `test/palette.test.js` converts each `PALETTE` color with the steps under Color difference and asserts ΔE ≥ 25 for every pair.
-  - Guarded defect: two statuses given colors closer than BR-001 allows.
-  - Failing input: setting `WARN` to the same color as `FAIL` gives ΔE 0 for that pair.
+  - Observation: `test/palette.test.js` first asserts its conversion against reference values within 0.01 per component: `[255, 0, 0]` gives `(53.24, 80.09, 67.20)` and `[128, 128, 128]` gives `(53.59, 0.00, 0.00)`. It then asserts that every channel of every `PALETTE` color is an integer from 0 to 255, converts each color with the steps under Color difference, and asserts ΔE ≥ 25 for every pair.
+  - Guarded defect: two statuses given colors closer than BR-001 allows, a conversion that departs from the Color difference steps, or a channel outside the integer range.
+  - Failing input: setting `WARN` to the same color as `FAIL` gives ΔE 0 for that pair; skipping linearization gives L 76.19 for `[128, 128, 128]`; a D50 white point gives a nonzero `b` for that gray; a channel of `200.5` or `256` fails the range assertion.
   - Positive control: a palette that satisfies BR-001 passes.
-  - Domain: the ten pairs of the five statuses, enumerated.
-- TS-003 (T-001 obligation: `npm test` runs every test file and fails when any test fails).
+  - Domain: the ten pairs of the five statuses, enumerated; the fifteen channels, enumerated; and the conversion, pinned by the two reference colors, which exercise both branches of the linearization and of `f`.
+- TS-003 (T-001 obligation: `npm test` runs every test file directly under `test/` and fails when any test fails).
   - Observation: at T-001's head, run `npm test` on a clean checkout.
   - Guarded defect: a `test` script that runs no test file or only some of them.
   - Failing input: plant a temporary `test/planted.test.js` containing one failing assertion; `npm test` must exit nonzero, then delete the file.
   - Positive control: on a clean checkout `npm test` exits 0 and reports the tests of all four shipped test files.
-  - Domain: every `*.test.js` file under `test/`, enumerated: the four shipped files and the planted file.
+  - Domain: every `*.test.js` file directly under `test/`, which the script's glob matches, enumerated: the four shipped files and the planted file. The design places no test file in a subdirectory.
 - TS-004 (AC-003, NFR-001), no dependencies.
   - Observation: `test/package.test.js` parses `package.json` and asserts that none of the four dependency keys is present.
   - Guarded defect: a dependency added to the manifest.
