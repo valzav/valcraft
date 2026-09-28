@@ -10,7 +10,7 @@ Read the repository's root `AGENTS.md` first. Accept exactly one target:
 - A quick task is canonically `Q-NNN QT-XXX`. Read `../../valcraft-spec/references/quick.md`, validate the selected quick file and its referenced dependencies, and use that one file as its spec, design, and task list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Never map legacy syntax.
 - An existing task plan must be a repository-relative tracked path or an untracked path explicitly supplied by the operator. Resolve the task identity and git-owned contract it cites before revising it.
 
-An orchestration envelope must name the exact task artifact. It may also name verified deferred-finding locators. Read each locator from its durable source. Never accept only a coordinator checkpoint as the task contract.
+A Foreman assignment envelope must name the exact task artifact. It may also name verified deferred-finding locators. Read each locator from its durable source. Never accept only a coordinator checkpoint as the task contract.
 
 Accepted ADRs outrank `specs/`, and `specs/` outranks derived `docs/`. Stop when this precedence cannot resolve a contradiction or when the contract lacks a product or owner decision that changes observable behavior, scope, or an acceptance criterion. Ask in an attended run; otherwise report the question. Never invent the missing decision.
 
@@ -27,7 +27,7 @@ A confirmed takeover assignment may attribute exact dirty Draft paths only on th
 Without an envelope:
 
 1. Inspect the current branch, exact HEAD, staged, unstaged, and untracked state before switching or creating a branch. Stop on unattributed changes. Use the clean current checked-out ref selected by the invocation as the planning baseline. Resolve and record its exact HEAD locally.
-2. Derive the canonical task branch from repository policy and the artifact identity. The Valcraft scaffold conventions are `feat/fNNN-tNNN-<slug>` and `feat/qNNN-qtNNN-<slug>`.
+2. Derive the canonical task branch from repository policy and the artifact identity. Without a repository policy, use Valcraft's task-branch convention: `feat/fNNN-tNNN-<slug>` for a feature task and `feat/qNNN-qtNNN-<slug>` for a quick task.
 3. Reconcile the local canonical branch against the selected local baseline. Create it from that baseline when absent. Resume it only when its attributable plan history is equal to or descends cleanly from the baseline. Stop on ambiguous ancestry or divergence. Do not fetch or fabricate remote state for local planning.
 4. Reconcile an existing plan and commits before writing. Update the existing plan for this task instead of allocating another.
 

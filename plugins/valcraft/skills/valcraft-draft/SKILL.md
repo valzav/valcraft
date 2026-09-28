@@ -16,7 +16,7 @@ Create one implementation-ready task plan and stop at the Review handoff. Draft 
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
-Read `references/plan-contract.md` before inspecting the assignment. It owns target resolution, workspace recovery, plan contents, MSW use, mutation authority, routing codes, and the final Draft report. Do not duplicate or weaken that contract here.
+Read `references/plan-contract.md` before inspecting the assignment. It owns target resolution, workspace recovery, plan contents, MSW use, mutation authority, routing codes, and the final Draft report.
 
 ## Workflow
 
