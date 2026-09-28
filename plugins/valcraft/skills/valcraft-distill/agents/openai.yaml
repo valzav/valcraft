@@ -1,0 +1,4 @@
+interface:
+  display_name: "Distill"
+  short_description: "Distill a prompt or skill to its essence"
+  default_prompt: "Use $valcraft:valcraft-distill to distill this prompt or skill into its minimal goal-directed essence."

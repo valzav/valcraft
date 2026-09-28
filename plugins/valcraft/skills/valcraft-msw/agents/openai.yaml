@@ -1,0 +1,4 @@
+interface:
+  display_name: "MSW"
+  short_description: "Delete what a document's contract does not need"
+  default_prompt: "Use $valcraft:valcraft-msw to apply the MSW Kernel to this markdown document."

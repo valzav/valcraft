@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tune"
+  short_description: "Configure Valcraft for this repository"
+  default_prompt: "Use $valcraft:valcraft-tune to configure or repair this repository's Valcraft configuration."

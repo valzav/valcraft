@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cast"
+  short_description: "Scaffold a lean spec-driven project frame"
+  default_prompt: "Use $valcraft:valcraft-cast to scaffold or retrofit this repository's spec-driven project frame."

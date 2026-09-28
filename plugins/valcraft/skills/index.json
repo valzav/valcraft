@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "b4318a8fc3a6d285",
+      "version": "8654012c3a329581",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -16,16 +16,18 @@
         "templates/markdownlint-cli2.jsonc",
         "templates/overview.md",
         "templates/product-brief.md",
-        "templates/status.md"
+        "templates/status.md",
+        "agents/openai.yaml"
       ]
     },
     {
       "name": "valcraft-distill",
-      "version": "8f2ce81f0e08ffc5",
+      "version": "f11eb66d5738cb97",
       "files": [
         "SKILL.md",
         "references/compare.md",
-        "references/output-formats.md"
+        "references/output-formats.md",
+        "agents/openai.yaml"
       ]
     },
     {
@@ -70,13 +72,14 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "42b56ed6da1bd80b",
+      "version": "a3babcf5b738997b",
       "files": [
         "SKILL.md",
         "references/claude.md",
         "references/codex.md",
         "references/divergence.md",
-        "references/shared-checklist.md"
+        "references/shared-checklist.md",
+        "agents/openai.yaml"
       ]
     },
     {
@@ -92,10 +95,11 @@
     },
     {
       "name": "valcraft-msw",
-      "version": "6e15defe657858f6",
+      "version": "4cdbe810bf847653",
       "files": [
         "SKILL.md",
-        "references/kernel.md"
+        "references/kernel.md",
+        "agents/openai.yaml"
       ]
     },
     {
@@ -137,12 +141,13 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "1d32aafc0ef43a53",
+      "version": "1a76b8f607a48187",
       "files": [
         "SKILL.md",
         "references/config.md",
         "references/migrations.md",
-        "references/models.md"
+        "references/models.md",
+        "agents/openai.yaml"
       ]
     }
   ]
