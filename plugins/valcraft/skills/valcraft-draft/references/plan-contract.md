@@ -7,7 +7,7 @@ This reference owns Draft's assignment, workspace, plan, authority, recovery, an
 Read the repository's root `AGENTS.md` first. Accept exactly one target:
 
 - A feature task is one `T-XXX` in one `specs/NNN-<slug>/tasks.md`. Read the whole feature triplet, accepted ADRs that govern it, and the product brief context needed to interpret it. A bare `T-XXX` must resolve exactly once across feature task files.
-- A quick task is canonically `Q-NNN QT-XXX`. Read `../../valcraft-spec/references/quick.md`, validate the selected quick file and its referenced dependencies, and use that one file as its spec, design, and task list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Never map legacy syntax.
+- A quick task is canonically `Q-NNN QT-XXX`. Read `../../valcraft-spec/references/quick.md`, validate the selected quick file and its referenced dependencies, and use that one file as its spec, design, and task list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Reject an invalid identity instead of mapping it to a valid one.
 - An existing task plan must be a repository-relative tracked path or an untracked path explicitly supplied by the operator. Resolve the task identity and git-owned contract it cites before revising it.
 
 A Foreman assignment envelope must name the exact task artifact. It may also name verified deferred-finding locators. Read each locator from its durable source. Never accept only a coordinator checkpoint as the task contract.

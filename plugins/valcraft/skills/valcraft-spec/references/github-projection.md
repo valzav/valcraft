@@ -4,7 +4,7 @@ Use this reference only for a complete feature triplet when the committed `.valc
 
 ## Identity and target
 
-Resolve the target only from the committed `.valcraft/config.yaml`. Never infer it from a source issue or a git remote. If `tracker.github_repository` is `TBD`, invoke Tune for the tracker section and wait for explicit target selection; do not choose or write one directly.
+Resolve the target only from the committed `.valcraft/config.yaml`. Never infer it from a source issue or a git remote. If `tracker.github_repository` is `TBD`, the target is pending activation and no projection runs. In an attended run, invoke Tune for the tracker section and resume after Tune records the operator's exact selection. In an unattended run, or when Tune ends without a selection, report `tracker_target_required`. Never choose or write a target directly.
 
 Resolve these values from trusted declarations and git-owned files:
 
@@ -99,4 +99,4 @@ When Review drives a triplet revision, verify its exact covered artifact head, r
 
 ## Task removal
 
-A removed or changed T-ID requires `not planned` closure, which belongs to Land. Spec reconciles the surviving projection, excludes closure from its operation set, and puts the removed task identity, verified issue, canonical `tasks.md` path, and removal source in the exact Land target. Spec does not comment on or close the issue and does not invoke Land. A changed T-ID may create the new marked issue through normal authorized projection only after the old identity is reported for Land.
+A removed or changed T-ID requires `not planned` closure, which belongs to Land. Spec reconciles the surviving projection, excludes closure from its operation set, and puts the removed task identity, verified issue, canonical `tasks.md` path, and removal source in the exact Land target. While no spec PR exists, the Land target is `none`, so record the removal in the prepared PR handoff under `Outward mutations` and move it to the Land target once the PR exists. Spec does not comment on or close the issue and does not invoke Land. A changed T-ID may create the new marked issue through normal authorized projection only after the old identity is reported for Land.

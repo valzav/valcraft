@@ -32,7 +32,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "b9ee95bc40296b93",
+      "version": "ace65a8aca3e80e5",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -115,7 +115,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "bb69f4b4a6190390",
+      "version": "ba409e6e525dd04c",
       "files": [
         "SKILL.md",
         "references/delivery.md",
