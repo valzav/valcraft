@@ -109,7 +109,6 @@ Between tool calls, when you have content the user must read verbatim (a partial
 Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification.
 ```
 
-
 ## Fable 5.1 snippets (verbatim from the Fable 5.1 guide — graft, don't reinvent)
 
 **Progress updates** — when a refined agentic prompt still needs user-facing updates after suppressors are removed:
