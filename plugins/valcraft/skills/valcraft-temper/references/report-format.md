@@ -1,6 +1,6 @@
 # Temper report format
 
-The single retrospective artifact a Temper run creates. This reference owns its file format. `SKILL.md` owns analysis, commit, target-bound delivery, and the final Temper handoff report.
+The single retrospective artifact a Temper run creates. This reference owns its file format. `process.md` owns the analysis. `SKILL.md` owns report ownership, corpus preflight, and the final Temper handoff report.
 
 ## File
 
@@ -69,8 +69,7 @@ The promotion target is a `## Standing rules` section in the project's root `AGE
 ```markdown
 ## Standing rules
 
-- Normalize input first, then validate the result, never the reverse.
-  (docs/.retro/2026-08-20-001-analyze-003-search.md, L-002)
+- Normalize input first, then validate the result, never the reverse. (2026-08-20-001-analyze-003-search.md, L-002)
 ```
 
 Keep the section small enough to read: propose a merge or retirement when rules overlap, and retire through a later report's routing section, never by silent deletion.
