@@ -77,11 +77,11 @@ Task T-001 owns every entry.
   - Positive control: the design's formatter and entry pass every case.
   - Domain: the five statuses, enumerated, each checked for its position, name, and color; and the command line with and without arguments.
 - TS-002 (AC-002, BR-001), distinct colors.
-  - Observation: `test/palette.test.js` first asserts its conversion against reference values within 0.01 per component: `[255, 0, 0]` gives `(53.24, 80.09, 67.20)` and `[128, 128, 128]` gives `(53.59, 0.00, 0.00)`. It then asserts that every channel of every `PALETTE` color is an integer from 0 to 255, converts each color with the steps under Color difference, and asserts ΔE ≥ 25 for every pair.
+  - Observation: `test/palette.test.js` first asserts its conversion against reference values within 0.01 per component: `[255, 0, 0]` gives `(53.24, 80.09, 67.20)`, `[128, 128, 128]` gives `(53.59, 0.00, 0.00)`, and `[10, 10, 10]` gives `(2.74, 0.00, 0.00)`. It then asserts that every channel of every `PALETTE` color is an integer from 0 to 255, converts each color with the steps under Color difference, and asserts ΔE ≥ 25 for every pair.
   - Guarded defect: two statuses given colors closer than BR-001 allows, a conversion that departs from the Color difference steps, or a channel outside the integer range.
-  - Failing input: setting `WARN` to the same color as `FAIL` gives ΔE 0 for that pair; skipping linearization gives L 76.19 for `[128, 128, 128]`; a D50 white point gives a nonzero `b` for that gray; a channel of `200.5` or `256` fails the range assertion.
+  - Failing input: setting `WARN` to the same color as `FAIL` gives ΔE 0 for that pair; skipping linearization gives L 76.19 for `[128, 128, 128]`; a D50 white point gives a nonzero `b` for that gray; dropping the linear branch of `f` gives L 0.80 for `[10, 10, 10]`; a channel of `200.5` or `256` fails the range assertion.
   - Positive control: a palette that satisfies BR-001 passes.
-  - Domain: the ten pairs of the five statuses, enumerated; the fifteen channels, enumerated; and the conversion, pinned by the two reference colors, which exercise both branches of the linearization and of `f`.
+  - Domain: the ten pairs of the five statuses, enumerated; the fifteen channels, enumerated; and the conversion, pinned by the three reference colors: `[10, 10, 10]` takes the linear branch of both the linearization and `f`, and the other two take the power branches.
 - TS-003 (T-001 obligation: `npm test` runs every test file directly under `test/` and fails when any test fails).
   - Observation: at T-001's head, run `npm test` on a clean checkout.
   - Guarded defect: a `test` script that runs no test file or only some of them.
