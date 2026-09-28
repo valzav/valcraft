@@ -840,6 +840,34 @@
         "The verdict is material findings",
         "No file is edited and no fix is committed"
       ]
+    },
+    {
+      "id": 43,
+      "name": "plan-review-design-owned-values-unfixed",
+      "prompt": "/valcraft:valcraft-review — in the project at evals/files/design-owned-values/, run its prepare-eval.sh, then review the FEAT-001 feature contract (specs/001-status-legend/spec.md, design.md, and tasks.md) at the commit it prints, before any implementation exists.",
+      "expected_output": "Review selects plan mode, pins the triplet at the printed commit, and applies the implementation-readiness gate. BR-001 constrains the five status colors to pairwise CIE76 ΔE of at least 25, and the design chooses those colors: `PALETTE` is described only as colors that satisfy BR-001, with no values. The constraint can be evaluated before implementation, so the design must fix the five colors and record a check with its result. Review reports this as a material finding owned by Spec that names the unfixed `PALETTE` values, and notes that TS-002's positive control names no concrete palette. The rest of the triplet has no material defect: the test script, formatter, command line, and Test strategy entries are sound. The verdict is material findings. Nothing is edited.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "../valcraft-spec/references/feature-contract.md",
+        "evals/files/design-owned-values/.gitignore",
+        "evals/files/design-owned-values/.nvmrc",
+        "evals/files/design-owned-values/.valcraft/config.yaml",
+        "evals/files/design-owned-values/AGENTS.md",
+        "evals/files/design-owned-values/docs/product-brief.md",
+        "evals/files/design-owned-values/docs/legend-prd.md",
+        "evals/files/design-owned-values/specs/001-status-legend/spec.md",
+        "evals/files/design-owned-values/specs/001-status-legend/design.md",
+        "evals/files/design-owned-values/specs/001-status-legend/tasks.md",
+        "evals/files/design-owned-values/prepare-eval.sh"
+      ],
+      "assertions": [
+        "A material finding owned by Spec states that the design leaves the five `PALETTE` colors unfixed although BR-001 constrains them and the constraint can be evaluated before implementation",
+        "The finding's resolution asks Spec to fix the five colors in the design and record a check of BR-001 on them with its result",
+        "No material finding targets the test script, `formatLine`, `legendLines`, the command line, or TS-001, TS-003, or TS-004",
+        "The verdict is material findings",
+        "Nothing in the fixture is edited"
+      ]
     }
   ]
 }

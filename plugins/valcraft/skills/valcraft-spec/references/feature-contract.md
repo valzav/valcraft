@@ -104,6 +104,8 @@ Every verifiable obligation a task line assigns, including a build or test-runne
 
 Before writing a check ID beside an obligation, confirm that the entry's failing input can be constructed at that task's head. When it cannot, give the obligation a check that fails there, for example by planting a temporary file. Move the obligation to the first task whose head can fail it only when no such check exists. An obligation that no task's head can fail is not verifiable and does not belong in a task line. An invariant the design states needs a `Test strategy` entry like any criterion.
 
+When a requirement, business rule, or design statement constrains values the design itself chooses, such as colors, sizes, thresholds, or timings, and the constraint can be evaluated before implementation, fix those values in `design.md`. Evaluate the constraint on the fixed values with a computation or command in a scratch environment, and record that check and its result beside the values. Values the source or an operator decision already fixes are not the design's to choose. A constraint that only the implemented system can evaluate, such as a frame rate on the built page, stays with its `Test strategy` entry. The `Test strategy` entry for a constraint on fixed values keeps all five fields, and the fixed values are its positive control.
+
 Verify the existing-code assumptions that determine the design against the exact baseline SHA. Check the actual schema, symbols, formulas, enumerations, and behavior the design relies on. Distinguish existing behavior from proposed changes. Record the baseline, source locator, check, and result under the design's `Verified baseline assumptions` section and cite that entry beside the decision it supports. Correct a disproven assumption before declaring readiness; an implementation task cannot substitute for verifying an existing fact.
 
 When a criterion needs an observation tool that a worker must drive, such as a browser driver, verify that route before delivery starts and record it under `Verified baseline assumptions`. Probe the tool and record its name and version and its executable. Name every harness that must drive the route; the resolved configuration's worker map lists them when one exists. A route bound to one harness's own tooling fails for a worker on another harness, so choose a route that every named harness can drive.
@@ -124,6 +126,7 @@ A complete triplet is implementation-ready only when:
 
 - every artifact contains substantive project-specific content with no template instruction, unresolved token, example, ellipsis, or `TBD`-only section;
 - the existing-code assumptions that determine the design have recorded verification at the baseline;
+- every value the design chooses under a constraint that can be evaluated before implementation is fixed, with its recorded check and result;
 - design and tasks cover every applicable requirement and every substantive acceptance-criterion clause;
 - all task identities, mappings, and dependencies validate; and
 - no assumption or open product question can change observable behavior or an acceptance criterion unless the operator explicitly accepts that uncertainty or, in an unattended Foreman run, an attributed `Foreman decision` settles it.

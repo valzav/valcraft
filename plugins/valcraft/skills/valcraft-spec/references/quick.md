@@ -37,6 +37,7 @@ A quick task is implementation-ready when:
 
 - `Requirements` has project-specific content and at least one observable `AC-`;
 - `Approach` states the intended behavior and mechanism in the file's own words;
+- `Approach` fixes every value it chooses under a constraint that can be evaluated before implementation, with its recorded check and result;
 - `Verification` has one complete `Test strategy` entry per `AC-`, each with a failing input constructible at the head of the verifying `QT-` task;
 - `Tasks` contains at least one valid `QT-` item; and
 - no assumption or open question can change behavior or an acceptance criterion unless the operator explicitly accepted it.

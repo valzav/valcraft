@@ -79,7 +79,7 @@ Audit a graded batch with `scripts/jev-grade.py`, `scripts/jev-compare.py`, `scr
 
 ## Delivery contract coverage
 
-Spec readiness includes evidence for consequential existing-code assumptions and task ownership of every substantive acceptance-criterion clause. Review checks that evidence independently across the triplet. These checks distinguish current facts from proposed implementation; they require no separate claim ledger.
+Spec readiness includes evidence for consequential existing-code assumptions, task ownership of every substantive acceptance-criterion clause, and fixed values, with a recorded check, for every value the design chooses under a constraint that can be evaluated before implementation. Review checks that evidence independently across the triplet. These checks distinguish current facts from proposed implementation; they require no separate claim ledger.
 
 Once a contract is present on the default branch, Spec amends it on the in-progress task's branch when the fix passes the scope test, and that task's plan reviewer closes the R-IDs in its closure check; otherwise Spec commits on a short-lived amendment branch cut from the reconciled default branch with its own spec PR. No Spec ref is retained between landings, and Land deletes every merged head branch. See Spec's [delivery contract](../plugins/valcraft/skills/valcraft-spec/references/delivery.md#amend-a-landed-contract).
 
