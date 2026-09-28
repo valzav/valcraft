@@ -63,10 +63,10 @@ Build one deterministic preview from reconciled state. It names:
 The generated label definitions are:
 
 - `spec` on the feature issue;
-- `in-progress` for the delivery loop's task-status owner; and
+- `in-progress` and `on-hold` for the delivery loop's task-status owner; and
 - `needs-clarification` for staged artifact metadata and later task-status use.
 
-Spec applies `spec` to the feature issue. It applies `needs-clarification` to the feature while a behavior-affecting question keeps readiness staged and to a task when the git-owned question blocks that task. Spec never adds or removes `in-progress`; Foreman owns intermediate task state.
+Spec applies `spec` to the feature issue. It applies `needs-clarification` to the feature while a behavior-affecting question keeps readiness staged and to a task when the git-owned question blocks that task. Spec never adds or removes `in-progress` or `on-hold`; Foreman owns intermediate task state.
 
 Remove only generated clarification metadata when the corresponding git-owned question is resolved. Do not infer status from local task text or overwrite discussion. Preserve unrelated labels and comments.
 

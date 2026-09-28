@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "7f7b18f9f494b117",
+      "version": "a11cb0c5196ce6b1",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -40,7 +40,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "6e9a5880e7127bf3",
+      "version": "a1dc88c5f44700f1",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -111,7 +111,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "1dffde4ef9f2f029",
+      "version": "5a932716e700a978",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -127,7 +127,7 @@
     },
     {
       "name": "valcraft-temper",
-      "version": "86db4d84dfab31c6",
+      "version": "0136fff4d84b252a",
       "files": [
         "SKILL.md",
         "references/process.md",
@@ -137,7 +137,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "2249a8ad64b7eff6",
+      "version": "1d32aafc0ef43a53",
       "files": [
         "SKILL.md",
         "references/config.md",

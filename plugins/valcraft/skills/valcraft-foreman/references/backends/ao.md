@@ -25,7 +25,7 @@ Keep the full canonical logical identity in the assignment and `workers.md`. Map
 - Land: `l`;
 - Temper: `t`.
 
-Do not define aliases for retired role families or for producer-owned substeps.
+Do not define aliases for producer-owned substeps.
 
 For dispatch ordinal zero, hash the UTF-8 canonical logical identity with SHA-256. For later dispatches, hash `<logical identity>\ndispatch:<ordinal>`. Form `<role>-<hex-prefix>` from the lowercase hexadecimal digest with as many characters as fit AO's 20-character name contract. If current project sessions or any `workers.md` row already owns the result, rehash `<dispatch preimage>\ncollision:<n>` until it is unused. Preserve all prior rows.
 
@@ -89,7 +89,7 @@ done
 
 Run the waiter in the background and end the parent turn only after it is armed. On wake, attribute and record its exact return before another action. A command failure before the waiter starts is `dispatch_error`. AO does not emit `wait_timeout`; that return belongs only to foreground backends. The waiter is a background process, so the controller's own shell command limit does not bound it; never run it in the foreground, where that limit would kill it into a lost handle.
 
-The 30-second interval is the owner's standing orchestrator rule from `orchestrator-template.md` (2026-08-15 revision); it is not a Foreman-derived retry limit.
+The 30-second interval is the owner's standing AO poll rule; it is not a Foreman-derived retry limit.
 
 For a blocked prompt, inspect the smallest tmux window needed. Send an allowed answer with `AO_SESSION_ID= ao send --session <id> --message "<answer>"`, then re-arm the same waiter with `SEEN=1 GATED=1`. The recorded block is answered, and a default waiter would poll the not-yet-cleared `blocked` status and return it a second time. Never write directly to tmux.
 
@@ -101,7 +101,7 @@ Escalation names the gate; it does not end the await. The operator can answer th
 
 AO keeps a worker session and its worktree alive after a turn, so this backend keeps a Review worker active for its own round, as [`../hygiene.md`](../hygiene.md#workers) allows.
 
-1. **Who is kept.** Only a Review worker (`r`-alias) whose accepted report returned material findings. A Review report with verdict `pass`, every producer (Draft, Forge, Temper), and Land are released or handled as before: a producer's remediation is always a fresh session, alias, and physical branch.
+1. **Who is kept.** Only a Review worker (`r`-alias) whose accepted report returned material findings. A Review report with verdict `pass`, every producer (Draft, Forge, Temper), and Land are released or handled as usual: a producer's remediation is always a fresh session, alias, and physical branch.
 2. **What waiting means.** The kept session is `idle` and executes nothing; its worktree stays at the head it reviewed. Do not send to or inspect it while the producer is active.
 3. **Each follow-up is a new assignment.** The closure check and any second full round take the next assignment id and dispatch ordinal, a fresh and absent report path, and their own `workers.md` row and assignment checkpoint. The physical identity — session id, alias, and physical branch — is the initial dispatch's, recorded again on the new row and marked continued. The alias keeps its original preimage; only the report path advances.
 4. **Revalidate before the follow-up send.** `ao session ls --project <project-id> --json` must still list the recorded session id, `idle`, under the recorded alias. A missing or replaced session is an observation, not a backend return: the kept worker has no active assignment. Record it with the status evidence, skip the dead-worker inventory, and dispatch the selected follow-up — the closure check, or the second full round [`../review-round.md`](../review-round.md) sends a known trigger to, with its R-ID inspection — as a fresh physical worker with the same logical identity through the ordinary dispatch steps.
