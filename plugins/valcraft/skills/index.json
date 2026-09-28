@@ -81,7 +81,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "d8dc90478f2c7e1d",
+      "version": "fe35f38b52f13477",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -111,7 +111,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "5a932716e700a978",
+      "version": "bb69f4b4a6190390",
       "files": [
         "SKILL.md",
         "references/delivery.md",
