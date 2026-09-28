@@ -13,7 +13,7 @@ When the heads differ, inspect the complete `<reviewed>..<current>` delta. Only 
 For that exact tick:
 
 1. prepare a task-owned commit on the PR branch;
-2. obtain exact push authority;
+2. obtain exact push authority, or apply a ref-bound Land grant whose condition this commit meets;
 3. push without force;
 4. re-read the PR head; and
 5. classify applicable checks on that new head.
@@ -21,6 +21,10 @@ For that exact tick:
 A feature-close PR has no Review report. Its whole delta against its base must be exactly the completion marks `tracker-closure.md` defines for that feature: unchecked-to-checked `AC-` transitions in its `spec.md` and `status: draft` to `status: complete` in its three files. Such a delta needs no Review.
 
 Any other delta returns `review_required` with the two full SHAs and exact delta target. After a Review-driven change, restart this comparison.
+
+## Ref-bound grant
+
+A Foreman dispatch may carry a ref-bound Land grant ([`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-land-grant)). It binds the target fields and the operation set before you prepare, and binds the final head only by condition. Apply it when every bound field revalidates and the final head meets its condition: the covered head, or a single commit on it that is exactly the completion tick above; for a feature close, a single commit on the bound base SHA that is exactly the feature-close marks. Then perform the granted operations in the same assignment without asking. Return `authority_drift` when a bound field changed. An operation outside the grant still ends `authority_required`. The grant changes neither the Review coverage rule nor the check classifier.
 
 ## Applicable-check classifier
 

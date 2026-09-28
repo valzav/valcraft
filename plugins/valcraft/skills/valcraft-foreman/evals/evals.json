@@ -2015,6 +2015,42 @@
         "In case A second-round findings return to Spec and a closure check follows",
         "In case B Foreman dispatches a closure check scoped to R-001, and a second full round only if that check reveals a trigger"
       ]
+    },
+    {
+      "id": 128,
+      "name": "land-dispatch-carries-ref-bound-grant",
+      "prompt": "/valcraft:valcraft-foreman — local tracker, `pull_requests.merge_strategy: squash`, no release branch. CodeReview passed FEAT-005 T-002's task PR #41 on `acme/tiles` at head `c0ffee1111111111111111111111111111111111`; `main` is at `ba5e222222222222222222222222222222222222`. Case A: the run is `unattended`. State exactly what the Land dispatch carries, which operations Land may perform in that one assignment, and the next state after Land reports that it pushed a completion-tick commit on the reviewed head and merged. Case B: same run, but before Land merges, `main` advances to `ba5e333333333333333333333333333333333333`, and Land reports `Status: blocked: authority_drift`. State Foreman's next step. Case C: the run is `attended` and the operator has named no merge in advance. State what the Land dispatch carries and what happens next. Do not mutate anything.",
+      "expected_output": "Case A: the unattended Landing gate carries the ref-bound Land grant in the dispatch. Foreman first observes the fields live and binds repository and remote, PR #41, base `main` at ba5e222…, the covered head c0ffee1…, the squash strategy, and the operation set: non-force push of Land's completion-tick commit, merge, head-branch deletion, and no hosted close batch because the tracker is local. The final head is bound by condition: the covered head or one commit on it that is exactly T-002's tick. Land revalidates, pushes the tick, merges, and deletes the branch in the same assignment, with no `authority_required` round and no second Land worker; the run returns to Ready. Case B: `authority_drift` is Blocked under the registry; Foreman does not silently re-issue a grant bound to the new base. Case C: attended mode carries no grant; Land prepares and returns `authority_required`, Foreman records the prepared fields and waits for the operator at the Landing gate, then resumes Land with exact authority.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "In case A the Land dispatch carries the ref-bound Land grant binding repository, PR #41, base SHA ba5e222…, covered head c0ffee1…, the squash strategy, and the operation set, with the final head bound by condition to the covered head or one commit that is exactly the tick",
+        "In case A Land completes the tick push, merge, and branch deletion in one assignment, with no `authority_required` report and no second Land dispatch, and the run returns to Ready",
+        "In case A no hosted close batch is in the operation set, because the tracker is local",
+        "In case B Foreman enters Blocked and does not re-issue a grant bound to the new base",
+        "In case C the Land dispatch carries no grant, and Foreman waits for the operator after Land's prepared `authority_required` report"
+      ]
+    },
+    {
+      "id": 129,
+      "name": "spec-publish-and-feature-close-grants",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run on `acme/tiles`, local tracker, merge strategy `merge`. Step 1: SpecReview passed FEAT-006's triplet at commit `5bec444444444444444444444444444444444444` on local branch `spec/f006-undo`; `origin/spec/f006-undo` does not exist and no spec PR exists; `main` is at `ba5e555555555555555555555555555555555555`. State the next named state, what its dispatch carries, and how many assignments it takes to have a spec PR. Step 2: much later, every FEAT-006 task is closed and `state.md` records the operator's confirmation \"FEAT-006 is done, close it.\" State what the FeatureClose Land dispatch carries and which head Land may merge. Do not mutate anything.",
+      "expected_output": "Step 1: a passing verdict without a landable spec PR enters Specifying. The unattended dispatch carries the exact Spec publish grant: repository and remote, `main` at ba5e555…, the covered head 5bec444…, the canonical Spec ref `spec/f006-undo` with its observed absence on the remote, PR base and head refs with no existing spec PR, and the operation set of non-force push and spec-PR creation; no field is bound by condition and tracker projection is outside it. Spec pushes and opens the PR in that one assignment, then SpecLanding follows. Step 2: the confirmation is recorded, so the FeatureClose Land dispatch carries the ref-bound Land grant: repository and remote, the close branch `close/f006-<slug>` with no existing close PR, base `main` at its observed SHA, the `merge` strategy, and the operation set of creating and pushing the close branch, PR creation, merge, and head-branch deletion, with no hosted close in local mode. Land may merge only a single commit on the bound base SHA whose delta is exactly the feature-close marks.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md"
+      ],
+      "assertions": [
+        "Step 1 enters Specifying with a dispatch carrying the exact Spec publish grant bound to the covered head 5bec444…, `main` at ba5e555…, the canonical ref's observed absence, and no existing spec PR",
+        "Step 1's grant covers non-force push and spec-PR creation only, binds no field by condition, and excludes tracker projection",
+        "Step 1 reaches a spec PR in one Specifying assignment, with no prepare-then-authorize pair",
+        "Step 2's FeatureClose dispatch carries the ref-bound Land grant for the close branch, PR creation, merge, and head-branch deletion, bound to the observed base SHA",
+        "Step 2 lets Land merge only a single commit on the bound base whose delta is exactly the feature-close marks"
+      ]
     }
   ]
 }

@@ -35,7 +35,7 @@ Spec and Draft advance to Review only when the next Review worker can access the
 
 ## Ref-bound Forge grant
 
-A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. This is the one grant that binds a head by condition instead of by SHA. Bind every other field exactly:
+A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. It and the ref-bound Land grant below are the grants that bind a head by condition instead of by SHA. Bind every other field exactly:
 
 - repository and remote identity;
 - authoritative base ref and SHA;
@@ -44,6 +44,32 @@ A Forge dispatch in `Implementing` may carry push and task-PR authority before t
 - the operation set: non-force push of the canonical task ref, and task-PR creation or update.
 
 The bound head is the clean local head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged. A remediation dispatch binds the currently pushed head as the observed remote head and the existing task PR identity. Forge revalidates every bound field immediately before mutation and returns `authority_drift` on any change. A Forge report without a task PR still takes the prepared continuation above.
+
+## Ref-bound Land grant
+
+A Land dispatch in `SpecLanding`, `Landing`, or `FeatureClose` may carry its authority before Land prepares its operations, when that state's gate in `approval-modes.md` allows it. Foreman observes every bound field live before dispatch. Bind exactly:
+
+- repository and remote identity;
+- target kind and PR identity; for a feature close, the close branch `close/fNNN-<slug>` and the existing close PR identity or its absence;
+- authoritative base ref and SHA;
+- for a task or spec PR, the head SHA that the latest passing Review report covers;
+- the configured merge strategy; and
+- the operation set: for a task PR, non-force push of Land's completion-tick commit when the tracker mode requires one, merge, head-branch deletion, and any mode-valid hosted close batch; for a spec PR, merge and head-branch deletion; for a feature close, creating and pushing the close branch without force, PR creation, merge, head-branch deletion, and the confirmed hosted close in `github` mode.
+
+The final merged head is the one field bound by condition. For a task or spec PR, it is the covered head, or a single commit on the covered head whose delta is exactly the completion-tick exception in [`../../valcraft-land/references/final-head-and-checks.md`](../../valcraft-land/references/final-head-and-checks.md). For a feature close, it is a single commit on the bound base SHA whose delta is exactly the feature-close marks. Land revalidates every bound field and the condition immediately before each mutation and returns `authority_drift` on any change. The grant waives no Review coverage, check classification, or release-branch rule, and a configured release-branch operation never receives it. A Land report that ends `authority_required` for an operation outside the grant still takes the prepared continuation above.
+
+## Exact Spec publish grant
+
+After a passing Spec verdict covers an exact committed head and no landable spec PR exists, the Specifying dispatch may carry push and spec-PR authority, when that state's gate in `approval-modes.md` allows it. Foreman observes every bound field live and binds exactly:
+
+- repository and remote identity;
+- authoritative default-branch ref and base SHA;
+- the covered head SHA;
+- the canonical Spec ref and its observed remote head, including absence;
+- PR base and head refs, and the existing spec-PR identity or its absence; and
+- the operation set: non-force push of the covered head and spec-PR creation or update.
+
+No field is bound by condition. Tracker projection stays outside this grant.
 
 ## Message registry
 

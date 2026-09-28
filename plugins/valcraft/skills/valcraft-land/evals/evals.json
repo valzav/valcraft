@@ -347,6 +347,24 @@
         "Land ends `Status: blocked: review_required` with both full SHAs",
         "Land does not merge, even though `ci` passed and merge authority was granted"
       ]
+    },
+    {
+      "id": 17,
+      "name": "ref-bound-grant-conditions",
+      "prompt": "$valcraft:valcraft-land — Foreman's Landing assignment for FEAT-005 T-002 (local tracker, strategy `squash`, no release branch) carries a ref-bound Land grant: repository `acme/tiles` on remote `origin`, task PR #41, base `refs/heads/main` at `ba5e222222222222222222222222222222222222`, covered head `c0ffee1111111111111111111111111111111111` from the passing code Review, and the operation set: non-force push of the completion-tick commit, merge, head-branch deletion. Checks classify `none-applicable`. For each live state, state what you do and your terminal status. Case A: the PR head and `main` are exactly as bound. Case B: the PR head is now `d00d666666666666666666666666666666666666`, a commit someone pushed on the covered head that edits `src/grid.js`. Case C: the PR head is as bound but `main` has moved to `ba5e333333333333333333333333333333333333`. Do not mutate anything.",
+      "expected_output": "Case A: Land prepares one commit on c0ffee1… that is exactly T-002's unchecked-to-checked tick in `tasks.md`, which meets the grant's condition. It revalidates every bound field, pushes the tick without force, re-reads the PR head, classifies checks on it, merges with squash pinned to the new head, and deletes the head branch, all in this assignment without asking, then reports completion with `Status: done`. Case B: the delta c0ffee1..d00d666 is not the tick exception, so Review does not cover the head: `Status: blocked: review_required` with both SHAs, and no mutation. Case C: a bound field changed, so Land performs no mutation and returns `Status: blocked: authority_drift` with the live base.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "references/tracker-closure.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "In case A Land pushes a commit that is exactly the tick, merges pinned to that head, and deletes the branch in the same assignment, ending `Status: done` without an `authority_required` report",
+        "In case B Land returns `review_required` with the covered and current SHAs and mutates nothing",
+        "In case C Land returns `authority_drift` for the moved base and mutates nothing",
+        "Land does not ask the operator or Foreman to confirm in case A"
+      ]
     }
   ]
 }

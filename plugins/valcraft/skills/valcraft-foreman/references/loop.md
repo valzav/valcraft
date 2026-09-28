@@ -89,7 +89,7 @@ Never restart Spec or Draft when the required current committed artifact exists.
 
 ## `Specifying`
 
-Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. For a Spec-owned plan finding on the selected task, name the task's canonical branch as the canonical branch, its exact plan head as the predecessor, and the amendment branch as the fallback. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
+Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. After a passing Spec verdict without a landable spec PR, that authority is the exact Spec publish grant in `contracts.md` when its gate allows it. For a Spec-owned plan finding on the selected task, name the task's canonical branch as the canonical branch, its exact plan head as the predecessor, and the amendment branch as the fallback. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
 
 On `Status: done`, validate the artifact paths and exact head. A report with commit target `task branch` keeps the task selected and enters `Drafting`. Otherwise enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
 
@@ -99,7 +99,7 @@ Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 ## `SpecLanding`
 
-Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` through `PartialCompletionByTarget`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
+Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` through `PartialCompletionByTarget`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
 
 ## `Ready`
 
@@ -133,7 +133,7 @@ Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode 
 
 ## `Landing`
 
-Dispatch `land-<identity>` with `valcraft-land`, the target kind, exact current target, Review report, applicable approval-mode decision, tracker closure target, and any trusted target-bound authorization. Land owns final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and external evidence recording.
+Dispatch `land-<identity>` with `valcraft-land`, the target kind, exact current target, Review report, applicable approval-mode decision, tracker closure target, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authorization. Land owns final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and external evidence recording.
 
 Route the Land report exactly:
 
@@ -157,7 +157,7 @@ The return re-enters `Landing` carrying the whole ownership listed there — fin
 
 ## `FeatureClose`
 
-Dispatch Land with the exact feature or PRD target and the operator's quoted confirmation. For a feature, Land prepares the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`; issue its exact push, PR, and merge authority under the FeatureClose gate in [`approval-modes.md`](approval-modes.md), then resume the same Land producer. Land closes only the authorized real tracker target. Keep a pending check on the close PR under the same await discipline as `Landing`. Route Land codes through the registry in `contracts.md`. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
+Dispatch Land with the exact feature or PRD target and the operator's quoted confirmation. For a feature, Land prepares the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`; carry the ref-bound Land grant in the dispatch when the FeatureClose gate in [`approval-modes.md`](approval-modes.md) allows it; otherwise issue its exact push, PR, and merge authority under that gate, then resume the same Land producer. Land closes only the authorized real tracker target. Keep a pending check on the close PR under the same await discipline as `Landing`. Route Land codes through the registry in `contracts.md`. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
 
 ## `Retrospective`
 
