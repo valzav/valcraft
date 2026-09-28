@@ -2013,7 +2013,7 @@
         "In case A Foreman dispatches no standalone closure check before the second full round",
         "In case A the second-round envelope names R-001 to R-005 and requires each resolution's inspection and reproduction re-run before the full review",
         "In case A second-round findings return to Spec and a closure check follows",
-        "In case B Foreman dispatches a closure check scoped to R-001 and no second full round"
+        "In case B Foreman dispatches a closure check scoped to R-001, and a second full round only if that check reveals a trigger"
       ]
     }
   ]
