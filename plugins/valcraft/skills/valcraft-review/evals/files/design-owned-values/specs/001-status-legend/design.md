@@ -71,9 +71,9 @@ Legend reads no input, so it has no read or parse failure. A write error on stan
 Task T-001 owns every entry.
 
 - TS-001 (AC-001, FR-001), legend output.
-  - Observation: `test/legend.test.js` asserts `formatLine` on fixed inputs and `legendLines()` against the expected string built from `STATUSES` and `PALETTE`; `test/cli.test.js` spawns `node src/cli.js` and `node src/cli.js extra args` with `child_process.spawnSync` and asserts exit status 0, empty standard error, and standard output equal to `legendLines()`.
+  - Observation: `test/legend.test.js` asserts that `STATUSES` deep-equals the literal array `['PASS', 'FAIL', 'SKIP', 'WARN', 'INFO']`, asserts `formatLine` on fixed inputs, and asserts `legendLines()` against the expected string built from that literal array, pairing each name with `PALETTE[name]`; `test/cli.test.js` spawns `node src/cli.js` and `node src/cli.js extra args` with `child_process.spawnSync` and asserts exit status 0, empty standard error, and standard output equal to `legendLines()`.
   - Guarded defect: a missing reset, a missing newline, the 256-color form `ESC[38;5;<n>m`, statuses out of order, a status printed with another status's color, or output on standard error.
-  - Failing input: `formatLine('PASS', [1, 2, 3])` must equal `'\x1b[38;2;1;2;3mPASS\x1b[0m\n'`, which a formatter without the reset or the newline fails; swapping two entries of `STATUSES` or two colors of `PALETTE` changes `legendLines()`; writing with `console.error` leaves standard output empty.
+  - Failing input: `formatLine('PASS', [1, 2, 3])` must equal `'\x1b[38;2;1;2;3mPASS\x1b[0m\n'`, which a formatter without the reset or the newline fails; swapping two entries of `STATUSES` fails the literal-array assertion; a `legendLines` that pairs a name with another status's color fails the expected string; writing with `console.error` leaves standard output empty.
   - Positive control: the design's formatter and entry pass every case.
   - Domain: the five statuses, enumerated, each checked for its position, name, and color; and the command line with and without arguments.
 - TS-002 (AC-002, BR-001), distinct colors.
