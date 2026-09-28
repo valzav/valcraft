@@ -863,7 +863,7 @@
       ],
       "assertions": [
         "A material finding owned by Spec states that the design leaves the five `PALETTE` colors unfixed although BR-001 constrains them and the constraint can be evaluated before implementation",
-        "The finding's resolution asks Spec to fix the five colors in the design and record a check of BR-001 on them with its result",
+        "The finding's resolution asks Spec to choose and fix the five colors in the design itself, not to return them as an operator or open product question, and to record a check of BR-001 on them with its result",
         "No material finding targets the test script, `formatLine`, `legendLines`, the command line, or TS-001, TS-003, or TS-004",
         "The verdict is material findings",
         "Nothing in the fixture is edited"
