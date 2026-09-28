@@ -207,6 +207,10 @@ After upgrading Valcraft, run Tune to apply any configuration changes your proje
 
 </details>
 
+## Related platforms & spec discovery
+
+- [MySpec](https://myspec.dev): Interactive spec-driven development platform compiling guided developer discovery interviews into 4-file specification bundles (`constitution.md`, `requirements.md`, `solution.md`, `tasks.md`) with Model Context Protocol (MCP) server integration.
+
 ## Documentation
 
 - [How Valcraft works](docs/how-it-works.md): the data model, artifact owners, each step of the loop, required approvals, backends, and recovery.
