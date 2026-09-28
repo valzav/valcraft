@@ -1979,6 +1979,25 @@
         "In case B the dispatch carries the ref-bound grant because the standing decision named that operation class, and the grant binds the head by condition (the head on which Forge's full gate passed), not by a SHA or by branch alone",
         "In case B Foreman records the application of the standing decision"
       ]
+    },
+    {
+      "id": 126,
+      "name": "retro-review-runs-one-round",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-004. Round one of RetroReview on /work/project/docs/.retro/2026-09-28-001-analyze-004-search.md returned `verdict: material findings; open: R-001:P1, R-002:P1, R-003:P1, R-004:P1`, all owned by Temper. Temper remediated in place and reported a new content hash. Case A: the RetroReview closure check reports `verdict: pass; open: none`. Case B: the closure check reports R-003 still open because Temper declined it, and the other three closed. For each case, state every assignment Foreman dispatches from here to the end of the run, the named state it ends in, and what the run-end report says about the findings. Do not spawn workers. Do not write files.",
+      "expected_output": "RetroReview runs one full round, so four P1 findings trigger no second round. The closure check follows Temper's remediation. Case A: the closure check passes and the run enters Complete with no further RetroReview assignment. Case B: Foreman does not escalate, does not return R-003 for another round, and runs no second review. It dispatches Temper once more with the RetroReview report path and R-003, and Temper records R-003 in the report's `Open review findings` section. No Review covers that record. The run enters Complete, and the run-end report names R-003 and the report path for the person reading the report.",
+      "files": [
+        "references/review-round.md",
+        "references/loop.md",
+        "references/hygiene.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "Four P1 findings in RetroReview round one do not trigger a second full round",
+        "In case A the passing closure check leads to Complete with no further RetroReview assignment",
+        "In case B Foreman neither escalates nor runs another RetroReview round for R-003",
+        "In case B Foreman dispatches Temper once to record R-003 under `Open review findings`, with no Review of that record",
+        "In case B the run ends in Complete and the run-end report names R-003 and the report path"
+      ]
     }
   ]
 }

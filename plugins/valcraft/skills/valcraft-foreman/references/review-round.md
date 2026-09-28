@@ -1,6 +1,6 @@
 # After material findings
 
-Read this after a SpecReview, PlanReview, CodeReview, or RetroReview report returns material findings. One full round is the default; two is the established cap.
+Read this after a SpecReview, PlanReview, CodeReview, or RetroReview report returns material findings. One full round is the default; two is the established cap for SpecReview, PlanReview, and CodeReview. RetroReview runs one full round, as [RetroReview](#retroreview) defines.
 
 1. Return the exact Review report path and R-IDs to the owning producer: Spec for feature-contract or quick-file findings, Draft for plan findings, Forge for task-code findings, or Temper for retrospective findings.
 2. After the producer reports resolutions, send the same logical Review role the resolution report path and R-IDs. Require it to inspect each resolving commit and locator, re-run that R-ID's reproduction, update the resolution column, open no new finding, and emit Review's unchanged report contract. This is a closure check, not a full round.
@@ -14,3 +14,12 @@ Read this after a SpecReview, PlanReview, CodeReview, or RetroReview report retu
 5. Without a second-round trigger, treat the closure-check table as the round's final state.
 
 Record the branch and evidence in `state.md`. Cross-task ownership, external-completion origin, adjacency, or small size grants no exemption.
+
+## RetroReview
+
+RetroReview runs one full round. Step 3's triggers and step 4 do not apply to it.
+
+1. Return its findings to Temper once, then run the closure check, as steps 1 and 2 define.
+2. When the closure check leaves no material R-ID open, the round is complete.
+3. When a material R-ID remains open, including one Temper declined or deferred, do not escalate and do not run another round. Dispatch Temper once more with the RetroReview report path and the open R-IDs, and require it to record them in the report's `Open review findings` section. That record receives no review.
+4. Enter `Complete` after Temper records them. Name each open R-ID and the report path in the run-end report, so the person who reads the report can address them after the run.
