@@ -6,18 +6,20 @@ Distilled from [Prompting Claude Fable 5](https://platform.claude.com/docs/en/bu
 
 - **Instruction following is strong enough that brief steering works.** One short instruction with a reason replaces a list that names every behavior. Prompts and skills written for older models are often too prescriptive and *degrade* Fable 5 output — pruning is an upgrade, not a risk.
 - **Turns are longer by default.** Hard tasks run minutes at higher effort; autonomous runs extend hours. Refined prompts for harnesses should not assume quick turnarounds, and anti-overplanning steering matters more.
-- **Effort is the primary dial**, not prompt-side "think harder" language. `high` default, `xhigh` for capability-sensitive work, `medium`/`low` for routine (still strong). Remove prompt text that tries to modulate thinking depth — point the author at the effort parameter instead.
+- **Effort is the primary dial**, not prompt-side "think harder" language. `xhigh` for capability-sensitive work, `medium`/`low` for routine (still strong); the default level differs by model. Remove prompt text that tries to modulate thinking depth — point the author at the effort parameter instead.
 - **More parallel-subagent-happy** than prior models. Prompts should say when delegation is appropriate and prefer async communication over blocking on each subagent.
 - **Performs better with intent context** — connect the task to who it's for and what the output enables.
 
 ## Audit items specific to Claude
 
-1. **Remove show-your-reasoning instructions.** Any "explain your reasoning in the response", "transcribe your thought process", "reflect out loud" can trigger the `reasoning_extraction` refusal category and fall back to Opus 4.8. If reasoning visibility is needed, read structured `thinking` blocks from adaptive thinking, or surface progress via a send-to-user tool.
+1. **Remove show-your-reasoning instructions.** Any "explain your reasoning in the response", "transcribe your thought process", "reflect out loud" can trigger a `reasoning_extraction` refusal, which is not retried on a fallback model. If reasoning visibility is needed, read summarized `thinking` blocks (`display: "summarized"`), or surface progress via a send-to-user tool.
 2. **Prune prescriptive step lists** carried over from older-model prompts. Keep steps that encode a real workflow contract; drop steps that just spell out how to be competent.
 3. **Remove extended-thinking budget language.** Fable 5 is adaptive-thinking only; no extended thinking budgets. Prompt text managing "thinking tokens" is dead.
 4. **Check long-run prompts for the standard scaffolding** (snippets below): checkpoint policy, grounded progress claims, autonomous-pipeline reminder where applicable. These are the tested levers for reliability over hours-long runs.
 5. **Don't surface context-budget countdowns** to the model; if the harness must, add the reassurance snippet — otherwise Fable 5 may wrap up early or suggest a new session.
 6. **Verifier subagents beat self-critique.** For long-run prompts, prefer "verify with fresh-context subagents against the specification at interval X" over "double-check your work".
+7. **Remove update suppressors.** "Hold all findings for the final response", "don't narrate", and "no interim updates" were written for models that over-narrated; current Claude models under-narrate with them present. Remove them first. If the artifact still needs more user-facing updates, graft the progress-update snippet below. When the harness renders only `text` blocks, note in the report that between-tool updates arrive as `thinking` blocks under `display: "updates"`.
+8. **Remove anti-formatting rules.** "Never use bullets", "no headers", and "no bold" were written against models that over-formatted; current Claude models already under-format, so the rule strips formatting readers want. Remove it, or replace it with the conditional-formatting snippet below.
 
 ## Canonical snippets (verbatim from the guide — graft, don't reinvent)
 
@@ -109,4 +111,16 @@ Between tool calls, when you have content the user must read verbatim (a partial
 
 ```text
 Establish a method for checking your own work at an interval of [X] as you build. Run this every [X interval], verifying your work with subagents against the specification.
+```
+
+**Progress updates** — when a refined agentic prompt still needs user-facing updates after suppressors are removed:
+
+```text
+Before you start, say in a line what you're about to do; brief updates while you work help the user follow along. Close with a short recap that stands on its own — what you found, what you did, and what's next — so a reader who only sees the last message has the full picture.
+```
+
+**Conditional formatting** — replaces blanket anti-formatting rules:
+
+```text
+Use lists and bullet points when asked to, or when the content is multifaceted enough that they help with clarity. If the person explicitly requests minimal formatting, always format your responses without bullet points, headers, lists, or bold emphasis, as requested. In conversational, personal, or emotional exchanges, keep to plain prose.
 ```
