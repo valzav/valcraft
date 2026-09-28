@@ -7,7 +7,7 @@ The single retrospective artifact a Temper run creates. This reference owns its 
 - Location: `docs/.retro/` in the analyzed project, gitignored. Reports are local history on the machine that ran Temper; synthesize mode aggregates them, and only the proposals they produce enter git, through later reviewed work.
 - Name: `YYYY-MM-DD-NNN-<mode>-<scope>.md`, where `<mode>` is `analyze` or `synthesize` and `<scope>` is a short kebab-case name of the corpus or source set (`003-search`, `prs-38-55`, `q3-features`).
 - Allocate `NNN` as one more than the highest number already present for that date in `docs/.retro/` (`2026-08-20-001-…`, `2026-08-20-002-…`); an empty date starts at `001`. `NNN` exists to keep same-date filenames unique and ordered; if the computed number is taken by the time of writing (a concurrent run), take the next free one instead of probing repeatedly. Never overwrite or extend another run's report.
-- Reports are append-only history: a report becomes immutable once a Review verdict passes it. Until then, remediate review findings in the report itself and report the new content hash, and resume it only under SKILL.md's ownership rule; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
+- Reports are append-only history: a report becomes immutable once a Review verdict passes it, or once Temper records the findings RetroReview left open under `Open review findings`. Until then, remediate review findings in the report itself and report the new content hash, and resume it only under SKILL.md's ownership rule; never create a second report to carry a correction to the first. A later run that overturns a lesson writes its own report and proposes the retirement there.
 
 ## Lesson IDs
 
@@ -50,6 +50,7 @@ Stage attribution records the responsible gate's execution as one of:
 6. **User-owned proposals** — tier-2 candidates: the target artifact and the proposed change, with `valcraft-hone` named as the application step.
 7. **Upstream candidates** — tier-3 candidates, each with its attribution argument: the skill step or rule at fault, the direct run evidence identifying the invoked skill revision or instruction, the causes ruled out (user code, project contract, configuration, harness), and the portability argument. A git-only attribution is a C-grade hypothesis and says so. Include the submit-upstream suggestion only for A-grade candidates corroborated across multiple analyze reports.
 8. **Not examined** — what the run did not open or verify: units at `skimmed` or `commit-record only` depth, absent evidence sources, unread transcripts. Name them specifically.
+9. **Open review findings** — present only after an assignment names R-IDs that RetroReview's closure check left open. One row per R-ID: `R-NNN | severity | finding | RetroReview report path | reason it stays open`. Copy the severity, finding, and reason from the Review report without rewording them. That assignment changes nothing else in the report. No Review covers this section; the person who reads the report addresses these findings after the run.
 
 ## Synthesis report sections, in order
 

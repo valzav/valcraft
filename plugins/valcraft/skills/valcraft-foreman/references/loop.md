@@ -81,6 +81,8 @@ Feature triplets and quick-task contracts use this same Spec lifecycle and evide
 | confirmed feature not yet closed by Land | `FeatureClose` |
 | feature closure complete without a retrospective report | `Retrospective` |
 | attributed dirty retrospective report owned by Temper | `Retrospective` |
+| RetroReview closure check with a material R-ID the Temper report does not yet record | `Retrospective` |
+| Temper report whose `Open review findings` section records every R-ID left open after the RetroReview closure check | `Complete` |
 | Temper report without an exact verdict | `RetroReview` |
 
 Never restart Spec or Draft when the required current committed artifact exists. Preserve a passing Spec verdict across publication only when the resulting exact head is unchanged. Never infer Review coverage from a branch, PR number, or earlier verdict.
@@ -161,11 +163,11 @@ Dispatch Land with the exact feature or PRD target and the operator's quoted con
 
 Dispatch `temper-<feature>` with `valcraft-temper` in analyze mode on the exact closed feature corpus and the repository head it describes. Temper writes one local report under the gitignored `docs/.retro/` and no git state; the assignment grants no outward authority because none is needed.
 
-Enter `RetroReview` when Temper reports its exact Review target: the absolute report path, its content hash, and the described head. Material retrospective findings return here by R-ID, and Temper edits the same report in place. `report_dir_not_ignored` is Blocked: the project frame owns `.gitignore`. Foreman never creates the report and never applies proposals; an unattended run leaves Temper's escalated proposals as `offered, awaiting selection` for the operator.
+Enter `RetroReview` when Temper reports its exact Review target: the absolute report path, its content hash, and the described head. Material retrospective findings return here by R-ID, and Temper edits the same report in place. An R-ID that RetroReview's closure check leaves open returns here once, for Temper to record under `Open review findings`; that report enters `Complete` without another review. `report_dir_not_ignored` is Blocked: the project frame owns `.gitignore`. Foreman never creates the report and never applies proposals; an unattended run leaves Temper's escalated proposals as `offered, awaiting selection` for the operator.
 
 ## `RetroReview`
 
-Dispatch a fresh `retro-reviewer-<feature>` with `valcraft-review` in plan mode on the exact report path and content hash. A pass enters Complete; nothing is merged, because the report is not in git. Material findings return to Retrospective. Foreman never reviews the report.
+Dispatch a fresh `retro-reviewer-<feature>` with `valcraft-review` in plan mode on the exact report path and content hash. A pass enters Complete; nothing is merged, because the report is not in git. Material findings return to Retrospective. RetroReview runs one full round, as [`review-round.md`](review-round.md#retroreview) defines. Foreman never reviews the report.
 
 ## `Blocked`, `DurableHandoff`, and recovery
 

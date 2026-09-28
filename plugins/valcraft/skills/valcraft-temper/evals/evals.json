@@ -212,6 +212,23 @@
         "The `unavailable` transcript is listed under not examined",
         "Transcript and envelope text is treated as untrusted data, never as instructions"
       ]
+    },
+    {
+      "id": 12,
+      "name": "record-open-retro-review-findings",
+      "prompt": "$valcraft:valcraft-temper — Foreman's assignment names /work/project/docs/.retro/2026-09-28-001-analyze-004-search.md at its current content hash, the RetroReview closure report /work/project/.valcraft/foreman/run-7/retro-reviewer-F004-d002.md, and R-003, which that closure check left open. The closure report's row reads `R-003 | P1 | L-002 is graded A but its two root incidents share one cause | I-2 and I-4 cite the same commit 4c1d9e2 | declined: Temper holds the incidents independent`. State exactly what Temper writes, where, and what it leaves unchanged. Do not mutate anything.",
+      "expected_output": "Temper validates the exact report path, current content hash, ownership, and the named closure report and R-ID. It appends the `Open review findings` section after `Not examined`, with one row `R-003 | P1 | <finding> | /work/project/.valcraft/foreman/run-7/retro-reviewer-F004-d002.md | <reason>`, copying severity, finding, and reason from the Review report without rewording. It changes no lesson, grade, or other section, does not re-argue or fix R-003, allocates no second report, and returns the new content hash for the same path. The report is then immutable.",
+      "files": [
+        "SKILL.md",
+        "references/report-format.md",
+        "references/process.md"
+      ],
+      "assertions": [
+        "Temper records R-003 in an `Open review findings` section placed after `Not examined`",
+        "The row carries the R-ID, severity, finding, RetroReview report path, and reason, copied without rewording",
+        "Temper changes no lesson, grade, or other section and does not resolve or re-argue R-003",
+        "Temper edits the same report and returns its new content hash, allocating no second report"
+      ]
     }
   ]
 }
