@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.18
+
+### Spec Review reproduces the tool behavior a proposed command depends on
+
+Spec Review no longer exempts a proposed command, script, or configuration from reproduction because the implementation does not exist yet. It reproduces how the named tool and runtime handle the command's arguments, inputs, and configuration against the recorded versions in a scratch environment. A command the recorded runtime rejects is a material finding owned by Spec.
+
+- Applies when: never on its own; a design whose proposed command the recorded runtime rejects receives a material finding at its next Spec Review.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.17
 
 ### A superseded-statement obligation stays open
