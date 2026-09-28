@@ -142,7 +142,9 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Pick the next task | waits | proceeds |
 | Advance after a passing review | waits | proceeds |
 | Task push and pull request when `forge` starts | none, unless you already named that operation | grants push and pull request for the task branch, bound to every field except the head `forge` has yet to verify |
-| Prepared task/spec push or pull request, or ordinary merge into the default branch | waits, unless you already named that operation | issues authority for the exact prepared operation |
+| Spec push and pull request after a passing spec review | none, unless you already named that operation | grants push and pull request for the exact reviewed head |
+| Ordinary merge into the default branch, including feature close after your confirmation | none, unless you already named that operation | grants the merge when `land` starts, bound to every field except the final head, which may add only `land`'s own completion marks |
+| Prepared task/spec push or pull request, or a prepared merge outside those grants | waits, unless you already named that operation | issues authority for the exact prepared operation |
 | Push a local-ahead default branch | requires a live operator instruction naming the push | requires a live operator instruction naming the push |
 | Send a spec or plan review finding back to the worker that owns it | waits | proceeds |
 | A product or owner question from a worker | waits | `foreman` decides from the project's sources, or waits when they conflict or settle nothing |
