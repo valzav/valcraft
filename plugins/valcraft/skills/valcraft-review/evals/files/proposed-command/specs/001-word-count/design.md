@@ -50,7 +50,7 @@ It has no `dependencies`, `devDependencies`, `optionalDependencies`, or `peerDep
 
 ## Failure handling
 
-`run` wraps `io.readFile(path)` in one `try`. Its `catch` does not inspect the error: every read error writes `tally: cannot read ` followed by `JSON.stringify(path)` and one newline to `io.stderr`, and returns 2 (FR-002). `JSON.stringify` escapes a newline in the path, so the message stays on one line.
+`run` wraps `io.readFile(path)` in one `try`. Its `catch` does not inspect the error: every read error writes the string `"tally: cannot read "` followed by `JSON.stringify(path)` and one newline to `io.stderr`, and returns 2 (FR-002). `JSON.stringify` escapes a newline in the path, so the message stays on one line.
 
 ## Test strategy
 
@@ -58,10 +58,10 @@ Task T-001 owns every entry.
 
 - TS-001 (AC-001, FR-001), word counting.
   - Observation: `test/count.test.js` asserts `countWords` over a case table.
-  - Guarded defect: splitting on the space character alone, counting empty pieces, or splitting on a wider whitespace class such as `/\s+/`.
-  - Failing input: `text.split(' ').length` returns 1 for `""` and 1 for `"a\tb\nc"`; `/\s+/` returns 2 for `"a\fb"`.
+  - Guarded defect: splitting on the space character alone, counting empty pieces, splitting on a wider whitespace class such as `/\s+/`, or trimming with `String.prototype.trim()` before the split.
+  - Failing input: `text.split(' ').length` returns 1 for `""` and 1 for `"a\tb\nc"`; `/\s+/` returns 2 for `"a\fb"`; trimming first returns 0 for `"\u00a0"`.
   - Positive control: the design's split passes every case.
-  - Domain: strings over separators and word characters. The count depends only on whether each character is one of the four separators and where the separators sit relative to words. The cases therefore place each separator at the start, between two words, at the end, and in runs, and put each class of non-separator whitespace and punctuation between two word characters: `""`, `" "`, `"\t\n\r "`, `"one"`, `"one two"`, `"a\tb"`, `"a\nb"`, `"a\rb"`, `"  lead"`, `"trail  "`, `"a   b\t\tc"`, `"a\fb"`, `"a\vb"`, `"a b"`, `"a b"`, `"a,b"`, `"a-b"`. A character outside these classes is either one of the four separators or a word character like `a`, so it adds no new case.
+  - Domain: strings over separators and word characters. The count depends only on whether each character is one of the four separators and where the separators sit relative to words. The cases therefore place each separator at the start, between two words, at the end, and in runs, and place each class of non-separator whitespace and punctuation alone, at the start of a word, between two word characters, and at the end of a word: `""`, `" "`, `"\t\n\r "`, `"one"`, `"one two"`, `"a\tb"`, `"a\nb"`, `"a\rb"`, `"  lead"`, `"trail  "`, `"a   b\t\tc"`, `"\f"`, `"\fa"`, `"a\fb"`, `"a\f"`, `"\v"`, `"\va"`, `"a\vb"`, `"a\v"`, `"\u00a0"`, `"\u00a0a"`, `"a\u00a0b"`, `"a\u00a0"`, `"\u2003"`, `"\u2003a"`, `"a\u2003b"`, `"a\u2003"`, `","`, `",a"`, `"a,b"`, `"a,"`, `"-"`, `"-a"`, `"a-b"`, `"a-"`. A character outside these classes is either one of the four separators or a word character like `a`, so it adds no new case.
 - TS-002 (AC-001, AC-002, FR-001, FR-002), command-line output.
   - Observation: `test/cli.test.js` spawns `node src/cli.js` with `child_process.spawnSync` on temporary files and paths, and calls `run` directly with an injected `readFile`. Each case asserts exit status, standard output, and standard error exactly.
   - Guarded defect: a count printed without its newline, a zero count suppressed by a truthiness test, output on the wrong stream, an unhandled read error, an error handler that branches on error codes, or a path printed raw.
