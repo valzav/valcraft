@@ -104,7 +104,7 @@ P1 findings violate a named contract clause, P2 findings are reproduced defects 
 
 After the fix, the same logical Review role reruns each finding's reproduction against the new revision and records the resolution. The backend determines whether that role keeps its worker or starts a fresh one. This closure check opens no new findings.
 
-A second full round runs only on a named trigger, such as three or more P1 findings, a fix that touches code no finding cited, or a finding the owner declined. The project owner sets the cap at two full rounds. Any finding still open after that comes to you. The retrospective review runs one full round. A finding still open after its closure check is recorded in the retrospective report for you to address after the run, and the run completes. Reference: [review-round.md](../plugins/valcraft/skills/valcraft-foreman/references/review-round.md).
+A second full round runs only on a named trigger, such as three or more P1 findings, a fix that touches code no finding cited, or a finding the owner declined. When round one or the fix report already shows the trigger, the second round replaces the closure check and re-runs each earlier finding's reproduction first. The project owner sets the cap at two full rounds. Any finding still open after that comes to you. The retrospective review runs one full round. A finding still open after its closure check is recorded in the retrospective report for you to address after the run, and the run completes. Reference: [review-round.md](../plugins/valcraft/skills/valcraft-foreman/references/review-round.md).
 
 #### Landing
 

@@ -585,14 +585,14 @@
       "id": 51,
       "name": "cross-task-remediation-has-no-blanket-round-two-exemption",
       "prompt": "$valcraft:valcraft-foreman — a current-task fix also makes a small adjacent edit in another task's owned contract. The edit is required by the current causal routing test. Does it bypass a second review round? Do not spawn workers. Do not write files. Report only.",
-      "expected_output": "No blanket exemption exists. Foreman routes the edit now only when the causal test passes, then applies review-round.md unchanged. A closure check always follows material-finding remediation and a second full round runs on an established trigger. Small size, adjacency, cross-task ownership, or external-completion origin is not an exemption.",
+      "expected_output": "No blanket exemption exists. Foreman routes the edit now only when the causal test passes, then applies review-round.md unchanged. A closure check follows material-finding remediation, or a second full round that performs its inspection when a trigger is already known, and a second full round runs only on an established trigger. Small size, adjacency, cross-task ownership, or external-completion origin is not an exemption.",
       "files": [
         "references/loop.md",
         "references/review-round.md"
       ],
       "assertions": [
         "Causal routing determines whether the cross-task edit lands now",
-        "Every material-finding remediation receives a closure check",
+        "Every material-finding remediation receives a closure check, or a second full round that performs its inspection when a trigger is already known",
         "Existing second-full-round triggers apply unchanged",
         "Small size, adjacency, cross-task ownership, and external-completion origin provide no blanket exemption"
       ]
@@ -1997,6 +1997,23 @@
         "In case B Foreman neither escalates nor runs another RetroReview round for R-003",
         "In case B Foreman dispatches Temper once to record R-003 under `Open review findings`, with no Review of that record",
         "In case B the run ends in Complete and the run-end report names R-003 and the report path"
+      ]
+    },
+    {
+      "id": 127,
+      "name": "known-trigger-skips-standalone-closure-check",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run. SpecReview round one on FEAT-003's triplet returned `verdict: material findings; open: R-001:P1, R-002:P1, R-003:P1, R-004:P1, R-005:P2`, all owned by Spec. Spec resolved all five and reported a new head. Case A is this run. Case B is a different run where SpecReview round one returned only R-001:P2, and Spec's resolution report touches only the file and locator R-001's evidence cites, declines nothing, and adds no dependency, test replacement, or CI change. For each case, state the next Review assignment Foreman dispatches, what its envelope requires, and whether a closure check or a second full round follows. Do not spawn workers. Do not write files.",
+      "expected_output": "Case A: four P1 findings in round one are a second-round trigger that is already known, so Foreman dispatches no standalone closure check. It sends the resolution straight to the second full SpecReview round. The envelope names R-001 to R-005 and requires the reviewer first to inspect each resolving commit and locator, re-run each reproduction against the new head, and fill the resolution column, then review the whole triplet. Findings from that round return to Spec once more, followed by a closure check. Case B: no trigger is known, so Foreman dispatches a closure check scoped to R-001 that opens no new finding, and a second full round runs only if that inspection reveals a trigger.",
+      "files": [
+        "references/review-round.md",
+        "references/loop.md",
+        "references/hygiene.md"
+      ],
+      "assertions": [
+        "In case A Foreman dispatches no standalone closure check before the second full round",
+        "In case A the second-round envelope names R-001 to R-005 and requires each resolution's inspection and reproduction re-run before the full review",
+        "In case A second-round findings return to Spec and a closure check follows",
+        "In case B Foreman dispatches a closure check scoped to R-001 and no second full round"
       ]
     }
   ]

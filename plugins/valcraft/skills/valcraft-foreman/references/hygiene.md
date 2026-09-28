@@ -25,7 +25,7 @@
 
 ## Review rounds
 
-One full round is the default. Every material-finding remediation receives a closure check. Run a second full round only on a trigger in [`review-round.md`](review-round.md). Two full rounds is the owner-established cap; a third escalates with the open finding. RetroReview runs one full round, and Temper records a finding its closure check leaves open in the report instead of escalating it.
+One full round is the default. Every material-finding remediation receives a closure check, or a second full round that performs that check's inspection when a trigger is already known. Run a second full round only on a trigger in [`review-round.md`](review-round.md). Two full rounds is the owner-established cap; a third escalates with the open finding. RetroReview runs one full round, and Temper records a finding its closure check leaves open in the report instead of escalating it.
 
 The owner-established two-attempt rule also covers assignments that fail to start, reports that remain incomplete, backend dispatch recovery, and unresolved batch delivery. Do not invent another retry or round count.
 
