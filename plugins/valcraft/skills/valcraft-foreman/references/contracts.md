@@ -35,7 +35,7 @@ Spec and Draft advance to Review only when the next Review worker can access the
 
 ## Ref-bound Forge grant
 
-A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. This is the one grant that binds a head by condition instead of by SHA. Bind every other field exactly:
+A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. It and the ref-bound Land grant below are the grants that bind a head by condition instead of by SHA. Bind every other field exactly:
 
 - repository and remote identity;
 - authoritative base ref and SHA;
