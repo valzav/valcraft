@@ -2,12 +2,12 @@ valcraft_version: "0.8.16"
 
 tracker:
   mode: github
-  github_repository: github.example.test/neutral/tasks
+  github_repository: github.example.test/example/records
 foreman:
   backend: subagents
   approval_mode: unattended
-  default_branch: dev
-  release_branch: main
+  default_branch: main
+  release_branch: null
   clarification_assignees:
     product: null
     default: null

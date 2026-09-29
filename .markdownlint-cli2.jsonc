@@ -1,9 +1,10 @@
 {
   // Lint every tracked markdown file; directories below are untracked
   // agent/worktree artifacts that only exist locally, plus foreman run
-  // directories (worker reports in eval fixtures are wire format, not docs).
+  // directories and fixture review reports (worker reports in eval fixtures
+  // are wire format, not docs).
   "globs": ["**/*.md"],
-  "ignores": [".local/**", ".worktrees/**", "node_modules/**", "**/.valcraft/foreman/**"],
+  "ignores": [".local/**", ".worktrees/**", "node_modules/**", "**/.valcraft/foreman/**", "**/.valcraft/reviews/**"],
   "config": {
     "default": true,
     // Prose paragraphs, list items, blockquotes, skill descriptions, and

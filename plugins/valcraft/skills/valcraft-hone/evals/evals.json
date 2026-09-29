@@ -43,7 +43,7 @@
       "assertions": [
         "No distill pass runs — the request declines it",
         "Scattered ask-first rules consolidated into a single tiered autonomy policy that names safe local actions (reading logs/files, running tests) as no-approval",
-        "'Be concise / keep it short' repetitions removed; at most one length instruction, phrased as what to include",
+        "'Be concise / keep it short' repetitions removed; at most one length instruction remains, phrased as what to include, and the canonical 'What a short answer must include' snippet from references/codex.md counts as one instruction",
         "'Generate several candidate fixes' removed (GPT-5.6 guidance: don't prompt for candidate generation)",
         "'Use tools when appropriate' removed (restates default behavior)",
         "Scope contract preserved (never push to main, PR-only, src/ and test/ paths, no CI-config edits)",

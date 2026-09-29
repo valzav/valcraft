@@ -8,13 +8,23 @@ Run this flow when `config.md` classifies the base as `outdated` or `behind`. Ba
 
 1. Read `valcraft_version` from the base. An absent key is older than every entry.
 2. Walk the release headings from the oldest one newer than the recorded version to the newest. Under each, evaluate every change's **Applies when** against the repository without mutating anything.
-3. For each change whose condition holds, perform **Tune performs** using the question flow in `config.md` for any choice it names, and copy its **Operator** items into the report verbatim. A change whose condition does not hold is skipped and named as skipped in the report.
+3. For each change whose condition holds, perform **Tune performs** using the question flow in `config.md` for any choice it names, and copy its **Operator** items into the report verbatim. A change whose **Applies when** states that the operator checks the condition is operator-checked: name it as operator-checked in the report and copy its **Operator** items into the report verbatim. A change whose condition does not hold is skipped and named as skipped in the report.
 4. Set `valcraft_version` to the newest heading. Validate the complete candidate, write it, and commit it under `SKILL.md`'s single-path base commit.
 5. Report every applied, skipped, and operator-owned item, then end with `Status: done`.
 
 A migration whose applicable entries name no choice needs no interactive answer: the recorded version being older authorizes the version write and its single-path commit, in a direct or delegated run, attended or not. A change that needs an interactive answer in a noninteractive run ends with `configuration_required` and writes nothing. No change performs a push, merge, tracker mutation, or other outward operation; such work is always an **Operator** item with its exact command.
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
+
+## v0.8.21
+
+### Forge runs a complete quick file without a plan
+
+A quick task whose file is by itself its complete implementation and verification contract runs through Forge without a Draft plan. A direct Forge run creates the canonical `feat/qNNN-qtNNN-<slug>` branch from the selected clean baseline and records the baseline SHA in its report's `Plan and plan review` section. A resumed direct run takes that baseline SHA from the prior Forge report and revalidates it; without the report, Forge ends `workspace_not_ready`.
+
+- Applies when: never on its own; the next direct Forge run on a complete quick file takes the planless path.
+- Tune performs: none.
+- Operator: none.
 
 ## v0.8.20
 

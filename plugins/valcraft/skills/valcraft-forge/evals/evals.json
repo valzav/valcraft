@@ -28,7 +28,7 @@
       "id": 2,
       "name": "unready-feature-routes-to-spec",
       "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/unready-feature/, implement T-001 of specs/001-save-conflicts/.",
-      "expected_output": "Forge loads the git-owned feature contract and applies the implementation-readiness gate from Spec's feature-contract reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior for AC-001. Forge stops, names both blockers, and routes the feature to Spec, the feature-artifact producer. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
+      "expected_output": "Forge loads the git-owned feature contract and applies the implementation-readiness gate from Spec's feature-contract reference before coding. The feature is not implementation-ready: design.md holds template instructions, angle-bracket placeholders, and TBD-only sections rather than substantive content, and the spec's open question about whether a refused save keeps or discards the member's unsaved text changes observable behavior, so it blocks readiness. Forge stops, names both blockers, and routes the feature to Spec, the feature-artifact producer. It writes no code, invents no answer to the open question, fills in no design placeholder, and makes no commit.",
       "files": [
         "evals/files/unready-feature/AGENTS.md",
         "evals/files/unready-feature/.valcraft/config.yaml",
@@ -41,7 +41,7 @@
       "assertions": [
         "Forge applies the implementation-readiness gate from ../valcraft-spec/references/feature-contract.md before writing code",
         "Forge stops before coding, and its stop report identifies design.md as template instructions, placeholders, and TBD-only sections rather than substantive content",
-        "The stop report identifies the unresolved question about the member's unsaved text as behavior-affecting for AC-001",
+        "The stop report identifies the open question about the member's unsaved text as behavior-changing, blocking readiness",
         "Forge routes the feature to Spec rather than completing the design itself or routing feature production to Cast",
         "No implementation code, test, or commit is produced, and no design placeholder is filled in",
         "No answer to the open product question is invented or assumed"
@@ -126,9 +126,11 @@
     {
       "id": 6,
       "name": "quick-task-resolves-and-stops-at-review-gate",
-      "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-task/, implement Q-001. This run is unattended.",
+      "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-task/, run `./prepare-eval.sh`, then implement Q-001. This run is unattended.",
       "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and QT-001 through the cast quick reference, then applies quick.md's grammar and readiness rule. The quick file itself is a complete single-step implementation and verification contract, so no separate plan is required. Forge states scope, implements the two criteria, runs the documented tests, and cites real output. QT-001 stays unchecked; nothing is declared shipped or merged. Any commit and Changed (IDs) use Q-001 QT-001. The run ends with the complete producer-owned Forge report and exact code Review target.",
       "files": [
+        "evals/files/quick-task/.gitignore",
+        "evals/files/quick-task/prepare-eval.sh",
         "evals/files/quick-task/AGENTS.md",
         "evals/files/quick-task/.valcraft/config.yaml",
         "evals/files/quick-task/docs/product-brief.md",
@@ -151,9 +153,11 @@
     {
       "id": 7,
       "name": "bare-q-id-picks-next-eligible-task-in-github-mode",
-      "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-multi/, implement Q-001. This run is unattended.",
+      "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-multi/, run `./prepare-eval.sh`, then implement Q-001. This run is unattended.",
       "expected_output": "Forge resolves bare Q-001 through quick.md: QT-001 is checked, so next eligible QT-002 has its local dependency satisfied. Even in github mode dependency status comes only from that checkbox and no gh call runs. The quick file supplies a complete single-step implementation and verification contract, so Forge implements AC-002 while preserving AC-003 without a separate plan, runs the documented tests, and stops at Review: no checkbox ticked, label, merge, or closure. Commits and Changed (IDs) cite Q-001 QT-002; the producer-owned Forge report is last.",
       "files": [
+        "evals/files/quick-multi/.gitignore",
+        "evals/files/quick-multi/prepare-eval.sh",
         "evals/files/quick-multi/AGENTS.md",
         "evals/files/quick-multi/.valcraft/config.yaml",
         "evals/files/quick-multi/docs/product-brief.md",

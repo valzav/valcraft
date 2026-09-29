@@ -37,11 +37,11 @@ State touched files and tasks and deliberately untouched adjacent scope. Do not 
 
 ## Require the passed plan
 
-Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full, names the files and the exact change, and names the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
+Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full and names the files, the exact change, and the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
 
 A task is also non-trivial when implementation needs a decision rather than transcription: conflicting contracts, an open approach, or wider scope. Precedence identifies the authority, not the plan it implies. Carry the conflict to Draft.
 
-When a task can reasonably be read as either trivial or non-trivial, route it to Draft. An unnecessary plan costs one cycle; unplanned work puts an unreviewed change into code and into contracts Forge does not own.
+Route to Draft a task that can reasonably be read as either trivial or non-trivial. An unnecessary plan costs one cycle; unplanned work puts an unreviewed change into code and contracts Forge does not own.
 
 Non-trivial work requires:
 
@@ -53,16 +53,16 @@ A missing plan, missing pass, stale verdict, or plan-path or commit mismatch cha
 
 ## Establish the workspace
 
-Record repository and remote identity, authoritative base ref and SHA, canonical task branch, physical branch, current HEAD, reviewed plan path and SHA, and local and remote canonical-ref heads. Prefer an exact Foreman assignment; otherwise apply the loaded reference's direct-run branch rule.
+Record repository and remote identity, authoritative base ref and SHA, canonical task branch, physical branch, current HEAD, reviewed plan path and SHA, and local and remote canonical-ref heads. Prefer an exact Foreman assignment; otherwise apply the reference's direct-run branch rule.
 
-Reconcile prior work before creating anything. Apply the loaded reference's takeover-dirt rule; otherwise stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
+Reconcile prior work before creating anything. Apply the reference's takeover-dirt rule; otherwise stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
 
-For first implementation, begin at Draft's exact passing plan-review SHA:
+For first implementation, begin at the start SHA: Draft's exact passing plan-review SHA, or the reference's planless baseline.
 
-- A shared checkout uses the canonical task branch and requires its clean HEAD to equal the reviewed plan SHA.
-- An isolated-workspace backend uses a unique physical branch, verifies that it is clean and seeded from the reviewed plan SHA, and keeps the canonical task branch as the remote ref. Never publish the physical branch name.
+- A shared checkout uses the canonical task branch and requires its clean HEAD to equal the start SHA.
+- An isolated-workspace backend uses a unique physical branch, verifies that it is clean and seeded from the start SHA, and keeps the canonical task branch as the remote ref. Never publish the physical branch name.
 
-On resume, accept only attributable implementation commits descending from the reviewed plan SHA, with the reviewed plan blob unchanged. Reconcile local commits, the canonical remote task ref, and any matching task PR before acting.
+On resume, accept only attributable implementation commits descending from the start SHA, with any reviewed plan blob unchanged. Reconcile local commits, the canonical remote task ref, and any matching task PR before acting.
 
 ## Implement and verify
 
@@ -78,7 +78,7 @@ Preserve these implementation invariants:
 - Revalidate instead of inventing a numeric bound when stale state is the defect.
 - Search for every old form after a mechanical migration.
 
-Verify as the loaded reference scopes it: targeted checks while iterating and the full gate on the exact head to push. Use its discriminating evidence.
+Verify as the reference scopes it: targeted checks while iterating and the full gate on the exact head to push. Use its discriminating evidence.
 
 ## Remediate Review findings
 

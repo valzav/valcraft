@@ -4,7 +4,17 @@ Read this reference before editing code. It owns Forge's direct-run branch, veri
 
 ## Direct-run canonical branch
 
-Without a Foreman assignment, resolve the canonical task branch from git. It is the one local branch whose history contains the reviewed plan commit and whose name matches repository policy or, without a policy, Valcraft's task-branch prefix for the task identity: `feat/fNNN-tNNN-` for a feature task or `feat/qNNN-qtNNN-` for a quick task. Draft chose the slug; never derive one. When no branch or several branches match, return `workspace_not_ready`.
+Without a Foreman assignment, resolve a planned task's canonical task branch from git. It is the one local branch whose history contains the reviewed plan commit and whose name matches repository policy or, without a policy, Valcraft's task-branch prefix for the task identity: `feat/fNNN-tNNN-` for a feature task or `feat/qNNN-qtNNN-` for a quick task. Draft chose a planned task's slug; never derive one. When no branch or several branches match, return `workspace_not_ready`.
+
+A planless quick task is a quick task whose file is by itself its complete implementation and verification contract, so it runs without a plan. Without a Foreman assignment, establish its workspace this way:
+
+- Derive the canonical task branch from repository policy and the task identity. Without a repository policy, use `feat/qNNN-qtNNN-<slug>`, and use the quick file's semantic slug without its identity prefix as `<slug>`.
+- When the canonical task branch is absent, use the clean current checked-out ref selected by the invocation as the baseline. Resolve and record its exact HEAD as the baseline SHA. Create the canonical task branch from the baseline.
+- When the canonical task branch exists, take the baseline SHA from the prior Forge report for this task, supplied by the operator. Never adopt the current head as the baseline SHA.
+- Before resuming, revalidate that baseline SHA: it exists, it is an ancestor of the canonical task branch head, and the branch's attributable implementation history descends cleanly from it.
+- Stop with `workspace_not_ready` when no prior Forge report supplies the baseline SHA, when revalidation fails, or on ambiguous ancestry or divergence.
+
+A Foreman assignment overrides these steps, as it does for every task. For a planless quick task, every rule in this reference that names the reviewed, passed, or plan-review plan SHA uses the baseline SHA instead, and a condition on the reviewed plan or its blob does not apply. Record the plan path and plan SHA as `none` in the Forge report's `Plan and plan review` section and in the Review target. Record the baseline SHA in that `Plan and plan review` section so a resumed run can read it. The Review target's base SHA is the baseline SHA, so the target covers every implementation commit from the baseline to the head.
 
 ## Takeover-attributed working state
 
@@ -65,7 +75,7 @@ Return one exact code target:
 - head ref and full implementation SHA;
 - canonical task branch and physical branch or `none`;
 - PR identity or `none`; and
-- verification evidence and the passed plan path and full plan SHA.
+- verification evidence and the passed plan path and full plan SHA, each `none` for a planless quick task.
 
 Route the target to `valcraft-review` or the host loop's fresh reviewer. Forge never invokes itself as reviewer and never treats its own verification as a Review verdict.
 
@@ -108,7 +118,7 @@ Use these stable routing codes:
 - `workspace_not_ready` — required branch state is dirty, missing, ambiguous, or diverged.
 - `configuration_required` — Tune needs interactive operator answers this run cannot supply.
 - `configuration_unresolved` — Tune ended without done for another cause; the detail quotes Tune's terminal line.
-- `implementation_blocked` — the passed plan cannot be implemented or verified from current repository evidence.
+- `implementation_blocked` — the passed plan, or a planless quick task's file, cannot be implemented or verified from current repository evidence.
 - `product_decision_required` — an unsettled behavior-changing owner decision is required.
 - `review_target_mismatch` — a remediation report does not cover the task and exact implementation head.
 - `authority_drift` — a prepared or ref-bound outward target changed before execution.
