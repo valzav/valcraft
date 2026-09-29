@@ -868,6 +868,34 @@
         "The verdict is material findings",
         "Nothing in the fixture is edited"
       ]
+    },
+    {
+      "id": 44,
+      "name": "plan-review-feat-044-task-line-checks",
+      "prompt": "/valcraft:valcraft-review — in the project at evals/files/sibling-failing-input/, run its prepare-eval.sh, then review the FEAT-001 feature contract (specs/001-status-codes/spec.md, design.md, and tasks.md) at the commit it prints, before any implementation exists.",
+      "expected_output": "Review selects plan mode, pins the triplet at the printed commit, and applies the implementation-readiness gate. Under `Checks performed` it lists T-001's obligations with their check IDs and failing inputs. The task line cites TS-003 for two obligations: `package.json` declares no dependencies, and it states `engines.node` as `>=24` (NFR-002). TS-003 asserts only that the four dependency keys are absent, and its failing input adds a `devDependencies` entry, which plants the no-dependencies obligation's defect, not a missing or wrong `engines.node`. A manifest without `engines`, or with `>=18`, passes every listed check, so the `engines.node` obligation has no discriminating check. Review reports this as a material finding owned by Spec and resolves it with a check T-001 can fail at its own head, such as an assertion in `test/package.test.js` that `engines.node` equals `>=24`. The rest of the triplet has no material defect: the test script and TS-002, the command line and TS-001, TS-003 as the check of AC-002 and NFR-001, and the verified baseline assumptions are sound. The verdict is material findings. Nothing is edited.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "../valcraft-spec/references/feature-contract.md",
+        "evals/files/sibling-failing-input/.gitignore",
+        "evals/files/sibling-failing-input/.nvmrc",
+        "evals/files/sibling-failing-input/.valcraft/config.yaml",
+        "evals/files/sibling-failing-input/AGENTS.md",
+        "evals/files/sibling-failing-input/docs/product-brief.md",
+        "evals/files/sibling-failing-input/docs/status-codes-prd.md",
+        "evals/files/sibling-failing-input/specs/001-status-codes/spec.md",
+        "evals/files/sibling-failing-input/specs/001-status-codes/design.md",
+        "evals/files/sibling-failing-input/specs/001-status-codes/tasks.md",
+        "evals/files/sibling-failing-input/prepare-eval.sh"
+      ],
+      "assertions": [
+        "A material finding owned by Spec states that T-001's obligation to state `engines.node` as `>=24` (NFR-002) has no discriminating check, because TS-003, the check ID the task line cites for it, has a failing input that adds a dependency and so plants the no-dependencies obligation's defect, not a missing or wrong `engines.node`",
+        "The finding's resolution gives the `engines.node` obligation its own check that T-001 can fail at its own head, such as an assertion in `test/package.test.js` whose failing input removes or changes `engines.node`, and does not move the obligation to a later task",
+        "No material finding targets the test script or TS-002, the command line or TS-001, TS-003 as the check of AC-002 and NFR-001, or the verified baseline assumptions VB-001 through VB-004",
+        "The verdict is material findings",
+        "Nothing in the fixture is edited"
+      ]
     }
   ]
 }
