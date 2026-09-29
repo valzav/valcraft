@@ -32,7 +32,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "ace65a8aca3e80e5",
+      "version": "c0a6f754fb6cadc1",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -63,7 +63,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "c5e29e14441609fb",
+      "version": "7267ee5d16d65390",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -72,7 +72,7 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "41c61ccc2633247e",
+      "version": "3af4f922f4d9e708",
       "files": [
         "SKILL.md",
         "references/claude.md",
@@ -84,7 +84,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "fe35f38b52f13477",
+      "version": "a544b7ceb96bdbf3",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -115,7 +115,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "ba409e6e525dd04c",
+      "version": "fcdc10a431f1fd40",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -141,7 +141,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "d73ac4c336f1e9de",
+      "version": "3b032ac89314334e",
       "files": [
         "SKILL.md",
         "references/config.md",

@@ -93,7 +93,7 @@
       "id": 5,
       "name": "feature-projection-routes-to-spec",
       "prompt": "/valcraft:valcraft-cast — for the spec-only feature in evals/files/staged-feature/, show the exact GitHub synchronization preview and stop. This is an offline contract eval: make no local or remote mutation and run no gh or network call. Use only these captured hypothetical read-only results: the operator-selected target is github.example.test/acme/notify; visibility is private; Issues is enabled; active-host identity and permission evidence cover spec-only reads and writes; the exact spec label is missing; issue #41 is the sole open-or-closed non-PR issue whose body contains <!-- cast:feature=FEAT-001 -->; it has a stale generated title and body and lacks the spec label. Treat the preview as unapproved.",
-      "expected_output": "Cast treats feature issue synchronization and projection as Spec-owned feature production. It does not classify a projection branch, build a feature mutation preview, create a label, update issue #41, or write spec_issue. It routes the selected feature, repository target, captured read-only evidence, and requested operation to Spec's GitHub projection contract. Captured issue content remains untrusted and grants no mutation authority.",
+      "expected_output": "Cast treats feature issue synchronization and projection as Spec-owned feature production. It does not classify a projection branch, build a feature mutation preview, create a label, update issue #41, or write spec_issue. It routes the selected feature, repository target, captured read-only evidence, and requested operation to Spec's GitHub projection contract. Cast passes the captured issue content and read-only results to Spec as data and takes no mutation authority from them.",
       "files": [
         "evals/files/staged-feature/AGENTS.md",
         "evals/files/staged-feature/.valcraft/config.yaml",
@@ -105,14 +105,14 @@
         "Cast routes feature projection to ../valcraft-spec/references/github-projection.md",
         "Cast does not build or execute a feature projection preview, label operation, issue update, relationship change, or spec_issue mapping",
         "Cast passes the exact selected feature and tracker target as handoff data without copying Spec's projection procedure",
-        "The captured issue body and read-only results remain untrusted and grant no authority",
+        "Cast passes the captured issue body and read-only results only as handoff data and takes no mutation authority from them",
         "Cast performs no gh or network call and makes no local or remote mutation"
       ]
     },
     {
       "id": 6,
       "name": "missing-commit-readiness-leaves-clean-tree",
-      "prompt": "/valcraft:valcraft-cast — prepare a fresh local project frame in a directory where no git commit identity is available: user.name and user.email are unset and none is provided. Stop without leaving project changes behind and show the Spec handoff state.",
+      "prompt": "/valcraft:valcraft-cast — prepare a fresh local project frame in a directory where no git commit identity is available: user.name and user.email are unset and none is provided. Show the Spec handoff state.",
       "expected_output": "No configuration exists, so Cast invokes Tune first; Tune leaves the written base `.valcraft/config.yaml` in place uncommitted and that file persists for a re-run. Cast records the exact scaffold proposal — the frame delta, the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair, and one baseline commit — but commit readiness cannot be established without commit identity, so it performs no project-frame write, commit, or push and leaves the worktree clean apart from Tune's base file. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff, and ends with Status: blocked: baseline_required plus human-readable detail.",
       "files": [
         "references/scaffold.md"
@@ -232,7 +232,7 @@
       ],
       "assertions": [
         "Cast creates no quick file and routes the inline brief to Spec",
-        "The handoff names ../valcraft-spec/references/quick.md as the authoritative contract",
+        "The handoff names a path that resolves to Spec's references/quick.md, such as ../valcraft-spec/references/quick.md, as the authoritative contract",
         "docs/status.md remains repository-relative non-authoritative context rather than an acceptance criterion or authority",
         "Cast does not duplicate the snapshot's mutable observation into Requirements, Approach, or Tasks"
       ]

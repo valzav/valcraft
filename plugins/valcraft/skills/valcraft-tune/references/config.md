@@ -130,6 +130,8 @@ Ask only questions whose answers are genuinely open. Apply a value without askin
 
 This rule governs the value questions below. The reconfiguration section menu is not one of them: it always appears, and the rule under [Reconfiguration](#reconfiguration) states why.
 
+A requested value that fails validation, such as an approval mode outside the allowed set, is an invalid answer, not a blocked change. Reject it and state why. Then ask that setting's question from its section, with every valid choice explained. A noninteractive run returns `configuration_required` for it instead. `configuration_change_rejected` covers only a change the contract structurally blocks: a tracker-mode change while committed feature artifacts exist, or a concrete-to-concrete `github_repository` change while a committed positive mapping exists.
+
 ### First run or full repair
 
 Walk this order. Every quoted choice is a list item with its explanation, not an inferred default. Skip a step whose value is already resolved by an authoritative source.

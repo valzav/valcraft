@@ -22,7 +22,7 @@ Extend the `ModelRef` dataclass with `timeout_seconds: int = 30`. The loader acc
 
 - Unit test: a reference without `timeout_seconds` loads with the value 30 (FR-002).
 - Unit test: a reference with `timeout_seconds: 5` loads with the value 5 (FR-001).
-- Unit test: `timeout_seconds: 0`, `timeout_seconds: -1`, `timeout_seconds: 2.5`, and `timeout_seconds: "5"` each fail with a message naming the field (AC-003).
+- Unit test: `timeout_seconds: 0`, `timeout_seconds: -1`, `timeout_seconds: 2.5`, `timeout_seconds: "5"`, and `timeout_seconds: true` each fail with a message naming the field (AC-003).
 - Integration test: with `timeout_seconds: 5` and a provider stub that never answers, the call aborts after 5 seconds (AC-001); without the field, after 30 seconds (AC-002).
 
 ## Open decisions

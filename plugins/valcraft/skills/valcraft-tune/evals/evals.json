@@ -43,7 +43,7 @@
       "id": 3,
       "name": "herdr-balanced-overlay-layer-choice",
       "prompt": "$valcraft:valcraft-tune — change Foreman from subagents to Herdr. When Tune asks where the change applies, answer Just for you: my collaborators keep their settings. Choose the active session and the Balanced preset. Then describe a later personal reconfiguration back to subagents.",
-      "expected_output": "Because backend and Herdr workers are user-scoped, Tune asks the layer question — `For everyone (Recommended)` writing the committed base, `Just for you` writing the gitignored overlay — and the operator selects Just for you. It writes `foreman.backend: herdr` and the complete ten-worker `foreman.herdr` mapping into `.valcraft/config.local.yaml` as one unit, leaves the committed base byte-for-byte unchanged, creates no commit, and reports both the overlay YAML and the resolved configuration. Balanced maps Spec and Draft to Codex Sol high, Spec Review and Plan Review to Claude Opus high, Forge, Land, and Temper to Claude Opus medium, and Code Review, Retro Review, and Evidence Review to Codex Sol high; every reviewer harness differs from its producer in the resolved configuration. A later personal change back to subagents removes the overlay's entire `foreman.herdr` mapping rather than retaining dormant values.",
+      "expected_output": "Because backend and Herdr workers are user-scoped, Tune asks the layer question — `For everyone (Recommended)` writing the committed base, `Just for you` writing the gitignored overlay — and the operator selects Just for you. It writes `foreman.backend: herdr` and the complete ten-worker `foreman.herdr` mapping into `.valcraft/config.local.yaml` as one unit, leaves the committed base byte-for-byte unchanged apart from the migration flow's `valcraft_version` update, creates no commit for the overlay write, and reports both the overlay YAML and the resolved configuration. Balanced maps Spec and Draft to Codex Sol high, Spec Review and Plan Review to Claude Opus high, Forge, Land, and Temper to Claude Opus medium, and Code Review, Retro Review, and Evidence Review to Codex Sol high; every reviewer harness differs from its producer in the resolved configuration. A later personal change back to subagents removes the overlay's entire `foreman.herdr` mapping rather than retaining dormant values.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -52,7 +52,7 @@
       ],
       "assertions": [
         "A user-scoped-only change asks the layer question with For everyone recommended first",
-        "Choosing Just for you writes backend and the complete Herdr mapping into config.local.yaml as a unit and leaves the base byte-for-byte unchanged",
+        "Choosing Just for you writes backend and the complete Herdr mapping into config.local.yaml as a unit; the base changes at most by the migration flow's `valcraft_version` update and is otherwise byte-for-byte unchanged",
         "An overlay write creates no commit",
         "Balanced serializes the exact ten-role mapping from models.md: Claude Opus high for spec_review and plan_review, Claude Opus medium for forge, land, and temper, and Codex Sol high for every Codex role; every reviewer differs from its producer in the resolved configuration",
         "The report shows the overlay YAML and the resolved configuration",
@@ -133,7 +133,6 @@
       ],
       "assertions": [
         "A repo-scoped key in the overlay is a validation error, not a silently ignored value",
-        "The overlay permits only foreman.approval_mode, foreman.backend, foreman.herdr, and foreman.ao",
         "A valid base with an invalid overlay triggers overlay repair — replace or remove — and removal ends Status: done with the base as the resolved configuration",
         "A headless run on the invalid overlay returns configuration_required and writes nothing",
         "A valid overlay key replaces its base value atomically and base values without an override survive unchanged"
@@ -199,7 +198,7 @@
       "id": 11,
       "name": "concrete-repository-retarget-blocked-by-positive-mappings",
       "prompt": "$valcraft:valcraft-tune — the committed base is evals/files/github-config with repository github.example/acme/widget, and a committed feature's spec.md carries `spec_issue: 41`. Compare run A, where I ask to change `github_repository` to github.example/acme/gadget, and run B on another repository whose valid base stores `github_repository: TBD` with no positive mapping, where I supply the first concrete identifier.",
-      "expected_output": "Run A refuses the retarget: positive issue numbers are repository-relative, so a concrete-to-concrete change would silently point every committed mapping at a different tracker, and Tune performs no migration. Tune explains the block, preserves the existing configuration byte-for-byte, writes and commits nothing for the rejected value, and ends with exactly `Status: blocked: configuration_change_rejected`. Run B is activation, not retargeting: replacing the TBD placeholder with the first concrete identifier is allowed, so Tune writes it immediately after the last answer, commits only `.valcraft/config.yaml`, and returns Status: done.",
+      "expected_output": "Run A refuses the retarget: positive issue numbers are repository-relative, so a concrete-to-concrete change would silently point every committed mapping at a different tracker. Tune explains the block, preserves the existing configuration byte-for-byte, writes and commits nothing for the rejected value, and ends with exactly `Status: blocked: configuration_change_rejected`. Run B is activation, not retargeting: replacing the TBD placeholder with the first concrete identifier is allowed, so Tune writes it immediately after the last answer, commits only `.valcraft/config.yaml`, and returns Status: done.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -208,7 +207,7 @@
       ],
       "assertions": [
         "A concrete-to-concrete github_repository change is refused while a committed positive mapping exists",
-        "The refusal names repository-relative issue mappings and the absence of migration, and writes nothing",
+        "The refusal names repository-relative issue mappings as the reason and writes nothing",
         "Run A's terminal line is exactly Status: blocked: configuration_change_rejected — not configuration_cancelled and not done",
         "Replacing the TBD placeholder with the first concrete identifier proceeds as activation and commits only the base",
         "No migrated or partially retargeted mapping state is ever written"
@@ -238,7 +237,7 @@
       "id": 13,
       "name": "absent-version-migrates-and-records-current",
       "prompt": "/valcraft:valcraft-tune — in evals/files/unversioned/, the committed base is complete and valid in every other respect but has no `valcraft_version` key. The operator invoked Tune with no arguments. Describe what Tune does, every file it writes, the exact YAML added, whether it commits, and which questions it asks. Do not mutate anything.",
-      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.2 entry is skipped because there are no Herdr workers; the v0.8.3, v0.8.4, and v0.8.5 entries perform nothing; the v0.8.6 entry is skipped because there are no Herdr workers; the v0.8.7 entry performs nothing; the v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, v0.8.15, and v0.8.16 entries perform nothing; the v0.8.0 entries perform nothing and their Operator items, including the remote-branch check, are copied into the report; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version: \"0.8.16\"` into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
+      "expected_output": "Tune classifies the base as invalid with reason outdated, so the migration flow takes precedence over full repair and no existing value is re-asked. It runs the migration procedure: the v0.8.1 entry applies and needs no answer; the v0.8.2 entry is skipped because there are no Herdr workers; the v0.8.3, v0.8.4, and v0.8.5 entries perform nothing; the v0.8.6 entry is skipped because there are no Herdr workers; the v0.8.7 entry performs nothing; every entry from v0.8.8 through the newest release heading in the migration ledger performs nothing; the v0.8.0 amendment entry is reported as operator-checked and its Operator item, the remote-branch check, is copied into the report verbatim, while the other v0.8.0 entries are skipped; the v0.7.7 Herdr entry is skipped because the backend is subagents. It writes `valcraft_version` set to the newest release heading in the migration ledger into the base, validates, commits only `.valcraft/config.yaml`, and ends `Status: done`. The section menu is not offered before the migration.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -249,8 +248,8 @@
       "assertions": [
         "An absent `valcraft_version` is invalid with reason outdated, and the migration flow takes precedence over the first-run flow",
         "The v0.8.1 entry applies and the subagents backend skips every Herdr entry: v0.7.7, v0.8.2, and v0.8.6",
-        "Operator items from the v0.8.0 entries appear in the report verbatim",
-        "`valcraft_version: \"0.8.16\"` is written to the base and only that file is committed",
+        "The v0.8.0 amendment entry is reported as operator-checked, and its remote-branch Operator item appears in the report verbatim",
+        "`valcraft_version` set to the newest release heading in the migration ledger is written to the base, and only that file is committed",
         "No question is asked and the run ends `Status: done`"
       ]
     },
@@ -258,7 +257,7 @@
       "id": 14,
       "name": "herdr-eight-role-config-migrates-through-role-questions",
       "prompt": "/valcraft:valcraft-tune — bare invocation on a repository whose committed base records `valcraft_version: \"0.7.6\"`, backend `herdr`, and a `workers` mapping with the eight pre-0.7.7 roles on the Balanced preset of that release: every Claude role, including `plan_review`, records model `sonnet` at effort `medium`, and every Codex role records `gpt-5.6-terra` at effort `medium`. State which ledger entries run, what Tune asks, what it rejects, what it writes, and the final status. Do not mutate anything.",
-      "expected_output": "Tune walks v0.7.7, v0.8.0, v0.8.1, v0.8.2, v0.8.3, v0.8.4, v0.8.5, v0.8.6, v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, v0.8.15, and v0.8.16. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively and High recommended for `spec_review`, and rejects a candidate that gives both the same harness. The v0.8.0 entries add Operator items and perform nothing. The v0.8.2 entry is skipped because every Balanced worker uses a known alias at an effort the catalog still allows. The v0.8.3, v0.8.4, and v0.8.5 entries perform nothing. The v0.8.6 entry applies because `plan_review` records medium; it performs nothing, and its Operator item is copied into the report verbatim. The v0.8.7, v0.8.8, v0.8.9, v0.8.10, v0.8.11, v0.8.12, v0.8.13, v0.8.14, v0.8.15, and v0.8.16 entries perform nothing. It writes the two roles and `valcraft_version: \"0.8.16\"`, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
+      "expected_output": "Tune walks every release heading from v0.7.7 through the newest release heading in the migration ledger, oldest first. The Herdr entry applies: Tune asks harness, model, and effort for `spec` and `spec_review` through the Custom role questions with Codex and Claude recommended respectively and High recommended for `spec_review`, and rejects a candidate that gives both the same harness. The v0.8.0 amendment entry is operator-checked; it performs nothing, and its Operator item is copied into the report verbatim. The v0.8.2 entry is skipped because every Balanced worker uses a known alias at an effort the catalog still allows. The v0.8.3, v0.8.4, and v0.8.5 entries perform nothing. The v0.8.6 entry applies because `plan_review` records medium; it performs nothing, and its Operator item is copied into the report verbatim. The v0.8.7 entry and every later entry through the newest release heading perform nothing. It writes the two roles and `valcraft_version` set to the newest release heading in the migration ledger, validates the complete candidate, commits the base, and ends `Status: done`. In a noninteractive run it ends `configuration_required` naming the two roles and writes nothing.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -271,7 +270,7 @@
         "A candidate where `spec` and `spec_review` share a harness is rejected",
         "The v0.8.2 entry is skipped because no Balanced worker uses xhigh, max, or Luna",
         "The v0.8.6 entry applies to the medium `plan_review`, changes nothing, and its Operator item appears in the report verbatim",
-        "The roles and `valcraft_version: \"0.8.16\"` are written and committed together",
+        "The roles and `valcraft_version` set to the newest release heading in the migration ledger are written and committed together",
         "A noninteractive run ends `configuration_required` and writes nothing"
       ]
     },

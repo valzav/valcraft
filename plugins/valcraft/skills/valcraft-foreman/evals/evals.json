@@ -25,7 +25,7 @@
       "id": 2,
       "name": "verdict-only-report-rejected",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-verdict-only` from its run directory .valcraft/foreman/run-verdict-only/ and take the next loop step.",
-      "expected_output": "Foreman attributes the stored Review report to the active PlanReview assignment and rejects it as incomplete because Review's finding table, checks-performed record, and reproductions are absent. It remains in PlanReview and reassigns a fresh physical plan-reviewer with the same logical identity and report path. Foreman does not reconstruct the report or review the plan. Codex keeps foreground waiting active; Claude Code uses its established completion event.",
+      "expected_output": "Foreman attributes the stored Review report to the active PlanReview assignment and rejects it as incomplete because Review's report headings are absent, including the finding table, checks-performed record, and reproductions. It remains in PlanReview and reassigns a fresh physical plan-reviewer with the same logical identity and report path. Foreman does not reconstruct the report or review the plan. Codex keeps foreground waiting active; Claude Code uses its established completion event.",
       "files": [
         "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
@@ -42,7 +42,7 @@
         "evals/files/loop-local/.valcraft/foreman/run-verdict-only/plan-reviewer-F001-T002-d000.md"
       ],
       "assertions": [
-        "Foreman identifies the plan-review report as incomplete against Review's contract, naming the missing finding table and checks-performed record",
+        "Foreman identifies the plan-review report as incomplete against Review's contract, naming the missing finding table and checks-performed record or stating that every Review report heading is absent",
         "Foreman remains in PlanReview and does not treat the plan as reviewed",
         "Foreman re-requests the full contract from a fresh physical plan-reviewer with the same logical identity and a fresh report path",
         "Foreman does not read spec.md or design.md to review the plan itself"
@@ -81,7 +81,7 @@
       "id": 4,
       "name": "producer-question-routes-by-code",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-question` from .valcraft/foreman/run-question/ and take the next loop step.",
-      "expected_output": "Foreman records report_available, validates the attributed Forge report, and routes product_decision_required to AwaitOwner. It does not reinterpret the prose detail, answer the question from its own reading, or respawn Forge before the owner decision. Foreman writes no code.",
+      "expected_output": "Foreman records report_available, validates the attributed Forge report, and routes product_decision_required to AwaitOwner. In this unattended run it first tries the Foreman decisions step, but no project source settles whether an existing member's use of a valid link returns the existing membership or is rejected, so the question escalates. It does not reinterpret the prose detail, answer the question from its own reading, or respawn Forge before the owner decision. Foreman writes no code.",
       "files": [
         "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
@@ -160,20 +160,23 @@
       "id": 7,
       "name": "cold-start-drafter-and-small-context",
       "coordination_coverage": "transport:claude-event-wake",
-      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host.",
-      "expected_output": "Foreman resolves runtime, creates state.md and workers.md, reconciles readiness, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft-draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event; Cursor uses a fresh Task generalPurpose dispatch, binds the absolute valcraft-draft SKILL.md path, records the Task agent id, and awaits in the active turn. Foreman does not read the artifacts to plan or run MSW itself.",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-cold/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host. I attribute the Spec Review report at `.valcraft/reviews/spec-reviewer-F001.md` (SHA-256 `26a3528b3b09351c90c27ff436819a1639dbd1f1d581726108e295db50a94bcf`) to my own review run before this delivery run. Treat this message as my `confirm` of the takeover inference you present, provided it names feature 001-invite-links on `dev`, adopts that report, and attributes no dirty path.",
+      "expected_output": "Foreman resolves runtime, validates the operator-attributed passing Spec Review report against the triplet at the `dev` head and adopts it as pre-run evidence, infers Ready, applies the prompt's takeover confirmation, creates state.md and workers.md, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft-draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event; Cursor uses a fresh Task generalPurpose dispatch, binds the absolute valcraft-draft SKILL.md path, records the Task agent id, and awaits in the active turn. Foreman does not read the artifacts to plan or run MSW itself.",
       "files": [
-        "evals/files/loop-local/prepare-eval.sh",
-        "evals/files/loop-local/AGENTS.md",
-        "evals/files/loop-local/.valcraft/config.yaml",
-        "evals/files/loop-local/.gitignore",
-        "evals/files/loop-local/docs/product-brief.md",
-        "evals/files/loop-local/specs/001-invite-links/spec.md",
-        "evals/files/loop-local/specs/001-invite-links/design.md",
-        "evals/files/loop-local/specs/001-invite-links/tasks.md"
+        "evals/files/loop-cold/prepare-eval.sh",
+        "evals/files/loop-cold/AGENTS.md",
+        "evals/files/loop-cold/.valcraft/config.yaml",
+        "evals/files/loop-cold/.gitignore",
+        "evals/files/loop-cold/docs/product-brief.md",
+        "evals/files/loop-cold/src/invites.py",
+        "evals/files/loop-cold/tests/test_invites.py",
+        "evals/files/loop-cold/specs/001-invite-links/spec.md",
+        "evals/files/loop-cold/specs/001-invite-links/design.md",
+        "evals/files/loop-cold/specs/001-invite-links/tasks.md",
+        "evals/files/loop-cold/.valcraft/reviews/spec-reviewer-F001.md"
       ],
       "assertions": [
-        "Foreman picks T-002 from tasks.md order and dependency state",
+        "Foreman adopts the operator-attributed passing Spec Review report as pre-run evidence, infers Ready rather than SpecReview, and picks T-002 from tasks.md order and dependency state",
         "Foreman creates a run directory with state.md and workers.md before dispatching",
         "When the host exposes a todo-list tool, Foreman mirrors the loop in it after the pick: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
         "The drafter is a fresh general-purpose worker, not a fork, with canonical logical identity drafter-F001-T002",
@@ -204,7 +207,7 @@
       "id": 9,
       "name": "partial-batch-failure-reconciles-before-retry",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-github/, resume run `run-partial-batch` from .valcraft/foreman/run-partial-batch/ and take the next loop step.",
-      "expected_output": "Foreman validates Land's partial_completion report: PR #15 merged, issue #42 close and comment completed, and only in-progress removal remains. It routes the exact report back to Landing without reconstructing or executing the batch. Land reconciles explicit authoritative issue fields and resumes only the missing operation. Foreman records the transition and does not close the spec issue or feature.",
+      "expected_output": "Foreman validates Land's partial_completion report: PR #15 merged, issue #42 close and comment completed, and only in-progress removal remains. It routes the exact report back to Landing without reconstructing or executing the batch. The Landing assignment bounds Land to the remaining `in-progress` label removal and treats an already-absent label as complete. Foreman records the transition and does not close the spec issue or feature.",
       "files": [
         "evals/files/loop-github/AGENTS.md",
         "evals/files/loop-github/.valcraft/config.yaml",
@@ -222,7 +225,7 @@
         "Foreman accepts Land's completed-versus-remaining operation record without reconstructing it",
         "Foreman does not run the close comment or label removal",
         "Foreman returns partial_completion only to Landing for authoritative reconciliation",
-        "Land resumes only the label removal, or no operation when it is already gone",
+        "The Landing assignment bounds Land to the remaining `in-progress` label removal and treats an already-absent label as complete",
         "Foreman does not close the spec issue or the feature"
       ]
     },
@@ -258,7 +261,7 @@
       "id": 11,
       "name": "temper-runs-once-at-feature-close",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-done/, resume run `run-feature-closed` from .valcraft/foreman/run-feature-closed/ and take the next loop step.",
-      "expected_output": "Foreman verifies Land completed the operator-confirmed feature close, including feature-close PR #9 merged into `dev` as 4444444444444444444444444444444444444444, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, `dev` at 4444444444444444444444444444444444444444, names the assigned report path, forbids proposal application, and grants no outward authority because Temper writes only a local report under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
+      "expected_output": "Foreman verifies Land completed the operator-confirmed feature close, including feature-close PR #9 merged into `dev` as 4444444444444444444444444444444444444444, then enters Retrospective and dispatches one fresh temper-F001. The envelope runs valcraft-temper in analyze mode on the exact feature corpus and the repository head it describes, `dev` at 4444444444444444444444444444444444444444, names an assigned report path in the run directory, such as `.valcraft/foreman/run-feature-closed/temper-F001-d000.md`, and grants no outward authority because Temper writes its retrospective report only under the gitignored docs/.retro/. Foreman records Retrospective, does not analyze or mutate artifacts, and follows the active host wake contract.",
       "files": [
         "evals/files/loop-done/AGENTS.md",
         "evals/files/loop-done/.valcraft/config.yaml",
@@ -274,7 +277,7 @@
       "assertions": [
         "Foreman spawns exactly one fresh temper worker named temper-F001, not a fork",
         "The assignment runs valcraft-temper in analyze mode on the feature directory specs/001-invite-links/",
-        "The assignment grants no push or PR authority and forbids applying proposals; the report is a local file under docs/.retro/",
+        "The assignment grants no push or PR authority and names an assigned report path in the run directory, such as `.valcraft/foreman/run-feature-closed/temper-F001-d000.md`; the retrospective report it produces is a local file under docs/.retro/",
         "Foreman does not run temper itself and does not edit AGENTS.md or another prompt artifact",
         "Foreman records Retrospective in state.md; Codex awaits in the active turn and Claude Code relies on the established completion notification"
       ]
@@ -282,15 +285,17 @@
     {
       "id": 12,
       "name": "deliver-quick-picks-across-files-without-github",
-      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-quick/, deliver quick and continue according to the active native-subagent host.",
-      "expected_output": "Foreman validates the Spec-owned quick pool and selects Q-002 QT-001 after its checked cross-file dependency. It performs no GitHub task operation. It records branch feat/q002-qt001-<slug>, enters Drafting, and dispatches drafter-Q002-QT001 with the exact quick file, predecessor, report path, terminal status, and trust boundary. The physical handle is separate. Codex foreground-awaits; Claude Code establishes the event. Foreman writes no plan.",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-quick/, run `./prepare-eval.sh`, then deliver quick and continue according to the active native-subagent host. I attribute the Spec Review report at `.valcraft/reviews/spec-reviewer-Q002.md` (SHA-256 `a3a5789809f5c5c0799bac4f9c23d9779b8c65ea0e7609f11f92112d024c4439`) to my own review run before this delivery run. Treat this message as my `confirm` of the takeover inference you present, provided it names the quick pool on `dev`, adopts that report, and attributes no dirty path.",
+      "expected_output": "Foreman validates the Spec-owned quick pool, validates the operator-attributed passing Spec Review report against Q-002's quick file at the `dev` head and adopts it as pre-run evidence, applies the prompt's takeover confirmation, and selects Q-002 QT-001 after its checked cross-file dependency. It performs no GitHub task operation. It records branch feat/q002-qt001-<slug>, enters Drafting, and dispatches drafter-Q002-QT001 with the exact quick file, predecessor, report path, terminal status, and trust boundary. The physical handle is separate. Codex foreground-awaits; Claude Code establishes the event. Foreman writes no plan.",
       "files": [
+        "evals/files/loop-quick/prepare-eval.sh",
         "evals/files/loop-quick/AGENTS.md",
         "evals/files/loop-quick/.valcraft/config.yaml",
         "evals/files/loop-quick/.gitignore",
         "evals/files/loop-quick/docs/product-brief.md",
         "evals/files/loop-quick/specs/quick/001-export-filename-date.md",
-        "evals/files/loop-quick/specs/quick/002-login-redirect-query.md"
+        "evals/files/loop-quick/specs/quick/002-login-redirect-query.md",
+        "evals/files/loop-quick/.valcraft/reviews/spec-reviewer-Q002.md"
       ],
       "assertions": [
         "Foreman picks Q-002 QT-001 by walking quick files in number order and resolving its checked cross-file Q-001 QT-001 dependency",
@@ -445,7 +450,6 @@
         "references/contracts.md"
       ],
       "assertions": [
-        "Draft commits plan remediation on the canonical task branch and reports its exact head",
         "The first R-004 line is rejected as incomplete because it lacks both a resolving commit and repository-relative file-and-line locator",
         "The complete line names the R-ID, resolving commit, repository-relative locator, and concise claim",
         "No copied hunk or before-and-after text is requested as resolution evidence",
@@ -517,10 +521,10 @@
         "references/contracts.md"
       ],
       "assertions": [
-        "Land prepares the GitHub evidence as an attributed task-issue comment requiring its own exact tracker-write authority",
+        "Land writes the attributed criterion evidence as a task-issue comment and returns its exact Review target",
         "A fresh reviewer judges every criterion from the durable issue evidence",
         "Foreman and Land invent no branch, commit, PR, SHA, or git review target",
-        "Applicable checks use their real authoritative targets and a check requiring an unavailable head cannot pass",
+        "Land runs applicable checks against their real targets without inventing git state",
         "Land's closing batch follows only after evidence and check gates pass and preserves partial-failure reconciliation"
       ]
     },
@@ -547,7 +551,7 @@
       "id": 49,
       "name": "current-diff-caused-cross-task-finding-lands-now",
       "prompt": "$valcraft:valcraft-foreman — review of T-005 finds that its current diff made T-002's already-delivered contract inconsistent. The fix touches T-002-owned text. Route the finding. Do not spawn workers. Do not write files. Report only.",
-      "expected_output": "Foreman records T-002 as causal owner and routes the finding to T-005's current artifact producer because the current diff caused the inconsistency. The producer resolves it by R-ID, Review performs closure, and Land retains exact-head and check gates. Foreman performs no remediation itself. Existing second-round triggers still apply.",
+      "expected_output": "Foreman records T-002 as causal owner and routes the finding to T-005's current artifact producer because the current diff caused the inconsistency. The producer resolves it by R-ID, Review performs closure, and Land's gates still apply. Foreman performs no remediation itself. Existing second-round triggers still apply.",
       "files": [
         "references/loop.md",
         "references/review-round.md",
@@ -556,7 +560,7 @@
       "assertions": [
         "The finding records T-002 as owner but lands in T-005 now because T-005's current diff caused it",
         "Current remediation follows normal R-ID resolution and closure review",
-        "Exact-final-head and applicable-check gates still apply",
+        "Land's gates still apply to the remediation; naming Land gates, or exact-final-head and applicable-check gates, satisfies this",
         "Small size or adjacency creates no review-round exemption"
       ]
     },
@@ -749,8 +753,8 @@
       "id": 63,
       "name": "polling-backend-classifies-attributed-active-session",
       "coordination_coverage": "transport:poll-wake",
-      "prompt": "$valcraft:valcraft-foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit the active transport-deviation registry against this behavior. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake, Codex foreground wake and timeout continuation, Cursor in-turn Task hold covered by eval 91, native shared checkout, external polling covered by this eval, isolated git-backed branches covered by eval 62, no-git transport workspaces covered by eval 67, and Herdr's unconfirmed prompt delivery, fixed role-to-harness assignment, and shared checkout covered by evals 73, 74, and 75. Every row and eval shares one unique reciprocal coverage key.",
+      "prompt": "$valcraft:valcraft-foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit every row of the active transport-deviation registry in `references/backends/README.md`: state whether it changes a dispatch, await, wake, or workspace primitive, whether it names a unique coverage key and a discriminating Foreman eval, and whether it is resolved or historical. Do not spawn workers or mutate files.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake (eval 7), Codex foreground wake and timeout continuation (eval 18), Cursor in-turn Task hold (eval 91), native shared checkout (eval 35); Agent Orchestrator external polling covered by this eval, isolated git-backed branches (eval 62), no-git transport workspaces (eval 67), Review continuity (eval 88), and the permission gate observed by the poll waiter (eval 89); and Herdr's unconfirmed prompt delivery (eval 73), startup exit (eval 104), background wake (eval 106), argv envelope (eval 84), cross-model roles (eval 74), shared checkout (eval 75), Review continuity (eval 85), producer continuity (eval 110), and permission gate observed in the pane (eval 87). Every row changes a dispatch, await, wake, or workspace primitive and names one unique coverage key and discriminating eval.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -765,7 +769,7 @@
         "An absent assigned external-orchestrator session returns dead, while a still-working session keeps polling without a backend return",
         "Foreman records the attributed backend return before report access and only report_available opens the assigned report",
         "Every active deviation changes dispatch, await, wake, or workspace behavior",
-        "Each deviation names a unique coverage key and discriminating Foreman eval id, and that eval reciprocally names the same key",
+        "Each deviation names a unique coverage key and a discriminating Foreman eval id",
         "The registry contains no resolved or historical deviation"
       ]
     },
@@ -1101,7 +1105,7 @@
     {
       "id": 80,
       "name": "herdr-controller-lease-is-atomic-and-owner-bound",
-      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, two controllers start for the same project pool within the same second, and both observe the same session and pass every other readiness condition. State what decides which one proceeds and why an observational readiness check is not enough. Then resolve two later states: a lock whose recorded owner pane still holds the recorded controller, and a lock whose recorded owner pane is still present in the named session but no longer holds it, because that controller exited and left the pane at an ordinary shell. Do not spawn workers or mutate files.",
+      "prompt": "$valcraft:valcraft-foreman — on the herdr backend, two controllers start for the same project pool within the same second, and both observe the same session and pass every other readiness condition. State what decides which one proceeds and why an observational readiness check is not enough. State what the owner token records and how the winner releases its claim at run end. Then resolve two later states: a lock whose recorded owner pane still holds the recorded controller, and a lock whose recorded owner pane is still present in the named session but no longer holds it, because that controller exited and left the pane at an ordinary shell. Do not spawn workers or mutate files.",
       "expected_output": "The atomic claim decides it: each controller writes its owner token to .valcraft/foreman/controller.owner.<pane-id> and hard-links it to .valcraft/foreman/controller.lock.1; ln fails when the name exists, so exactly one succeeds and the loser fails readiness naming the recorded owner. An observational check cannot decide it because both controllers can observe an unheld pool simultaneously and both pass, so two runs would dispatch into the same pool and the same shared checkout. The token carries session, workspace id, pane id, and the pane's agent_session value, and the winner releases that generation only as the recorded owner at run end. A holder whose recorded pane still reports the recorded agent_session value is live: never remove its generation, and fail readiness. A holder whose pane no longer reports that agent_session value is dead, and a pane test alone would never say so, because a pane outlives its agent and reports a null agent_session at an ordinary shell. Reclaim by hard-linking the next generation, .valcraft/foreman/controller.lock.<n+1>, never by removing or moving generation n: no shell primitive removes a lock conditionally on it still being the one just read, so a remove-or-move reclaimer can delete the fresh lease a faster reclaimer already created and leave the pool claimable while that winner is running. The controller whose link to n+1 fails lost the race and stops. The winner then removes every lower generation and records the dead-owner observation, the superseded generation, and its own claim in state.md — a reclaim without that record leaves no way to explain which controller owned the pool.",
       "files": [
         "references/backends/herdr.md",
@@ -1198,7 +1202,7 @@
       "name": "herdr-closure-check-reuses-the-kept-reviewer",
       "coordination_coverage": "transport:herdr-review-continuity",
       "prompt": "$valcraft:valcraft-foreman — on the herdr backend, code-reviewer-f001-t003-d000 in pane w7:p2 returned a report with material finding R-015 (P1) against head c73b721. Forge remediated as a fresh worker and reported at head 0a907d0. Describe exactly how the closure check for R-015 is dispatched: which pane and agent name it uses, what it is checked against before the prompt is submitted, what assignment id, ordinal, and report path it receives, what the envelope requires the reviewer to do, and when the reviewer is released. Then describe the same closure check when `herdr pane get w7:p2` reports a null agent_session. Do not spawn workers or mutate files.",
-      "expected_output": "The closure check goes to the kept reviewer: agent code-reviewer-f001-t003-d000 in pane w7:p2, with no new pane split and no new agent start, because Herdr keeps a Review worker with material findings active. Before `agent prompt --wait`, Foreman revalidates that `herdr pane get w7:p2` still resolves the recorded pane with the recorded agent_session value and a settled occupant, and confirms Forge's own worker is released so the shared checkout has one executing worker. The follow-up is a new assignment: the next assignment id and dispatch ordinal, a fresh absent report path such as code-reviewer-F001-T003-d001.md, a new workers.md row carrying the same pane and agent name marked continued, and an assignment checkpoint recorded before the call; the agent name keeps d000. The envelope carries Forge's resolution report path, R-015, and head 0a907d0, and requires the reviewer to inspect the resolving commit and locator and re-run R-015's reproduction against 0a907d0, not to close it from memory of the first review. The reviewer is released with `herdr pane close w7:p2` after the round's final report — the closure check with no open material finding, or the second-round closure, or the escalation. When pane get reports a null agent_session, the kept worker is gone, and that is an observation, not a backend return: it has no active assignment to bind a `dead` return to, because its round-one assignment already reached `report_available`. Foreman records the observation with the pane get evidence in state.md, runs no dead-worker inventory (a settled worker touched no Git state, and the producer's head is already recorded), closes the recorded pane if it still exists and confirms it no longer resolves to the name, and dispatches the closure check as a fresh physical worker — new pane, new agent name with the next ordinal, fresh report path — under the same logical identity through the ordinary spawn steps, without the task-start gate, because continuity is a saving and never a requirement.",
+      "expected_output": "The closure check goes to the kept reviewer: agent code-reviewer-f001-t003-d000 in pane w7:p2, with no new pane split and no new agent start, because Herdr keeps a Review worker with material findings active. Before `agent prompt --wait`, Foreman revalidates that `herdr pane get w7:p2` still resolves the recorded pane with the recorded agent_session value and a settled occupant, and confirms the producer is not active, so the shared checkout has one executing worker. The follow-up is a new assignment: the next assignment id and dispatch ordinal, a fresh absent report path such as code-reviewer-F001-T003-d001.md, a new workers.md row carrying the same pane and agent name marked continued, and an assignment checkpoint recorded before the call; the agent name keeps d000. The envelope carries Forge's resolution report path, R-015, and head 0a907d0, and requires the reviewer to inspect the resolving commit and locator and re-run R-015's reproduction against 0a907d0, not to close it from memory of the first review. The reviewer is released with `herdr pane close w7:p2` after the round's final report — the closure check with no open material finding, or the second-round closure, or the escalation. When pane get reports a null agent_session, the kept worker is gone, and that is an observation, not a backend return: it has no active assignment to bind a `dead` return to, because its round-one assignment already reached `report_available`. Foreman records the observation with the pane get evidence in state.md, runs no dead-worker inventory (a settled worker touched no Git state, and the producer's head is already recorded), closes the recorded pane if it still exists and confirms it no longer resolves to the name, and dispatches the closure check as a fresh physical worker — new pane, new agent name with the next ordinal, fresh report path — under the same logical identity through the ordinary spawn steps, without the task-start gate, because continuity is a saving and never a requirement.",
       "files": [
         "references/backends/README.md",
         "references/backends/herdr.md",
@@ -1208,7 +1212,7 @@
       ],
       "assertions": [
         "The closure check is prompted to the same agent name and pane without a new pane split or agent start",
-        "Before submitting, the recorded pane, agent_session value, and settled occupant are revalidated, and the producer's worker is already released",
+        "Before submitting, the recorded pane, agent_session value, and settled occupant are revalidated, and the producer is not active",
         "The follow-up is a new assignment with the next id and ordinal, a fresh absent report path, and a new workers.md row carrying the same physical identity; the agent name keeps its original ordinal",
         "The envelope requires inspecting the resolving commit and re-running R-015's reproduction against the new head rather than closing from memory",
         "The reviewer is released only after the round's final report",

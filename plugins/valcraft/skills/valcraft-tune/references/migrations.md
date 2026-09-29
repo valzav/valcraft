@@ -8,7 +8,7 @@ Run this flow when `config.md` classifies the base as `outdated` or `behind`. Ba
 
 1. Read `valcraft_version` from the base. An absent key is older than every entry.
 2. Walk the release headings from the oldest one newer than the recorded version to the newest. Under each, evaluate every change's **Applies when** against the repository without mutating anything.
-3. For each change whose condition holds, perform **Tune performs** using the question flow in `config.md` for any choice it names, and copy its **Operator** items into the report verbatim. A change whose condition does not hold is skipped and named as skipped in the report.
+3. For each change whose condition holds, perform **Tune performs** using the question flow in `config.md` for any choice it names, and copy its **Operator** items into the report verbatim. A change whose **Applies when** states that the operator checks the condition is operator-checked: name it as operator-checked in the report and copy its **Operator** items into the report verbatim. A change whose condition does not hold is skipped and named as skipped in the report.
 4. Set `valcraft_version` to the newest heading. Validate the complete candidate, write it, and commit it under `SKILL.md`'s single-path base commit.
 5. Report every applied, skipped, and operator-owned item, then end with `Status: done`.
 

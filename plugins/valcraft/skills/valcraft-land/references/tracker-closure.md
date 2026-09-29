@@ -13,7 +13,9 @@ Reconcile live tracker and PR state before preparation, immediately before mutat
 | `not planned` task | record the governing reason and close or remove the task as its tracker contract requires; no merge without a real PR |
 | External completion | follow `record-and-close.md`, then apply only its real tracker closure |
 
-A closed-unmerged PR never proves task completion. A spec merge never closes an implementation task.
+A spec merge never closes an implementation task.
+
+A closed-unmerged task PR never proves task completion, and it stops task closure. Execute no completion tick, merge, close comment, task close, label removal, branch deletion, or replacement PR for it. Prepare the defensible variants: reopen the PR, open a replacement PR, or close the task as `not planned`. State the trade-off between them. End `Status: question: owner_decision_required — <prepared variants and the trade-off>`.
 
 ## Tracker-mode closure
 
@@ -50,6 +52,6 @@ Use `pull_requests.merge_strategy` from the committed `.valcraft/config.yaml` fo
 
 Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 
-After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure.
+After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure under the rule in [Target kinds](#target-kinds).
 
 Persist or report enough state to resume: target kind, exact identifiers, prepared authorization fields, completed operations with authoritative locators, remaining operations, and last error. Never repeat a completed external mutation.
