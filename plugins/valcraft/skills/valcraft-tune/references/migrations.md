@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.21
+
+### Forge runs a complete quick file without a plan
+
+A quick task whose file is by itself its complete implementation and verification contract runs through Forge without a Draft plan. A direct Forge run creates the canonical `feat/qNNN-qtNNN-<slug>` branch from the selected clean baseline and records the baseline SHA in its report's `Plan and plan review` section. A resumed direct run takes that baseline SHA from the prior Forge report and revalidates it; without the report, Forge ends `workspace_not_ready`.
+
+- Applies when: never on its own; the next direct Forge run on a complete quick file takes the planless path.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.20
 
 ### Spec generates the `on-hold` label
