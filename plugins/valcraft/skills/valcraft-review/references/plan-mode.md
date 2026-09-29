@@ -43,7 +43,7 @@ Judge the design's `Test strategy` once, here. Require an entry for each applica
 
 Under `Checks performed`, list for each task every verifiable obligation its task line assigns, including a build or test-runner configuration, each with the check ID that discriminates it, or `none`. List every invariant the design states the same way. Take both lists from the artifacts' own words, not from the entries: an obligation or invariant belongs on the list whether or not an entry names it. A report without these lists has not judged the `Test strategy`.
 
-- For each pairing, name the check's failing input and state whether it can be constructed at the owning task's head. A pairing whose failing input cannot be constructed there counts as `none`.
+- For each pairing, name the check's failing input, state whether it can be constructed at the owning task's head, and state whether it plants the defect of that obligation or invariant itself. A pairing whose failing input cannot be constructed there counts as `none`. So does a pairing whose failing input plants only a sibling's defect under the same check ID.
 - Resolve such a gap with a check the owning task can fail, for example by planting a temporary file. Propose moving the obligation to a later task only when no such check exists.
 - For each obligation and invariant, require a discriminating check that the owning task lists and can run at its own head. A missing one is a material finding owned by Spec, even when a later task's entry guards the same defect.
 
