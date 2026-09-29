@@ -42,7 +42,7 @@ Accepted ADRs outrank `specs/`, which outrank derived `docs/`. Report unresolved
 6. Close a finding only after every firing condition in its claim stops reproducing.
 7. Use no finding quota. An evidence-backed empty table may pass.
 
-Task-plan findings resolve in `valcraft-draft`. Feature and quick-artifact findings resolve in `valcraft-spec`. Retrospective-report findings resolve in `valcraft-temper`, which edits the same report in place. Code findings resolve in `valcraft-forge` unless the finding changes product scope, acceptance behavior, or the passed plan's approach; those findings resolve in Draft. The resolution column names the owner but Review invokes no producer skill.
+Task-plan findings resolve in `valcraft-draft`. Feature and quick-artifact findings resolve in `valcraft-spec`. Retrospective-report findings resolve in `valcraft-temper`, which edits the same report in place. Code findings resolve in Forge, Draft, or Spec as `code-mode.md` routes them. The resolution column names the owner but Review invokes no producer skill.
 
 ## Severity and verdict
 

@@ -22,7 +22,7 @@ Vocabulary, shared with `valcraft-distill` and `valcraft-hone`: a **prompt artif
 3. **State the contract** per the kernel's definition — derived from the document's stated goal or evident purpose, stated before any judgment. If no contract is derivable: attended → ask the user; unattended → bind the smallest reading consistent with the document's evident intent and record the assumption in the report.
 4. **Decompose into claims.** Every textual item in the target — instruction, step, requirement, safety rule, output contract, constraint, example, limit, rationale — is one claim. The contract is the criterion; no text is exempt from testing. A required behavior survives; duplicate or irrelevant formulations of it do not. Evaluate each rationale as a separate claim unless deleting it would change its instruction's meaning, authority, or proof.
 5. **Apply the kernel's deletion test to each claim.** When unsure whether a claim is load-bearing, keep it and flag it in the report — never delete on suspicion.
-6. **Run the limits pass.** Apply the kernel's "No unauthoritative limits" rule to every numeric cap, threshold, quota, count, or budget in the target. A limit whose exact value has no stated authority — requester, technical or platform contract, project policy, or measured evidence — is a failed claim. When a limit is necessary but its exact value is an unresolved owner choice: attended → ask before editing; unattended → leave the target unchanged, halt, and report the owner decision that blocks the pass.
+6. **Run the limits pass.** Apply the kernel's "No unauthoritative limits" rule to every numeric cap, threshold, quota, count, or budget in the target. A limit that rule does not admit is a failed claim. When a limit is necessary but its exact value is an unresolved owner choice: attended → ask before editing; unattended → leave the target unchanged, halt, and report the owner decision that blocks the pass.
 7. **Edit the target in place.** Delete the failing claims; make only the structural repairs the deletions force — numbering, a dangling conjunction, an empty section. If the target is not recoverable through version control, show the proposed deletions and require confirmation before editing.
 8. **Report.** Return the kernel's report, preceded only by the prior-state paragraph when the presentation contract above makes it relevant:
    - the outcome against the contract — the contract as stated, and that the surviving document still meets it;
@@ -34,5 +34,5 @@ The kernel's fuses apply to msw's own judgment rounds over the document.
 
 ## What not to do
 
-- Never soften a failed claim into a TODO, a footnote, or a deferred follow-up — a failed claim gets one report line and deletion, nothing else.
+- Never soften a failed claim into a TODO, a footnote, or a deferred follow-up. Delete it, and report it only as step 8 allows.
 - Never apply msw to `references/kernel.md` or judge the kernel itself — it is the instrument, not a target.

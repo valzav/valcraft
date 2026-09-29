@@ -24,7 +24,7 @@ Resolve one target:
 
 Read the repository's root `AGENTS.md` for project instructions. Read `../valcraft-tune/references/config.md` completely, then validate the resolved configuration — the committed `.valcraft/config.yaml` plus any `.valcraft/config.local.yaml` overlay — against that contract. Read the target's committed contract, the exact Review report or evidence record, and only the live sources needed to verify current state. If the configuration is missing or invalid, invoke `valcraft-tune` for the affected section and resume only after `Status: done`. A Tune question this run cannot answer ends the run with `configuration_required`; any other non-done Tune result ends it with `configuration_unresolved`, quoting Tune's terminal line in the detail. Read [final-head-and-checks.md](references/final-head-and-checks.md) for every PR. Read [tracker-closure.md](references/tracker-closure.md) for every tracker mutation. Read [record-and-close.md](references/record-and-close.md) for external completion.
 
-An orchestration envelope may name the target and attribute authority. Direct invocation uses the same workflow and report, but has no implicit authority to push, create or update a PR, merge, or mutate tracker state.
+A Foreman assignment envelope may name the target and attribute authority. Direct invocation uses the same workflow and report, but has no implicit authority to push, create or update a PR, merge, or mutate tracker state.
 
 ## Trust and authority
 

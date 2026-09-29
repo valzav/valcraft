@@ -196,7 +196,7 @@
       "id": 9,
       "name": "invalid-quick-prefixes-stop-forge",
       "prompt": "/valcraft:valcraft-forge — in evals/files/quick-multi/invalid-project/, implement Q-009. This run is unattended.",
-      "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with legacy T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map legacy IDs, or change the workspace.",
+      "expected_output": "Forge rejects Q-009 before eligibility because it mixes QT-001 with feature-only T-002, has wrong-prefix `Q-404 T-001`, references missing QT-999 in Q-009, and references missing Q-404 with valid quick syntax. It does not treat the file as complete, map invalid IDs to valid ones, or change the workspace.",
       "files": [
         "evals/files/quick-multi/invalid-project/AGENTS.md",
         "evals/files/quick-multi/invalid-project/.valcraft/config.yaml",
@@ -204,7 +204,7 @@
         "evals/files/quick-multi/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
-        "Forge reports legacy T-002, mixed prefixes, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Forge reports feature-only T-002, mixed prefixes, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
         "Forge stops before eligibility, implementation, or handoff",
         "No compatibility mapping, fallback, migration, or GitHub lookup occurs"
       ]
@@ -239,7 +239,7 @@
       ],
       "assertions": [
         "Bare T-001 searches feature tasks.md only",
-        "The quick QT-001 is not a match and no legacy quick lookup occurs",
+        "The quick QT-001 is not a match and no quick-file T-ID lookup occurs",
         "Forge stops before implementation because no feature task resolves"
       ]
     },
@@ -591,6 +591,23 @@
         "In Case A, Forge re-reads the bound fields immediately before the push and the report records the grant as ref-bound with the pushed head `abc1234…`",
         "In Case B, Forge performs no push and no PR operation and returns `authority_drift` with the live target as a prepared handoff",
         "In Case B, Forge does not ask the controller or operator for permission to push anyway"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "direct-run-resolves-canonical-branch-from-git",
+      "prompt": "/valcraft:valcraft-forge — implement FEAT-003 T-002 in repository `acme/ledger`. This is a direct invocation with no Foreman assignment. The passing plan Review binds plan `docs/plans/2031-05-02-001-feat-t-002-ledger-export-plan.md` at commit `5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f`. The repository has no branch-naming policy. Case A: the shared checkout is clean on local branch `feat/f003-t002-ledger-export` at `5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f`; another local branch `feat/f003-t002-export` exists, but its history does not contain `5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f`. Case B: local branches `feat/f003-t002-ledger-export` and `feat/f003-t002-export-v2` both contain `5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f`. Case C: the only local branch containing `5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f` is `wip/export`. For each case, state which canonical task branch Forge uses, or where it stops and with which code. Do not mutate anything.",
+      "expected_output": "Case A: Forge uses `feat/f003-t002-ledger-export`, the one local branch that both matches the task-branch prefix `feat/f003-t002-` and contains the reviewed plan commit; the other prefixed branch is not a match because it lacks that commit. Case B: two branches match, so Forge stops with `workspace_not_ready` without choosing one. Case C: no branch matches the prefix, so Forge stops with `workspace_not_ready`. In no case does Forge derive a slug, create a branch, or rename or switch a branch to manufacture a match.",
+      "files": [
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "In Case A, Forge uses `feat/f003-t002-ledger-export` as the canonical task branch",
+        "In Case A, Forge rejects `feat/f003-t002-export` because its history lacks the reviewed plan commit",
+        "In Case B, Forge returns `workspace_not_ready` and does not pick either branch",
+        "In Case C, Forge returns `workspace_not_ready` and does not treat `wip/export` as the canonical task branch",
+        "Forge never derives or invents a branch slug from the task identity or the plan title",
+        "In Cases B and C, Forge creates, renames, and switches no branch"
       ]
     }
   ]

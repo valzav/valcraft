@@ -14,7 +14,7 @@ A change requiring several phases, a separate design artifact, a tracker issue h
 - Frontmatter holds exactly one `id: Q-NNN` whose digits equal the filename.
 - Allocate the greatest valid number in `specs/quick/` plus one, padded to three digits; use `001` when the directory is absent or empty. Re-run identity and collision checks immediately before writing. Never reuse a gap or append a suffix.
 - `FR-`, `AC-`, and `QT-` IDs restart per quick file. A task ID is `QT-XXX`, with at least three digits. `Q-NNN` qualifies it; the canonical identity in assignments, branches, reviews, and reports is `Q-007 QT-001`.
-- `T-XXX` is feature-only. A quick file containing a `T-` task, mixed prefixes, a malformed task ID, or a wrong-prefix dependency is invalid. A feature `tasks.md` containing `QT-XXX` is invalid. Stop before selection or work. Never map legacy syntax.
+- `T-XXX` is feature-only. A quick file containing a `T-` task, mixed prefixes, a malformed task ID, or a wrong-prefix dependency is invalid. A feature `tasks.md` containing `QT-XXX` is invalid. Stop before selection or work.
 - A local dependency is exactly `blocked by QT-XXX` and resolves in the current file. A cross-file dependency is exactly `blocked by Q-NNN QT-XXX`. The file and task must exist. Dependency status is the referenced checkbox.
 - A bare `Q-NNN` selects that file's first unchecked `QT-` in file order whose dependencies are checked. A bare `QT-XXX` resolves only when enumeration finds one matching valid quick file. A bare `T-XXX` searches feature tasks only. Zero or several matches stop.
 - A file with no eligible task resolves to nothing. Do not pick a blocked or checked task.
@@ -31,7 +31,7 @@ Use one or a few concrete checkbox `QT-` tasks. Preserve supported source requir
 
 ## Tracking and readiness
 
-Quick tasks track locally in every project tracker mode. Their checkboxes are task status and git is the only tracker. A quick file has no `spec_issue`, issue, label, hierarchy, dependency projection, or closure batch. Do not inspect or mutate GitHub for a quick task. `quick_tracker` is reserved for a future contract; until then, `local` is its only valid value.
+Quick tasks track locally in every project tracker mode. Their checkboxes are task status and git is the only tracker. A quick file has no `spec_issue`, issue, label, hierarchy, dependency projection, or closure batch. Do not inspect or mutate GitHub for a quick task.
 
 A quick task is implementation-ready when:
 

@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.20
+
+### Spec generates the `on-hold` label
+
+Spec's GitHub projection generates `on-hold` beside `spec`, `in-progress`, and `needs-clarification`. Foreman applies it with a reason when it holds a task, so the label exists before Foreman's first hold.
+
+- Applies when: never on its own; with `tracker.mode: github`, Spec's next projection proposes the missing label.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.19
 
 ### Spec fixes design-owned values under a checkable constraint

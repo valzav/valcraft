@@ -51,9 +51,9 @@ Read the applicable files under `templates/` directly. Do not reconstruct them f
 7. **Commit the baseline.** Stage only the recorded frame paths, including `.valcraft/config.yaml`. Inspect the staged diff. Create one commit. Resolve its full SHA. Require a clean worktree. If the run cannot establish commit readiness, write nothing and report `baseline_required`. If applying or committing the exact delta fails, restore Cast's attributable writes to their pre-run bytes under the base-file rollback boundary in `references/scaffold.md` and report `baseline_failed`; never leave Spec a dirty handoff.
 8. **Prepare the Spec handoff.** Name the repository, `docs/product-brief.md`, exact baseline head, tracker mode and target, and any validation blocker. Spec may create the first MVP feature only from that clean baseline and valid resolved configuration.
 9. **Handle an optional push.** A local baseline never implies push authority. Apply the prepare-authorize-execute contract in `references/push-authority.md`. The Spec handoff remains usable at its local commit when no push is authorized.
-10. **Report.** Emit the producer-owned Cast report below. Direct and dispatched invocation use the same headings and terminal status grammar.
+10. **Report.** Emit the producer-owned Cast report below.
 
-Mirror these workflow stages with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex); create the stage list at step 1, before invoking Tune. Treat the display as progress only; git and the final report remain authoritative.
+Mirror these workflow stages with the harness's todo-list tool when one exists (`update_plan` in Codex); create the stage list at step 1, before invoking Tune. Treat the display as progress only; git and the final report remain authoritative.
 
 ## Report
 
@@ -98,4 +98,4 @@ Add exactly one terminal line:
 - push target changed: `Status: blocked: authority_drift — <detail>`;
 - authorized push failed or cannot be verified: `Status: blocked: push_failed — <detail>`.
 
-The report owns these headings and routing codes. A semantic blocked report is still backend return `report_available`; it is not backend `permission_blocked`.
+The report owns these headings and routing codes.

@@ -46,6 +46,8 @@ pull_requests:
   merge_strategy: squash
 ```
 
+The `valcraft_version` value above is illustrative. First run and full repair write the current plugin version, as [Plugin version](#plugin-version) defines.
+
 ### Tracker
 
 `tracker.mode` is `local` or `github`.
@@ -133,7 +135,7 @@ This rule governs the value questions below. The reconfiguration section menu is
 Walk this order. Every quoted choice is a list item with its explanation, not an inferred default. Skip a step whose value is already resolved by an authoritative source.
 
 1. **Tasks/Issue Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
-2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively; when the operator explicitly configures `ao`, ask for `foreman.ao.project_id` as free-form input.
+2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively; when the operator explicitly configures `ao`, ask for `foreman.ao.project_id` as free-form input.
 3. **Foreman Loop — approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
 4. **Default branch:** detect the branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. Store an unambiguous detected branch silently. Ask only when authoritative sources disagree — explain the conflict — or when none exists, offering `main (Recommended)` and `Enter another branch`. Store an explicit value in every case.
 5. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
@@ -170,7 +172,7 @@ For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; p
 For an existing valid resolved configuration, reconfigure only when the caller or operator asks for it; a bare direct invocation is that request. The first question is always a list of sections, including when the request already named one. Naming a section is not an answer to this question, whether a caller or the operator named it: it selects the order, so put that section first and mark it recommended. The menu shows every section the operator may also want to change in the same run, which a named section cannot establish. Otherwise use this order:
 
 1. `Tasks/Issue Tracker (Recommended)` — change local or GitHub tracking and its dependent assignees.
-2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Draft, Review, Forge, Land, and Temper workers.
+2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers.
 3. `Herdr workers` — change session, preset, or role settings; show only when the resolved backend is Herdr.
 4. `Pull request strategy` — change the merge strategy.
 5. `Browser tools` — discover this machine's browser tools again, which replaces the record, or remove the record; show only when the resolved backend is Herdr.

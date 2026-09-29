@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hone"
+  short_description: "Refine a prompt or skill against model guides"
+  default_prompt: "Use $valcraft:valcraft-hone to refine this prompt or skill against the official model prompting guides."

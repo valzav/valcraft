@@ -14,7 +14,6 @@
         "Tone labels (friendly/empathetic/polite) replaced with concrete writing choices",
         "Blanket ask-permission-before-anything replaced with a tiered autonomy policy",
         "'Explain your reasoning in your response' removed, with a Claude reasoning_extraction risk note somewhere in the output",
-        "Refined prompt has fewer words than the original",
         "Change report maps each change to a motivating guideline"
       ]
     },
@@ -48,8 +47,7 @@
         "'Generate several candidate fixes' removed (GPT-5.6 guidance: don't prompt for candidate generation)",
         "'Use tools when appropriate' removed (restates default behavior)",
         "Scope contract preserved (never push to main, PR-only, src/ and test/ paths, no CI-config edits)",
-        "text.verbosity mentioned as the Responses-API-level length control in the refined file or the change report",
-        "Refined AGENTS.md has fewer words than the original"
+        "text.verbosity mentioned as the Responses-API-level length control in the refined file or the change report"
       ]
     }
   ]

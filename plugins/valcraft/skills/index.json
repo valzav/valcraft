@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "7f7b18f9f494b117",
+      "version": "8654012c3a329581",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -16,21 +16,23 @@
         "templates/markdownlint-cli2.jsonc",
         "templates/overview.md",
         "templates/product-brief.md",
-        "templates/status.md"
+        "templates/status.md",
+        "agents/openai.yaml"
       ]
     },
     {
       "name": "valcraft-distill",
-      "version": "baf44efbbe1181e3",
+      "version": "f11eb66d5738cb97",
       "files": [
         "SKILL.md",
         "references/compare.md",
-        "references/output-formats.md"
+        "references/output-formats.md",
+        "agents/openai.yaml"
       ]
     },
     {
       "name": "valcraft-draft",
-      "version": "5eac488083984c60",
+      "version": "ace65a8aca3e80e5",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -40,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "6e9a5880e7127bf3",
+      "version": "a1dc88c5f44700f1",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -61,7 +63,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "d2e10713ecb9f954",
+      "version": "c5e29e14441609fb",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -70,18 +72,19 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "88f5d0561e52243b",
+      "version": "41c61ccc2633247e",
       "files": [
         "SKILL.md",
         "references/claude.md",
         "references/codex.md",
         "references/divergence.md",
-        "references/shared-checklist.md"
+        "references/shared-checklist.md",
+        "agents/openai.yaml"
       ]
     },
     {
       "name": "valcraft-land",
-      "version": "d8dc90478f2c7e1d",
+      "version": "fe35f38b52f13477",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -92,15 +95,16 @@
     },
     {
       "name": "valcraft-msw",
-      "version": "0388696d530e230f",
+      "version": "4cdbe810bf847653",
       "files": [
         "SKILL.md",
-        "references/kernel.md"
+        "references/kernel.md",
+        "agents/openai.yaml"
       ]
     },
     {
       "name": "valcraft-review",
-      "version": "211cf71ca4227e9c",
+      "version": "68a54f0347f9d244",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -111,7 +115,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "1dffde4ef9f2f029",
+      "version": "ba409e6e525dd04c",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -127,7 +131,7 @@
     },
     {
       "name": "valcraft-temper",
-      "version": "86db4d84dfab31c6",
+      "version": "2c0a6981fa3dc3b4",
       "files": [
         "SKILL.md",
         "references/process.md",
@@ -137,12 +141,13 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "2249a8ad64b7eff6",
+      "version": "d73ac4c336f1e9de",
       "files": [
         "SKILL.md",
         "references/config.md",
         "references/migrations.md",
-        "references/models.md"
+        "references/models.md",
+        "agents/openai.yaml"
       ]
     }
   ]

@@ -65,7 +65,7 @@ Takeover may begin with `Specifying -> SpecReview -> SpecLanding -> Ready`; feat
 
 After confirmed feature completion: `FeatureClose -> Retrospective -> RetroReview -> Complete`. FeatureClose is a Land assignment. External completion uses `Landing -> EvidenceReview -> Landing`. `DurableHandoff` waits for attributed dirty work to become accessible; `Blocked` names other missing evidence, authority, or owner decisions.
 
-Mirror the loop with the harness's todo-list tool when one exists (`TodoWrite` in Claude Code, `update_plan` in Codex): at task pick or confirmed takeover, create one item per named state from the active state through completion, titled `<target identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
+Mirror the loop with the harness's todo-list tool when one exists (`update_plan` in Codex): at task pick or confirmed takeover, create one item per named state from the active state through completion, titled `<target identity> — <state>`. Keep exactly one item `in_progress`; mark it `completed` when `state.md` records the transition out of it. Add feature-close states after confirmed completion. Create no per-worker or per-dispatch item. Rebuild the list from `state.md` on resume. The list is display only; `state.md`, git, and the tracker stay authoritative.
 
 ## Trust boundary
 

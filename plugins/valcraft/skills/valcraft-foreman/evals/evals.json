@@ -5,7 +5,7 @@
       "id": 1,
       "name": "missing-configuration-delegates-to-tune",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/no-block/, resolve Foreman's startup configuration for two sibling repositories, both headless. In repo A the committed `.valcraft/config.yaml` is missing from the repository. In repo B the committed base is valid, but a gitignored `.valcraft/config.local.yaml` sets `pull_requests.merge_strategy: rebase`. A live remote HEAD symref for origin and the hosting service both identify main. Stop after reporting each configuration gate; do not mutate files.",
-      "expected_output": "In repo A, Foreman reads root AGENTS.md only for project instructions, finds the committed `.valcraft/config.yaml` missing — repository state a clone shares, not a per-user gap — and invokes Tune before tracker access, run creation, or worker dispatch. Tune does not infer a partial configuration or select recommended answers in the headless run; it reports all unresolved first-run fields and returns `Status: question: configuration_required`. In repo B, the overlay carries the repo-scoped key `pull_requests`, so the resolved configuration is invalid; Foreman delegates it to Tune instead of using the base value or silently dropping the overlay key. In neither repo does Foreman read legacy declarations, derive its own backend or approval defaults, write AGENTS.md, create `.valcraft/foreman/`, or enter the delivery loop.",
+      "expected_output": "In repo A, Foreman reads root AGENTS.md only for project instructions, finds the committed `.valcraft/config.yaml` missing — repository state a clone shares, not a per-user gap — and invokes Tune before tracker access, run creation, or worker dispatch. Tune does not infer a partial configuration or select recommended answers in the headless run; it reports all unresolved first-run fields and returns `Status: question: configuration_required`. In repo B, the overlay carries the repo-scoped key `pull_requests`, so the resolved configuration is invalid; Foreman delegates it to Tune instead of using the base value or silently dropping the overlay key. In neither repo does Foreman read configuration from AGENTS.md, derive its own backend or approval defaults, write AGENTS.md, create `.valcraft/foreman/`, or enter the delivery loop.",
       "files": [
         "evals/files/no-block/AGENTS.md",
         "evals/files/no-block/.gitignore",
@@ -175,7 +175,7 @@
       "assertions": [
         "Foreman picks T-002 from tasks.md order and dependency state",
         "Foreman creates a run directory with state.md and workers.md before dispatching",
-        "After the pick, Foreman mirrors the loop in the host todo-list tool: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
+        "When the host exposes a todo-list tool, Foreman mirrors the loop in it after the pick: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
         "The drafter is a fresh general-purpose worker, not a fork, with canonical logical identity drafter-F001-T002",
         "The Draft assignment contains the cold-start reading order, report path, Status line instruction, exact predecessor, and trust-boundary paragraph",
         "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending; Cursor dispatch uses Task generalPurpose, binds the absolute SKILL.md path, records the Task agent id, and awaits in the active turn",
@@ -349,7 +349,7 @@
       "id": 16,
       "name": "backend-physical-handles-preserve-quick-identity",
       "prompt": "/valcraft:valcraft-foreman — using the `ao` external-orchestrator backend, demonstrate handle derivation for Draft, Forge, every Review mode, Land, and Temper. Include forge-Q-1000-QT-001, assume its first alias is already owned, and show a fresh respawn plus its Codex native-subagent handle. Do not spawn anything.",
-      "expected_output": "Foreman preserves every canonical logical identity. The selected backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t, then hashes the full logical identity and dispatch ordinal. Collision and respawn hashing produce distinct aliases and preserved workers rows. Codex independently derives forge_q1000_qt001. No retired role family or producer-owned substep receives an alias.",
+      "expected_output": "Foreman preserves every canonical logical identity. The selected backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t, then hashes the full logical identity and dispatch ordinal. Collision and respawn hashing produce distinct aliases and preserved workers rows. Codex independently derives forge_q1000_qt001. No producer-owned substep receives an alias.",
       "files": [
         "references/hygiene.md",
         "references/backends/ao.md",
@@ -358,7 +358,7 @@
       ],
       "assertions": [
         "Canonical Q-1000 QT-001 and logical forge-Q1000-QT001 remain intact",
-        "The external-orchestrator backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t with no alias for retired role families or producer-owned substeps",
+        "The external-orchestrator backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t with no alias for producer-owned substeps",
         "The external-orchestrator alias uses lowercase hexadecimal SHA-256 over the UTF-8 canonical identity and as many leading digest characters as fit the 20-character contract",
         "The forced external-orchestrator collision is detected before spawn and deterministically rehashes the dispatch preimage plus newline collision:1 until a distinct checked alias is available",
         "A same-identity external-orchestrator respawn uses the next dispatch ordinal, hashes the canonical identity plus newline dispatch:1, receives a distinct alias, and preserves both workers.md rows",
