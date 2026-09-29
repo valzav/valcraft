@@ -8,11 +8,13 @@ Without a Foreman assignment, resolve a planned task's canonical task branch fro
 
 A planless quick task is a quick task whose file is by itself its complete implementation and verification contract, so it runs without a plan. Without a Foreman assignment, establish its workspace this way:
 
-- Use the clean current checked-out ref selected by the invocation as the baseline. Resolve and record its exact HEAD as the baseline SHA.
 - Derive the canonical task branch from repository policy and the task identity. Without a repository policy, use `feat/qNNN-qtNNN-<slug>`, and use the quick file's semantic slug without its identity prefix as `<slug>`.
-- Create the canonical task branch from the baseline when it is absent. Resume it only when its attributable implementation history is equal to or descends cleanly from the baseline. Stop with `workspace_not_ready` on ambiguous ancestry or divergence.
+- When the canonical task branch is absent, use the clean current checked-out ref selected by the invocation as the baseline. Resolve and record its exact HEAD as the baseline SHA. Create the canonical task branch from the baseline.
+- When the canonical task branch exists, take the baseline SHA from the prior Forge report for this task, supplied by the operator. Never adopt the current head as the baseline SHA.
+- Before resuming, revalidate that baseline SHA: it exists, it is an ancestor of the canonical task branch head, and the branch's attributable implementation history descends cleanly from it.
+- Stop with `workspace_not_ready` when no prior Forge report supplies the baseline SHA, when revalidation fails, or on ambiguous ancestry or divergence.
 
-A Foreman assignment overrides these steps, as it does for every task. For a planless quick task, every rule in this reference that names the reviewed, passed, or plan-review plan SHA uses the baseline SHA instead, and a condition on the reviewed plan or its blob does not apply. Record the plan path and plan SHA as `none` in the Forge report's `Plan and plan review` section and in the Review target.
+A Foreman assignment overrides these steps, as it does for every task. For a planless quick task, every rule in this reference that names the reviewed, passed, or plan-review plan SHA uses the baseline SHA instead, and a condition on the reviewed plan or its blob does not apply. Record the plan path and plan SHA as `none` in the Forge report's `Plan and plan review` section and in the Review target. Record the baseline SHA in that `Plan and plan review` section so a resumed run can read it. The Review target's base SHA is the baseline SHA, so the target covers every implementation commit from the baseline to the head.
 
 ## Takeover-attributed working state
 

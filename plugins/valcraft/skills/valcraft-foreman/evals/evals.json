@@ -295,7 +295,12 @@
         "evals/files/loop-quick/docs/product-brief.md",
         "evals/files/loop-quick/specs/quick/001-export-filename-date.md",
         "evals/files/loop-quick/specs/quick/002-login-redirect-query.md",
-        "evals/files/loop-quick/.valcraft/reviews/spec-reviewer-Q002.md"
+        "evals/files/loop-quick/.valcraft/reviews/spec-reviewer-Q002.md",
+        "evals/files/loop-quick/invalid-project/AGENTS.md",
+        "evals/files/loop-quick/invalid-project/.valcraft/config.yaml",
+        "evals/files/loop-quick/invalid-project/.gitignore",
+        "evals/files/loop-quick/invalid-project/docs/product-brief.md",
+        "evals/files/loop-quick/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
         "Foreman picks Q-002 QT-001 by walking quick files in number order and resolving its checked cross-file Q-001 QT-001 dependency",
