@@ -2199,6 +2199,7 @@
         "Foreman extracts only the Spec-owned P3 Findings rows and later Spec Finding resolutions, not whole report bodies",
         "The gate lists R-019 and R-020 with their report path and does not list the resolved R-013",
         "The gate waits for the operator even in unattended mode",
+        "The gate offers exactly two named answers: close as is, and amend first",
         "Close as is enters FeatureClose",
         "Amend first enters Specifying with R-019 and R-020, runs SpecReview and SpecLanding, and returns to the confirmation gate before FeatureClose"
       ],

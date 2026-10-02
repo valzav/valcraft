@@ -946,6 +946,7 @@
         "The off-canvas click edge case is reported as lacking a discriminating check despite the adversarial list and TS-018",
         "The reload-after-edits edge case is reported as lacking a discriminating check despite TS-014",
         "Both findings are material and owned by valcraft-spec",
+        "Each finding names its owning task: T-003 for the off-canvas click and T-002 for the reload",
         "The verdict is material findings and Review edits nothing"
       ],
       "id": 47
