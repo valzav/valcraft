@@ -4,6 +4,8 @@ Use this gate for every task, spec, and feature-close PR. It controls both merge
 
 Merging any PR — task, spec, or feature-close — includes deleting its head branch; the merge grant covers the deletion. Reconcile an already-deleted branch as complete.
 
+After the merge is verified, delete the local branch of the same name in the canonical checkout when its head equals the merged PR head. The merge grant covers this deletion too. When the canonical checkout has that branch checked out and is clean, first fast-forward the local default branch to the verified remote default head and switch the checkout to it. Switch the checkout only in that case: when it has another branch checked out, leave it there. Leave the local branch in place, and name it under `Handoffs`, when its head differs from the merged PR head or the checkout is dirty.
+
 ## Exact Review coverage
 
 Read the current PR head from the hosting service. Compare it with the exact head in the latest passing Review report for this target. A branch name, older verdict, merge base, or review summary is not coverage.

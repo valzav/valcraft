@@ -16,7 +16,8 @@ Read this reference after corpus preflight and before examining evidence. It own
 2. **Inventory.** One row per unit: what it was, its review history (rounds, finding IDs, clean passes), and the examination depth this run gives it.
 3. **Examine.** For each unit examined deeply: what escaped its gates, what a gate caught, what the implementer self-caught, and what the evidence shows versus what the record claims. Write the strongest incidents up as case studies with verbatim citations and full incident records.
 4. **Extract lesson candidates.** Each candidate gets a stable ID (`L-001`, `L-002`, …), a one-line rule statement, its incident records, its grade, and its stage attribution. Separate prompt-line candidates from structural findings — an observation about the process's design that no single rule fixes is reported as a structural finding, not forced into rule shape.
-5. **Route each candidate** per the routing section below and write the report.
+5. **Search transcripts before settling for C.** Before leaving an upstream candidate at C because direct run evidence is missing, search the readable transcripts of the assignments it cites for the instruction text the candidate names and for the agent's decision at that point. Record what the search found as the candidate's direct run evidence, or record that it found nothing. A C grade that rests on an unsearched readable transcript is incomplete.
+6. **Route each candidate** per the routing section below and write the report.
 
 ## Synthesize mode
 

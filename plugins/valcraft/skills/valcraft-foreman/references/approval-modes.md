@@ -23,7 +23,7 @@ The valid `foreman.approval_mode` in the resolved configuration controls coordin
 | `Landing`: Land dispatch for an ordinary default-branch operation | carry the ref-bound Land grant only when already explicit | carry the ref-bound Land grant in `contracts.md` |
 | `Landing`: ordinary default-branch operation is prepared | wait | issue exact target-bound Land authority after prepared-field validation |
 | `Landing`: configured release-branch operation | wait | wait |
-| `FeatureClose`: operator feature or PRD confirmation | wait | wait, quoting the confirmation |
+| `FeatureClose`: operator feature or PRD confirmation, with the open Spec-owned P3 notes listed | wait | wait, quoting the confirmation |
 | `FeatureClose`: Land dispatch after confirmation | carry the ref-bound Land grant only when already explicit | carry the ref-bound Land grant in `contracts.md` |
 | `FeatureClose`: feature-close PR push, creation, and merge prepared after confirmation | wait | issue exact target-bound Land authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |

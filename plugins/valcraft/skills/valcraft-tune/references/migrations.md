@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.23
+
+### Spec edge cases get Test strategy entries
+
+Each edge case listed in a feature's `spec.md` needs its own `Test strategy` entry in `design.md`, with all five fields, like an acceptance criterion or design invariant. Naming the case in an interaction's adversarial-case list does not cover it. Spec Review lists every edge case under `Checks performed` with the check ID that discriminates it, and reports an edge case without one as a material finding owned by Spec.
+
+- Applies when: never on its own; an existing feature's next Spec Review or amendment review reports each uncovered edge case.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.22
 
 ### Roadmap reflects accepted direction and business progress

@@ -110,7 +110,7 @@ Select the first eligible task in artifact order with satisfied dependencies and
 When no eligible task remains:
 
 - a quick run completes when its files are fully closed by Land;
-- a feature waits for operator confirmation, then enters `FeatureClose`;
+- a feature waits for operator confirmation, then enters `FeatureClose`. Before asking, list every P3 note owned by `valcraft-spec` in the feature's Review reports that no later Spec report resolved, with its R-ID and report path, or state that none remain. These notes can leave false statements in the contract, and no other stage applies them. The confirmation offers two answers: close as is, or amend first. Amend first enters `Specifying` with those R-IDs as an operator instruction; the amendment runs SpecReview and SpecLanding and then returns to this gate;
 - an unconfirmed feature remains at the named human gate.
 
 ## `Drafting`
@@ -131,7 +131,7 @@ A complete Forge report whose task PR is still `none` applies the prepared outwa
 
 ## `CodeReview`
 
-Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode on the Forge report's exact repository, PR, base, and head. A pass covering the current head enters `Landing`. Material findings return to Implementing by R-ID. A Spec-owned R-ID returns to Specifying with the task still selected; the amendment lands on the task branch, then Drafting revises the plan against it, the PlanReview closure check covers plan and triplet at one head, Implementing verifies against the amended entry, and the code Review closure check follows. Apply [`review-round.md`](review-round.md). A stale target stops or takes the producer's declared mismatch route; Foreman never reviews the delta.
+Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode on the Forge report's exact repository, PR, base, and head. A pass covering the current head enters `Landing`. Material findings return to Implementing by R-ID. A Spec-owned R-ID returns to Specifying with the task still selected; the amendment lands on the task branch. When Spec's scope test fails, the amendment lands through an amendment branch, SpecReview, and SpecLanding instead, and Drafting first merges the landed baseline into the task branch. Drafting then revises the plan against the amended contract, the PlanReview closure check covers plan and triplet at one head, Implementing verifies against the amended entry, and the code Review closure check follows. Apply [`review-round.md`](review-round.md). A stale target stops or takes the producer's declared mismatch route; Foreman never reviews the delta.
 
 ## `Landing`
 

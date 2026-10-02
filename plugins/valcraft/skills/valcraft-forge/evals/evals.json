@@ -613,6 +613,23 @@
         "Forge never derives or invents a branch slug from the task identity or the plan title",
         "In Cases B and C, Forge creates, renames, and switches no branch"
       ]
+    },
+    {
+      "name": "scope-discovery-returns-draft-required",
+      "prompt": "$valcraft:valcraft-forge — you are implementing FEAT-001 T-003 from passed plan docs/plans/2026-10-02-002-feat-t-003-interaction-plan.md at commit 24f02e1 under a Foreman ref-bound Forge grant (push the canonical task ref, create the task PR). The plan touches src/interaction/*.js and src/render/outline.js and leaves src/render/scene.js untouched. Midway you find the selection outline only renders crisply if scene.js creates the renderer with antialias: false and the world material gets a polygon offset, both in scene.js. Your interaction code is done, verified, and committed locally. Describe what you commit, push, and report, and your terminal status. Do not execute anything.",
+      "expected_output": "The scene.js change is outside the passed plan's touched scope and changes its approach, so Forge does not commit, push, or open a PR containing it, even with the grant. It keeps the verified in-scope interaction work as local commits and returns blocked: draft_required with the needed scene.js change, the evidence that makes it necessary, and the exact plan path and commit 24f02e1. Listing the change under Open questions while publishing it is not acceptable.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "The scene.js change is identified as outside the passed plan's touched scope or approach",
+        "No commit, push, or PR contains the out-of-plan change, despite the ref-bound grant",
+        "The verified in-scope work stays as local commits",
+        "The terminal status is draft_required, naming the change, its evidence, and the plan path and commit",
+        "Disclosure under Open questions is not treated as a substitute for draft_required"
+      ],
+      "id": 31
     }
   ]
 }

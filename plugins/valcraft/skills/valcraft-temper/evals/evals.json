@@ -229,6 +229,24 @@
         "Temper changes no lesson, grade, or other section and does not resolve or re-argue R-003",
         "Temper edits the same report and returns its new content hash, allocating no second report"
       ]
+    },
+    {
+      "name": "search-transcripts-before-c-grade",
+      "prompt": "$valcraft:valcraft-temper — analyze mode over a Foreman-delivered feature corpus. workers.md lists a readable transcript path for every assignment. Your draft has upstream candidate U-5: Forge (assignment A-036) published an out-of-plan scene.js change instead of returning draft_required; Forge's report disclosed it under Open questions. Your draft grades U-5 C 'because the A-036 transcript was not opened'. Your Inventory row for T-003 says 'verified deep' but you read only the code Review report and one Forge report, and ran one grep. Describe what the analyze process requires before you finalize U-5's grade and the T-003 depth, and how each is recorded. Do not write files.",
+      "expected_output": "Before leaving U-5 at C for missing run evidence, Temper searches the readable A-036 transcript for the Forge instruction text the candidate names (the draft_required route) and for the agent's decision when it chose to publish, then records what it found as direct run evidence or records that it found nothing. A C grade resting on an unsearched readable transcript is incomplete; the grade is decided from the search result under the upstream admission gate. The T-003 depth cell names each record read in full and each verification performed; with only part of the record read and one grep, it cannot be verified deep and takes the lower depth the named reads support (skimmed), unless Temper reads the full record and performs the verifications.",
+      "files": [
+        "SKILL.md",
+        "references/process.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "The readable A-036 transcript is searched for the named instruction text and the agent's decision before U-5's grade is settled",
+        "The search result, or that it found nothing, is recorded as the candidate's direct run evidence",
+        "A C grade justified only by not opening an available transcript is treated as incomplete",
+        "The depth cell names the records read in full and the verifications performed",
+        "T-003 is not labeled verified deep on a partial record read and one grep; it takes the lower depth those reads support"
+      ],
+      "id": 13
     }
   ]
 }
