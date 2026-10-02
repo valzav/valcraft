@@ -57,7 +57,7 @@ Roadmap owns the optional business view and its Roadmap report. It reads accepte
 
 The roadmap is tracked in git. Roadmap prepares and commits changes in an isolated worktree on a documentation branch, then reports the exact candidate for the repository's normal publication workflow. The published version remains the integration-branch version until merge. Preparing a roadmap grants no push or merge authority and changes no task branch or reviewed head.
 
-When a roadmap exists, Foreman dispatches its refresh between workers after accepted scope, work-start, blocker, or completion events. The refresh returns to the saved delivery state. A stale or unavailable roadmap, or a prepared update awaiting publication, is reported without becoming a new delivery gate. See [roadmap coordination](../plugins/valcraft/skills/valcraft-foreman/references/roadmap.md).
+When a roadmap exists, Foreman automatically refreshes it only after Land confirms feature closure, before the retrospective. Task events, scope changes, blockers, and takeover do not trigger a refresh; invoke `valcraft-roadmap` manually for more frequent updates. The refresh returns to the saved delivery state. A stale or unavailable roadmap, or a prepared update awaiting publication, is reported without becoming a new delivery gate. See [roadmap coordination](../plugins/valcraft/skills/valcraft-foreman/references/roadmap.md).
 
 A later skill never repeats an earlier skill's report. When earlier state matters, it shows one short paragraph with the outcome, the exact target, the blocker or handoff, and a suggested next action. That paragraph is for the reader; it provides neither routing evidence nor authority.
 

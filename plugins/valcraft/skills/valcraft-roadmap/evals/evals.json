@@ -103,7 +103,7 @@
     {
       "id": 5,
       "name": "tracked-publication-preserves-review-target",
-      "prompt": "In an isolated fixture copy, put existing-roadmap.md at docs/roadmap.md and commit all fixture evidence on main. Create a task branch and commit a work-note file; this exact task head is the current code-review target. Foreman requests a roadmap refresh from main plus the attributed observation that notification work has started on that task head. Prepare the update and return the Roadmap report. No remote publication is requested.",
+      "prompt": "In an isolated fixture copy, put existing-roadmap.md at docs/roadmap.md and commit all fixture evidence on main. Create a task branch and commit a work-note file; this exact task head is the current code-review target. The operator manually requests a roadmap refresh from main plus the attributed observation that notification work has started on that task head. Prepare the update and return the Roadmap report. No remote publication is requested.",
       "expected_output": "Prepares and commits only docs/roadmap.md on a separate documentation branch and isolated worktree, preserving the canonical checkout, task head, and main. Reports exact candidate and publication pending, attributes in-progress work without claiming completion, and leaves source contracts untouched.",
       "files": [
         "evals/files/project/.valcraft/config.yaml",
@@ -129,7 +129,7 @@
     {
       "id": 6,
       "name": "pending-candidate-refresh",
-      "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. Land new acceptance evidence for receipt notifications on main, with availability and pilot use still unchecked. Foreman requests another refresh using the new main revision and prior Roadmap report. Prepare the current view and return the report. No remote publication is requested.",
+      "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. Land new acceptance evidence for receipt notifications on main, with availability and pilot use still unchecked. The operator manually requests another refresh using the new main revision and prior Roadmap report. Prepare the current view and return the report. No remote publication is requested.",
       "expected_output": "Resolves the exact pending candidate, merges the new integration base without rewriting its history, and updates the same documentation branch. The resulting diff against the new base remains roadmap-only. Reports implemented intake while leaving availability and pilot outcomes unverified, and keeps the canonical task review target unchanged.",
       "files": [
         "evals/files/project/.valcraft/config.yaml",

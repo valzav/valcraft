@@ -2064,8 +2064,8 @@
     {
       "id": 130,
       "name": "roadmap-refresh-preserves-delivery",
-      "prompt": "A local-tracker Foreman run has just accepted Land completion for FEAT-001 T-002. The canonical project checkout already contains docs/roadmap.md. The next eligible task under the task contract is FEAT-001 T-003, but the roadmap says a different feature should come next. Describe the next dispatch, the evidence it receives, and how delivery resumes. Do not execute a backend.",
-      "expected_output": "Foreman preserves the contract-selected next task, records the completion event and saved delivery state, and dispatches a fresh Roadmap worker between workers. It passes the canonical output path and authoritative source/report locators. The business view is not selection evidence. Roadmap failure is reported as stale output without a new delivery gate once the worker and checkout are safe.",
+      "prompt": "A local-tracker Foreman run has just accepted Land completion for the owner-confirmed closure of FEAT-001. The canonical project checkout already contains docs/roadmap.md. The delivery loop would next run the FEAT-001 retrospective, but the roadmap says a different feature should come next. Describe the next dispatch, the evidence it receives, and how delivery resumes. Do not execute a backend.",
+      "expected_output": "Foreman records the feature-close event and saves Retrospective for FEAT-001, then dispatches a fresh Roadmap worker before Temper. It passes the canonical output path and authoritative feature-close report and source locators. The business view is not selection evidence. Roadmap failure is reported as stale output without a new delivery gate once the worker and checkout are safe.",
       "files": [
         "SKILL.md",
         "references/roadmap.md",
@@ -2075,17 +2075,17 @@
         "references/backends/herdr.md"
       ],
       "assertions": [
-        "The roadmap does not change selection away from FEAT-001 T-003",
-        "RoadmapRefresh saves the delivery target/state and uses a fresh valcraft-roadmap worker",
-        "The worker receives the canonical project checkout and exact source or report locators",
+        "The roadmap does not change the target away from the closed FEAT-001 or skip its retrospective",
+        "RoadmapRefresh saves Retrospective for FEAT-001 and uses a fresh valcraft-roadmap worker",
+        "The worker receives the canonical project checkout and exact feature-close Land report and source locators",
         "No task branch or reviewed head is changed by refresh",
-        "ResumeDelivery retains the original next task and reports a refresh failure without inventing a product gate"
+        "ResumeDelivery returns to the FEAT-001 retrospective and reports a refresh failure without inventing a product gate"
       ]
     },
     {
       "id": 131,
       "name": "roadmap-absent-does-not-add-work",
-      "prompt": "A Foreman run has no docs/roadmap.md in the canonical project checkout. Land has completed a task and another task is ready. Describe whether roadmap maintenance changes the next step. Do not execute a backend.",
+      "prompt": "A Foreman run has no docs/roadmap.md in the canonical project checkout. Land has completed the owner-confirmed feature closure. Describe whether roadmap maintenance changes the next step. Do not execute a backend.",
       "expected_output": "Foreman follows the existing delivery loop, with no Roadmap worker, roadmap creation, configuration migration, or new confirmation. The absence of the optional artifact is not a blocker.",
       "files": [
         "SKILL.md",
@@ -2097,14 +2097,14 @@
       ],
       "assertions": [
         "No Roadmap worker or new roadmap is created",
-        "Normal task selection and delivery continue",
+        "Normal delivery continues to the feature retrospective",
         "No new configuration or owner confirmation is required"
       ]
     },
     {
       "id": 132,
       "name": "roadmap-herdr-settings-and-resume",
-      "prompt": "Foreman uses Herdr. A valid local overlay supplies a complete foreman.herdr worker map whose spec entry differs from the committed base. A roadmap refresh is due, and the last checkpoint says RoadmapRefresh already has an active assignment. Describe settings provenance and resume behavior without running Herdr.",
+      "prompt": "Foreman uses Herdr. A valid local overlay supplies a complete foreman.herdr worker map whose spec entry differs from the committed base. After confirmed feature closure, the last checkpoint entered RoadmapRefresh and recorded an active assignment. Describe settings provenance and resume behavior without running Herdr.",
       "expected_output": "Roadmap uses the resolved spec worker entry with actual overlay file/key provenance while retaining the logical roadmap role and valcraft-roadmap skill. Resume consumes the existing active assignment through ordinary backend await/recovery and does not spawn an untracked second writer. No roadmap configuration key is invented.",
       "files": [
         "SKILL.md",
@@ -2119,6 +2119,27 @@
         "The logical role remains roadmap and the invoked skill is valcraft-roadmap",
         "No new worker configuration key or read-time fallback is introduced",
         "Resume reconciles the active assignment rather than dispatching a second writer"
+      ]
+    },
+    {
+      "id": 133,
+      "name": "roadmap-intermediate-events-do-not-trigger",
+      "prompt": "A Foreman run has an existing docs/roadmap.md. Describe the next action for each independent checkpoint: (a) a task has started; (b) Land has completed a task but feature closure has not occurred; (c) accepted scope or a blocker has changed; (d) takeover finds an old closed feature with no pending Roadmap assignment; (e) resume finds the feature-close refresh already returned a terminal result. Then explain how the operator can request a current business view between feature closures. Do not execute a backend.",
+      "expected_output": "None of these checkpoints triggers an automatic Roadmap worker. Foreman follows the existing delivery state and does not replay an already handled closure or infer a refresh on takeover. The operator can directly invoke valcraft-roadmap for an intermediate update.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "Task start and task completion do not dispatch Roadmap",
+        "Scope and blocker changes do not dispatch Roadmap",
+        "Takeover without a pending feature-close refresh does not create one",
+        "A handled feature closure does not dispatch another refresh on resume",
+        "Manual valcraft-roadmap invocation remains available for intermediate updates"
       ]
     }
   ]

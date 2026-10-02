@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "2f355f0d5d444e9b",
+      "version": "8fb611ca893bb48a",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -116,12 +116,13 @@
     },
     {
       "name": "valcraft-roadmap",
-      "version": "fc09c342eccd0cd5",
+      "version": "5210918b52dc950e",
       "files": [
         "SKILL.md",
         "references/evidence.md",
         "references/publication.md",
-        "templates/roadmap.md"
+        "templates/roadmap.md",
+        "agents/openai.yaml"
       ]
     },
     {
@@ -152,7 +153,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "ce5c40e6edcd3782",
+      "version": "2c40e08dcf3c9d9c",
       "files": [
         "SKILL.md",
         "references/config.md",

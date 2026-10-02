@@ -83,7 +83,7 @@ A teammate can continue from the work you have pushed. Foreman proposes where to
 
 Run `valcraft-roadmap` to create a business-facing view of accepted project goals, capability progress, and remaining outcomes. It links each capability to evidence and follows unfinished scope when it moves between features. A completed implementation is distinguished from availability to users or a measured business result. Roadmap reflects the accepted course; it never chooses priorities or Foreman's next task.
 
-The roadmap lives in git at `docs/roadmap.md`. Manual runs and Foreman's automatic refreshes prepare updates on a separate documentation branch. The shared version changes after the normal documentation publication process; preparing an update does not authorize a push or merge.
+The roadmap lives in git at `docs/roadmap.md`. Foreman automatically refreshes an existing roadmap only after Land confirms feature closure. Invoke `valcraft-roadmap` manually for more frequent updates. Both paths prepare updates on a separate documentation branch. The shared version changes after the normal documentation publication process; preparing an update does not authorize a push or merge.
 
 Team settings live in the committed configuration. Tune can also save personal approval and backend choices in a local overlay, so teammates can work differently without changing the shared settings.
 

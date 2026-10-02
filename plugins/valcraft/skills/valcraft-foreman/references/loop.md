@@ -34,7 +34,7 @@ Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraf
 
 ## Rebuild before transition
 
-When `docs/roadmap.md` exists in the canonical project checkout, load [`roadmap.md`](roadmap.md) for refresh triggers and dispatch between workers. `RoadmapRefresh` saves and returns to the delivery state below; it never supplies evidence to the resume map or changes task selection.
+When Land confirms feature closure and `docs/roadmap.md` exists in the canonical project checkout, load [`roadmap.md`](roadmap.md) to refresh before `Retrospective`. Also load it when resuming a recorded pending or active refresh. `RoadmapRefresh` saves and returns to the delivery state below; it never supplies evidence to the resume map or changes task selection.
 
 Read the latest `state.md` checkpoint, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
 
