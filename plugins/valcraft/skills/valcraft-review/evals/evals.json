@@ -914,6 +914,42 @@
         "Both findings name valcraft-roadmap as the owner, the named availability gap is not a finding, and the verdict line is material findings",
         "Review edits and commits nothing"
       ]
+    },
+    {
+      "name": "pairing-needs-observed-result",
+      "prompt": "$valcraft:valcraft-review — plan-mode review of FEAT-003 triplet at commit 9c2e… (scratch writes outside the repository are granted, and headless Chrome is recorded in the browser route). design.md TS-017 guards a frame-pacing invariant: the check measures the product page's own idle frame-interval median M, then fails when any orbit frame exceeds 3 × M; its failing input is a 60 ms busy-wait in the frame loop, which the entry says makes every frame exceed 50 ms. TS-020 checks that a right-click on the canvas is cancelled; its failing input is a build without the app's contextmenu handler, but the owning task's head also loads three@0.186.1 OrbitControls on the same canvas. Your draft pairing rows read 'TS-017; 60 ms busy-wait | yes; yes' and 'TS-020; no handler | yes; yes', and you have run neither input. Describe what plan mode requires for these two pairings before the verdict, the likely outcome, each finding's severity and owner, and the verdict. Do not edit anything.",
+      "expected_output": "Both pairings depend on the check's method or a dependency, not on code the tasks will write, so Review runs each failing input in a scratch environment against the pinned versions and the dependencies the task head loads, and records the observed result. TS-017's self-relative bound absorbs the constant 60 ms cost (M rises with it), so the plant passes; TS-020's no-handler build still reads cancelled because OrbitControls cancels contextmenu. Each is a material finding owned by valcraft-spec. Rows marked yes without an observed result are unproven and cannot support a pass; if no replay were possible the review would return blocked. Review edits nothing.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Both failing inputs are run in a scratch environment before the pairing is credited, with the pinned versions and the dependencies the owning task's head loads (including OrbitControls for TS-020)",
+        "The observed result is recorded beside each pairing; a yes without an observed result is treated as unproven, not as discriminating",
+        "TS-017's 60 ms plant is identified as passing because the bound is taken from the same page's idle frames",
+        "TS-020's failing input is identified as not firing because OrbitControls already cancels contextmenu",
+        "Both are material findings owned by valcraft-spec and the verdict is not pass",
+        "Review edits and commits nothing"
+      ],
+      "id": 46
+    },
+    {
+      "name": "edge-case-without-entry-is-material",
+      "prompt": "$valcraft:valcraft-review — plan-mode review of the FEAT-004 triplet at commit 51ab…. spec.md's Edge cases section lists: 'Pointer over the sky or outside the world: nothing is targeted and clicks do nothing' and 'Reloading after edits shows the generated world again'. design.md names 'the pointer leaving the canvas' as an adversarial case for pointer input. Test strategy entries: TS-018 checks hover clears when the pointer leaves the canvas; TS-014 reloads a fresh page with no edits. No entry exercises a click released outside the canvas or a reload after edits. T-003 owns pointer input; T-002 owns world generation and reload. Describe the Checks performed lists this review must contain, any findings with severity and owner, and the verdict. Do not edit anything.",
+      "expected_output": "Checks performed lists each task's obligations, each design invariant, and each spec.md edge case with the check ID that discriminates it or none. The off-canvas click edge case has no discriminating check (TS-018 covers hover only), and the reload-after-edits edge case has none (TS-014 reloads without edits). Each is a material finding owned by valcraft-spec, naming the owning task. The verdict is material findings, and Review edits nothing.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "Checks performed lists every spec.md edge case alongside the task obligations and invariants, each with a check ID or none",
+        "The off-canvas click edge case is reported as lacking a discriminating check despite the adversarial list and TS-018",
+        "The reload-after-edits edge case is reported as lacking a discriminating check despite TS-014",
+        "Both findings are material and owned by valcraft-spec",
+        "Each finding names its owning task: T-003 for the off-canvas click and T-002 for the reload",
+        "The verdict is material findings and Review edits nothing"
+      ],
+      "id": 47
     }
   ]
 }

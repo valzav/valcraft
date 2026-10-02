@@ -735,6 +735,24 @@
         "Every one of the fifteen pairs of the stated colors is at least 30 apart in CIE76 ΔE (sRGB, D65); verify by computing it",
         "The Test strategy entry has all five fields, covers the fifteen pairs, and names the fixed palette as its positive control"
       ]
+    },
+    {
+      "name": "edge-cases-get-test-strategy-entries",
+      "prompt": "$valcraft:valcraft-spec — you are writing design.md's Test strategy for FEAT-004 (a canvas block editor). spec.md's Edge cases section lists: (1) pointer outside the world: nothing is targeted and clicks do nothing; (2) reloading after edits shows the generated world again. design.md's adversarial-case list for pointer input already names 'the pointer leaving the canvas'. Existing entries: TS-018 checks that hover clears when the pointer leaves the canvas; TS-014 reloads a fresh page with no edits and compares the world. Describe which Test strategy entries the design needs for these two edge cases, with their failing inputs. Do not write files.",
+      "expected_output": "Each spec.md edge case needs its own Test strategy entry with all five fields, even though the adversarial list already names the pointer leaving the canvas. TS-018 covers hover only, so a new entry covers a click whose press is on the world and whose release lands outside the canvas (with pointer capture), for both buttons; its failing input is an input handler that edits on release without checking the pointer is over the canvas. TS-014 reloads without edits, so an entry (new or an extended TS-014) reloads after a removal and a placement; its failing input persists edits across reload.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "Each spec.md edge case is given its own Test strategy entry with the five fields",
+        "Naming the case in the adversarial list is not treated as covering it",
+        "The off-canvas edge case gets a check where a click is released outside the canvas, not only hover",
+        "The reload edge case gets a check that reloads after edits, with a failing input that keeps edits across reload",
+        "Spec writes no files"
+      ],
+      "id": 37
     }
   ]
 }

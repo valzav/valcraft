@@ -613,6 +613,27 @@
         "Forge never derives or invents a branch slug from the task identity or the plan title",
         "In Cases B and C, Forge creates, renames, and switches no branch"
       ]
+    },
+    {
+      "name": "scope-discovery-returns-draft-required",
+      "prompt": "$valcraft:valcraft-forge — you are implementing FEAT-001 T-003 from passed plan docs/plans/2026-10-02-002-feat-t-003-interaction-plan.md at commit 24f02e1 under a Foreman ref-bound Forge grant (push the canonical task ref, create the task PR). The plan touches src/interaction/*.js and src/render/outline.js and leaves src/render/scene.js untouched. Midway you find the selection outline only renders crisply if scene.js creates the renderer with antialias: false and the world material gets a polygon offset, both in scene.js. The scene.js change is two lines. With it, your full gate passes on a clean head that descends from 24f02e1 with the plan blob unchanged, which meets the grant's bound-head condition; without it the outline check TS-019 fails. Your interaction code is done, verified, and committed locally, and the two-line scene.js edit is staged. The checkout is shared with the Foreman workers that run next. Describe what you commit, push, and report, what you do with the staged scene.js edit, your terminal status, and the checkout state that Foreman's next Draft dispatch and Forge's later resume find. Do not execute anything.",
+      "expected_output": "The scene.js change is outside the passed plan's touched scope and changes its approach, so Forge does not commit, push, or open a PR containing it, even though the full gate passes on a head that includes it and that head meets the grant's condition. Forge keeps the verified in-scope interaction work as local commits. It records the scene.js change as a diff with its evidence under Open questions, then restores exactly scene.js, staged and unstaged, to the last commit, touching no other path or commit. It returns blocked: draft_required with the exact plan path and commit 24f02e1. Foreman's next Draft dispatch finds the shared checkout clean on the task branch at the last in-scope commit, so its checkout gate passes and Draft can plan the scene.js change from the recorded diff. Forge's later resume starts from Draft's new passing plan head with the in-scope commits intact. Listing the change under Open questions while publishing it, or leaving the edit staged, is not acceptable.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "The scene.js change is identified as outside the passed plan's touched scope or approach",
+        "A passing full gate and a head that meets the grant's bound-head condition are not treated as permission to publish the out-of-plan change",
+        "No commit, push, or PR contains the out-of-plan change, despite the ref-bound grant",
+        "The scene.js change is recorded as a diff with its evidence in the report before it is removed",
+        "Forge restores exactly the scene.js edit, staged and unstaged, to the last commit, and touches no other path or commit",
+        "The verified in-scope work stays as local commits",
+        "The terminal status is draft_required, naming the plan path and commit",
+        "The next Draft dispatch finds a clean shared checkout at the last in-scope commit, and Forge's later resume starts from Draft's new passing plan head with the in-scope commits intact",
+        "Disclosure under Open questions is not treated as a substitute for draft_required"
+      ],
+      "id": 31
     }
   ]
 }

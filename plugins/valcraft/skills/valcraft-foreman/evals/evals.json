@@ -2164,6 +2164,46 @@
         "The candidate stays unpublished, and the run-end report names R-002 with the Review report path",
         "Delivery resumes at the FEAT-001 retrospective with no new approval or delivery gate"
       ]
+    },
+    {
+      "name": "review-envelope-scratch-and-rid-floor",
+      "prompt": "A Foreman run on Herdr has landed FEAT-002 T-001 and T-002's plan has just been committed. The run directory .valcraft/foreman/2026-10-05-f002/ holds spec-reviewer-F002-d000.md (findings R-001 to R-009), plan-reviewer-F002-T001-d000.md (R-010, R-011), and code-reviewer-F002-T001-d000.md (R-012). The T-002 plan cites a timing check whose failing input the reviewer must replay with a temporary npm install and a headless browser profile. Write out the Report instruction and Intent fields of the PlanReview assignment envelope for plan-reviewer-F002-T002, and say what the reviewer may and may not write. Do not execute a backend.",
+      "expected_output": "The Intent field names valcraft-review in plan mode, the exact plan commit, the transition a pass unlocks, and the highest existing R-ID R-012, found by a line-oriented search of the run's Review reports for F002, so Review's new findings start at R-013. The Report instruction requires Review's report contract at the assigned path, limits run-directory writes to that path, and grants writes to temporary paths outside the repository (a temporary directory, the temporary npm install, the browser profile) for the replay; it grants no repository, git, or remote write. The envelope does not say 'write only this file' in a way that forbids the scratch replay.",
+      "files": [
+        "SKILL.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "templates/run-dir.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The Intent field names the highest existing R-ID as R-012 across the feature's Review reports, so new findings start at R-013",
+        "The highest existing R-ID is found with a line-oriented search, not by reading report bodies",
+        "The Report instruction grants writes to temporary paths outside the repository for the replay, such as the temporary install and browser profile",
+        "The grant excludes every repository path, git state, and remote",
+        "Within the run directory the reviewer writes only its assigned report path"
+      ],
+      "id": 135
+    },
+    {
+      "name": "feature-gate-lists-spec-p3-notes",
+      "prompt": "A Foreman run on Herdr has landed the last task of FEAT-001; no eligible task remains. The feature's Review reports hold these P3 rows whose resolution names valcraft-spec: plan-reviewer-F001-T001-d000.md R-013 (a design statement about overlay files is false), and plan-reviewer-F001-T003-d000.md R-019 and R-020 (TS-020's failing input cannot fire with OrbitControls loaded; a reload-after-edit edge case has no Test strategy entry). A later Spec report's Finding resolutions resolved R-013. Approval mode is unattended. Describe what Foreman reads, what it presents at the gate, the answers it accepts, and the dispatch sequence for each answer. Do not execute a backend.",
+      "expected_output": "Foreman reads, with line-oriented tools, the P3 Findings rows owned by valcraft-spec in the feature's Review reports and the Finding resolutions of later Spec reports, without reading report bodies. At the feature confirmation gate, which waits even unattended, it lists R-019 and R-020 with their report path and notes R-013 as resolved. The operator chooses close as is, or amend first. Close as is enters FeatureClose and dispatches Land. Amend first enters Specifying with R-019 and R-020 as an operator instruction, then SpecReview and SpecLanding of the amendment, then returns to the same confirmation gate.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "Foreman extracts only the Spec-owned P3 Findings rows and later Spec Finding resolutions, not whole report bodies",
+        "The gate lists R-019 and R-020 with their report path and does not list the resolved R-013",
+        "The gate waits for the operator even in unattended mode",
+        "The gate offers exactly two named answers: close as is, and amend first",
+        "Close as is enters FeatureClose",
+        "Amend first enters Specifying with R-019 and R-020, runs SpecReview and SpecLanding, and returns to the confirmation gate before FeatureClose"
+      ],
+      "id": 136
     }
   ]
 }

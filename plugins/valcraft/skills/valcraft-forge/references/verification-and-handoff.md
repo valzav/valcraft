@@ -41,6 +41,10 @@ Before accepting verification results, establish the effective environment prere
 
 Update affected git-owned contracts and documentation in the same change. Verify branch claims against the final code. Confirm no secret or consumer-specific material was added.
 
+## Stay inside the passed plan
+
+A necessary change can fall outside the passed plan's touched scope, or change its declared approach, even with no Review finding. Examples are an edit to a file the plan does not touch and a different technique for a planned step. When implementation shows such a change is needed, do not commit, push, or open a PR containing it. Keep verified in-scope work as local commits. Record the change as a diff under `Open questions`, with the evidence that makes it necessary. Then restore exactly the paths that change touched to the last commit, staged and unstaged, so the checkout is clean for Draft and for Forge's later resume. This removes only Forge's own uncommitted edit; it is not the reset that manufactures readiness, and it touches no other path, unrelated state, or commit. Return `draft_required` with the exact plan path and commit. Disclosing the change under `Open questions` does not replace that return.
+
 ## Prepare and authorize outward mutations
 
 Local implementation and commits follow from the Forge assignment. Push and PR create-or-update are separate operations and never implicit. A direct invocation carries no implicit outward authority.
@@ -114,7 +118,7 @@ End with exactly one line:
 Use these stable routing codes:
 
 - `assignment_invalid` — the assignment or task identity is missing, malformed, ambiguous, cannot be tied to its contract, or attributes dirty paths this workspace cannot read.
-- `draft_required` — a required plan or exact passing plan review is missing or stale, or a finding changes plan scope or approach.
+- `draft_required` — a required plan or exact passing plan review is missing or stale, or a finding or a necessary change found during implementation changes plan scope or approach.
 - `workspace_not_ready` — required branch state is dirty, missing, ambiguous, or diverged.
 - `configuration_required` — Tune needs interactive operator answers this run cannot supply.
 - `configuration_unresolved` — Tune ended without done for another cause; the detail quotes Tune's terminal line.

@@ -365,6 +365,25 @@
         "In case C Land returns `authority_drift` for the moved base and mutates nothing",
         "Land does not ask the operator or Foreman to confirm in case A"
       ]
+    },
+    {
+      "name": "merge-deletes-matching-local-branch",
+      "prompt": "$valcraft:valcraft-land — compare two Foreman dispatches, each carrying a ref-bound Land grant to merge task PR acme/demo#7 (head feat/f002-t001-intake at 4e1a…, base main, merge strategy merge). Review covers 4e1a…, checks are none-applicable, and you merge. Case A: the shared canonical checkout is clean with feat/f002-t001-intake checked out at 4e1a…. Case B: the same, except the local feat/f002-t001-intake points at 9f3c…, a local commit made on top of 4e1a… that is not in the PR. For each case, describe every branch and checkout operation after the merge, what the grant covers, and what the report records. Do not execute anything.",
+      "expected_output": "In both cases Land deletes the remote head branch under the merge grant. Case A: the local branch's head equals the merged PR head, so Land fast-forwards local main to the verified remote default head, switches the clean checkout to main, and deletes the local feat/f002-t001-intake; the merge grant covers both deletions. Case B: the local branch's head 9f3c… differs from the merged head 4e1a…, so it holds a commit the merge does not contain. Land leaves the local branch and the checkout as they are, does not switch to main, and names the branch with both heads under Handoffs rather than Remaining operations. Neither case force-pushes, resets, or rewrites a branch.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "references/tracker-closure.md"
+      ],
+      "assertions": [
+        "In both cases the remote head branch is deleted under the merge grant",
+        "In case A the clean checkout is moved to the fast-forwarded local default branch before the local task branch is deleted",
+        "In case A the local task branch is deleted because its head equals the merged PR head, and the merge grant covers it",
+        "In case B Land keeps the local feat/f002-t001-intake at 9f3c… and does not switch the checkout",
+        "In case B the report names the branch with both heads under Handoffs, not Remaining operations",
+        "No force push, reset, or rewrite of any branch is proposed"
+      ],
+      "id": 18
     }
   ]
 }
