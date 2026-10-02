@@ -43,7 +43,7 @@ Update affected git-owned contracts and documentation in the same change. Verify
 
 ## Stay inside the passed plan
 
-A necessary change can fall outside the passed plan's touched scope, or change its declared approach, even with no Review finding. Examples are an edit to a file the plan does not touch and a different technique for a planned step. When implementation shows such a change is needed, do not commit, push, or open a PR containing it. Keep verified in-scope work as local commits, then return `draft_required` with the change, the evidence that makes it necessary, and the exact plan path and commit. Disclosing the change under `Open questions` does not replace that return.
+A necessary change can fall outside the passed plan's touched scope, or change its declared approach, even with no Review finding. Examples are an edit to a file the plan does not touch and a different technique for a planned step. When implementation shows such a change is needed, do not commit, push, or open a PR containing it. Keep verified in-scope work as local commits. Record the change as a diff under `Open questions`, with the evidence that makes it necessary. Then restore exactly the paths that change touched to the last commit, staged and unstaged, so the checkout is clean for Draft and for Forge's later resume. This removes only Forge's own uncommitted edit; it is not the reset that manufactures readiness, and it touches no other path, unrelated state, or commit. Return `draft_required` with the exact plan path and commit. Disclosing the change under `Open questions` does not replace that return.
 
 ## Prepare and authorize outward mutations
 

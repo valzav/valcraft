@@ -64,7 +64,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "a8c8822b1537e539",
+      "version": "ae0f09be2a6596a5",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -85,7 +85,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "2515a946b217895d",
+      "version": "2cb3f3e35f1ef75f",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -153,7 +153,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "04a7b16c2f6546c0",
+      "version": "c9661be1704e8de5",
       "files": [
         "SKILL.md",
         "references/config.md",
