@@ -2060,6 +2060,66 @@
         "Step 2's FeatureClose dispatch carries the ref-bound Land grant for the close branch, PR creation, merge, and head-branch deletion, bound to the observed base SHA",
         "Step 2 lets Land merge only a single commit on the bound base whose delta is exactly the feature-close marks"
       ]
+    },
+    {
+      "id": 130,
+      "name": "roadmap-refresh-preserves-delivery",
+      "prompt": "A local-tracker Foreman run has just accepted Land completion for FEAT-001 T-002. The canonical project checkout already contains docs/roadmap.md. The next eligible task under the task contract is FEAT-001 T-003, but the roadmap says a different feature should come next. Describe the next dispatch, the evidence it receives, and how delivery resumes. Do not execute a backend.",
+      "expected_output": "Foreman preserves the contract-selected next task, records the completion event and saved delivery state, and dispatches a fresh Roadmap worker between workers. It passes the canonical output path and authoritative source/report locators. The business view is not selection evidence. Roadmap failure is reported as stale output without a new delivery gate once the worker and checkout are safe.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The roadmap does not change selection away from FEAT-001 T-003",
+        "RoadmapRefresh saves the delivery target/state and uses a fresh valcraft-roadmap worker",
+        "The worker receives the canonical project checkout and exact source or report locators",
+        "No task branch or reviewed head is changed by refresh",
+        "ResumeDelivery retains the original next task and reports a refresh failure without inventing a product gate"
+      ]
+    },
+    {
+      "id": 131,
+      "name": "roadmap-absent-does-not-add-work",
+      "prompt": "A Foreman run has no docs/roadmap.md in the canonical project checkout. Land has completed a task and another task is ready. Describe whether roadmap maintenance changes the next step. Do not execute a backend.",
+      "expected_output": "Foreman follows the existing delivery loop, with no Roadmap worker, roadmap creation, configuration migration, or new confirmation. The absence of the optional artifact is not a blocker.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "No Roadmap worker or new roadmap is created",
+        "Normal task selection and delivery continue",
+        "No new configuration or owner confirmation is required"
+      ]
+    },
+    {
+      "id": 132,
+      "name": "roadmap-herdr-settings-and-resume",
+      "prompt": "Foreman uses Herdr. A valid local overlay supplies a complete foreman.herdr worker map whose spec entry differs from the committed base. A roadmap refresh is due, and the last checkpoint says RoadmapRefresh already has an active assignment. Describe settings provenance and resume behavior without running Herdr.",
+      "expected_output": "Roadmap uses the resolved spec worker entry with actual overlay file/key provenance while retaining the logical roadmap role and valcraft-roadmap skill. Resume consumes the existing active assignment through ordinary backend await/recovery and does not spawn an untracked second writer. No roadmap configuration key is invented.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The effective spec worker settings come from the local overlay and are attributed to that exact source",
+        "The logical role remains roadmap and the invoked skill is valcraft-roadmap",
+        "No new worker configuration key or read-time fallback is introduced",
+        "Resume reconciles the active assignment rather than dispatching a second writer"
+      ]
     }
   ]
 }

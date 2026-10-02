@@ -94,6 +94,14 @@ LAND_EXECUTION_FIELDS = {
 # These fingerprints name only the producer-owned report headings and their order. The
 # linked producer file remains authoritative for fields, meaning, status, and behavior.
 REPORT_HEADINGS = {
+    "plugins/valcraft/skills/valcraft-roadmap/SKILL.md#report": (
+        "## Roadmap report",
+        "### Target",
+        "### Artifact",
+        "### Changes",
+        "### Evidence gaps",
+        "### Blockers",
+    ),
     "plugins/valcraft/skills/valcraft-cast/SKILL.md#report": (
         "## Cast report",
         "### Project frame",
@@ -179,6 +187,10 @@ REPORT_HEADINGS = {
 }
 
 MESSAGE_REGISTRY = {
+    "Business roadmap": (
+        "Roadmap",
+        "plugins/valcraft/skills/valcraft-roadmap/SKILL.md#report",
+    ),
     "Project frame": (
         "Cast",
         "plugins/valcraft/skills/valcraft-cast/SKILL.md#report",

@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.22
+
+### Roadmap reflects accepted direction and business progress
+
+`valcraft-roadmap` creates or refreshes the optional tracked `docs/roadmap.md` business view. It preserves accepted priorities, follows transferred obligations, and separates implementation, availability, and achieved outcomes. It prepares local commits on an isolated documentation branch; the integration-branch view changes only through the normal documentation publication workflow. Foreman refreshes an existing roadmap through its own worker without using it to select or gate delivery work. Roadmap uses the configured Spec worker settings on Herdr; no new worker key is required.
+
+- Applies when: never on its own; roadmap creation is explicit and Foreman's refresh applies only when the document already exists.
+- Tune performs: none.
+- Operator: none; invoke `valcraft-roadmap` when a business-facing view is wanted.
+
 ## v0.8.21
 
 ### Forge runs a complete quick file without a plan
