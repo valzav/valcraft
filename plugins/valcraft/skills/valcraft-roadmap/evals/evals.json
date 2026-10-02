@@ -1,0 +1,181 @@
+{
+  "skill_name": "valcraft-roadmap",
+  "evals": [
+    {
+      "id": 1,
+      "name": "create-business-view",
+      "prompt": "In an isolated copy of evals/files/project/, initialize a git repository with main as its only branch and commit the supplied fixture evidence. Create a business roadmap for Request workspace from its accepted direction and current evidence.",
+      "expected_output": "Creates a business-facing view preserving the online-intake pilot as next and monthly reporting later. Online intake remains incomplete because client notifications moved to an unfinished successor. Records tested storage separately from unverified deployment and pilot outcomes. Does not invent deadlines or redefine a stopped quality experiment as successful.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md"
+      ],
+      "assertions": [
+        "The next accepted result is the online-intake pilot, with monthly reporting later and legacy imports excluded",
+        "Online intake maps to both FEAT-001 and FEAT-002, with client notification still incomplete despite the checked transfer task",
+        "Storage acceptance is distinguished from live availability and pilot success",
+        "The stopped answer-quality experiment retains an unmet target and does not become a pilot blocker",
+        "No new dates, priority changes, task writes, or external calls occur"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "refresh-preserves-course",
+      "prompt": "In an isolated copy of evals/files/project/, place existing-roadmap.md at docs/roadmap.md. Initialize a git repository with main as its only branch and commit the supplied fixture evidence. Refresh the project roadmap.",
+      "expected_output": "Corrects the stale completed online-intake row, follows the successor obligation, preserves capability names/order and the explicit pilot exclusion, and records the verification scope. Does not turn the rejected reporting-first suggestion into accepted direction.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "Online intake no longer claims complete while receipt notifications remain undone",
+        "Both original capability names and their accepted ordering survive",
+        "The pilot excludes legacy imports sentence survives unchanged in meaning",
+        "The transfer to FEAT-002 is visible in the source mapping and remaining outcome",
+        "Monthly reporting is not promoted to the next result"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "github-source-unavailable",
+      "prompt": "In an isolated copy of evals/files/project/, place existing-roadmap.md at docs/roadmap.md. For this case set tracker.mode to github with github_repository example/request-workspace, add spec_issue 42 to FEAT-002, and map its task to issue 43. Initialize a git repository with main as its only branch and commit this fixture evidence. Refresh the roadmap. Those issues cannot be accessed in this run; do not contact a remote service.",
+      "expected_output": "Reports that current GitHub status cannot be verified and keeps the affected capability unverified, without using local checkboxes as GitHub completion authority. Preserves accepted direction and records exactly what was not checked.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "No GitHub completion state is inferred from the local FEAT-002 checkbox",
+        "Current notification progress is marked unavailable or unverified with the inaccessible issue source named",
+        "No current deployment or outcome success is claimed",
+        "No credentials, network, configuration migration, or service launch is attempted by the skill"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "absent-automatic-target",
+      "prompt": "In an isolated copy of evals/files/project/, initialize a git repository with main as its only branch and commit the supplied fixture evidence. A Foreman assignment requests a roadmap refresh. No docs/roadmap.md exists. Return the producer report.",
+      "expected_output": "Returns a Roadmap report with Artifact none \u2014 roadmap absent and Status: done. Creates no business document or new configuration and does not select delivery work.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md"
+      ],
+      "assertions": [
+        "No docs/roadmap.md is created",
+        "The producer report ends Status: done and identifies the absent target",
+        "No product brief, task state, configuration, or delivery selection changes"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "tracked-publication-preserves-review-target",
+      "prompt": "In an isolated fixture copy, put existing-roadmap.md at docs/roadmap.md and commit all fixture evidence on main. Create a task branch and commit a work-note file; this exact task head is the current code-review target. The operator manually requests a roadmap refresh from main plus the attributed observation that notification work has started on that task head. Prepare the update and return the Roadmap report. No remote publication is requested.",
+      "expected_output": "Prepares and commits only docs/roadmap.md on a separate documentation branch and isolated worktree, preserving the canonical checkout, task head, and main. Reports the exact candidate commit as the Review target with review pending, attributes in-progress work without claiming completion, and leaves source contracts untouched.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "The canonical task branch, its exact reviewed head, working-tree state, and main ref are unchanged",
+        "The candidate commit exists on a distinct documentation branch and its complete diff against main contains only docs/roadmap.md",
+        "The report identifies the exact candidate path, branch, commit, base, and review pending, names that commit as the Review target, and does not claim the published roadmap was refreshed",
+        "Notification work may be underway at the supplied task head but is not complete; the accepted pilot-first course is retained",
+        "No push, PR, merge into the integration branch, configuration edit, or delivery-state mutation occurs"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "pending-candidate-refresh",
+      "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. Land new acceptance evidence for receipt notifications on main, with availability and pilot use still unchecked. The operator manually requests another refresh using the new main revision and prior Roadmap report. Prepare the current view and return the report. No remote publication is requested.",
+      "expected_output": "Resolves the exact pending candidate, merges the new integration base without rewriting its history, and updates the same documentation branch. The resulting diff against the new base remains roadmap-only. Reports implemented intake while leaving availability and pilot outcomes unverified, and keeps the canonical task review target unchanged. The new head is a new Review target that the earlier candidate's review does not cover.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "The prior candidate remains an ancestor of the new candidate on the same attributed documentation branch",
+        "The new integration base is included and the complete diff against it contains only docs/roadmap.md",
+        "Online intake reflects accepted notification completion without claiming release availability or pilot success",
+        "Canonical task branch and reviewed head are unchanged; the report names the new candidate commit as its Review target and remains review pending"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "review-findings-remediation",
+      "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. A fresh reviewer's plan-mode Review report at .local/review-roadmap.md lists R-001 (P1): the candidate states that online intake is complete although FEAT-002 AC-001 is unchecked, and R-002 (P2): the candidate moved monthly reporting ahead of the online-intake pilot without an accepted decision. The caller supplies that report path and R-001 and R-002. Resolve the findings and return the Roadmap report. No remote publication is requested.",
+      "expected_output": "Resolves only R-001 and R-002 in a new commit on the same documentation branch, keeping the candidate's diff against main roadmap-only. Records each R-ID with its resolving commit under Finding resolutions, names the new commit as the Review target, and keeps the disposition review pending. It does not review its own candidate, claim the findings closed, or publish.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "The resolution is a new commit on the same documentation branch, and the prior candidate is its ancestor",
+        "Online intake is no longer complete while FEAT-002 AC-001 is unchecked, and the pilot remains the next accepted result ahead of monthly reporting",
+        "Finding resolutions lists R-001 and R-002 with the resolving commit, or a declined reason",
+        "The Review target is the new full commit, the disposition remains review pending, and no verdict or publication readiness is claimed",
+        "The complete diff against main contains only docs/roadmap.md, and no push, PR, or merge occurs"
+      ]
+    }
+  ]
+}

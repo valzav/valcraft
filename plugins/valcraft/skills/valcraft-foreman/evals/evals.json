@@ -2060,6 +2060,110 @@
         "Step 2's FeatureClose dispatch carries the ref-bound Land grant for the close branch, PR creation, merge, and head-branch deletion, bound to the observed base SHA",
         "Step 2 lets Land merge only a single commit on the bound base whose delta is exactly the feature-close marks"
       ]
+    },
+    {
+      "id": 130,
+      "name": "roadmap-refresh-preserves-delivery",
+      "prompt": "A local-tracker Foreman run has just accepted Land completion for the owner-confirmed closure of FEAT-001. The canonical project checkout already contains docs/roadmap.md. The delivery loop would next run the FEAT-001 retrospective, but the roadmap says a different feature should come next. Describe the next dispatch, the evidence it receives, and how delivery resumes. Do not execute a backend.",
+      "expected_output": "Foreman records the feature-close event and saves Retrospective for FEAT-001, then dispatches a fresh Roadmap worker before Temper. It passes the canonical output path and authoritative feature-close report and source locators. The business view is not selection evidence. Roadmap failure is reported as stale output without a new delivery gate once the worker and checkout are safe.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The roadmap does not change the target away from the closed FEAT-001 or skip its retrospective",
+        "RoadmapRefresh saves Retrospective for FEAT-001 and uses a fresh valcraft-roadmap worker",
+        "The worker receives the canonical project checkout and exact feature-close Land report and source locators",
+        "No task branch or reviewed head is changed by refresh",
+        "ResumeDelivery returns to the FEAT-001 retrospective and reports a refresh failure without inventing a product gate"
+      ]
+    },
+    {
+      "id": 131,
+      "name": "roadmap-absent-does-not-add-work",
+      "prompt": "A Foreman run has no docs/roadmap.md in the canonical project checkout. Land has completed the owner-confirmed feature closure. Describe whether roadmap maintenance changes the next step. Do not execute a backend.",
+      "expected_output": "Foreman follows the existing delivery loop, with no Roadmap worker, roadmap creation, configuration migration, or new confirmation. The absence of the optional artifact is not a blocker.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "No Roadmap worker or new roadmap is created",
+        "Normal delivery continues to the feature retrospective",
+        "No new configuration or owner confirmation is required"
+      ]
+    },
+    {
+      "id": 132,
+      "name": "roadmap-herdr-settings-and-resume",
+      "prompt": "Foreman uses Herdr. A valid local overlay supplies a complete foreman.herdr worker map whose spec entry differs from the committed base. After confirmed feature closure, the last checkpoint entered RoadmapRefresh and recorded an active assignment. Describe settings provenance and resume behavior without running Herdr.",
+      "expected_output": "Roadmap uses the resolved spec worker entry with actual overlay file/key provenance while retaining the logical roadmap role and valcraft-roadmap skill. Resume consumes the existing active assignment through ordinary backend await/recovery and does not spawn an untracked second writer. No roadmap configuration key is invented.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "The effective spec worker settings come from the local overlay and are attributed to that exact source",
+        "The logical role remains roadmap and the invoked skill is valcraft-roadmap",
+        "No new worker configuration key or read-time fallback is introduced",
+        "Resume reconciles the active assignment rather than dispatching a second writer"
+      ]
+    },
+    {
+      "id": 133,
+      "name": "roadmap-intermediate-events-do-not-trigger",
+      "prompt": "A Foreman run has an existing docs/roadmap.md. Describe the next action for each independent checkpoint: (a) a task has started; (b) Land has completed a task but feature closure has not occurred; (c) accepted scope or a blocker has changed; (d) takeover finds an old closed feature with no pending Roadmap assignment; (e) resume finds the feature-close refresh already returned a terminal result. Then explain how the operator can request a current business view between feature closures. Do not execute a backend.",
+      "expected_output": "None of these checkpoints triggers an automatic Roadmap worker. Foreman follows the existing delivery state and does not replay an already handled closure or infer a refresh on takeover. The operator can directly invoke valcraft-roadmap for an intermediate update.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/backends/subagents.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "Task start and task completion do not dispatch Roadmap",
+        "Scope and blocker changes do not dispatch Roadmap",
+        "Takeover without a pending feature-close refresh does not create one",
+        "A handled feature closure does not dispatch another refresh on resume",
+        "Manual valcraft-roadmap invocation remains available for intermediate updates"
+      ]
+    },
+    {
+      "id": 134,
+      "name": "roadmap-review-one-round",
+      "prompt": "A Foreman run on Herdr has just accepted Land completion for the owner-confirmed closure of FEAT-001, and docs/roadmap.md exists. The Roadmap worker reports a candidate commit as its Review target. Its plan-mode Review returns material findings R-001 and R-002. After Roadmap resolves them in a new commit, the closure check leaves R-002 open. Describe each dispatch from the Roadmap report through the next delivery state, the worker settings used, and what the run-end report says about the candidate. Do not execute a backend.",
+      "expected_output": "Foreman enters RoadmapReview and dispatches a fresh roadmap-reviewer with valcraft-review in plan mode on the exact candidate path and commit, using the resolved spec_review Herdr entry. Material findings return once to a fresh Roadmap worker, then a closure check covers the new commit. With R-002 still open, Foreman runs no second round, does not escalate, and does not dispatch Roadmap again. The candidate stays unpublished as review findings open; the run-end report names R-002 and the Review report path. ResumeDelivery returns to the FEAT-001 retrospective without a new gate.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/review-round.md",
+        "references/approval-modes.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "RoadmapReview dispatches a fresh roadmap-reviewer with valcraft-review in plan mode on the exact candidate path and full commit",
+        "The reviewer uses the resolved spec_review Herdr entry, and the Roadmap worker uses the spec entry",
+        "Findings return to Roadmap once, and the closure check covers the new candidate commit",
+        "An open R-ID after the closure check triggers no second round, escalation, or further Roadmap dispatch",
+        "The candidate stays unpublished, and the run-end report names R-002 with the Review report path",
+        "Delivery resumes at the FEAT-001 retrospective with no new approval or delivery gate"
+      ]
     }
   ]
 }

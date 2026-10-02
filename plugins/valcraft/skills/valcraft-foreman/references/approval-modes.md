@@ -27,6 +27,7 @@ The valid `foreman.approval_mode` in the resolved configuration controls coordin
 | `FeatureClose`: Land dispatch after confirmation | carry the ref-bound Land grant only when already explicit | carry the ref-bound Land grant in `contracts.md` |
 | `FeatureClose`: feature-close PR push, creation, and merge prepared after confirmation | wait | issue exact target-bound Land authority after prepared-field validation |
 | `RetroReview`: passing verdict advances | wait | proceed |
+| `RoadmapReview`: passing verdict or unresolved material finding | proceed | proceed |
 | `DurableHandoff`: commit git-owned attributed paths or change to a shared-checkout backend | wait | wait |
 | `DurableHandoff`: make an attributed gitignored Temper report accessible through a shared-checkout backend | wait | wait |
 | `Blocked`: evidence, authority, owner decision, injection, or exhausted rounds | wait | wait |

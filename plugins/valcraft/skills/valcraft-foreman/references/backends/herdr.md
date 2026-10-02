@@ -37,6 +37,8 @@ Resolve every dispatch from the matching `foreman.herdr.workers` entry:
 
 The Tune contract guarantees each reviewer uses a different harness from its producer. Revalidate those five pairs during readiness. Never substitute a harness, model, or effort; delegate an invalid map to Tune and resume only after `Status: done`.
 
+The optional `RoadmapRefresh` documentation worker uses the resolved `spec` worker entry, and its `RoadmapReview` worker uses the resolved `spec_review` entry. Keep the logical roles `roadmap-<identity>` and `roadmap-reviewer-<identity>`, invoke `valcraft-roadmap` and `valcraft-review`, and record the actual configuration key as each settings source. The existing `spec` and `spec_review` pair keeps the reviewer on a different harness, so this mapping adds no configuration key or review pair.
+
 ## Readiness
 
 Fail before run creation or task selection when any of these does not hold. Never fall back to another backend.

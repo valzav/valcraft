@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "a1dc88c5f44700f1",
+      "version": "736cfbc7527d0d20",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -57,6 +57,7 @@
         "references/intake-local.md",
         "references/loop.md",
         "references/review-round.md",
+        "references/roadmap.md",
         "templates/run-dir.md",
         "agents/openai.yaml"
       ]
@@ -104,12 +105,23 @@
     },
     {
       "name": "valcraft-review",
-      "version": "3430f9ab0fe65747",
+      "version": "fc8cb91da2b0fe90",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
         "references/evidence-mode.md",
         "references/plan-mode.md",
+        "agents/openai.yaml"
+      ]
+    },
+    {
+      "name": "valcraft-roadmap",
+      "version": "a75301cf6ab213f5",
+      "files": [
+        "SKILL.md",
+        "references/evidence.md",
+        "references/publication.md",
+        "templates/roadmap.md",
         "agents/openai.yaml"
       ]
     },
@@ -141,7 +153,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "913fdbd936e8134b",
+      "version": "a896c79d508f4e66",
       "files": [
         "SKILL.md",
         "references/config.md",

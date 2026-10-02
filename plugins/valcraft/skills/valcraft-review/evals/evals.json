@@ -896,6 +896,24 @@
         "The verdict is material findings",
         "Nothing in the fixture is edited"
       ]
+    },
+    {
+      "id": 45,
+      "name": "roadmap-candidate-is-plan-mode",
+      "prompt": "$valcraft:valcraft-review — the target is commit 4f1c… on branch docs/roadmap-f001, a roadmap candidate whose diff against main changes docs/roadmap.md and docs/product-brief.md. The candidate marks online intake complete, citing specs/001-intake/spec.md, while that spec transfers its client-confirmation criterion to FEAT-002, whose criterion is still unchecked. It also states that legacy imports are excluded and that availability is unverified. Describe the mode, the governing contract, how the target is pinned, each finding with its severity and owner, and the verdict line. Do not edit anything.",
+      "expected_output": "Plan mode applies to a roadmap candidate commit, pinned by path and full commit with the integration base named. Roadmap's evidence.md and publication.md govern it, not the feature references. The extra docs/product-brief.md path is a material finding, and so is online intake marked complete while the transferred FEAT-002 criterion is undelivered. Both resolve in valcraft-roadmap. The stated exclusion and the named availability gap are not findings. The verdict is material findings, and Review edits nothing.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md"
+      ],
+      "assertions": [
+        "A roadmap candidate commit is reviewed in plan mode, pinned by path and full commit with its integration base named",
+        "Roadmap's evidence.md and publication.md are the governing contract, not the feature or quick references",
+        "The product-brief path in the candidate diff is a material finding",
+        "Online intake marked complete despite the undelivered transferred criterion is a material finding",
+        "Both findings name valcraft-roadmap as the owner, the named availability gap is not a finding, and the verdict line is material findings",
+        "Review edits and commits nothing"
+      ]
     }
   ]
 }

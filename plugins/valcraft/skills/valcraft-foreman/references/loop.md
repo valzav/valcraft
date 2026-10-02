@@ -34,6 +34,8 @@ Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraf
 
 ## Rebuild before transition
 
+When Land confirms feature closure and `docs/roadmap.md` exists in the canonical project checkout, load [`roadmap.md`](roadmap.md) to refresh before `Retrospective`. Also load it when resuming a recorded pending or active refresh or roadmap review. `RoadmapRefresh` saves and returns to the delivery state below; it never supplies evidence to the resume map or changes task selection.
+
 Read the latest `state.md` checkpoint, the tracker-specific intake, and authoritative git or tracker state. Verify every stored path, SHA, branch, PR, issue, backend return, and active worker identity before using it.
 
 On a shared checkout, staged, unstaged, or untracked state stops before fetch, switch, synchronization, or task-branch creation. Record and preserve it. The only task-start exception is takeover-confirmed paths owned by the next producer on the already-correct branch and head; dispatch that producer in place without a fetch, switch, synchronization, or branch creation. Dead-worker recovery is the separate existing-task path in the backend contract.
@@ -147,7 +149,7 @@ Route the Land report exactly:
 
 When checks are pending, keep Foreman and the active Land worker alive. Continue the backend's await discipline against the same assignment. Do not turn a pending check into a user-status prompt, new worker, or Foreman-owned classifier. A missing required check routes to an artifact owner only after Land's authoritative evidence proves that owner; otherwise it remains Blocked.
 
-A completed task target returns to Ready. A completed external closure returns to Ready. A completed feature-close target enters Retrospective.
+A completed task target returns to Ready. A completed external closure returns to Ready. A completed feature-close target enters `RoadmapRefresh` when `docs/roadmap.md` exists, and Retrospective otherwise.
 
 ## `EvidenceReview`
 
@@ -157,7 +159,7 @@ The return re-enters `Landing` carrying the whole ownership listed there — fin
 
 ## `FeatureClose`
 
-Dispatch Land with the exact feature or PRD target and the operator's quoted confirmation. For a feature, Land prepares the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`; carry the ref-bound Land grant in the dispatch when the FeatureClose gate in [`approval-modes.md`](approval-modes.md) allows it; otherwise issue its exact push, PR, and merge authority under that gate, then resume the same Land producer. Land closes only the authorized real tracker target. Keep a pending check on the close PR under the same await discipline as `Landing`. Route Land codes through the registry in `contracts.md`. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. Foreman neither builds nor executes a closing batch.
+Dispatch Land with the exact feature or PRD target and the operator's quoted confirmation. For a feature, Land prepares the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`; carry the ref-bound Land grant in the dispatch when the FeatureClose gate in [`approval-modes.md`](approval-modes.md) allows it; otherwise issue its exact push, PR, and merge authority under that gate, then resume the same Land producer. Land closes only the authorized real tracker target. Keep a pending check on the close PR under the same await discipline as `Landing`. Route Land codes through the registry in `contracts.md`. Route `partial_completion` through `PartialCompletionByTarget` with only remaining operations. On completion, enter Retrospective. When `docs/roadmap.md` exists, `RoadmapRefresh` runs first, as [`roadmap.md`](roadmap.md) defines. Foreman neither builds nor executes a closing batch.
 
 ## `Retrospective`
 

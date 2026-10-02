@@ -85,8 +85,10 @@ No field is bound by condition. Tracker projection stays outside this grant.
 | Evidence-sufficiency verdict | Review | Foreman, Land | [`../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report`](../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report) | EvidenceReview | `Landing` |
 | Retrospective report | Temper | Foreman, Review | [`../../valcraft-temper/SKILL.md#report`](../../valcraft-temper/SKILL.md#report) | Retrospective | `TemperResult` |
 | Retrospective verdict | Review | Foreman, Temper | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
+| Business roadmap | Roadmap | direct caller or Foreman, Review | [`../../valcraft-roadmap/SKILL.md#report`](../../valcraft-roadmap/SKILL.md#report) | OutsideLoop or RoadmapRefresh | `ReturnToCaller` or `RoadmapResult` |
+| Roadmap verdict | Review | Foreman, Roadmap | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | RoadmapReview | `RoadmapVerdict` |
 
-`SpecResult`, `DraftResult`, and `ForgeResult` first apply the prepared outward continuation above; they advance only when the next worker can resolve the exact target. A `SpecResult` with commit target `task branch` enters Drafting for the selected task and prepares no spec PR. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `PlanVerdict`, `CodeVerdict`, and `RetroVerdict` read the report's structured verdict, not prose. A SpecReview pass enters Ready when the reviewed contract is already present on the reconciled default branch. Otherwise it advances to SpecLanding only with a current exact spec PR or returns to Specifying. Material SpecReview findings return to Specifying. LandResult uses the reported target kind: a completed spec PR enters Ready after default-branch reconciliation, a completed task returns Ready, a completed feature close enters Retrospective, and completed external closure returns Ready.
+`SpecResult`, `DraftResult`, and `ForgeResult` first apply the prepared outward continuation above; they advance only when the next worker can resolve the exact target. A `SpecResult` with commit target `task branch` enters Drafting for the selected task and prepares no spec PR. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `RoadmapResult` advances to RoadmapReview on its exact candidate commit, or applies `ResumeDelivery` when it names no Review target. `PlanVerdict`, `CodeVerdict`, `RetroVerdict`, and `RoadmapVerdict` read the report's structured verdict, not prose. A SpecReview pass enters Ready when the reviewed contract is already present on the reconciled default branch. Otherwise it advances to SpecLanding only with a current exact spec PR or returns to Specifying. Material SpecReview findings return to Specifying. LandResult uses the reported target kind: a completed spec PR enters Ready after default-branch reconciliation, a completed task returns Ready, a completed feature close enters RoadmapRefresh when `docs/roadmap.md` exists and Retrospective otherwise, and completed external closure returns Ready.
 
 ## Coordinator reads
 
@@ -107,6 +109,8 @@ A producer report body never enters Foreman's context. After `report_available`,
 | Evidence-sufficiency verdict | `### Target and sources`, `### Overall verdict` |
 | Retrospective report | `### Operator selection`, `### Review target`, `### Blockers` |
 | Retrospective verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
+| Business roadmap | `### Target`, `### Artifact`, `### Changes`, `### Evidence gaps`, `### Finding resolutions`, `### Review target`, `### Blockers` |
+| Roadmap verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
 
 The open finding rows carry the severity, claim, evidence, and resolution that `review-round.md`'s second-round triggers test. Every other section — verification evidence, resolved or informational findings, reproductions, checks performed, criterion detail — stays on disk for the worker whose role reads it. A field a transition needs that is absent from the named sections makes the report incomplete under [Validation and rejection](#validation-and-rejection); it is never a reason to read the body. The project frame is outside the loop and has no coordinator read.
 
@@ -177,6 +181,14 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | --- | --- |
 | `corpus_invalid`, `analysis_blocked`, `report_dir_not_ignored`, `report_write_failed` | `Blocked` |
 | `owner_decision_required` | `AwaitOwner` |
+
+### Roadmap
+
+| Outcome | Transition |
+| --- | --- |
+| `target_unresolved`, `source_unavailable`, `publication_blocked`, `artifact_write_failed` | `ResumeDelivery` |
+
+`ResumeDelivery` records the refresh result and resumes the saved delivery state and target under [`roadmap.md`](roadmap.md). It never treats a roadmap state as completion evidence or changes a selected task. In `RoadmapReview`, every Review routing code applies `ResumeDelivery` instead of the Review table's transition and leaves the candidate unpublished.
 
 ## Backend returns
 

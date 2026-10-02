@@ -20,6 +20,7 @@ PRODUCERS = (
     "valcraft-land",
     "valcraft-spec",
     "valcraft-temper",
+    "valcraft-roadmap",
 )
 CONTRACTS = "plugins/valcraft/skills/valcraft-foreman/references/contracts.md"
 DRAFT_CONTRACT = "plugins/valcraft/skills/valcraft-draft/references/plan-contract.md"

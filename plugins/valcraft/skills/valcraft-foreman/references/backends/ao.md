@@ -23,7 +23,8 @@ Keep the full canonical logical identity in the assignment and `workers.md`. Map
 - Forge: `f`;
 - every Review mode: `r`;
 - Land: `l`;
-- Temper: `t`.
+- Temper: `t`;
+- Roadmap: `m`.
 
 Do not define aliases for producer-owned substeps.
 
