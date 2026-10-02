@@ -2141,6 +2141,29 @@
         "A handled feature closure does not dispatch another refresh on resume",
         "Manual valcraft-roadmap invocation remains available for intermediate updates"
       ]
+    },
+    {
+      "id": 134,
+      "name": "roadmap-review-one-round",
+      "prompt": "A Foreman run on Herdr has just accepted Land completion for the owner-confirmed closure of FEAT-001, and docs/roadmap.md exists. The Roadmap worker reports a candidate commit as its Review target. Its plan-mode Review returns material findings R-001 and R-002. After Roadmap resolves them in a new commit, the closure check leaves R-002 open. Describe each dispatch from the Roadmap report through the next delivery state, the worker settings used, and what the run-end report says about the candidate. Do not execute a backend.",
+      "expected_output": "Foreman enters RoadmapReview and dispatches a fresh roadmap-reviewer with valcraft-review in plan mode on the exact candidate path and commit, using the resolved spec_review Herdr entry. Material findings return once to a fresh Roadmap worker, then a closure check covers the new commit. With R-002 still open, Foreman runs no second round, does not escalate, and does not dispatch Roadmap again. The candidate stays unpublished as review findings open; the run-end report names R-002 and the Review report path. ResumeDelivery returns to the FEAT-001 retrospective without a new gate.",
+      "files": [
+        "SKILL.md",
+        "references/roadmap.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/review-round.md",
+        "references/approval-modes.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "RoadmapReview dispatches a fresh roadmap-reviewer with valcraft-review in plan mode on the exact candidate path and full commit",
+        "The reviewer uses the resolved spec_review Herdr entry, and the Roadmap worker uses the spec entry",
+        "Findings return to Roadmap once, and the closure check covers the new candidate commit",
+        "An open R-ID after the closure check triggers no second round, escalation, or further Roadmap dispatch",
+        "The candidate stays unpublished, and the run-end report names R-002 with the Review report path",
+        "Delivery resumes at the FEAT-001 retrospective with no new approval or delivery gate"
+      ]
     }
   ]
 }

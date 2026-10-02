@@ -20,7 +20,7 @@ Entry shape: a `### <title>` heading, one paragraph stating what changed, then `
 
 ### Roadmap reflects accepted direction and business progress
 
-`valcraft-roadmap` creates or refreshes the optional tracked `docs/roadmap.md` business view. It preserves accepted priorities, follows transferred obligations, and separates implementation, availability, and achieved outcomes. It prepares local commits on an isolated documentation branch; the integration-branch view changes only through the normal documentation publication workflow. Foreman automatically refreshes an existing roadmap only after Land confirms feature closure, without using it to select or gate delivery work. Roadmap uses the configured Spec worker settings on Herdr; no new worker key is required.
+`valcraft-roadmap` creates or refreshes the optional tracked `docs/roadmap.md` business view. It preserves accepted priorities, follows transferred obligations, and separates implementation, availability, and achieved outcomes. It prepares local commits on an isolated documentation branch. Each candidate gets one Review round, and the integration-branch view changes only through the normal documentation publication workflow after Review passes the exact candidate commit. Foreman automatically refreshes an existing roadmap only after Land confirms feature closure, without using it to select or gate delivery work. Roadmap and its reviewer use the configured Spec and Spec Review worker settings on Herdr; no new worker key is required.
 
 - Applies when: never on its own; roadmap creation is explicit and Foreman's refresh applies only at confirmed feature closure when the document already exists.
 - Tune performs: none.

@@ -11,7 +11,7 @@
 ## Naming
 
 - Feature workers include `specifier-F004`, `spec-reviewer-F004`, `drafter-F004-T012`, `plan-reviewer-F004-T012`, `forge-F004-T012`, `code-reviewer-F004-T012`, `land-F004-T012`, and `review-evidence-F004-T012`.
-- Quick workers preserve the qualified identity, for example `specifier-Q007`, `spec-reviewer-Q007`, and `forge-Q007-QT001`. Retrospective workers are `temper-F004` and `retro-reviewer-F004`.
+- Quick workers preserve the qualified identity, for example `specifier-Q007`, `spec-reviewer-Q007`, and `forge-Q007-QT001`. Retrospective workers are `temper-F004` and `retro-reviewer-F004`. Roadmap workers are `roadmap-F004` and `roadmap-reviewer-F004`.
 - Branches: canonical task `feat/f004-t012-<slug>` or `feat/q007-qt001-<slug>`; a retrospective has no branch, its report lives in the gitignored `docs/.retro/`. External-orchestrator physical branches are unique dispatch refs and never replace the canonical remote ref.
 - Preserve every identity digit. Backend physical aliases remain separate and every dispatch gets a new row in `workers.md`.
 
@@ -25,7 +25,7 @@
 
 ## Review rounds
 
-One full round is the default. Every material-finding remediation receives a closure check, or a second full round that performs that check's inspection when a trigger is already known. Run a second full round only on a trigger in [`review-round.md`](review-round.md). Two full rounds is the owner-established cap; a third escalates with the open finding. RetroReview runs one full round, and Temper records a finding its closure check leaves open in the report instead of escalating it.
+One full round is the default. Every material-finding remediation receives a closure check, or a second full round that performs that check's inspection when a trigger is already known. Run a second full round only on a trigger in [`review-round.md`](review-round.md). Two full rounds is the owner-established cap; a third escalates with the open finding. RetroReview runs one full round, and Temper records a finding its closure check leaves open in the report instead of escalating it. RoadmapReview runs one full round, and a finding its closure check leaves open keeps the candidate unpublished instead of escalating it.
 
 The owner-established two-attempt rule also covers assignments that fail to start, reports that remain incomplete, backend dispatch recovery, and unresolved batch delivery. Do not invent another retry or round count.
 

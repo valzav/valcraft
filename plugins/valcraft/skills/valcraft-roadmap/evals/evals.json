@@ -104,7 +104,7 @@
       "id": 5,
       "name": "tracked-publication-preserves-review-target",
       "prompt": "In an isolated fixture copy, put existing-roadmap.md at docs/roadmap.md and commit all fixture evidence on main. Create a task branch and commit a work-note file; this exact task head is the current code-review target. The operator manually requests a roadmap refresh from main plus the attributed observation that notification work has started on that task head. Prepare the update and return the Roadmap report. No remote publication is requested.",
-      "expected_output": "Prepares and commits only docs/roadmap.md on a separate documentation branch and isolated worktree, preserving the canonical checkout, task head, and main. Reports exact candidate and publication pending, attributes in-progress work without claiming completion, and leaves source contracts untouched.",
+      "expected_output": "Prepares and commits only docs/roadmap.md on a separate documentation branch and isolated worktree, preserving the canonical checkout, task head, and main. Reports the exact candidate commit as the Review target with review pending, attributes in-progress work without claiming completion, and leaves source contracts untouched.",
       "files": [
         "evals/files/project/.valcraft/config.yaml",
         "evals/files/project/AGENTS.md",
@@ -121,7 +121,7 @@
       "assertions": [
         "The canonical task branch, its exact reviewed head, working-tree state, and main ref are unchanged",
         "The candidate commit exists on a distinct documentation branch and its complete diff against main contains only docs/roadmap.md",
-        "The report identifies the exact candidate path, branch, commit, base, and pending publication without claiming the published roadmap was refreshed",
+        "The report identifies the exact candidate path, branch, commit, base, and review pending, names that commit as the Review target, and does not claim the published roadmap was refreshed",
         "Notification work may be underway at the supplied task head but is not complete; the accepted pilot-first course is retained",
         "No push, PR, merge into the integration branch, configuration edit, or delivery-state mutation occurs"
       ]
@@ -130,7 +130,7 @@
       "id": 6,
       "name": "pending-candidate-refresh",
       "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. Land new acceptance evidence for receipt notifications on main, with availability and pilot use still unchecked. The operator manually requests another refresh using the new main revision and prior Roadmap report. Prepare the current view and return the report. No remote publication is requested.",
-      "expected_output": "Resolves the exact pending candidate, merges the new integration base without rewriting its history, and updates the same documentation branch. The resulting diff against the new base remains roadmap-only. Reports implemented intake while leaving availability and pilot outcomes unverified, and keeps the canonical task review target unchanged.",
+      "expected_output": "Resolves the exact pending candidate, merges the new integration base without rewriting its history, and updates the same documentation branch. The resulting diff against the new base remains roadmap-only. Reports implemented intake while leaving availability and pilot outcomes unverified, and keeps the canonical task review target unchanged. The new head is a new Review target that the earlier candidate's review does not cover.",
       "files": [
         "evals/files/project/.valcraft/config.yaml",
         "evals/files/project/AGENTS.md",
@@ -148,7 +148,33 @@
         "The prior candidate remains an ancestor of the new candidate on the same attributed documentation branch",
         "The new integration base is included and the complete diff against it contains only docs/roadmap.md",
         "Online intake reflects accepted notification completion without claiming release availability or pilot success",
-        "Canonical task branch and reviewed head are unchanged; the report remains publication pending"
+        "Canonical task branch and reviewed head are unchanged; the report names the new candidate commit as its Review target and remains review pending"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "review-findings-remediation",
+      "prompt": "In an isolated fixture, start from the tracked-publication-preserves-review-target setup and retain its prepared candidate and exact Roadmap report. A fresh reviewer's plan-mode Review report at .local/review-roadmap.md lists R-001 (P1): the candidate states that online intake is complete although FEAT-002 AC-001 is unchecked, and R-002 (P2): the candidate moved monthly reporting ahead of the online-intake pilot without an accepted decision. The caller supplies that report path and R-001 and R-002. Resolve the findings and return the Roadmap report. No remote publication is requested.",
+      "expected_output": "Resolves only R-001 and R-002 in a new commit on the same documentation branch, keeping the candidate's diff against main roadmap-only. Records each R-ID with its resolving commit under Finding resolutions, names the new commit as the Review target, and keeps the disposition review pending. It does not review its own candidate, claim the findings closed, or publish.",
+      "files": [
+        "evals/files/project/.valcraft/config.yaml",
+        "evals/files/project/AGENTS.md",
+        "evals/files/project/docs/decisions/pilot.md",
+        "evals/files/project/docs/product-brief.md",
+        "evals/files/project/specs/001-intake/spec.md",
+        "evals/files/project/specs/001-intake/tasks.md",
+        "evals/files/project/specs/002-notifications/spec.md",
+        "evals/files/project/specs/002-notifications/tasks.md",
+        "evals/files/project/specs/003-reporting/spec.md",
+        "evals/files/project/specs/003-reporting/tasks.md",
+        "evals/files/existing-roadmap.md"
+      ],
+      "assertions": [
+        "The resolution is a new commit on the same documentation branch, and the prior candidate is its ancestor",
+        "Online intake is no longer complete while FEAT-002 AC-001 is unchecked, and the pilot remains the next accepted result ahead of monthly reporting",
+        "Finding resolutions lists R-001 and R-002 with the resolving commit, or a declined reason",
+        "The Review target is the new full commit, the disposition remains review pending, and no verdict or publication readiness is claimed",
+        "The complete diff against main contains only docs/roadmap.md, and no push, PR, or merge occurs"
       ]
     }
   ]

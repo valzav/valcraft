@@ -100,6 +100,8 @@ REPORT_HEADINGS = {
         "### Artifact",
         "### Changes",
         "### Evidence gaps",
+        "### Finding resolutions",
+        "### Review target",
         "### Blockers",
     ),
     "plugins/valcraft/skills/valcraft-cast/SKILL.md#report": (
@@ -228,6 +230,10 @@ MESSAGE_REGISTRY = {
         "plugins/valcraft/skills/valcraft-temper/SKILL.md#report",
     ),
     "Retrospective verdict": (
+        "Review",
+        "plugins/valcraft/skills/valcraft-review/SKILL.md#reports",
+    ),
+    "Roadmap verdict": (
         "Review",
         "plugins/valcraft/skills/valcraft-review/SKILL.md#reports",
     ),

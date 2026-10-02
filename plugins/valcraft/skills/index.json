@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "8fb611ca893bb48a",
+      "version": "736cfbc7527d0d20",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -105,7 +105,7 @@
     },
     {
       "name": "valcraft-review",
-      "version": "3430f9ab0fe65747",
+      "version": "fc8cb91da2b0fe90",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -116,7 +116,7 @@
     },
     {
       "name": "valcraft-roadmap",
-      "version": "5210918b52dc950e",
+      "version": "a75301cf6ab213f5",
       "files": [
         "SKILL.md",
         "references/evidence.md",
@@ -153,7 +153,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "2c40e08dcf3c9d9c",
+      "version": "a896c79d508f4e66",
       "files": [
         "SKILL.md",
         "references/config.md",
