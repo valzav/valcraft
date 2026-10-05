@@ -44,7 +44,13 @@ Inventory all open and closed non-pull-request issues once for the pass. Reuse a
 
 Reconcile the parent issue first, then every task issue. Include unparented matches so a retry can recover an issue created before relationship attachment failed. Read the parent sub-issue list, displayed order, current dependencies, generated labels, and git-owned mappings. Compare them with the complete triplet. Reads never authorize writes.
 
-An explicitly selected GitHub source is provenance, not the generated feature issue. When the source issue belongs to the exact output repository, include parenting the generated feature issue beneath that PRD issue in the projection. Never do this across repositories or when the source is not a verified issue.
+An explicitly selected GitHub source is provenance, not the generated feature issue. The PRD issue is the issue that the generated feature issue is parented beneath. Derive it from the feature's one source at the local artifact head:
+
+- a GitHub source is itself the PRD issue;
+- a local source names one only through its frontmatter `prd_issue` field, read on every pass and never copied into the triplet; and
+- any other local source has no PRD issue.
+
+During read-only preflight, verify that a declared PRD issue is a canonical issue URL in the exact output repository and resolves to an issue, not a pull request. When the PRD issue belongs to the exact output repository and is verified, include parenting the generated feature issue beneath it in the projection, moving the feature issue from any different current parent. A declaration that is malformed, names another repository, or does not resolve to an issue yields no parenting; name the declaration and the reason in the preview. When the source names no PRD issue or cannot be read at the artifact head, leave any existing parent relationship unchanged, and report an unreadable source. Never parent across repositories or beneath an unverified issue.
 
 ## Prepare the exact projection
 
@@ -54,7 +60,7 @@ Build one deterministic preview from reconciled state. It names:
 - target declaration activation when currently `TBD`;
 - missing generated labels;
 - each issue to create, update, close, or leave unchanged;
-- same-repository PRD parenting when applicable;
+- same-repository PRD parenting when applicable, or the declared PRD issue that yields none and the reason;
 - feature-to-task hierarchy and displayed task order;
 - each blocked-by addition or removal derived from `blocked by T-XXX`;
 - every `spec.md` and `tasks.md` mapping write; and

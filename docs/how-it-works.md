@@ -73,6 +73,8 @@ It records its exact proposal in its report, applies it, and commits one clean b
 
 `/valcraft:valcraft-spec <source>` takes one accepted source: a local requirements document, one selected GitHub issue, or an inline brief for a quick task. For a new contract, it writes and commits the artifacts on a Spec branch. If the contract is already complete and unchanged, Spec returns its existing commit without creating another.
 
+Spec reads a selected issue's title and body, never its comments. A project that records decisions in issue comments compiles the issue into a local requirements document first. That document can name the issue in a `prd_issue` frontmatter field. Spec reads nothing from the named issue; in GitHub tracker mode it only places the feature's generated issue beneath it.
+
 Under a Foreman assignment, an amendment scoped to the selected task may be committed on that task's branch. Other amendments use a separate amendment branch.
 
 Spec returns the exact Review target and, when a pull request exists, its Land target. Tracker projection, pushing, and opening the spec pull request are separate operations, and each needs its own authorization. References: [feature-contract.md](../plugins/valcraft/skills/valcraft-spec/references/feature-contract.md), [quick.md](../plugins/valcraft/skills/valcraft-spec/references/quick.md), [delivery.md](../plugins/valcraft/skills/valcraft-spec/references/delivery.md).

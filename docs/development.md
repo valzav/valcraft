@@ -59,11 +59,7 @@ The Claude Code manifest also declares one Stop hook inline, `plugins/valcraft/s
 
 Codex 0.149.1 limits each model-visible `SKILL.md` to 8,000 UTF-8 bytes and truncates the remainder. Keep every shipped `SKILL.md` at or below that limit. Move detailed procedures into one-level `references/` files and make the load condition explicit in the skill body. `scripts/check-skill-sizes.py` enforces the ceiling; CI runs it in the lint workflow.
 
-Validate the Codex plugin with the validator shipped by the system `plugin-creator` skill:
-
-```bash
-python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/valcraft
-```
+Codex ships no standalone plugin validator. Its bundled system skills no longer include `plugin-creator` as of Codex 0.160.0, and the published `plugin-creator` skill carries no validator script. Validate the Codex manifests by installing from the repository marketplace into an isolated profile, as [AGENTS.md](../AGENTS.md#commands) describes. The install must succeed and place the plugin in a cache directory named for the manifest version.
 
 ## OpenCode skills source
 

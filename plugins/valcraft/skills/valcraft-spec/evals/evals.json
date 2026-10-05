@@ -753,6 +753,79 @@
         "Spec writes no files"
       ],
       "id": 37
+    },
+    {
+      "id": 38,
+      "name": "local-source-declared-prd-issue-parents-feature-issue",
+      "prompt": "/valcraft:valcraft-spec — in evals/files/prd-issue-declared/, run `./prepare-eval.sh`, then prepare the full tracker projection for the complete FEAT-001 triplet. The selected main baseline is 1cf8b85a323d005b8235aedd1a8a76007bfa2e72, and clean local spec/f001-bulk-tagging is at 0e52fa2cef8497ebb4e1b567288cc3dfac2fabb7. This eval cannot perform live reads or outward writes: the prepared repository has no reachable origin, the runner provides no hosting CLI or tracker adapter, and network access is forbidden. The harness stands in for this run's own live reads by stating their results below. Treat those results as this run's live reads, not as an operator-supplied snapshot the run did not read. Stated live-read results: `git remote get-url origin` shows https://github.example.test/example/records.git; `git ls-remote --symref origin` shows HEAD at refs/heads/main at 1cf8b85a323d005b8235aedd1a8a76007bfa2e72 and no refs/heads/spec/f001-bulk-tagging; the hosting service reports default branch main at 1cf8b85a323d005b8235aedd1a8a76007bfa2e72; the tracker preflight shows an authenticated account on github.example.test with write access to github.example.test/example/records, Issues enabled, and native hierarchy, ordering, and dependency support, with the generated labels spec, in-progress, on-hold, and needs-clarification present; the issue inventory finds no issue carrying a FEAT-001 marker; and reading issue #12 in github.example.test/example/records returns an open issue, not a pull request, as recorded in captures/issue-12.md. No outward mutation is authorized. Do not execute any tracker, push, or PR operation. Under `Projection`, list the prepared projection preview. End the report with the status line the run would reach with these results.",
+      "expected_output": "Spec derives the PRD issue from the `prd_issue` field of the local source docs/bulk-tagging-prd.md, verifies that #12 is an issue in the exact output repository, and includes parenting the generated FEAT-001 feature issue beneath #12 in the prepared preview, together with the feature and task issue creation, hierarchy, order, the declared dependency, and mapping writes. It takes no requirement from the issue's body or comment, leaves the triplet unchanged, executes no outward operation, and ends with Status: done.",
+      "files": [
+        "evals/files/prd-issue-declared/.gitignore",
+        "evals/files/prd-issue-declared/prepare-eval.sh",
+        "evals/files/prd-issue-declared/AGENTS.md",
+        "evals/files/prd-issue-declared/.valcraft/config.yaml",
+        "evals/files/prd-issue-declared/docs/product-brief.md",
+        "evals/files/prd-issue-declared/docs/bulk-tagging-prd.md",
+        "evals/files/prd-issue-declared/specs/001-bulk-tagging/spec.md",
+        "evals/files/prd-issue-declared/specs/001-bulk-tagging/design.md",
+        "evals/files/prd-issue-declared/specs/001-bulk-tagging/tasks.md",
+        "evals/files/prd-issue-declared/captures/issue-12.md"
+      ],
+      "assertions": [
+        "The prepared preview parents the generated FEAT-001 feature issue beneath #12 in github.example.test/example/records",
+        "Spec takes the PRD issue from the `prd_issue` field of docs/bulk-tagging-prd.md and verifies that #12 is an issue, not a pull request, before including the parenting",
+        "The preview also prepares the feature issue, both task issues, task hierarchy and order, only the T-002-blocked-by-T-001 dependency, and the mapping writes",
+        "Spec takes no requirement from issue #12: the 20-character tag-name decision appears in no artifact or requirement, and docs/bulk-tagging-prd.md remains the only recorded source",
+        "The triplet and the spec/f001-bulk-tagging head are unchanged, no tracker, push, or PR operation executes, and the report ends with Status: done"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "cross-repository-prd-issue-declaration-yields-no-parenting",
+      "prompt": "/valcraft:valcraft-spec — in evals/files/prd-issue-cross-repo/, run `./prepare-eval.sh`, then prepare the full tracker projection for the complete FEAT-001 triplet. The selected main baseline is 6cf0259bc8dbd2200bab0d7e0596668856891241, and clean local spec/f001-bulk-tagging is at d314ae46544c4b1b34f31ae951766b972522e179. This eval cannot perform live reads or outward writes: the prepared repository has no reachable origin, the runner provides no hosting CLI or tracker adapter, and network access is forbidden. The harness stands in for this run's own live reads by stating their results below. Treat those results as this run's live reads, not as an operator-supplied snapshot the run did not read. Stated live-read results: `git remote get-url origin` shows https://github.example.test/example/records.git; `git ls-remote --symref origin` shows HEAD at refs/heads/main at 6cf0259bc8dbd2200bab0d7e0596668856891241 and no refs/heads/spec/f001-bulk-tagging; the hosting service reports default branch main at 6cf0259bc8dbd2200bab0d7e0596668856891241; the tracker preflight shows an authenticated account on github.example.test with write access to github.example.test/example/records, Issues enabled, and native hierarchy, ordering, and dependency support, with the generated labels spec, in-progress, on-hold, and needs-clarification present; the issue inventory finds no issue carrying a FEAT-001 marker; no read of any issue outside github.example.test/example/records is available. No outward mutation is authorized. Do not execute any tracker, push, or PR operation. Under `Projection`, list the prepared projection preview. End the report with the status line the run would reach with these results.",
+      "expected_output": "Spec reads the `prd_issue` declaration https://github.example.test/example/roadmap/issues/7 from the local source, recognizes that it names another repository, and prepares the rest of the projection without any parenting operation. The preview names the declaration and the cross-repository reason. Spec neither adopts example/roadmap as a tracker target nor reads it, executes no outward operation, and ends with Status: done.",
+      "files": [
+        "evals/files/prd-issue-cross-repo/.gitignore",
+        "evals/files/prd-issue-cross-repo/prepare-eval.sh",
+        "evals/files/prd-issue-cross-repo/AGENTS.md",
+        "evals/files/prd-issue-cross-repo/.valcraft/config.yaml",
+        "evals/files/prd-issue-cross-repo/docs/product-brief.md",
+        "evals/files/prd-issue-cross-repo/docs/bulk-tagging-prd.md",
+        "evals/files/prd-issue-cross-repo/specs/001-bulk-tagging/spec.md",
+        "evals/files/prd-issue-cross-repo/specs/001-bulk-tagging/design.md",
+        "evals/files/prd-issue-cross-repo/specs/001-bulk-tagging/tasks.md"
+      ],
+      "assertions": [
+        "The prepared preview contains no operation that parents the FEAT-001 feature issue beneath any issue",
+        "The preview names the declared https://github.example.test/example/roadmap/issues/7 and states that it yields no parenting because it is in another repository",
+        "The feature issue, both task issues, hierarchy, order, the declared dependency, and the mapping writes are still prepared",
+        "Spec does not adopt github.example.test/example/roadmap as a tracker target",
+        "No tracker, push, or PR operation executes, and the report ends with Status: done"
+      ]
+    },
+    {
+      "id": 40,
+      "name": "prd-issue-declaration-naming-a-pull-request-yields-no-parenting",
+      "prompt": "/valcraft:valcraft-spec — in evals/files/prd-issue-pull-request/, run `./prepare-eval.sh`, then prepare the full tracker projection for the complete FEAT-001 triplet. The selected main baseline is 1cf8b85a323d005b8235aedd1a8a76007bfa2e72, and clean local spec/f001-bulk-tagging is at 0e52fa2cef8497ebb4e1b567288cc3dfac2fabb7. This eval cannot perform live reads or outward writes: the prepared repository has no reachable origin, the runner provides no hosting CLI or tracker adapter, and network access is forbidden. The harness stands in for this run's own live reads by stating their results below. Treat those results as this run's live reads, not as an operator-supplied snapshot the run did not read. Stated live-read results: `git remote get-url origin` shows https://github.example.test/example/records.git; `git ls-remote --symref origin` shows HEAD at refs/heads/main at 1cf8b85a323d005b8235aedd1a8a76007bfa2e72 and no refs/heads/spec/f001-bulk-tagging; the hosting service reports default branch main at 1cf8b85a323d005b8235aedd1a8a76007bfa2e72; the tracker preflight shows an authenticated account on github.example.test with write access to github.example.test/example/records, Issues enabled, and native hierarchy, ordering, and dependency support, with the generated labels spec, in-progress, on-hold, and needs-clarification present; the issue inventory finds no issue carrying a FEAT-001 marker; and reading number 12 in github.example.test/example/records returns a pull request, not an issue, as recorded in captures/issue-12.md. No outward mutation is authorized. Do not execute any tracker, push, or PR operation. Under `Projection`, list the prepared projection preview. End the report with the status line the run would reach with these results.",
+      "expected_output": "Spec reads the `prd_issue` declaration for #12, finds during preflight that #12 is a pull request, and prepares the rest of the projection without any parenting operation. The preview names the declaration and the reason that it does not resolve to an issue. Spec does not stop the projection, executes no outward operation, and ends with Status: done.",
+      "files": [
+        "evals/files/prd-issue-pull-request/.gitignore",
+        "evals/files/prd-issue-pull-request/prepare-eval.sh",
+        "evals/files/prd-issue-pull-request/AGENTS.md",
+        "evals/files/prd-issue-pull-request/.valcraft/config.yaml",
+        "evals/files/prd-issue-pull-request/docs/product-brief.md",
+        "evals/files/prd-issue-pull-request/docs/bulk-tagging-prd.md",
+        "evals/files/prd-issue-pull-request/specs/001-bulk-tagging/spec.md",
+        "evals/files/prd-issue-pull-request/specs/001-bulk-tagging/design.md",
+        "evals/files/prd-issue-pull-request/specs/001-bulk-tagging/tasks.md",
+        "evals/files/prd-issue-pull-request/captures/issue-12.md"
+      ],
+      "assertions": [
+        "The prepared preview contains no operation that parents the FEAT-001 feature issue beneath #12 or any other issue",
+        "The preview names the declared https://github.example.test/example/records/issues/12 and states that it yields no parenting because it resolves to a pull request, not an issue",
+        "The feature issue, both task issues, hierarchy, order, the declared dependency, and the mapping writes are still prepared rather than the projection stopping",
+        "No tracker, push, or PR operation executes, and the report ends with Status: done"
+      ]
     }
   ]
 }
