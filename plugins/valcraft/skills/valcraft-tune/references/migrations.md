@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.24
+
+### Local requirements documents may declare their PRD issue
+
+A local requirements document that Spec accepts as a feature source may name the GitHub issue it was compiled from in one frontmatter field, `prd_issue`, holding a canonical issue URL. In GitHub tracker mode, Spec's projection parents the generated feature issue beneath that issue when it is a verified issue in the output repository, under the same preview and authority as before. Spec reads nothing from the declared issue and still reads only the title and body of a selected source issue.
+
+- Applies when: never on its own; a project that compiles issues into local requirements documents adds the field, and the next authorized projection of an affected feature parents its issue.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.23
 
 ### Spec edge cases get Test strategy entries
