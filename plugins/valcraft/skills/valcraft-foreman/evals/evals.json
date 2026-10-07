@@ -2204,6 +2204,113 @@
         "Amend first enters Specifying with R-019 and R-020, runs SpecReview and SpecLanding, and returns to the confirmation gate before FeatureClose"
       ],
       "id": 136
+    },
+    {
+      "id": 137,
+      "name": "external-retry-first-attempt-waits-and-redispatches",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on a Claude Code controller with the `subagents` backend is in `Implementing` for F002-T004. Approval mode is attended; the Forge dispatch carried the ref-bound Forge grant the operator gave explicitly. The complete Forge report `forge-F002-T004-d000.md` ends `Status: blocked: push_failed — git push returned HTTP 502 from the remote`. Its Outward mutations section names the repository and remote, the authoritative base ref and SHA, the clean local implementation head, the canonical remote task ref with its observed remote head (absent), task PR `none`, and the remaining operations: non-force push and task-PR creation. Foreman recorded the report at 14:00:00. Describe exactly what Foreman does next, when, what it records, how it ends the turn, and what it dispatches. Do not execute a backend.",
+      "expected_output": "`push_failed` from Forge routes to `ExternalRetry`, not `Blocked`. The report qualifies as a prepared continuation, so the failed run is attempt 1 of the budget keyed by the logical Forge producer and its bound fields. Foreman records the attempt in `state.md` and schedules attempt 2 for 14:01:00. On this event-wake controller it arms a background shell task that sleeps the remaining seconds, records its harness task id, and ends the turn with `Turn end: await <harness task id>`. When the task wakes Foreman, it repeats the live read of every bound field. After a successful read, it dispatches the same logical Forge producer under a fresh physical identity and report path with the same ref-bound grant, without an approval gate even in attended mode. Forge revalidates before pushing; Forge does not reimplement the task.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "templates/run-dir.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "push_failed routes to ExternalRetry, not Blocked",
+        "The failed run counts as attempt 1 and attempt 2 is scheduled one minute after the 14:00:00 failure",
+        "Foreman waits through a background shell task and ends the turn with Turn end: await naming that task's harness id",
+        "Before dispatching attempt 2, Foreman repeats the live read of every bound field",
+        "Attempt 2 is the same logical Forge producer under a fresh physical identity and report path, carrying the same ref-bound grant",
+        "No approval gate stops the retry although the mode is attended",
+        "The retry is a push and PR continuation, not a new implementation run"
+      ]
+    },
+    {
+      "id": 138,
+      "name": "external-retry-fourth-failure-enters-blocked",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on a Codex controller with the `subagents` backend is in `Specifying` for F003 after a passing Spec verdict. The latest `state.md` checkpoint records one ExternalRetry budget for the logical Spec producer and its bound fields: attempt 1 `specifier-F003-d002.md` push_failed at 09:00:00; attempt 2 `specifier-F003-d003.md` pr_failed at 09:01:40 after a successful live read; attempt 3 `specifier-F003-d004.md` push_failed at 09:06:55 after a successful live read. The attempt 4 report `specifier-F003-d005.md` just ended `Status: blocked: pr_failed — the hosting API returned HTTP 503`. Approval mode is unattended. Describe what Foreman does now and what the operator sees.",
+      "expected_output": "`pr_failed` counts against the same budget as `push_failed`, so this is attempt 4, the last one. Foreman makes no fifth attempt. It enters `Blocked`, naming every attempt's report path, failing code, live-read result, and time, and records that in `state.md`. `Blocked` waits in unattended mode too: Foreman appends `Turn end: gate` with the blocked state. Leaving it requires an operator decision; Foreman never pushes, creates the PR, or invents another retry itself.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "templates/run-dir.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "pr_failed and push_failed share one budget, so this report is attempt 4",
+        "Foreman makes no fifth attempt and enters Blocked",
+        "The Blocked record names all four report paths with their codes, live-read results, and times",
+        "Blocked waits in unattended mode and the turn ends with a Turn end: gate line",
+        "Only an operator decision leaves this Blocked state; Foreman invents no further retry and performs no outward operation itself"
+      ]
+    },
+    {
+      "id": 139,
+      "name": "external-retry-requires-a-prepared-continuation",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on Herdr is in `Drafting` for F001-T006 and needs the plan commit on the canonical remote ref for an isolated Review worker. The complete Draft report `drafter-F001-T006-d000.md` ends `Status: blocked: push_failed — the remote read-back timed out`. Its Outward mutations section names the repository, remote, and exact local plan head, but records the canonical remote ref's observed head as `unknown` and names no remaining operation. Approval mode is unattended. Is this report retried on the external-failure schedule? Describe Foreman's transition and what it records.",
+      "expected_output": "`push_failed` belongs to the external-failure class, but `ExternalRetry` retries only a report that qualifies as a prepared continuation: its structured fields must name every applicable bound field, including the canonical ref's observed remote head and the remaining operation. This report does not, so Foreman enters `Blocked` at once without scheduling a retry, records the code, report path, and the missing prepared fields, and waits for the operator. Foreman does not infer the missing fields from prose or push itself.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "templates/run-dir.md",
+        "references/backends/herdr.md"
+      ],
+      "assertions": [
+        "Foreman checks prepared-continuation eligibility before scheduling any retry",
+        "The unknown observed remote head and missing remaining operation disqualify the report",
+        "Foreman enters Blocked at once with no ExternalRetry attempt scheduled",
+        "The record names the missing prepared fields",
+        "Foreman neither infers the missing fields from prose nor pushes itself"
+      ]
+    },
+    {
+      "id": 140,
+      "name": "external-retry-failed-live-read-spends-the-attempt",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on a Cursor controller with the `subagents` backend is in `Landing` for F002-T001 with the ref-bound Land grant. The Land report `land-F002-T001-d000.md` ended `Status: blocked: external_blocked — gh api: connection reset` at 16:20:00, and its prepared fields are complete. At 16:21:00, when attempt 2 is due, Foreman's live read of the bound fields fails: the hosting API refuses the connection. Describe what happens to attempt 2 and when the next attempt starts.",
+      "expected_output": "Land's `external_blocked` routes to `ExternalRetry`. A failed live read spends attempt 2 and dispatches no Land worker. Foreman records attempt 2 as spent with the read failure at 16:21:00. Attempt 3 starts 5 minutes after that failure, at 16:26:00. On this foreground controller Foreman waits with one foreground shell sleep for the remaining seconds and keeps the turn active, then repeats the live read before dispatching. A failure on attempt 4 would enter Blocked.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "templates/run-dir.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "external_blocked from Land routes to ExternalRetry",
+        "The failed live read spends attempt 2 without dispatching Land",
+        "Attempt 3 is scheduled 5 minutes after the 16:21:00 read failure, at 16:26:00",
+        "On the Cursor controller the wait is a foreground shell sleep with the turn kept active",
+        "Attempt 3 repeats the live read before any dispatch"
+      ]
+    },
+    {
+      "id": 141,
+      "name": "external-retry-count-survives-resume",
+      "prompt": "$valcraft:valcraft-foreman — Foreman resumes a run after a context reset. The latest `state.md` checkpoint records `Implementing` for F004-T002 and one ExternalRetry budget for the logical Forge producer and its bound fields: attempt 1 push_failed at 11:00:00, attempt 2 push_failed at 11:01:20 after a successful live read, and attempt 3 scheduled for 11:06:20 with an armed background await whose task no longer exists. `date` now prints 11:09:05. Describe how Foreman continues the schedule.",
+      "expected_output": "Foreman resumes from the latest checkpoint and keeps the recorded count: the budget is at attempt 3, not reset to attempt 1. The stale await is recorded as stale. Because attempt 3's start time has already passed, Foreman does not wait. It repeats the live read of every bound field and, after a successful read, dispatches the same logical Forge producer under a fresh physical identity. A further class failure would be attempt 4, scheduled 10 minutes after that failure, and a failure there enters Blocked.",
+      "files": [
+        "references/contracts.md",
+        "references/loop.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "templates/run-dir.md",
+        "references/backends/subagents.md"
+      ],
+      "assertions": [
+        "Foreman continues the recorded budget at attempt 3 instead of restarting the count",
+        "Foreman does not wait because attempt 3's start time has passed",
+        "Foreman repeats the live read before dispatching attempt 3",
+        "Attempt 3 dispatches the same logical Forge producer under a fresh physical identity",
+        "A further failure would be attempt 4, 10 minutes later, and its failure would enter Blocked"
+      ]
     }
   ]
 }

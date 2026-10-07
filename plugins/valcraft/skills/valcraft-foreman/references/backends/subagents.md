@@ -24,6 +24,8 @@ Cursor uses a fresh Task dispatch with `subagent_type: generalPurpose` for every
 
 The native call folds spawn and assign together. The worker's final channel carries only the assigned report path and producer terminal status line.
 
+These wake rules govern awaiting a dispatched worker. The `ExternalRetry` wait between attempts follows [`../loop.md`](../loop.md#externalretry) by this table's `wake` value.
+
 ## Claude Code event wake
 
 Establish the completion notification with dispatch before ending the parent turn. On wake, attribute the return to the dispatched physical worker, record it, and apply the six-return contract. A semantic blocked or question producer report is `report_available`. A delivery failure before the worker acted is `dispatch_error`. Worker death is `dead`.

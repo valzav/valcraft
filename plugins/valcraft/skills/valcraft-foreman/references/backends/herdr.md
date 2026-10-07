@@ -186,6 +186,10 @@ herdr agent wait <agent-name> --timeout <ms>
 
 Reconcile the recorded assignment checkpoint against the report and the exact occupant first. An assignment recorded as submitted is never submitted again on the strength of a missing return alone.
 
+### Between `ExternalRetry` attempts
+
+The `ExternalRetry` wait follows [`../loop.md`](../loop.md#externalretry) by the controller's `wake` value. A Claude Code controller arms the wait as a background shell task and records `Turn end: await <harness task id>`; the plugin's Stop hook accepts that line while the named task is running.
+
 ## Review continuity
 
 Herdr keeps a pane's agent and conversation alive after a turn, so this backend keeps a Review worker for its own round as [`../hygiene.md`](../hygiene.md#workers) allows. Preserve Review independence and shared-checkout serialization as follows.

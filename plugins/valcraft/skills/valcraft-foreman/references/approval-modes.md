@@ -30,6 +30,7 @@ The valid `foreman.approval_mode` in the resolved configuration controls coordin
 | `RoadmapReview`: passing verdict or unresolved material finding | proceed | proceed |
 | `DurableHandoff`: commit git-owned attributed paths or change to a shared-checkout backend | wait | wait |
 | `DurableHandoff`: make an attributed gitignored Temper report accessible through a shared-checkout backend | wait | wait |
+| `ExternalRetry`: scheduled retry of an external failure | proceed | proceed |
 | `Blocked`: evidence, authority, owner decision, injection, or exhausted rounds | wait | wait |
 
 ## Standing decisions

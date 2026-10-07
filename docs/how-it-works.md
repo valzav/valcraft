@@ -176,7 +176,9 @@ You can give a standing decision, such as an answer to a product question you ex
 | --- | --- | --- | --- |
 | `subagents` | The native subagents of your current Claude Code, Codex, or Cursor session | One shared checkout, workers run one at a time | A fresh context for each reviewer |
 | `herdr` | Fresh coding agents in the panes of one [Herdr](https://herdr.dev) session. Each role has its own coding agent, model, and effort. Requires Herdr 0.8.2 or newer | One shared checkout, workers run one at a time | Every reviewer must use a different coding agent from the worker it checks. `tune` rejects configurations that break this rule |
-| `ao` | Sessions of [Agent Orchestrator](https://github.com/Untrivial-ai/agent-orchestrator). Requires the `ao` CLI, tmux, and a project ID | An isolated worktree and branch for each worker | A distinct coding agent for review when the project offers one |
+| `ao` (temporarily unsupported) | Sessions of [Agent Orchestrator](https://github.com/Untrivial-ai/agent-orchestrator). Requires the `ao` CLI, tmux, and a project ID | An isolated worktree and branch for each worker | A distinct coding agent for review when the project offers one |
+
+The `ao` backend is temporarily unsupported: Foreman's retry of external failures is not verified on it. Its contract is otherwise unchanged.
 
 With native subagents or Herdr, Claude Code wakes the coordinator when a worker completes; Codex and Cursor keep the coordinator's turn active while a worker runs. AO arms an authorized background waiter before ending the parent turn. The waiter wakes Foreman with the worker's result or another backend return. OpenCode has no worker backend yet, so `foreman` does not dispatch there. The other skills run as usual.
 

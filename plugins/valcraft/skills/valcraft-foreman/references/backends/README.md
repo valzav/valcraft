@@ -57,6 +57,8 @@ Every concrete backend declares Land execution and names an eval that reads that
 | `ao` | [`ao.md`](ao.md) | Foreman eval 69 |
 | `herdr` | [`herdr.md`](herdr.md) | Foreman eval 72 |
 
+`ao` is temporarily unsupported: the external-failure retry in [`../contracts.md`](../contracts.md) is not verified on it. Every other contract in [`ao.md`](ao.md) applies unchanged.
+
 ## Active transport deviations
 
 Keep only deviations that change dispatch, await, wake, or workspace behavior.

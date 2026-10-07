@@ -181,6 +181,28 @@ class ControllerStopHookTests(unittest.TestCase):
         self.assert_blocks(payload(), "next transition")
         self.assert_allows(payload(background_tasks=None))
 
+    def test_recorded_await_names_a_running_timer(self) -> None:
+        # Shape captured from a Claude Code 2026-10-07 Stop payload.
+        timer = {
+            "id": "bj9rcmgfc",
+            "type": "shell",
+            "status": "running",
+            "description": "Wait before external-failure retry",
+            "command": "sleep 60",
+        }
+        self.claim()
+        self.checkpoints("## CP-030 ExternalRetry wait\n\nTurn end: await bj9rcmgfc\n")
+        self.assert_allows(payload(background_tasks=[timer]))
+        self.assert_blocks(
+            payload(background_tasks=[{**timer, "status": "completed"}]),
+            "next transition",
+        )
+        self.assert_blocks(
+            payload(background_tasks=[{**timer, "id": "other"}]), "next transition"
+        )
+        self.checkpoints("## CP-030 ExternalRetry wait\n\nTurn end: await bj9rcmg\n")
+        self.assert_blocks(payload(background_tasks=[timer]), "next transition")
+
     def test_unreadable_checkpoint_may_stop(self) -> None:
         self.claim()
         self.checkpoints("## CP-027 T-001 LANDED; -> Ready\n")

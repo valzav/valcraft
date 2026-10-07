@@ -279,10 +279,30 @@ class CoordinationContractCheckTests(unittest.TestCase):
     def test_routing_code_without_transition_fails(self) -> None:
         self.replace(
             CONTRACTS,
-            "| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift`, `push_failed` | `Blocked` |",
-            "| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift`, `push_failed` |  |",
+            "| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift` | `Blocked` |",
+            "| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift` |  |",
         )
         self.assert_check_fails("routing codes have no transition")
+
+    def test_external_failure_code_routed_elsewhere_fails(self) -> None:
+        self.replace(
+            CONTRACTS,
+            "| `push_failed`, `pr_failed` | `ExternalRetry` |",
+            "| `push_failed` | `ExternalRetry` |\n| `pr_failed` | `Blocked` |",
+        )
+        self.assert_check_fails(
+            "Forge: external-failure code pr_failed must route to ExternalRetry"
+        )
+
+    def test_external_retry_route_outside_the_class_fails(self) -> None:
+        self.replace(CONTRACTS, "| Draft | `push_failed` |\n", "")
+        self.assert_check_fails(
+            "Draft: push_failed routes to ExternalRetry outside the external-failure class"
+        )
+
+    def test_external_retry_schedule_drift_fails(self) -> None:
+        self.replace(CONTRACTS, "1, 5, and 10 minutes", "1, 2, and 3 minutes")
+        self.assert_check_fails("ExternalRetry schedule is missing or drifted")
 
     def test_routing_code_with_conflicting_transition_fails(self) -> None:
         row = "| `draft_required` | `Drafting` |\n"

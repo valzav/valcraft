@@ -86,7 +86,14 @@ case "$turn_end" in
 *'Turn end: await '*)
 	# Without a task list the recorded await cannot be checked.
 	case "$in" in *'"background_tasks":'*) ;; *) exit 0 ;; esac
+	# A recorded await other than herdr agent wait, such as an ExternalRetry
+	# timer, counts only while the task it names is running. Claude Code writes
+	# a task's id, type, and status first and in this order.
+	id=$(printf '%s' "$turn_end" | sed -E -n 's/.*Turn end: await ([A-Za-z0-9_-]+).*/\1/p')
+	if [ -n "$id" ]; then
+		case "$in" in *"{\"id\":\"$id\",\"type\":\"shell\",\"status\":\"running\""*) exit 0 ;; esac
+	fi
 	;;
 esac
 
-block "This session holds the Foreman controller lease, no herdr agent wait is armed, and the latest state.md checkpoint records no open gate or completed run. Perform the next transition in loop.md now. If the turn must end, first append the Turn end line that loop.md requires."
+block "This session holds the Foreman controller lease, no await is armed, and the latest state.md checkpoint records no open gate or completed run. Perform the next transition in loop.md now. If the turn must end, first append the Turn end line that loop.md requires."
