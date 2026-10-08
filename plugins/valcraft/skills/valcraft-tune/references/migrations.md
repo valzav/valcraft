@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.25
+
+### Foreman retries external failures on a fixed schedule
+
+Foreman routes the external-failure codes — `push_failed`, `pr_failed`, and `projection_failed` from Draft, Forge, and Spec, and Land's `external_blocked` — to `ExternalRetry` instead of `Blocked`. The failed run is attempt 1; attempts 2, 3, and 4 start 1, 5, and 10 minutes after the preceding failure, each after a successful live read of the bound fields, and a fourth failure enters `Blocked`. Only a report that qualifies as a prepared continuation is retried. The controller Stop hook accepts a recorded `Turn end: await <id>` while the named background task is running. The `ao` backend is temporarily unsupported because this retry is not verified on it.
+
+- Applies when: never on its own; the next Foreman run applies the schedule. The operator checks whether `foreman.backend` resolves to `ao`.
+- Tune performs: none.
+- Operator: none; a project on `ao` may switch to `subagents` or `herdr` to receive the verified retry.
+
 ## v0.8.24
 
 ### Local requirements documents may declare their PRD issue

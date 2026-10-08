@@ -101,7 +101,7 @@ Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 ## `SpecLanding`
 
-Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` through `PartialCompletionByTarget`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
+Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exact current PR, Spec Review report, applicable approval decision, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authority. Route `review_required` to `SpecReview`, `check_failure_spec` to `Specifying`, `partial_completion` through `PartialCompletionByTarget`, and `authority_required` through the prepared continuation while remaining in `SpecLanding`. Route `external_blocked` through `ExternalRetry`. Other unresolved codes are Blocked. Enter `Ready` only after Land reports completion and the merged contract is present on the reconciled default branch.
 
 ## `Ready`
 
@@ -144,8 +144,9 @@ Route the Land report exactly:
 - `check_failure_spec`: Specifying;
 - `evidence_review_required`: EvidenceReview;
 - `partial_completion`: route through `PartialCompletionByTarget` with only remaining operations;
-- `authority_required`: apply the prepared mutation continuation in `contracts.md` and remain in Landing; and
-- unresolved, external, configuration, authority, or applicability codes: Blocked.
+- `authority_required`: apply the prepared mutation continuation in `contracts.md` and remain in Landing;
+- `external_blocked`: ExternalRetry; and
+- unresolved, configuration, authority, or applicability codes: Blocked.
 
 When checks are pending, keep Foreman and the active Land worker alive. Continue the backend's await discipline against the same assignment. Do not turn a pending check into a user-status prompt, new worker, or Foreman-owned classifier. A missing required check routes to an artifact owner only after Land's authoritative evidence proves that owner; otherwise it remains Blocked.
 
@@ -171,9 +172,21 @@ Enter `RetroReview` when Temper reports its exact Review target: the absolute re
 
 Dispatch a fresh `retro-reviewer-<feature>` with `valcraft-review` in plan mode on the exact report path and content hash. A pass enters Complete; nothing is merged, because the report is not in git. Material findings return to Retrospective. RetroReview runs one full round, as [`review-round.md`](review-round.md#retroreview) defines. Foreman never reviews the report.
 
+## `ExternalRetry`
+
+Apply the schedule in [`contracts.md`](contracts.md#external-failures). Record every attempt in `state.md` before acting on it. Release the failed worker under its backend's rules; a backend that declares producer continuity may keep it for the continuation.
+
+Wait until the attempt's start time, computed from the recorded failure time:
+
+- On a backend whose `wake` is `event`, arm a background shell task that sleeps the remaining seconds. Record its harness task id, then end the turn with `Turn end: await <harness task id>`. The task's exit wakes Foreman.
+- On a backend whose `wake` is `foreground`, run the sleep for the remaining seconds as one foreground shell call and keep the turn active.
+- A backend whose `wake` is `poll` has no specified `ExternalRetry` wait. On such a backend, record `retry schedule unavailable on <backend>` and enter `Blocked` instead of waiting. [`backends/README.md`](backends/README.md#backend-conformance) marks `ao` temporarily unsupported for this reason.
+
+When the start time has already passed, as after a resume, proceed without waiting. Then perform the live read and dispatch that the schedule names.
+
 ## `Blocked`, `DurableHandoff`, and recovery
 
-Name the code, target, source report, and evidence or authority required to leave the state. `permission_blocked`, transport failure, and dead-worker recovery remain backend returns rather than producer status.
+Name the code, target, source report, and evidence or authority required to leave the state. A spent `ExternalRetry` budget leaves `Blocked` only on an operator decision. `permission_blocked`, transport failure, and dead-worker recovery remain backend returns rather than producer status.
 
 `DurableHandoff` names the exact attributed dirty paths and why the configured isolated backend cannot read them. For git-owned paths, leave it after the operator commits them or changes to a configured shared-checkout backend. For a gitignored Temper report, only the shared-checkout backend exit applies. Re-read the resulting head and paths before continuing.
 

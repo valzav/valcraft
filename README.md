@@ -69,7 +69,7 @@ Some decisions wait for you in either mode. [How Valcraft works](docs/how-it-wor
 
 You can also run the skills one by one and handle the handoffs yourself. The written requirements, plans, independent reviews, and verification stay the same. You get more control at the cost of more attention. You can learn the skills this way before handing coordination to Foreman.
 
-Workers run as native subagents in Claude Code, Codex, or Cursor, as fresh coding agents in Herdr panes, or as Agent Orchestrator sessions with a worktree each. [Where the workers run](docs/how-it-works.md#where-the-workers-run) compares the three.
+Workers run as native subagents in Claude Code, Codex, or Cursor, as fresh coding agents in Herdr panes, or as Agent Orchestrator sessions with a worktree each. The Agent Orchestrator (`ao`) backend is temporarily unsupported: Foreman's retry of external failures is not verified on it. [Where the workers run](docs/how-it-works.md#where-the-workers-run) compares the three.
 
 ## Keep the project ready for the next session or teammate
 

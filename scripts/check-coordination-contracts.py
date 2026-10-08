@@ -761,6 +761,43 @@ def check_target_kind_routing(
             )
 
 
+EXTERNAL_RETRY_SCHEDULE = (
+    "Attempts 2, 3, and 4 start 1, 5, and 10 minutes after the preceding "
+    "attempt's failure."
+)
+
+
+def check_external_failures(
+    text: str, routing: dict[str, dict[str, str]], errors: list[str]
+) -> None:
+    """The external-failure class and the ExternalRetry routes name the same codes."""
+    members: set[tuple[str, str]] = set()
+    for row in table_rows(section(text, "External failures"))[1:]:
+        if len(row) != 2:
+            errors.append(f"external-failure row has {len(row)} columns: {' | '.join(row)}")
+            continue
+        for code in re.findall(r"`([a-z][a-z0-9_]*)`", row[1]):
+            members.add((row[0], code))
+    if not members:
+        errors.append("external-failure class table is missing or empty")
+    for producer, code in sorted(members):
+        transition = routing.get(producer, {}).get(code)
+        if transition != "ExternalRetry":
+            errors.append(
+                f"{producer}: external-failure code {code} must route to "
+                f"ExternalRetry; observed={transition}"
+            )
+    for producer, codes in sorted(routing.items()):
+        for code, transition in sorted(codes.items()):
+            if transition == "ExternalRetry" and (producer, code) not in members:
+                errors.append(
+                    f"{producer}: {code} routes to ExternalRetry outside the "
+                    "external-failure class"
+                )
+    if EXTERNAL_RETRY_SCHEDULE not in section(text, "External failures"):
+        errors.append("ExternalRetry schedule is missing or drifted")
+
+
 def check_coordinator_reads(text: str, errors: list[str]) -> None:
     """Every coordinator-read row names a loop message and only that report's headings."""
     rows = table_rows(section(text, "Coordinator reads"))
@@ -800,6 +837,7 @@ def check(root: Path) -> list[str]:
     check_prior_state_presentation(root, errors)
     check_herdr_worker_configuration(root, errors)
     check_target_kind_routing(root, contracts_text, routing, errors)
+    check_external_failures(contracts_text, routing, errors)
     check_coordinator_reads(contracts_text, errors)
     return errors
 

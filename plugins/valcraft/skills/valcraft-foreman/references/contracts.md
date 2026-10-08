@@ -131,7 +131,8 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 
 | Outcome | Transition |
 | --- | --- |
-| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift`, `push_failed` | `Blocked` |
+| `assignment_invalid`, `workspace_not_ready`, `review_target_mismatch`, `msw_failed`, `git_write_failed`, `authority_drift` | `Blocked` |
+| `push_failed` | `ExternalRetry` |
 | `product_decision_required`, `owner_decision_required` | `AwaitOwner` |
 
 ### Forge
@@ -140,7 +141,8 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | --- | --- |
 | `draft_required` | `Drafting` |
 | `review_target_mismatch` | `CodeReview` |
-| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `configuration_unresolved`, `authority_drift`, `push_failed`, `pr_failed` | `Blocked` |
+| `assignment_invalid`, `workspace_not_ready`, `implementation_blocked`, `configuration_unresolved`, `authority_drift` | `Blocked` |
+| `push_failed`, `pr_failed` | `ExternalRetry` |
 | `product_decision_required`, `configuration_required` | `AwaitOwner` |
 
 ### Review
@@ -162,7 +164,8 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | `partial_completion` | `PartialCompletionByTarget` |
 | `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
-| `missing_required_check`, `check_source_unavailable`, `external_blocked`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
+| `missing_required_check`, `check_source_unavailable`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
+| `external_blocked` | `ExternalRetry` |
 
 `ReviewByTarget` means task PR to CodeReview, spec PR to SpecReview, and feature-close PR to Blocked, because only completion marks may reach that PR without Review. It is one target-kind transition function.
 
@@ -173,7 +176,8 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | Outcome | Transition |
 | --- | --- |
 | `source_selection_required`, `product_decision_required`, `owner_decision_required`, `tracker_target_required`, `configuration_required` | `AwaitOwner` |
-| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift`, `projection_failed`, `push_failed`, `pr_failed` | `Blocked` |
+| `assignment_invalid`, `scaffold_invalid`, `feature_identity_invalid`, `workspace_not_ready`, `review_target_mismatch`, `configuration_unresolved`, `git_write_failed`, `authority_drift` | `Blocked` |
+| `projection_failed`, `push_failed`, `pr_failed` | `ExternalRetry` |
 
 ### Temper
 
@@ -189,6 +193,28 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | `target_unresolved`, `source_unavailable`, `publication_blocked`, `artifact_write_failed` | `ResumeDelivery` |
 
 `ResumeDelivery` records the refresh result and resumes the saved delivery state and target under [`roadmap.md`](roadmap.md). It never treats a roadmap state as completion evidence or changes a selected task. In `RoadmapReview`, every Review routing code applies `ResumeDelivery` instead of the Review table's transition and leaves the candidate unpublished.
+
+## External failures
+
+An external failure is a producer outcome caused outside the work product and the granted authority: a remote service rejected, dropped, or did not confirm an outward operation that the producer's contract makes safe to repeat. These codes route to `ExternalRetry`:
+
+| Producer | Codes |
+| --- | --- |
+| Draft | `push_failed` |
+| Forge | `push_failed`, `pr_failed` |
+| Spec | `projection_failed`, `push_failed`, `pr_failed` |
+| Land | `external_blocked` |
+
+Each producer contract makes a repeat safe. A push is non-force and verified by a remote read-back. A PR or projection operation reconciles existing state before it creates anything. Land reports `external_blocked` only before any mutation. Cast's `push_failed` keeps `StopProducer`, because Cast runs outside the loop. `git_write_failed` and `implementation_blocked` stay out of the class: a hook or the work product can cause them, and repeating them reruns the producer's whole assignment.
+
+`ExternalRetry` keeps the producer's named state active and applies the owner-established schedule:
+
+1. The failed run is attempt 1. Attempts 2, 3, and 4 start 1, 5, and 10 minutes after the preceding attempt's failure. This schedule replaces the two-attempt rule for this class only.
+2. Retry only a report that qualifies as a prepared continuation under [Prepared mutation continuation](#prepared-mutation-continuation). Otherwise enter `Blocked` at once.
+3. Count attempts per budget: the logical producer plus the report's bound fields. Every code in this class counts against the same budget, so `push_failed` followed by `pr_failed` spends one budget. A new head after remediation starts a new budget.
+4. When an attempt's start time arrives, repeat the live read of every bound field that Foreman performs before dispatch. A failed read spends the attempt and dispatches nothing.
+5. After a successful read, apply steps 4–6 of the prepared continuation with the failed attempt's exact authority source. No approval gate applies, because the retry repeats an authorized operation set on the same bound fields. A moved remote still returns `authority_drift` through its own route.
+6. When attempt 4 fails, by a class code or a failed live read, enter `Blocked`, naming every attempt's report path, live-read result, and time.
 
 ## Backend returns
 
