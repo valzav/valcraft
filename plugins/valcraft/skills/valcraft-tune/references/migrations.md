@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.26
+
+### Foreman starts Claude Code workers on Herdr with a launch statement
+
+Herdr delivers an assignment to a worker as pasted text, and Claude Code follows instructions in pasted text only where the user's typed message asks for them, so a Claude Code worker stopped at its envelope until a human typed a confirmation. Foreman now starts each Claude Code worker on the `herdr` backend with a launch statement, passed through `--append-system-prompt`, that names the run and the saved `<assignment id>-envelope.txt` files. The worker starts an assignment that equals its saved file and does not start on any other pasted text. Codex and Cursor workers and the other backends are unchanged.
+
+- Applies when: never on its own; the next Foreman run on the `herdr` backend starts its Claude Code workers with the statement. A worker started before this release keeps its original launch arguments.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.25
 
 ### Foreman retries external failures on a fixed schedule
