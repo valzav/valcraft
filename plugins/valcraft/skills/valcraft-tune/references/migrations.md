@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.27
+
+### A contract amendment creates no work for a closed task
+
+Spec adds or changes no requirement, criterion clause, Test strategy entry, or task line that a closed task's landed change does not already satisfy. When resolving a finding would need one, Spec writes none, records under `Finding resolutions` that the finding stays open because it needs new work, and names a new task as the way to deliver it. Spec adds that task only when the operator instruction asks for one. At Foreman's feature confirmation gate, such a note is listed with that reason, and "amend first" does not carry it: the operator closes the feature or instructs a new task.
+
+- Applies when: never on its own; the next amendment to a landed contract and the next feature confirmation gate apply the rule.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.26
 
 ### Foreman starts Claude Code workers on Herdr with a launch statement

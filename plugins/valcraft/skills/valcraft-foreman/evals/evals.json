@@ -2311,6 +2311,45 @@
         "Attempt 3 dispatches the same logical Forge producer under a fresh physical identity",
         "A further failure would be attempt 4, 10 minutes later, and its failure would enter Blocked"
       ]
+    },
+    {
+      "id": 142,
+      "name": "feature-gate-note-left-open-for-new-work",
+      "prompt": "A Foreman run on Herdr reached the feature confirmation gate for FEAT-001 after its last task landed. The gate listed two Spec-owned P3 notes, R-019 and R-020, and the operator answered \"Amend first\". The amendment passed SpecReview and landed through SpecLanding. That Spec report's Finding resolutions says: R-019 resolved in design.md TS-020; R-020 left open because it needs new work: docs/reference/schema.md must change, every task is closed, and a new task would deliver it. No eligible task remains. Approval mode is unattended. Describe what the Specifying assignment for that amendment had to state, what Foreman presents at the gate now, which answers apply to R-020, and the dispatch sequence for each. Do not execute a backend.",
+      "expected_output": "The amendment's Specifying assignment carried R-019 and R-020 as an operator instruction and named the feature's tasks that the tracker's status authority showed closed. Back at the feature confirmation gate, which waits even unattended, Foreman does not list the resolved R-019 and lists R-020 with its report path and the reason that it needs new work. Amend first does not carry R-020, and Foreman starts no further amendment for it on its own. Close as is enters FeatureClose and dispatches Land. An operator instruction to add a task for R-020 enters Specifying with that instruction, then SpecReview and SpecLanding, after which Ready selects the new task. Foreman defines no task itself.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "The amendment's Specifying assignment names the feature's tasks that the tracker's status authority shows closed",
+        "The gate lists R-020 with the reason that it needs new work, and does not list the resolved R-019",
+        "Amend first is not offered for R-020, and Foreman dispatches no further amendment for it on its own",
+        "Close as is enters FeatureClose and dispatches Land",
+        "An operator instruction to add a task for R-020 enters Specifying with that instruction, then SpecReview and SpecLanding, after which Ready selects the new task",
+        "Foreman defines no task itself and waits for the operator even in unattended mode"
+      ]
+    },
+    {
+      "id": 143,
+      "name": "feature-gate-amendment-names-only-closed-tasks",
+      "prompt": "A Foreman run on Herdr with tracker.mode local is at the feature confirmation gate for FEAT-001. In specs/001-report-export/tasks.md, T-001 and T-002 are checked. T-003 is unchecked and held: state.md records an unresolved operator question about the export file format, and the operator has not answered it. No eligible task remains. The gate listed two Spec-owned P3 notes, R-019 and R-020, and the operator answered \"Amend first\". Describe the Specifying assignment Foreman dispatches for that answer, including what it states about the feature's tasks and where Foreman reads that from. Do not execute a backend.",
+      "expected_output": "Foreman dispatches Spec with R-019 and R-020 as an operator instruction and names T-001 and T-002 as the closed tasks, read live from the tasks.md checkboxes, which are the status authority in local mode. It does not state that T-003 is closed or that every task of the feature is closed: T-003 is unchecked, and the hold only makes it ineligible. The amendment then runs SpecReview and SpecLanding and returns to the confirmation gate.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/intake-local.md"
+      ],
+      "assertions": [
+        "The Specifying assignment carries R-019 and R-020 as an operator instruction",
+        "The assignment names T-001 and T-002 as closed",
+        "The assignment does not state that T-003 is closed or that every task of the feature is closed",
+        "Foreman reads which tasks are closed from the tasks.md checkboxes, not from the absence of an eligible task"
+      ]
     }
   ]
 }
