@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.28
+
+### Land writes the message of every squash merge
+
+For the `squash` strategy, Land passes an explicit subject and body to the merge: the PR title followed by a space and `(#<PR number>)`, and the full message of each commit the PR contains, in host order. The host default message is no longer used, so the host adds no line of its own, such as a `Co-authored-by` line when the commit author differs from the merging account.
+
+- Applies when: never on its own; the next squash merge Land performs applies the rule.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.27
 
 ### A contract amendment creates no work for a closed task

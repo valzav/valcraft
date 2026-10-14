@@ -384,6 +384,28 @@
         "No force push, reset, or rewrite of any branch is proposed"
       ],
       "id": 18
+    },
+    {
+      "id": 19,
+      "name": "squash-merge-passes-explicit-message",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, land task PR 42 for F001 T-002. The attributed Foreman assignment grants target-bound authority to squash-merge PR 42 in example/reports into `main` at head 2222222222222222222222222222222222222222, delete the head branch, and close task issue 17. The captured PR, its commits, and its checks are in captures/task-pr-squash.md; the Review report is reviews/task-review.md. Prepare every operation exactly, including the merge command. Do not execute anything.",
+      "expected_output": "Land finds Review coverage of head 2222222222222222222222222222222222222222 and a passing `unit` check, and prepares the squash merge with an explicit subject and body. The subject is `feat(F001 T-002): normalize export headers (#42)`. The body holds the full messages of commits 1a1a1a1a and 22222222, subject and body, in that order. The message carries no `Co-authored-by` line, although the commit author differs from the merging account, because Land does not leave the message to the host default. The report records the subject and body with the merge under `Prepared operations`.",
+      "files": [
+        "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
+        "evals/files/delivery/docs/product-brief.md",
+        "evals/files/delivery/specs/001-report-export/spec.md",
+        "evals/files/delivery/specs/001-report-export/tasks.md",
+        "evals/files/delivery/captures/task-pr-squash.md",
+        "evals/files/delivery/reviews/task-review.md"
+      ],
+      "assertions": [
+        "The prepared squash merge passes an explicit subject and an explicit body",
+        "The subject is exactly `feat(F001 T-002): normalize export headers (#42)`",
+        "The body holds the full messages of both PR commits, subject and body, in the captured order",
+        "The prepared message holds no `Co-authored-by` line and no other line that neither PR commit carries",
+        "The report's `Prepared operations` section records the subject and body with the merge"
+      ]
     }
   ]
 }
