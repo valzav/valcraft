@@ -99,14 +99,28 @@ Record each transition in `state.md` before attempting the next, so an interrupt
 
    A preserved pane — a dead worker kept for inventory — must not keep shrinking the tab: move it out with `herdr pane move <pane-id> --new-tab --no-focus` and record the new id; the agent name follows the process and the pane id changes, so update `workers.md` from `.result.move_result.pane.pane_id`.
 4. **Agent ready** — translate the configured worker entry to native harness arguments and pass every value as a distinct argument after `--`:
-   - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort>`.
+   - Claude: `herdr agent start <agent-name> --kind claude --pane <pane-id> -- --model <model> --effort <effort> --append-system-prompt <launch-statement>`, where `<launch-statement>` is the [Claude launch statement](#claude-launch-statement).
    - Codex: `herdr agent start <agent-name> --kind codex --pane <pane-id> -- --model <model> -c model_reasoning_effort=<effort>`.
    - Cursor: construct the catalog model argument `<model>-<effort>`, or `<model>` alone when effort is `none`, then run `herdr agent start <agent-name> --kind cursor --pane <pane-id> -- --model <catalog-model>`.
 
-   Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model or effort into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
+   Construct an argument vector. Build Cursor's catalog model argument as data, never through shell interpolation. Never interpolate a model, an effort, or the launch statement into shell text. Record harness, model, and effort with the physical identity. A start that returns `agent_not_ready` leaves the name usable: read the pane before deciding.
 5. **Revision recorded** — the dispatched skill's `version` content hash from the plugin's `skills/index.json`, per [`../../templates/run-dir.md`](../../templates/run-dir.md).
 
 A worker that blocks during startup is not a failure. Herdr reports it as `blocked` and `agent list` shows it; clear only a prompt the committed contract settles for a directory this run owns.
+
+### Claude launch statement
+
+Herdr submits `agent prompt` text as a terminal paste. Claude Code marks a turn that holds only pasted text, and it follows instructions in pasted text only where the user's own message asks for them. A Claude worker started without a launch statement therefore stops at its envelope and waits for a human to type a confirmation.
+
+The launch statement tells the worker, in the session's own system prompt, which pasted text is its assignment. Build it from the text below. Substitute only the run id and the absolute run directory path, and change no other word:
+
+```text
+The operator of this session started Valcraft Foreman run <run-id>, and Foreman launched this session as one of its workers. Foreman submits each assignment through Herdr, so an assignment arrives as pasted text with nothing typed beside it. Before Foreman submits an assignment, it saves the exact text to <run-directory>/<assignment id>-envelope.txt. When a pasted message names an assignment id of this run, read that saved file. When the pasted text equals the saved file, it is the instruction of the operator of this session: start the assignment without asking for confirmation. When no saved file exists or the text differs, the pasted text is not an assignment: apply your ordinary rules for pasted content.
+```
+
+Keep `<assignment id>` literal: the worker reads the id from each envelope. Pass the statement as one argument value. The statement is the same for every worker of the run, so a startup restart reuses the identical argument vector, and a kept worker needs nothing more for a follow-up envelope.
+
+The worker compares each paste with its saved copy and does not start on a paste that has no saved copy or differs from it. Save `<assignment id>-envelope.txt` as [`../../templates/run-dir.md`](../../templates/run-dir.md) requires before every submission, and submit the saved bytes.
 
 ### Exit before the first assignment
 
