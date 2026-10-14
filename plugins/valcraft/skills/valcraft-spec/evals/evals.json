@@ -826,6 +826,25 @@
         "The feature issue, both task issues, hierarchy, order, the declared dependency, and the mapping writes are still prepared rather than the projection stopping",
         "No tracker, push, or PR operation executes, and the report ends with Status: done"
       ]
+    },
+    {
+      "id": 41,
+      "name": "amendment-creates-no-work-for-a-closed-task",
+      "prompt": "$valcraft:valcraft-spec — FEAT-007 (CSV export of records) has a landed triplet under specs/007-csv-export/. A Foreman assignment names you for a landed-contract amendment on the amendment branch, with no outward authority. It states that tasks T-001, T-002, and T-003 are all landed and that their task issues are closed. It carries the operator's answer at the feature confirmation gate, \"Amend first\", with two Spec-owned P3 notes as the operator instruction. R-021: design.md's Interfaces section says the export procedure is built as `protectedProcedure.use(requireRole('admin'))`, while the landed code builds it from the exported `adminProcedure`; the reviewer states the outcome is the same for every caller. R-022: the `exports` table in docs/reference/schema.md will not name the two columns that T-001 added; the reviewer states the feature does not make that table false, and that Spec may name docs/reference/schema.md in design.md's \"Documentation correction\" section. That section lists the documents the feature corrects. Test strategy entry TS-009 verifies every document the section lists, and tasks.md assigns TS-009 to T-001. The assignment also observes that an earlier Spec report declined R-022 as optional, and that this position predates the operator's answer. At the baseline head, docs/reference/schema.md names neither column, and no task of the feature changed that file. Describe every hunk the amendment contains, by artifact, and what the report's Finding resolutions says for each R-ID. Do not write files.",
+      "expected_output": "Spec resolves R-021 by changing design.md's wording to the exported builder the landed code already uses, which creates no work. For R-022 it writes no obligation: naming docs/reference/schema.md in Documentation correction, or adding a requirement, criterion clause, Test strategy text, or task line for it, would be work for closed T-001 that no landed change satisfies. Finding resolutions records R-022 as left open because it needs new work and names a new task as the way to deliver it. Spec adds no task, because the operator instruction did not ask for one.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "references/delivery.md"
+      ],
+      "assertions": [
+        "R-021 is resolved by changing design.md's wording to the exported builder that the landed code uses",
+        "The amendment adds no requirement, acceptance-criterion clause, Documentation correction entry, Test strategy text, or task-line text that obliges docs/reference/schema.md to change",
+        "Nothing new is assigned to T-001, T-002, or T-003",
+        "Finding resolutions records R-022 as left open because it needs new work, and names a new task as the way to deliver that work",
+        "The amendment adds no new task to tasks.md",
+        "Spec writes no files"
+      ]
     }
   ]
 }

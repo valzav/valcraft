@@ -110,7 +110,7 @@ Select the first eligible task in artifact order with satisfied dependencies and
 When no eligible task remains:
 
 - a quick run completes when its files are fully closed by Land;
-- a feature waits for operator confirmation, then enters `FeatureClose`. Before asking, list every P3 note owned by `valcraft-spec` in the feature's Review reports that no later Spec report resolved, with its R-ID and report path, or state that none remain. These notes can leave false statements in the contract, and no other stage applies them. The confirmation offers two answers: close as is, or amend first. Amend first enters `Specifying` with those R-IDs as an operator instruction; the amendment runs SpecReview and SpecLanding and then returns to this gate;
+- a feature waits for operator confirmation, then enters `FeatureClose`. Before asking, list every P3 note owned by `valcraft-spec` in the feature's Review reports that no later Spec report resolved, with its R-ID and report path, or state that none remain. These notes can leave false statements in the contract, and no other stage applies them. The confirmation offers two answers: close as is, or amend first. Amend first enters `Specifying` with those R-IDs as an operator instruction and the statement that every task of the feature is closed; the amendment runs SpecReview and SpecLanding and then returns to this gate. A note that a later Spec report left open because it needs new work is listed with that reason, and amend first does not carry it: the operator closes as is, or instructs a new task for it. That instruction enters `Specifying` as an operator instruction, and after SpecLanding `Ready` selects the new task;
 - an unconfirmed feature remains at the named human gate.
 
 ## `Drafting`
