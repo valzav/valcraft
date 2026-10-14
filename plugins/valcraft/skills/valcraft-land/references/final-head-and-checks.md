@@ -4,6 +4,8 @@ Use this gate for every task, spec, and feature-close PR. It controls both merge
 
 Merging any PR — task, spec, or feature-close — includes deleting its head branch; the merge grant covers the deletion. Reconcile an already-deleted branch as complete.
 
+For the `squash` strategy, pass an explicit subject and body to the merge. The subject is the PR title followed by a space and `(#<PR number>)`. The body is the full message of each commit the PR contains at the merged head, in the order the host lists them. Never leave the message to the host default: the host can add lines that no PR commit carries, such as a `Co-authored-by` line when the commit author differs from the merging account. Record the subject and body with the merge under `Prepared operations`.
+
 After the merge is verified, delete the local branch of the same name in the canonical checkout when its head equals the merged PR head. The merge grant covers this deletion too. When the clean canonical checkout has that branch checked out, delete it by first fast-forwarding the local default branch to the verified remote default head and switching the checkout to it. Switch the checkout only to delete that branch.
 
 When the local branch's head differs from the merged PR head, it holds local commits the merge does not contain. Leave the branch and the checkout as they are, and name the branch with both heads under `Handoffs`. Leave a dirty checkout and its branch in place the same way.

@@ -50,8 +50,6 @@ Feature or PRD closure requires authoritative proof that its children meet the t
 
 Use `pull_requests.merge_strategy` from the committed `.valcraft/config.yaml` for task and spec PRs. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Tune for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
 
-For the `squash` strategy, pass an explicit subject and body to the merge. The subject is the PR title followed by a space and `(#<PR number>)`. The body is the full message of each commit the PR contains at the merged head, in the order the host lists them. Never leave the message to the host default: the host can add lines that no PR commit carries, such as a `Co-authored-by` line when the commit author differs from the merging account. Record the subject and body with the merge under `Prepared operations`.
-
 Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 
 After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure under the rule in [Target kinds](#target-kinds).

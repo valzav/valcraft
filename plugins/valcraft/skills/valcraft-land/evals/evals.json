@@ -406,6 +406,28 @@
         "The prepared message holds no `Co-authored-by` line and no other line that neither PR commit carries",
         "The report's `Prepared operations` section records the subject and body with the merge"
       ]
+    },
+    {
+      "id": 20,
+      "name": "spec-pr-squash-merge-passes-explicit-message",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, land spec PR 43 for F001. The attributed Foreman assignment grants target-bound authority to squash-merge PR 43 in example/reports into `main` at head 4444444444444444444444444444444444444444 and delete its head branch. The captured PR, its commits, and its checks are in captures/spec-pr-squash.md; the Review report is reviews/spec-review.md. Prepare every operation exactly, including the merge command. Do not execute anything.",
+      "expected_output": "Land classifies the target as a spec PR, finds Review coverage of head 4444444444444444444444444444444444444444 and a passing `unit` check, and prepares the squash merge with an explicit subject and body. The subject is `spec(F001): state the header rule for repeated spaces (#43)`. The body holds the full messages of commits 3a3a3a3a and 44444444, subject and body, in that order, with no `Co-authored-by` line. Land prepares no tracker mutation. The report records the subject and body with the merge under `Prepared operations`.",
+      "files": [
+        "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
+        "evals/files/delivery/docs/product-brief.md",
+        "evals/files/delivery/specs/001-report-export/spec.md",
+        "evals/files/delivery/specs/001-report-export/tasks.md",
+        "evals/files/delivery/captures/spec-pr-squash.md",
+        "evals/files/delivery/reviews/spec-review.md"
+      ],
+      "assertions": [
+        "Land classifies PR 43 as a spec PR and prepares no tracker mutation",
+        "The prepared squash merge passes an explicit subject and an explicit body",
+        "The subject is exactly `spec(F001): state the header rule for repeated spaces (#43)`",
+        "The body holds the full messages of both PR commits, subject and body, in the captured order, and no `Co-authored-by` line",
+        "The report's `Prepared operations` section records the subject and body with the merge"
+      ]
     }
   ]
 }
