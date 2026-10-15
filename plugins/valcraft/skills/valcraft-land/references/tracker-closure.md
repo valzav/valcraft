@@ -45,13 +45,3 @@ Prepare one ordered, serialized batch before execution. A completed task batch n
 Treat every operation as independently reconcilable. If the comment exists but close or label removal failed, resume only the missing operations. If the PR merged but tracker work failed, do not attempt another merge.
 
 Feature or PRD closure requires authoritative proof that its children meet the tracker contract and a trusted operator confirmation for that exact target. Without it, return `operator_confirmation_required`. Quote the confirmation in the prepared close record.
-
-## Merge and recovery
-
-Use `pull_requests.merge_strategy` from the committed `.valcraft/config.yaml` for task and spec PRs. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Tune for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
-
-Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
-
-After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure under the rule in [Target kinds](#target-kinds).
-
-Persist or report enough state to resume: target kind, exact identifiers, prepared authorization fields, completed operations with authoritative locators, remaining operations, and last error. Never repeat a completed external mutation.
