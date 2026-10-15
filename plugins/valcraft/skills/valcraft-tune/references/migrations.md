@@ -16,6 +16,24 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.29
+
+### Foreman confirms a feature only when every task is closed
+
+When no eligible task remains but a feature task is still open, such as a held task or one that waits on a held task, Foreman enters `Blocked`, names each open task with what it waits on, and offers no feature confirmation. The confirmation is offered only when the status authority of the resolved tracker mode shows every task of the feature closed.
+
+- Applies when: never on its own; the next feature confirmation gate applies the rule.
+- Tune performs: none.
+- Operator: none.
+
+### Land's merge rules apply to every pull request
+
+The configured merge strategy, the re-read before merge, the recovery after a merge error, and the resumable state now sit with the gate Land applies to every PR. The configured strategy applies to task, spec, and feature-close PRs alike.
+
+- Applies when: never on its own; the next merge Land performs applies the rules.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.28
 
 ### Land writes the message of every squash merge

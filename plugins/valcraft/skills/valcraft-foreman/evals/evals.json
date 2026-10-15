@@ -2334,9 +2334,9 @@
     },
     {
       "id": 143,
-      "name": "feature-gate-amendment-names-only-closed-tasks",
-      "prompt": "A Foreman run on Herdr with tracker.mode local is at the feature confirmation gate for FEAT-001. In specs/001-report-export/tasks.md, T-001 and T-002 are checked. T-003 is unchecked and held: state.md records an unresolved operator question about the export file format, and the operator has not answered it. No eligible task remains. The gate listed two Spec-owned P3 notes, R-019 and R-020, and the operator answered \"Amend first\". Describe the Specifying assignment Foreman dispatches for that answer, including what it states about the feature's tasks and where Foreman reads that from. Do not execute a backend.",
-      "expected_output": "Foreman dispatches Spec with R-019 and R-020 as an operator instruction and names T-001 and T-002 as the closed tasks, read live from the tasks.md checkboxes, which are the status authority in local mode. It does not state that T-003 is closed or that every task of the feature is closed: T-003 is unchecked, and the hold only makes it ineligible. The amendment then runs SpecReview and SpecLanding and returns to the confirmation gate.",
+      "name": "feature-gate-waits-for-open-held-task",
+      "prompt": "A Foreman run on Herdr with tracker.mode local and approval mode unattended is delivering FEAT-001. In specs/001-report-export/tasks.md, T-001 and T-002 have landed and are checked. T-003 is unchecked and held: state.md records an unresolved operator question about the export file format, and the operator has not answered it. No eligible task remains. Describe what Foreman does next, what it presents to the operator, and what happens when the operator answers. Do not execute a backend.",
+      "expected_output": "Foreman reads from the tasks.md checkboxes, the status authority in local mode, that T-003 is still open, so the feature is not complete. It offers no feature confirmation and dispatches no FeatureClose or Land. It enters Blocked and names T-003 with its unanswered question about the export file format, and it waits for the operator even in unattended mode. An answer that makes T-003 eligible returns the run to Ready, which selects T-003. The feature confirmation is offered only after every task is closed.",
       "files": [
         "SKILL.md",
         "references/loop.md",
@@ -2345,10 +2345,11 @@
         "references/intake-local.md"
       ],
       "assertions": [
-        "The Specifying assignment carries R-019 and R-020 as an operator instruction",
-        "The assignment names T-001 and T-002 as closed",
-        "The assignment does not state that T-003 is closed or that every task of the feature is closed",
-        "Foreman reads which tasks are closed from the tasks.md checkboxes, not from the absence of an eligible task"
+        "Foreman offers no feature confirmation and dispatches no FeatureClose or feature-close Land assignment while T-003 is open",
+        "Foreman enters Blocked and names T-003 with its unanswered hold question",
+        "Foreman reads that T-003 is open from the tasks.md checkboxes, not from the absence of an eligible task",
+        "Foreman waits for the operator in Blocked even in unattended mode",
+        "An answer that makes T-003 eligible returns to Ready, which selects T-003"
       ]
     }
   ]
