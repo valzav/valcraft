@@ -140,7 +140,7 @@
         "Draft detects the remote-identity drift during immediate pre-push revalidation and performs no external mutation, including no push to the new remote",
         "Draft preserves the local plan commit without rebasing, resetting, merging, or force-pushing",
         "The new prepared handoff records the live remote identity, the canonical target ref and its live head, the local head, and the operation set",
-        "The report uses every Draft heading and its last line begins exactly Status: blocked: authority_drift —"
+        "The answer's last line begins exactly `Status: blocked: authority_drift —`"
       ]
     },
     {
@@ -184,7 +184,7 @@
       ],
       "assertions": [
         "Draft writes, MSW-processes, and commits the local plan before its push stage",
-        "Draft attempts the live read of the canonical ref and, when it fails, does not use the cached remote-tracking ref refs/remotes/origin/feat/f001-t002-export-scheduling as the remote head",
+        "Draft does not use the cached remote-tracking ref as the remote head, and the unreadable canonical ref ends the push stage with `workspace_not_ready`",
         "The exact local plan commit and Review target remain preserved",
         "The canonical remote head remains unresolved rather than fabricated",
         "Draft performs no push, reset, rebase, merge, force-push, PR, tracker, or closure mutation",

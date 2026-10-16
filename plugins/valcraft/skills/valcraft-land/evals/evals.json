@@ -160,7 +160,7 @@
         "Land records one attributed durable evidence row for every owned acceptance criterion",
         "Operator attestation remains attributed evidence and is not promoted to verified fact",
         "Land returns an exact evidence-mode Review handoff and does not self-judge sufficiency",
-        "Land names every criterion the sufficiency report must cover and ends `Status: blocked: evidence_review_required` pending that report instead of producing it",
+        "Land names every criterion the sufficiency report must cover and does not produce that report; because the hosted record comment needs tracker-write authority the assignment does not carry, it ends `Status: blocked: authority_required` naming the prepared comment and the evidence Review handoff",
         "Land accepts only the report for the exact durable record and prepares closure only when every criterion is sufficient",
         "No git identity is invented and applicable checks use real targets",
         "Land does not spawn Review and does not mutate the tracker without exact authority"

@@ -228,7 +228,7 @@ Each producer contract makes a repeat safe. A push is non-force and verified by 
 2. Retry only a report whose structured fields name every bound field of its grant and the remaining operation. Otherwise enter `Blocked` at once.
 3. Count attempts per budget: the logical producer plus the report's bound fields. Every code in this class counts against the same budget, so `push_failed` followed by `pr_failed` spends one budget. A new head after remediation starts a new budget.
 4. When an attempt's start time arrives, repeat the live read of every bound field that Foreman performs before dispatch. A failed read spends the attempt and dispatches nothing.
-5. After a successful read, dispatch the same logical producer under a fresh physical identity and report path, with the failed attempt's exact grant, and require it to revalidate every bound field immediately before mutation. No approval gate applies, because the retry repeats an authorized operation set on the same bound fields. A moved remote still returns `authority_drift` through its own route.
+5. After a successful read, dispatch the same logical producer under a fresh physical identity and report path, with the failed attempt's exact grant and its reported head, and require it to revalidate every bound field immediately before mutation and to repeat only the remaining operations, not its work. No approval gate applies, because the retry repeats an authorized operation set on the same bound fields. A moved remote still returns `authority_drift` through its own route.
 6. When attempt 4 fails, by a class code or a failed live read, enter `Blocked`, naming every attempt's report path, live-read result, and time.
 
 ## Backend returns

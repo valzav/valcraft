@@ -497,7 +497,7 @@
       ],
       "assertions": [
         "The PR body cites the task identity and the pinned Spec-owned commit with its R-IDs",
-        "Forge edits no spec.md, design.md, or tasks.md content"
+        "Forge edits no spec.md or design.md content, and changes no tasks.md line other than its own task's completion transition"
       ]
     },
     {
