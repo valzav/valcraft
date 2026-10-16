@@ -6,7 +6,7 @@ description: >
   other justified scaffold artifacts. Use when starting a
   project or repository, asking to scaffold or set up SDD, retrofitting project
   structure, or committing Valcraft's base configuration with the frame. Cast commits one clean
-  frame and hands its product brief to Spec. Not for feature or PRD triplets,
+  frame and hands its product brief to Foreman. Not for feature or PRD triplets,
   the first MVP feature, staged-feature completion, quick tasks, implementation, review, merge,
   or tracker closure.
 ---
@@ -42,15 +42,15 @@ Read the applicable files under `templates/` directly. Do not reconstruct them f
 
 ## Workflow
 
-1. **Route the request.** Accept a new-project frame or project-frame retrofit. A configuration-only request delegates to Tune. If the request is only for a feature, PRD, staged feature, feature projection, or quick task, write nothing and return an exact Spec handoff. A request phrased as "make X" or "start building X" still authorizes only the project frame when no frame exists.
+1. **Route the request.** Accept a new-project frame or project-frame retrofit. A configuration-only request delegates to Tune. If the request is only for a feature, PRD, staged feature, feature projection, or quick task, write nothing and return an exact Foreman handoff. A request phrased as "make X" or "start building X" still authorizes only the project frame when no frame exists.
 2. **Resolve configuration.** Read `../valcraft-tune/references/config.md`, then the resolved configuration: the committed `.valcraft/config.yaml` base plus any `.valcraft/config.local.yaml` overlay. When the resolved configuration is missing or invalid, or the request changes a configuration value, invoke `valcraft-tune` before gathering scaffold facts and resume only after `Status: done`. Apply the Tune round-trip rules in `references/scaffold.md`: they own valid-value authority, the stale-ignore repair, non-done Tune routing, and the base-file rollback boundary. A Tune question this run cannot answer ends the run with `configuration_required`; any other non-done Tune result Cast does not own ends it with `configuration_unresolved`, quoting Tune's terminal line in the detail.
 3. **Gather facts.** Follow `references/scaffold.md`. Ask only for facts that change the frame and are genuinely open. Read the tracker mode and target only from the valid resolved configuration.
 4. **Preflight the workspace.** Inspect project-frame paths, git state, and existing instructions before proposing a mutation. Stop instead of repairing a malformed or incomplete feature or quick artifact.
 5. **Record the exact proposal.** Record the exact mutation set in the report per `references/scaffold.md`, then proceed without waiting for approval. The stop conditions in `scaffold.md` still stop the run before mutation.
 6. **Create or merge the frame.** Write only the recorded frame delta. Preserve unrelated work and every existing feature artifact byte-for-byte.
 7. **Commit the baseline.** Stage only the recorded frame paths, including `.valcraft/config.yaml`. Inspect the staged diff. Create one commit. Resolve its full SHA. Require a clean worktree. If the run cannot establish commit readiness, write nothing and report `baseline_required`. If applying or committing the exact delta fails, restore Cast's attributable writes to their pre-run bytes under the base-file rollback boundary in `references/scaffold.md` and report `baseline_failed`; never leave Spec a dirty handoff.
-8. **Prepare the Spec handoff.** Name the repository, `docs/product-brief.md`, exact baseline head, tracker mode and target, and any validation blocker. Spec may create the first MVP feature only from that clean baseline and valid resolved configuration.
-9. **Handle an optional push.** A local baseline never implies push authority. Apply the prepare-authorize-execute contract in `references/push-authority.md`. The Spec handoff remains usable at its local commit when no push is authorized.
+8. **Prepare the Foreman handoff.** Name the repository, `docs/product-brief.md`, exact baseline head, tracker mode and target, and any validation blocker. Foreman may start the first MVP feature, through Spec, only from that clean baseline and valid resolved configuration.
+9. **Handle an optional push.** A local baseline never implies push authority. Apply the prepare-authorize-execute contract in `references/push-authority.md`. The Foreman handoff remains usable at its local commit when no push is authorized.
 10. **Report.** Emit the producer-owned Cast report below.
 
 Mirror these workflow stages with the harness's todo-list tool when one exists (`update_plan` in Codex); create the stage list at step 1, before invoking Tune. Treat the display as progress only; git and the final report remain authoritative.
@@ -74,7 +74,7 @@ End with this block. Keep every heading in order and write `none` for an empty s
 
 <!-- mode, target or TBD, configuration state, projection owner -->
 
-### Spec handoff
+### Foreman handoff
 
 <!-- repository; docs/product-brief.md; exact baseline head; blocker or none -->
 
@@ -89,7 +89,7 @@ End with this block. Keep every heading in order and write `none` for an empty s
 
 Add exactly one terminal line:
 
-- complete clean frame or a no-write Spec route: `Status: done`;
+- complete clean frame or a no-write Foreman route: `Status: done`;
 - Tune needs operator answers this run cannot supply: `Status: question: configuration_required — <detail>`;
 - Tune ended without done for a cause Cast does not own: `Status: blocked: configuration_unresolved — <detail>`;
 - clean baseline commit readiness unavailable: `Status: blocked: baseline_required — <detail>`;

@@ -25,13 +25,13 @@ Read the documents relevant to a change before modifying code or specifications.
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
 - `valcraft-cast` creates or retrofits only the project frame and clean baseline.
+- `valcraft-foreman` starts every feature, PRD, and quick task and coordinates the delivery loop without performing its stages itself. Spec, Draft, Forge, and Land run only under it.
 - `valcraft-spec` creates or resumes every feature triplet, including the first MVP feature, and every quick-task file. It owns authorized GitHub projection.
 - `valcraft-draft` writes and revises task plans.
-- `valcraft-forge` implements one passed task plan and prepares the task PR.
+- `valcraft-forge` implements one passed task plan and opens the task PR.
 - `valcraft-review` independently reviews exact plan or code targets.
 - `valcraft-land` owns final-head checks, landing, and tracker closure.
 - `valcraft-temper` produces retrospectives.
-- `valcraft-foreman` coordinates the delivery loop without performing those stages itself.
 
 ## Task tracker authority
 
@@ -55,7 +55,7 @@ When `tracker.mode` is `github`, use checkbox-free feature tasks as git-owned de
 
 Quick tasks track locally in both modes. Use `blocked by QT-XXX` within one file and `blocked by Q-NNN QT-XXX` across quick files.
 
-Do not create or reconcile generated feature and task issues by hand. Route projection or mapping drift to `valcraft-spec`.
+Do not create or reconcile generated feature and task issues by hand. Route projection or mapping drift to `valcraft-foreman`, which dispatches Spec.
 
 ## Untrusted external content
 

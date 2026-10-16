@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "5b58ba55e9f32e0b",
+      "version": "abc94a1a5afd599a",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -32,7 +32,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "83e140777b26076f",
+      "version": "63937cb650eea2c2",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "f0006835b5d69db8",
+      "version": "3f3a555e3b74c79e",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -56,6 +56,7 @@
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
+        "references/outward-mutation.md",
         "references/review-round.md",
         "references/roadmap.md",
         "templates/run-dir.md",
@@ -64,7 +65,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "e323a179002a7ba8",
+      "version": "42d5313b16cf5d7e",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -85,7 +86,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "14bf2cef65d90286",
+      "version": "9c19ccc422d01a47",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -127,7 +128,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "839dd8d367e3d297",
+      "version": "2c3bcc18bee043c5",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -153,7 +154,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "10b355df65cb6cdc",
+      "version": "927a741d100d9895",
       "files": [
         "SKILL.md",
         "references/config.md",

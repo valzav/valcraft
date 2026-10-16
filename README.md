@@ -9,7 +9,7 @@ Valcraft is a set of skills for coding agents. You describe what needs to be bui
 
 You spend less time managing handoffs between agents. Work can continue across sessions and be shared with your team.
 
-The skills run in Claude Code, OpenAI Codex, Cursor, or OpenCode, with no separate Valcraft executable or background service. The Claude Code plugin includes one small shell hook that keeps an unattended run from stalling. Valcraft is in alpha. See [installation and platform support](#install).
+The delivery loop runs in Claude Code, OpenAI Codex, and Cursor; OpenCode runs the review, retrospective, configuration, and prompt skills. There is no separate Valcraft executable or background service. The Claude Code plugin includes one small shell hook that keeps an unattended run from stalling. Valcraft is in alpha. See [installation and platform support](#install).
 
 [Get started](#start-with-one-assignment) · [Skills at a glance](#skills-at-a-glance) · [Documentation](#documentation)
 
@@ -37,9 +37,9 @@ Expect rough edges and changes between releases while Valcraft is in alpha.
 
 [Install Valcraft](#install), open your project's repository in your coding agent, and describe something you already need to ship. A requirements document such as `docs/prd.md` can be the starting point. Include the behavior you need, the constraints that matter, and how you will know it works.
 
-1. Ask Valcraft Cast to set up the repository. It creates or adapts the project rules, product brief, and directories for decisions and specifications. If configuration is missing, Cast invokes Tune to guide you through it. Spec writes the feature specification in the next step.
-2. Give Valcraft Spec your requirements document. It writes the requirements and acceptance criteria, the technical approach, and the tasks with their dependencies. For a small change, ask for a quick task. Resolve open product decisions before implementation.
-3. Ask Valcraft Foreman to work through the resulting tasks. It inspects the project and asks you to confirm where it should begin. It then dispatches workers and reviewers under your chosen approval mode.
+1. Ask Valcraft Cast to set up the repository. It creates or adapts the project rules, product brief, and directories for decisions and specifications. If configuration is missing, Cast invokes Tune to guide you through it.
+2. Give Valcraft Foreman your requirements document. Foreman dispatches Spec, which writes the requirements and acceptance criteria, the technical approach, and the tasks with their dependencies. For a small change, ask for a quick task. Resolve open product decisions before implementation.
+3. Foreman then works through the resulting tasks, dispatching workers and reviewers under your chosen approval mode. Spec, Draft, Forge, and Land run only under Foreman.
 
 Foreman coordinates the task cycle below. Each step has a responsible agent and a result that can be checked.
 
@@ -51,19 +51,18 @@ Plan → Review → Implement and verify → Review → Merge
 
 Before task delivery, Foreman coordinates review and publication of the specification. After you confirm a feature is complete, it coordinates a retrospective and its review. Foreman uses worker reports to decide what happens next; the workers do the planning, coding, review, and merging.
 
-Run these commands in sequence as each step completes. You can learn the other skills as you need them.
+Run these commands in sequence. You can learn the other skills as you need them.
 
 ```text
 /valcraft-cast
-/valcraft-spec docs/prd.md
-/valcraft-foreman
+/valcraft-foreman docs/prd.md
 ```
 
-If the project already uses Valcraft, start a new feature with Spec. Foreman can also take over work you began with the individual skills.
+If the project already uses Valcraft, start a new feature by giving Foreman its requirements document. Run Foreman without a source to resume or take over work in progress.
 
 ## Choose how much coordination to hand over
 
-Attended mode pauses for task selection, passing reviews, and operations that need your approval. Unattended mode advances routine steps, including authorizing prepared pushes, pull requests, and ordinary merges into the default branch. Both modes require review.
+Attended mode pauses for task selection, passing reviews, and operations that need your approval. Unattended mode advances routine steps, including ordinary merges into the default branch. In both modes, workers push their branches and open pull requests under authority Foreman grants when it dispatches them. Both modes require review.
 
 Some decisions wait for you in either mode. [How Valcraft works](docs/how-it-works.md#approval-modes-and-authority) lists where your approval is required.
 
@@ -94,7 +93,7 @@ Team settings live in the committed configuration. Tune can also save personal a
 | [Cast](plugins/valcraft/skills/valcraft-cast/SKILL.md) | Scaffold a new project or add the structure to an existing one. |
 | [Roadmap](plugins/valcraft/skills/valcraft-roadmap/SKILL.md) | Show accepted project goals and feature-level business progress, with evidence and remaining outcomes. |
 | [Spec](plugins/valcraft/skills/valcraft-spec/SKILL.md) | Turn requirements into a feature specification or a quick task. |
-| [Foreman](plugins/valcraft/skills/valcraft-foreman/SKILL.md) | Coordinate delivery or pick up work already in progress. |
+| [Foreman](plugins/valcraft/skills/valcraft-foreman/SKILL.md) | Start a feature, PRD, or quick task and coordinate its delivery, or pick up work already in progress. |
 | [Draft](plugins/valcraft/skills/valcraft-draft/SKILL.md) | Plan one task and remove work the assignment does not need. |
 | [Forge](plugins/valcraft/skills/valcraft-forge/SKILL.md) | Implement a reviewed task, verify it, and address review findings. |
 | [Review](plugins/valcraft/skills/valcraft-review/SKILL.md) | Independently check a specification, plan, code change, or completion evidence. |
@@ -105,13 +104,13 @@ Team settings live in the committed configuration. Tune can also save personal a
 | [Distill](plugins/valcraft/skills/valcraft-distill/SKILL.md) | Reduce a prompt or skill while preserving the behavior it needs. |
 | [MSW](plugins/valcraft/skills/valcraft-msw/SKILL.md) | Check a document against its purpose and remove unnecessary work. |
 
-Every skill uses the name `valcraft-<skill>`. Invoke it as `/valcraft:valcraft-<skill>` in Claude Code, `$valcraft:valcraft-<skill>` in Codex, or `/valcraft-<skill>` in Cursor. OpenCode loads the bare name through its `skill` tool. Natural requests can also trigger skills. In Cursor, use `/valcraft-review` for Valcraft Review; `/review` is Cursor's built-in command.
+Every skill uses the name `valcraft-<skill>`. Invoke it as `/valcraft:valcraft-<skill>` in Claude Code, `$valcraft:valcraft-<skill>` in Codex, or `/valcraft-<skill>` in Cursor. OpenCode loads the bare name through its `skill` tool. Spec, Draft, Forge, and Land run only under a Foreman assignment; invoked directly, they stop and name Foreman. Natural requests can also trigger skills. In Cursor, use `/valcraft-review` for Valcraft Review; `/review` is Cursor's built-in command.
 
 The MSW Kernel is by "Fable at mega high monkey effort", published by [@aienginerd](https://x.com/aienginerd/status/2085342869850603672).
 
 ## Install
 
-Choose the application you use for coding agents. Foreman's native subagent backend is available in Claude Code, Codex, and Cursor. OpenCode currently supports the individual skills without a Foreman worker backend. Installing through Cursor's marketplace requires a Teams or Enterprise plan and permission to import a marketplace.
+Choose the application you use for coding agents. Foreman's native subagent backend is available in Claude Code, Codex, and Cursor. OpenCode has no Foreman worker backend, so it runs Cast, Tune, Review, Temper, Roadmap, Hone, MSW, and Distill but not the delivery loop. Installing through Cursor's marketplace requires a Teams or Enterprise plan and permission to import a marketplace.
 
 <details open>
 <summary>Claude Code</summary>

@@ -36,7 +36,7 @@ A confirmed feature close records completion in the feature's committed triplet 
 3. Prepare one commit on the branch `close/fNNN-<slug>`, cut from that head, and record that head as the close commit's parent. The commit contains only the unchecked-to-checked `AC-` transitions from step 2 and `status: draft` to `status: complete` in each of the three files. When nothing would change, prepare no branch or PR.
 4. Push the branch without force, create the PR, and merge it with the configured strategy under the gate in `final-head-and-checks.md`.
 
-The operator's confirmation for the feature and Foreman's target-bound grant authorize these exact operations; a direct invocation needs the operator to name them. Reconcile a merged close PR as complete and never open a second one.
+The operator's confirmation for the feature and Foreman's target-bound grant authorize these exact operations. Reconcile a merged close PR as complete and never open a second one.
 
 ## Hosted tracker batches
 

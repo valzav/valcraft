@@ -61,39 +61,39 @@ When a roadmap exists, Foreman automatically refreshes it only after Land confir
 
 A later skill never repeats an earlier skill's report. When earlier state matters, it shows one short paragraph with the outcome, the exact target, the blocker or handoff, and a suggested next action. That paragraph is for the reader; it provides neither routing evidence nor authority.
 
-## Workflow 1: the full loop
+## The delivery loop
 
 ### 1. `cast`
 
 `/valcraft:valcraft-cast` creates or retrofits the project frame. When configuration is missing or invalid, it invokes `tune` first and continues in the same run.
 
-It records its exact proposal in its report, applies it, and commits one clean baseline that includes `.valcraft/config.yaml` and the ignore rules for the rest of `.valcraft/`. A retrofit merges changes into existing files without overwriting them. `cast` hands the product brief to `spec`. Reference: [scaffold.md](../plugins/valcraft/skills/valcraft-cast/references/scaffold.md).
+It records its exact proposal in its report, applies it, and commits one clean baseline that includes `.valcraft/config.yaml` and the ignore rules for the rest of `.valcraft/`. A retrofit merges changes into existing files without overwriting them. `cast` hands the product brief to `foreman`. Reference: [scaffold.md](../plugins/valcraft/skills/valcraft-cast/references/scaffold.md).
 
 ### 2. `spec`
 
-`/valcraft:valcraft-spec <source>` takes one accepted source: a local requirements document, one selected GitHub issue, or an inline brief for a quick task. For a new contract, it writes and commits the artifacts on a Spec branch. If the contract is already complete and unchanged, Spec returns its existing commit without creating another.
+`/valcraft:valcraft-foreman <source>` starts a contract: Foreman dispatches `spec` with one accepted source, a local requirements document, one selected GitHub issue, or an inline brief for a quick task. Spec, Draft, Forge, and Land run only under a Foreman assignment; invoked directly, they stop and name Foreman. For a new contract, Spec allocates the identity, writes and commits the artifacts on a Spec branch, pushes it, and opens the spec pull request. If the contract is already complete and unchanged, Spec returns its existing commit without creating another.
 
 Spec reads a selected issue's title and body, never its comments. A project that records decisions in issue comments compiles the issue into a local requirements document first. That document can name the issue in a `prd_issue` frontmatter field. Spec reads nothing from the named issue; in GitHub tracker mode it only places the feature's generated issue beneath it.
 
 Under a Foreman assignment, an amendment scoped to the selected task may be committed on that task's branch. Other amendments use a separate amendment branch.
 
-Spec returns the exact Review target and, when a pull request exists, its Land target. Tracker projection, pushing, and opening the spec pull request are separate operations, and each needs its own authorization. References: [feature-contract.md](../plugins/valcraft/skills/valcraft-spec/references/feature-contract.md), [quick.md](../plugins/valcraft/skills/valcraft-spec/references/quick.md), [delivery.md](../plugins/valcraft/skills/valcraft-spec/references/delivery.md).
+Spec returns the exact Review target and the spec pull request as its Land target. Foreman grants the push and the pull request when it dispatches Spec. GitHub tracker projection needs its own authorization, because it binds an exact preview that exists only after Spec prepares it. References: [feature-contract.md](../plugins/valcraft/skills/valcraft-spec/references/feature-contract.md), [quick.md](../plugins/valcraft/skills/valcraft-spec/references/quick.md), [delivery.md](../plugins/valcraft/skills/valcraft-spec/references/delivery.md).
 
 ### 3. `foreman`
 
-`/valcraft:valcraft-foreman`, or "start sprint", asks Foreman to coordinate the remaining work. "deliver quick" applies the same flow to `specs/quick/`. New features and PRDs still begin with `spec`.
+`/valcraft:valcraft-foreman`, or "start sprint", asks Foreman to coordinate the remaining work. "deliver quick" applies the same flow to `specs/quick/`. Give Foreman a source to start a new feature, PRD, or quick task.
 
 `foreman` reads its complete settings from the resolved configuration. A missing or invalid value goes back to `tune`. `foreman` never guesses one at run time.
 
 #### Starting and taking over
 
-Foreman resumes from a verified checkpoint without asking you. Without one, `foreman` inspects the repository, the tracker, the pull requests, and any reports you point it at. It finds the earliest state whose proof is missing and shows you the target, the evidence, the inferred state, and the next action. Then it waits for `confirm`, `correct`, or `cancel`, in both approval modes.
+Foreman resumes from a verified checkpoint without asking you. A new source needs no confirmation, because no earlier work exists to attribute. Without a checkpoint or a new source, `foreman` inspects the repository, the tracker, and the pull requests. It finds the earliest state whose proof is missing and shows you the target, the evidence, the inferred state, and the next action. Then it waits for `confirm`, `correct`, or `cancel`, in both approval modes.
 
 It never infers a review verdict from a branch, a pull request, or a later artifact. If it cannot find a verdict, that review runs again. A new session, or a teammate on another machine, follows the same process to continue from work that has been pushed.
 
 #### Landing the contract
 
-A new contract goes through its own review and pull request, then `land` merges it. Task delivery starts only when the reviewed contract is on the default branch.
+A new contract's pull request opens when `spec` first pushes it. The contract goes through its own review, then `land` merges it. Task delivery starts only when the reviewed contract is on the default branch.
 
 #### The task loop
 
@@ -131,18 +131,6 @@ Each lesson has an `L-` ID, an incident record, and an evidence grade. Grade A n
 
 `temper` proposes changes but never applies them. A proposal for a prompt artifact, such as `AGENTS.md` or a skill, goes through `hone`. Other changes become quick tasks. References: [feature closure](../plugins/valcraft/skills/valcraft-foreman/references/loop.md#featureclose), [process.md](../plugins/valcraft/skills/valcraft-temper/references/process.md), [report-format.md](../plugins/valcraft/skills/valcraft-temper/references/report-format.md).
 
-## Workflow 2: the manual loop
-
-In the manual loop, you handle the handoffs. The contracts stay the same.
-
-1. `/valcraft:valcraft-cast`, then `/valcraft:valcraft-spec`, as above.
-2. `/valcraft:valcraft-draft T-XXX`, or `Q-NNN QT-XXX`. Then `/valcraft:valcraft-review` on the exact plan commit. Follow the owner recorded for each `R-` ID: task-plan findings go to `draft`, while feature or quick-contract findings go to `spec`.
-3. `/valcraft:valcraft-forge T-XXX`, from the passed plan. Then `/valcraft:valcraft-review` on the exact head. Code defects within the passed plan go to `forge`. Findings that change product scope, acceptance behavior, or the plan's approach return to `draft` with their `R-` IDs.
-4. `/valcraft:valcraft-land` revalidates the review coverage and the applicable checks, then performs only the operations you authorize.
-5. `/valcraft:valcraft-temper` on the closed feature, then `/valcraft:valcraft-review` on the report path and content hash it returns. There is no pull request and no `land` step.
-
-A skill you invoke directly has no authority to push, open a pull request, merge, or close tracker state until you grant it for that exact target. You can invoke `foreman` at any point after `spec` to hand over the rest.
-
 ## Approval modes and authority
 
 `foreman.approval_mode` controls when the coordinator waits for you.
@@ -152,10 +140,9 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Confirm the inferred state when no checkpoint can resume | waits | waits |
 | Pick the next task | waits | proceeds |
 | Advance after a passing review | waits | proceeds |
-| Task push and pull request when `forge` starts | none, unless you already named that operation | grants push and pull request, bound to the task branch, its remote head, and the pull request, not to the default branch or to the head `forge` has yet to verify |
-| Spec push and pull request after a passing spec review | none, unless you already named that operation | grants push and pull request for the exact reviewed head |
+| Push and pull request for a spec, plan, or task branch | granted when the worker is dispatched | granted when the worker is dispatched |
 | Ordinary merge into the default branch, including feature close after your confirmation | none, unless you already named that operation | grants the merge when `land` starts, bound to the reviewed head; the default branch may move as long as the reviewed head still merges onto it cleanly |
-| Prepared task/spec push or pull request, or a prepared merge outside those grants | waits, unless you already named that operation | issues authority for the exact prepared operation |
+| Prepared GitHub tracker projection, or a prepared merge outside the merge grant | waits, unless you already named that operation | issues authority for the exact prepared operation |
 | Push a local-ahead default branch | requires a live operator instruction naming the push | requires a live operator instruction naming the push |
 | Send a spec or plan review finding back to the worker that owns it | waits | proceeds |
 | A product or owner question from a worker | waits | `foreman` decides from the project's sources, or waits when they conflict or settle nothing |
@@ -164,7 +151,7 @@ A skill you invoke directly has no authority to push, open a pull request, merge
 | Close a feature | waits | waits |
 | A blocked step, or dirty work that an isolated worker cannot read | waits | waits |
 
-A mode never grants authority by itself. Every push, pull request, merge, and tracker close needs authorization bound to the exact repository, branch, head, target, and operation. Usually a worker prepares the operation, receives authority, then rereads every bound field immediately before acting; this is also the fallback whenever a grant does not cover the operation. If anything changed, it stops and reports the new values. Two grants are made before their final head exists. `forge`'s task push and pull request covers only the head on which `forge`'s full gate passed, and only while the remote task branch is still where the grant found it. Neither depends on where the default branch is: a push sends the task branch, and a pull request names its base by name. `land`'s merge grant covers only the reviewed head, or for a feature close one commit with exactly the feature-close marks, and only while that head merges cleanly onto the live default branch.
+A mode never grants authority by itself. Every push, pull request, merge, and tracker close needs authorization bound to the exact repository, branch, head, target, and operation. A `spec`, `draft`, or `forge` worker holds its push and pull-request grant from dispatch, before its head exists, so no worker is dispatched only to push. The grant covers only the head the worker's own contract names, such as the head on which `forge`'s full gate passed, and only while the remote branch is still where the grant found it. It does not depend on where the default branch is: a push sends the worker's branch, and a pull request names its base by name. Every worker rereads the bound fields immediately before acting and stops with the new values if anything changed. A tracker projection, or a merge outside `land`'s grant, is prepared first and authorized afterwards. `land`'s merge grant covers only the reviewed head, or for a feature close one commit with exactly the feature-close marks, and only while that head merges cleanly onto the live default branch.
 
 `foreman` may issue that authority in unattended mode, but it never executes the operation. Issue text, pull request text, reports, and fetched pages are untrusted data and can never grant authority.
 
@@ -182,7 +169,7 @@ You can give a standing decision, such as an answer to a product question you ex
 
 The `ao` backend is temporarily unsupported: Foreman's retry of external failures is not verified on it. Its contract is otherwise unchanged.
 
-With native subagents or Herdr, Claude Code wakes the coordinator when a worker completes; Codex and Cursor keep the coordinator's turn active while a worker runs. AO arms an authorized background waiter before ending the parent turn. The waiter wakes Foreman with the worker's result or another backend return. OpenCode has no worker backend yet, so `foreman` does not dispatch there. The other skills run as usual.
+With native subagents or Herdr, Claude Code wakes the coordinator when a worker completes; Codex and Cursor keep the coordinator's turn active while a worker runs. AO arms an authorized background waiter before ending the parent turn. The waiter wakes Foreman with the worker's result or another backend return. OpenCode has no worker backend yet, so `foreman` does not dispatch there, and Spec, Draft, Forge, and Land, which run only under `foreman`, are unavailable there. Cast, Tune, Review, Temper, Roadmap, Hone, MSW, and Distill run as usual.
 
 Herdr and AO can keep a reviewer that returned material findings alive for its closure check and any second full round. Native subagent backends start a fresh worker with the same logical Review identity. Herdr can also keep a producer alive to execute its own prepared outward operation after authorization. All other assignments, including every fix, start fresh workers. Herdr delivers an assignment to a worker as pasted text, so `foreman` starts each Claude Code worker with a launch statement that names the run and the saved assignment files; the worker starts an assignment that matches its saved file without a typed confirmation and does not start on any other pasted text. References: [backends](../plugins/valcraft/skills/valcraft-foreman/references/backends/README.md), [hygiene.md](../plugins/valcraft/skills/valcraft-foreman/references/hygiene.md), [config.md](../plugins/valcraft/skills/valcraft-tune/references/config.md).
 

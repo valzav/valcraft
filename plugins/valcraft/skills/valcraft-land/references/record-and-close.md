@@ -23,7 +23,7 @@ Return an evidence-mode `valcraft-review` handoff that names:
 - each authoritative source named by the record; and
 - the real git target or the probes that established its absence.
 
-Land never judges sufficiency and never spawns Review on direct invocation. The next caller supplies the Review report on resume.
+Land never judges sufficiency and never spawns Review. Foreman supplies the Review report on resume.
 
 Accept only a fresh Review context's complete `## Evidence-sufficiency report` for the exact record. Every criterion needs an independent-verification result, `sufficient` or `insufficient`, and a reason. A mismatched or incomplete report returns `evidence_review_required`. Any insufficient row returns `evidence_insufficient`; leave the task open and the record unmerged.
 

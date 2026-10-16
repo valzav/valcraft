@@ -82,13 +82,13 @@ A projection with no git-owned delta yields an empty mutation set. If it propose
 
 ## Authorize and execute
 
-Projection is an outward mutation. The prepare-authorize-execute rules in `delivery.md` apply. Authority must name the exact repository, tracker target, projection-state revision, mapped issues or their verified absence, local artifact head, and allowed operations. It must arrive from the live operator channel or an attributed Foreman assignment field after the preview exists.
+Projection is an outward mutation outside the ref-bound producer grant, because its authority binds the preview. Prepare it in the first run, push the artifact and open the spec PR under the grant, and report the prepared projection; perform it only in a later assignment that carries exact projection authority, as `delivery.md` defines. Authority must name the exact repository, tracker target, projection-state revision, mapped issues or their verified absence, local artifact head, and allowed operations. It must arrive from the live operator channel or an attributed Foreman assignment field after the preview exists.
 
 Immediately before the first write, repeat every read that binds the preview. Any target, mapping, issue, generated field, hierarchy, dependency, label, artifact head, or operation-set drift invalidates authority. Perform no write; return a new prepared preview with `authority_drift`.
 
 Execute only the authorized delta. After each created issue, reconcile its marker before the next relationship mutation. Write its verified mapping before the next remote relationship mutation so retries can recover. Verify every generated field, relationship, label, and mapping after execution.
 
-Commit verified mapping changes as a separate attributable local state before preparing the final push and PR target. Tracker authority does not imply push or PR authority.
+Commit verified mapping changes as a separate attributable local state, then push that head and update the spec PR under the grant. The mapping commit is a new Review target. Tracker authority adds no push or PR authority beyond the grant.
 
 ## Partial failure and review revision
 
@@ -101,7 +101,7 @@ Git and GitHub are not atomic. After a failed mutation:
 5. Reuse one unique marked issue rather than creating a duplicate.
 6. Prepare the remaining delta and obtain fresh exact authority.
 
-When Review drives a triplet revision, verify its exact covered artifact head, revise the git-owned files by R-ID, and run full projection reconciliation again. Prepare and execute only the authorized tracker delta. Commit any mapping delta, then prepare and execute an authorized non-force push and update the same spec PR when one matches the exact repository, canonical head branch, and default-branch base. Never open a duplicate PR. Report the new exact head only after tracker, branch, and PR state have been reconciled.
+When Review drives a triplet revision, verify its exact covered artifact head, revise the git-owned files by R-ID, and run full projection reconciliation again. Prepare and execute only the authorized tracker delta. Commit any mapping delta, then push under the grant and update the same spec PR when one matches the exact repository, canonical head branch, and default-branch base. Never open a duplicate PR. Report the new exact head only after tracker, branch, and PR state have been reconciled.
 
 ## Task removal
 

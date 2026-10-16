@@ -109,7 +109,7 @@ REPORT_HEADINGS = {
         "### Project frame",
         "### Scaffold baseline",
         "### Tracker",
-        "### Spec handoff",
+        "### Foreman handoff",
         "### Outward mutations",
         "### Blockers",
     ),

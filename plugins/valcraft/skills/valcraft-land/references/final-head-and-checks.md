@@ -67,7 +67,7 @@ Only `passing` and `none-applicable` satisfy the gate. A check result comes only
 For a failed or missing check, record target kind, evidence, causal owner, and retryability. Route only when evidence proves ownership:
 
 - task PR → `check_failure_task` for Forge;
-- spec PR → `check_failure_spec` for Spec or its direct caller;
+- spec PR → `check_failure_spec` for Spec;
 - feature-close PR → `external_blocked`, because its delta carries only completion marks;
 
 External, configuration, and unresolved failures return `external_blocked`. Never infer an artifact owner from the target kind alone.

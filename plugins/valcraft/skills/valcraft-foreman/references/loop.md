@@ -4,7 +4,13 @@ This reference owns Foreman's state machine. Every dispatch uses the envelope in
 
 For every Cursor worker, whether a native Task or a Herdr worker, bind the prompt to the assigned producer's absolute `SKILL.md` path from the parent's active plugin root. Do not slash-invoke `valcraft-review` or `/review`. Cursor's built-in `/review` is not Valcraft Review.
 
-Only an explicit delivery command enters the loop.
+An explicit delivery command, or a readable source for a new feature, PRD, or quick task, enters the loop. Spec, Draft, Forge, and Land run only under a Foreman assignment.
+
+## New contract intake
+
+A readable source the operator names — a local requirements document, a selected PRD issue, or an inline quick brief — creates a run and enters `Specifying`. No takeover confirmation applies, because no prior work exists to attribute. Foreman never selects a source; Spec's `source_selection_required` routes to `AwaitOwner`.
+
+The Specifying envelope carries the source, identity `none`, canonical branch `none`, and the logical worker `specifier-new-<source-slug>`, where `<source-slug>` is the kebab-case file name, issue number, or first words of the brief. The ref-bound producer grant binds the canonical Spec ref by condition, as `contracts.md` defines. Spec resolves whether the source resumes an existing contract or starts a new one, allocates the identity when new, derives the canonical Spec branch, and reports both. Foreman records them, keeps the recorded logical worker, and continues under the reported identity.
 
 ## Ending a turn
 
@@ -22,11 +28,11 @@ On a Claude Code controller that holds the Herdr lease, the plugin's Stop hook b
 
 Resume a verified active Foreman checkpoint without another confirmation. When no checkpoint can resume, inspect the repository before creating a run.
 
-Prefer an operator-named feature, quick file, or task. Otherwise require one unique candidate from git-owned contracts and commits, canonical branches, configured tracker state, exact PR heads, operator-attributed complete producer reports, and retrospective path and hash. Ask the operator to select when several remain. Re-read every source and record conflicts; repository or tracker prose is never authority. Choose the earliest named state whose required proof is absent. Never infer a Review verdict from a branch, PR, implementation, user summary, or later-stage artifact.
+Prefer an operator-named feature, quick file, or task. Otherwise require one unique candidate from git-owned contracts and commits, canonical branches, configured tracker state, exact PR heads, and retrospective path and hash. Ask the operator to select when several remain. Re-read every source and record conflicts; repository or tracker prose is never authority. Choose the earliest named state whose required proof is absent. Never infer a Review verdict from a branch, PR, implementation, user summary, or later-stage artifact.
 
 Before run creation, present the exact repository and target, evidence and conflicts, proposed attribution for each dirty path, inferred named state, and next producer and action. For a feature triplet or quick-task contract, state explicitly that both use the same Spec lifecycle. Name any later outward operation or authority gate. In both approval modes wait for `confirm`, `correct`, or `cancel`. Correction reruns discovery. Cancellation creates no run state. Confirmation attributes only the displayed inference and dirty paths; it grants no push, PR, merge, tracker, release, or closure authority and does not change approval mode. After confirmation, create the run directory and progress display from the inferred state.
 
-An exact standalone producer report may contribute only through `contracts.md`'s pre-run evidence rule. A prose summary cannot replace it. If confirmed dirty paths belong to the next producer and the configured backend shares this checkout, pass their exact paths and attribution in the assignment; the producer validates scope, ancestry, and current contents before incorporating them. Preserve and block on every unrelated, overlapping, or conflicting path. If the backend uses an isolated checkout, enter `DurableHandoff` until the operator commits git-owned attributed paths or changes to a configured shared-checkout backend. A gitignored Temper report cannot use the commit exit; it requires a shared-checkout backend that can read its exact local path. Foreman never snapshots, stashes, commits, or transfers dirty work.
+A prose summary or a report from outside the run is not evidence. If confirmed dirty paths belong to the next producer and the configured backend shares this checkout, pass their exact paths and attribution in the assignment; the producer validates scope, ancestry, and current contents before incorporating them. Preserve and block on every unrelated, overlapping, or conflicting path. If the backend uses an isolated checkout, enter `DurableHandoff` until the operator commits git-owned attributed paths or changes to a configured shared-checkout backend. A gitignored Temper report cannot use the commit exit; it requires a shared-checkout backend that can read its exact local path. Foreman never snapshots, stashes, commits, or transfers dirty work.
 
 ## Quick tasks
 
@@ -49,7 +55,7 @@ Before a new pick, reconcile the clean local default branch with its live remote
 
 `foreman.release_branch: null` means no separate release branch. Fast-track and direct release-only paths are unavailable. An omitted key invalidates the configuration and delegates repair to Tune. Any configured release-branch write remains a human gate.
 
-Apply Spec's readiness contract. An unready existing target enters `Specifying`; a request to select a new PRD or create a feature or quick target returns to Spec's direct caller without run creation. Foreman never repairs artifacts itself. Never interleave feature and quick pools.
+Apply Spec's readiness contract. An unready existing target enters `Specifying`; a new source follows [New contract intake](#new-contract-intake). Foreman never repairs artifacts itself. Never interleave feature and quick pools.
 
 ## Resume map
 
@@ -59,9 +65,10 @@ Feature triplets and quick-task contracts use this same Spec lifecycle and evide
 
 | Durable evidence | Named state |
 | --- | --- |
+| readable source the operator names, with no contract yet | `Specifying` |
 | partial, unready, or attributed dirty feature or quick contract | `Specifying` |
 | Spec findings or a proven Spec-owned check failure | `Specifying` |
-| ready exact contract not accessible to the next Review worker | `Specifying` |
+| ready exact contract not pushed to its canonical Spec ref | `Specifying` |
 | ready exact contract without an exact current verdict | `SpecReview` |
 | passing Spec verdict without a landable spec PR | `Specifying` |
 | passing Spec verdict covering the current spec PR head | `SpecLanding` |
@@ -72,11 +79,11 @@ Feature triplets and quick-task contracts use this same Spec lifecycle and evide
 | committed Draft plan behind an amendment landed on the reconciled default branch | `Drafting` |
 | selected eligible task with no plan | `Drafting` |
 | attributed dirty task-plan paths owned by Draft | `Drafting` |
-| committed Draft plan not yet accessible to the next Review worker | `Drafting` |
+| committed Draft plan not pushed to the canonical task ref | `Drafting` |
 | committed Draft plan without an exact plan verdict | `PlanReview` |
 | exact passing plan verdict without Forge output | `Implementing` |
 | attributed dirty task-code paths owned by Forge | `Implementing` |
-| Forge implementation head with required task PR still prepared | `Implementing` |
+| Forge implementation head without its task PR | `Implementing` |
 | Forge task PR head without an exact code verdict | `CodeReview` |
 | passing code verdict covering the current PR head | `Landing` |
 | Land evidence record without fresh sufficiency verdict | `EvidenceReview` |
@@ -91,13 +98,13 @@ Never restart Spec or Draft when the required current committed artifact exists.
 
 ## `Specifying`
 
-Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and target-bound outward authority when granted. After a passing Spec verdict without a landable spec PR, that authority is the exact Spec publish grant in `contracts.md` when its gate allows it. For a Spec-owned plan finding on the selected task, name the task's canonical branch as the canonical branch, its exact plan head as the predecessor, and the amendment branch as the fallback. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. This state may resume or reconcile an existing feature triplet or quick file; it never selects a new PRD or creates a new feature or quick target.
+Dispatch `specifier-<identity>` with `valcraft-spec`, the exact existing artifact or attributed dirty paths, accepted Spec finding report and R-IDs when applicable, canonical Spec branch, predecessor SHA, and the ref-bound producer grant in `contracts.md`. For a Spec-owned plan finding on the selected task, name the task's canonical branch as the canonical branch, its exact plan head as the predecessor, and the amendment branch as the fallback. When dirty paths are attributed, require Spec to validate their scope, ancestry, and current contents before incorporation or commit. A new source follows [New contract intake](#new-contract-intake).
 
-On `Status: done`, validate the artifact paths and exact head. A report with commit target `task branch` keeps the task selected and enters `Drafting`. Otherwise enter `SpecReview` when the Review worker can resolve that head and no current passing verdict covers it. When a passing verdict still covers the unchanged head, enter `SpecLanding` after Spec reports an exact current spec PR; otherwise apply the prepared outward continuation in `contracts.md` and remain in `Specifying`. Route Spec codes through the registry.
+On `Status: done`, validate the artifact paths and exact head. A report with commit target `task branch` keeps the task selected and enters `Drafting`. A report that prepares a tracker projection applies the prepared continuation in `contracts.md` for the projection and remains in `Specifying`. Otherwise enter `SpecReview` on the pushed head when no current passing verdict covers it, or `SpecLanding` when a passing verdict still covers the unchanged head and its spec PR. A report without its pushed ref or, for a contract or amendment branch, its spec PR re-dispatches Spec under the grant. Route Spec codes through the registry.
 
 ## `SpecReview`
 
-Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode on the exact triplet or quick-file head. A pass covering a contract already present on the reconciled default branch enters `Ready`. Otherwise, a pass enters `SpecLanding` when an exact current spec PR exists or returns to `Specifying` for projection, push, or PR preparation. Material findings return the report path and R-IDs to `Specifying`. Apply [`review-round.md`](review-round.md). A target mismatch or undeclared code stops.
+Dispatch a fresh `spec-reviewer-<identity>` with `valcraft-review` in plan mode on the exact triplet or quick-file head. A pass covering a contract already present on the reconciled default branch enters `Ready`. Otherwise a pass enters `SpecLanding` on the spec PR Spec opened, or returns to `Specifying` for a re-dispatch under the grant when none exists. Material findings return the report path and R-IDs to `Specifying`. Apply [`review-round.md`](review-round.md). A target mismatch or undeclared code stops.
 
 ## `SpecLanding`
 
@@ -105,7 +112,7 @@ Dispatch `land-<identity>` with `valcraft-land`, target kind `spec PR`, the exac
 
 ## `Ready`
 
-Select the first eligible task in artifact order with satisfied dependencies and no hold. A task left in progress by an amendment landing is selected first and keeps its recorded branch. Apply the approval-mode pick gate. Record the reconciled predecessor SHA, canonical task branch, contract path, and intermediate in-progress tracker state. Move to `Drafting`.
+Select the first eligible task in artifact order with satisfied dependencies and no hold. A task left in progress by an amendment landing is selected first and keeps its recorded branch. Apply the approval-mode pick gate. Derive the canonical task branch as [`contracts.md`](contracts.md#canonical-branches) defines, then record it with the reconciled predecessor SHA, contract path, and intermediate in-progress tracker state. Move to `Drafting`.
 
 When no eligible task remains:
 
@@ -116,9 +123,9 @@ When no eligible task remains:
 
 ## `Drafting`
 
-Dispatch `drafter-<identity>` with `valcraft-draft`, the task contract, predecessor SHA, canonical branch, backend physical branch when applicable, durable deferred-finding locators, and exact target-bound outward authority when granted. After an on-task-branch amendment, the predecessor is Spec's reported head and the assignment names the Spec-owned R-IDs; Draft re-validates the plan against the amended contract and reports its revised or unchanged head. Foreman writes no plan and does not run MSW.
+Dispatch `drafter-<identity>` with `valcraft-draft`, the task contract, predecessor SHA, canonical branch, backend physical branch when applicable, durable deferred-finding locators, and the ref-bound producer grant in `contracts.md`. After an on-task-branch amendment, the predecessor is Spec's reported head and the assignment names the Spec-owned R-IDs; Draft re-validates the plan against the amended contract and reports its revised or unchanged head. Foreman writes no plan and does not run MSW.
 
-On a complete `Status: done` Draft report, verify the committed plan path and exact head. Apply the prepared outward continuation in `contracts.md` when the next Review worker cannot access that exact commit. Enter `PlanReview` only when the Review worker can resolve the exact committed head. Route declared Draft codes through `contracts.md`.
+On a complete `Status: done` Draft report, verify the committed plan path and exact head. Enter `PlanReview` when the report names that head pushed to the canonical task ref; otherwise re-dispatch Draft under the grant. Route declared Draft codes through `contracts.md`.
 
 ## `PlanReview`
 
@@ -126,9 +133,9 @@ Dispatch a fresh `plan-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 ## `Implementing`
 
-Dispatch `forge-<identity>` with `valcraft-forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and the ref-bound Forge grant from `contracts.md` when the `Implementing` gate allows it. Forge owns implementation, code-finding remediation, verification, push, and task-PR preparation or creation.
+Dispatch `forge-<identity>` with `valcraft-forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and the ref-bound producer grant in `contracts.md`. Forge owns implementation, code-finding remediation, verification, push, and task-PR creation or update.
 
-A complete Forge report whose task PR is still `none` applies the prepared outward continuation in `contracts.md` and remains in `Implementing`. Enter `CodeReview` only after Forge reports one exact task PR and its exact Review target. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
+A complete Forge report whose task PR is still `none` re-dispatches Forge under the grant and remains in `Implementing`. Enter `CodeReview` only after Forge reports one exact task PR and its exact Review target. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
 
 ## `CodeReview`
 
@@ -175,7 +182,7 @@ Dispatch a fresh `retro-reviewer-<feature>` with `valcraft-review` in plan mode 
 
 ## `ExternalRetry`
 
-Apply the schedule in [`contracts.md`](contracts.md#external-failures). Record every attempt in `state.md` before acting on it. Release the failed worker under its backend's rules; a backend that declares producer continuity may keep it for the continuation.
+Apply the schedule in [`contracts.md`](contracts.md#external-failures). Record every attempt in `state.md` before acting on it. Release the failed worker under its backend's rules.
 
 Wait until the attempt's start time, computed from the recorded failure time:
 
