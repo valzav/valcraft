@@ -85,7 +85,7 @@ Under `Outward mutations`, name a ref-bound grant as ref-bound and record the ex
 Return one exact code target:
 
 - repository identity;
-- base ref and the full start SHA: the passed plan-review SHA, or the baseline SHA for a planless quick task;
+- base ref and full base SHA: the base ref's head observed when you report, or the baseline SHA for a planless quick task. Review diffs from the merge base of base and head, so the target covers every commit on the task branch, including implementation committed under an earlier plan;
 - head ref and full implementation SHA;
 - canonical task branch and physical branch or `none`;
 - PR identity or `none`; and

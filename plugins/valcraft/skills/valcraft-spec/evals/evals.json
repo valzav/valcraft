@@ -846,6 +846,23 @@
         "The amendment adds no new task to tasks.md",
         "Spec writes no files"
       ]
+    },
+    {
+      "id": 42,
+      "name": "first-spec-push-to-an-absent-ref",
+      "prompt": "/valcraft:valcraft-spec — a Foreman Specifying dispatch for FEAT-001 carries the exact Spec publish grant: repository `example/records` on `origin`, covered head `7cf1f4d502cfa3f3ea6a7dd16da409fa29d169f0` that a passing Spec verdict covers, canonical ref `refs/heads/spec/f001-session-export` observed absent, PR base `main` by name, head `spec/f001-session-export`, no existing spec PR, and the operations non-force push and spec-PR creation. The committed configuration sets `foreman.default_branch: main`, and the local head is clean at 7cf1f4d…. Before the push, the run's own live reads return: `git remote get-url origin` shows https://github.example.test/example/records.git; `git ls-remote origin refs/heads/spec/f001-session-export` prints nothing and exits 0; `git fetch origin refs/heads/spec/f001-session-export` fails with `fatal: couldn't find remote ref refs/heads/spec/f001-session-export`; the hosting service reports no PR with head `spec/f001-session-export`. Describe each outward step Spec takes and its terminal status line. Do not execute anything.",
+      "expected_output": "Spec reads the canonical ref live with `git ls-remote` and treats the empty result as verified absence, which matches the bound observation; it fetches the ref only when it exists, so the failed fetch is not a resolution failure. Every bound field revalidates. Spec pushes 7cf1f4d… without force to `refs/heads/spec/f001-session-export`, verifies the remote ref equals the local head, queries for a matching spec PR, finds none, creates one against `main`, verifies its identity, base, and head, and ends `Status: done`. It does not return `workspace_not_ready`.",
+      "files": [
+        "SKILL.md",
+        "references/delivery.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "Spec treats the empty `git ls-remote` result as verified absence that matches the bound observation",
+        "Spec does not treat the failed fetch of the absent ref as a resolution failure and does not return `workspace_not_ready`",
+        "Spec pushes 7cf1f4d… without force, verifies the remote ref, and creates exactly one spec PR against `main`",
+        "The terminal line is `Status: done`"
+      ]
     }
   ]
 }

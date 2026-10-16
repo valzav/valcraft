@@ -31,7 +31,7 @@ Accept exactly one target:
 - A plan path must resolve inside the repository to a tracked file. An untracked plan is accepted only when the operator explicitly supplies it. Resolve its task and cited artifacts.
 - A free-form fix must already be one coherent, fully specified change. Route larger or underspecified product work to `valcraft-spec`.
 
-Gate every task before implementation. Require feature or quick readiness and completed dependencies. Feature dependencies use `tasks.md` in local mode and the tracker in hosted mode. Quick dependencies always use their referenced quick-file checkbox. Route an unready feature or quick artifact to `valcraft-spec`; Forge never completes that artifact.
+Gate every task before implementation. Require feature or quick readiness and completed dependencies. Feature dependencies use the default branch's `tasks.md` in local mode and the tracker in hosted mode; quick dependencies, its quick-file checkboxes. Route an unready feature or quick artifact to `valcraft-spec`; Forge never completes that artifact.
 
 State touched files and tasks and deliberately untouched adjacent scope. Do not absorb unrelated worktree changes.
 

@@ -391,6 +391,22 @@
         "Draft takes `f002-t001` from the task identity, not from the branch name",
         "Draft writes no file"
       ]
+    },
+    {
+      "id": 20,
+      "name": "first-plan-push-to-an-absent-ref",
+      "prompt": "$valcraft:valcraft-draft — resume a trusted Foreman assignment for FEAT-001 T-002 after preparing clean local plan head 2222222222222222222222222222222222222222 on `feat/f001-t002-export-scheduling`. The attributed authority permits only a non-force push of that exact local head to origin `refs/heads/feat/f001-t002-export-scheduling`, whose remote head Foreman observed as absent. Before the push, the run's own live reads return: `git remote get-url origin` shows https://github.example.test/example/reports.git; `git ls-remote origin refs/heads/feat/f001-t002-export-scheduling` prints nothing and exits 0; `git fetch origin refs/heads/feat/f001-t002-export-scheduling` fails with `fatal: couldn't find remote ref refs/heads/feat/f001-t002-export-scheduling`. Describe each step Draft takes up to and through the push, and its terminal status line. Do not execute anything.",
+      "expected_output": "Draft reads the canonical ref live with `git ls-remote` and treats the empty result as verified absence, which matches the bound observation. The failed fetch of a ref that does not exist is not a resolution failure and not divergence: Draft fetches the ref only when it exists. Every bound field revalidates, so Draft pushes 2222… without force to `refs/heads/feat/f001-t002-export-scheduling`, reads the remote ref back, requires it to equal the local head, and ends `Status: done`. It does not return `workspace_not_ready`.",
+      "files": [
+        "SKILL.md",
+        "references/plan-contract.md"
+      ],
+      "assertions": [
+        "Draft treats the empty `git ls-remote` result as verified absence that matches the bound observation",
+        "Draft does not treat the failed fetch of the absent ref as a resolution failure and does not return `workspace_not_ready`",
+        "Draft pushes 2222… without force and verifies the remote ref equals the local head",
+        "The terminal line is `Status: done`"
+      ]
     }
   ]
 }
