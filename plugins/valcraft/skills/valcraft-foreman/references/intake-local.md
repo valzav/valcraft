@@ -6,7 +6,7 @@ Git-owned task artifacts define order, dependencies, holds, and completion. Fore
 
 Require feature tasks to use `T-XXX`. Validate quick tasks with [`../../valcraft-spec/references/quick.md`](../../valcraft-spec/references/quick.md). Inspect task branches and open PR identities to find in-progress work.
 
-Select the first unchecked task in file order whose dependencies are checked and which is not held. A local pick needs no tracker write; record it in `state.md`. An existing contract, Spec branch or PR, task branch, plan, producer report, or retrospective resumes through `loop.md`'s takeover and named-state map.
+Select the first unchecked task in file order whose dependencies are checked and which is not held. Read every checkbox from the default branch, never from a task branch, whose own task's box is checked before Land merges it. A local pick needs no tracker write; record it in `state.md`. An existing contract, Spec branch or PR, task branch, plan, producer report, or retrospective resumes through `loop.md`'s takeover and named-state map.
 
 Quick runs walk files and tasks in order, use canonical `Q-NNN QT-XXX`, and derive eligibility from quick-file checkboxes only. No GitHub issue, label, or tracker batch exists for quick work.
 
@@ -18,12 +18,12 @@ Record an unresolved task question in `state.md` and route it to the operator. C
 
 Pass these tracker semantics to Land without copying Land's procedure:
 
-- **Feature task PR:** the selected task's only local completion mutation is its exact unchecked-to-checked transition. Land owns that tick, final-head gates, merge, and reconciliation.
-- **Quick task PR:** Land applies the same exact tick to the selected `QT-XXX`. A file whose tasks are all checked is complete without feature confirmation or Temper.
-- **External completion:** Land records criterion-keyed evidence beside the selected task, returns the durable Review target, consumes fresh Review sufficiency, and then applies the valid tick and landing operations. Foreman writes and judges none of it.
+- **Feature task PR:** the selected task's only local completion mutation is its exact unchecked-to-checked transition. Forge commits it in the task's final commit and Review covers it. Land verifies it, merges, and reconciles.
+- **Quick task PR:** the same holds for the selected `QT-XXX`. A file whose tasks are all checked is complete without feature confirmation or Temper.
+- **External completion:** Land records criterion-keyed evidence and the task's transition beside the selected task, returns the durable Review target, consumes fresh Review sufficiency, and then applies the landing operations. Foreman writes and judges none of it.
 - **Feature closure:** Land records the exact operator confirmation, lands the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`, and reports completion before Temper begins.
 
-Only Land's declared exact completion-tick exception can bypass another scoped Review. Adjacent text remains uncovered. Foreman never edits a task file, creates a PR, runs checks, merges, or ticks completion.
+Every completion transition reaches the default branch inside a reviewed head. Foreman never edits a task file, creates a PR, runs checks, merges, or ticks completion.
 
 ## Deferred findings
 

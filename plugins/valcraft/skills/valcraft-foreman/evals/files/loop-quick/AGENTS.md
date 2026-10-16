@@ -13,4 +13,4 @@
 ## Change discipline
 
 - Reference requirement and task IDs (`FR-`, `AC-`, `Q-NNN QT-XXX`) from commits and tests.
-- Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.
+- Non-trivial work starts with a plan in `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`, where `<slug>` starts with the task identity (`fNNN-tNNN-` or `qNNN-qtNNN-`).

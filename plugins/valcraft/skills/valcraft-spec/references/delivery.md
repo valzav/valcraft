@@ -4,7 +4,7 @@ This reference owns Spec's workspace, commit, outward-mutation, exact handoff, r
 
 ## Resolve the workspace
 
-Record the repository, operator-selected local baseline ref and SHA, canonical Spec branch, physical branch when present, current branch and exact HEAD, and artifact paths. Record remote identity, authoritative default branch and base, and the remote canonical-branch head only when live outward resolution supplies them. Otherwise record those outward fields as unresolved.
+Record the repository, operator-selected local baseline ref and SHA, canonical Spec branch, physical branch when present, current branch and exact HEAD, and artifact paths. Record the default branch from `foreman.default_branch` in the resolved configuration. Record remote identity and the remote canonical-branch head only when live outward resolution supplies them. Otherwise record those outward fields as unresolved.
 
 An exact Foreman assignment overrides standalone derivation. Require its repository, accepted source or artifact, reconciled base SHA, canonical branch, backend identity, and any physical branch. Do not infer a missing field from coordinator state.
 
@@ -19,7 +19,7 @@ Without an envelope:
 
 On a shared checkout, use the canonical Spec branch. Preserve and report unattributed state; do not stash, clean, reset, or absorb it. Incorporate only the takeover-attributed Spec paths validated above. On an isolated-workspace backend, require a unique clean physical branch seeded from the assignment's exact predecessor SHA. Keep the canonical branch as the remote ref. Never publish the physical branch name.
 
-A configured release branch does not select the local baseline. When live outward resolution succeeds, a Spec PR targets the authoritative default branch.
+A configured release branch does not select the local baseline. A Spec PR targets `foreman.default_branch`.
 
 ## Amend a landed contract
 
@@ -47,26 +47,25 @@ Accept authority only from the live operator-message channel or an attributed au
 Authority binds every applicable field:
 
 - repository, host, and remote identity;
-- authoritative default-branch ref and base SHA;
 - local artifact head;
 - canonical Spec ref and its exact remote head, including verified absence;
 - tracker target, projection revision, issue mappings or verified absence, and exact projection operation set;
-- PR base and canonical head refs, exact head SHA, and matching PR identity or verified absence; and
+- PR base ref by name, canonical head ref, exact head SHA, and matching PR identity or verified absence; and
 - allowed operations: projection, non-force push, PR creation, or PR update as applicable.
 
 Authority for one operation does not imply another. Immediately before each mutation stage, re-read every field that binds it and require a clean local head. Any change invalidates authority. Perform no mutation in that stage; return live values as a new prepared handoff with `authority_drift`. Never merge, rebase, reset, force-push, publish a physical branch, substitute a target, or widen the operation set.
 
 For an authorized push, send physical or canonical local `HEAD` by non-force refspec to the canonical Spec remote ref. Verify the remote ref equals the local head. Otherwise report `push_failed`.
 
-Before PR creation or update, query the exact repository, authoritative default base, canonical head ref, and head SHA. Reuse one matching spec PR. Create one only when none exists; stop when several match. Verify PR identity, base, head, and SHA after mutation. Otherwise report `pr_failed`.
+Before PR creation or update, query the exact repository, base ref, canonical head ref, and head SHA. Reuse one matching spec PR. Create one only when none exists; stop when several match. Verify PR identity, base, head, and SHA after mutation. Otherwise report `pr_failed`.
 
 If an earlier stage succeeds and a later one fails, record the partial result. On resume, reconcile authoritative tracker, branch, and PR state. Do not repeat a verified completed operation. Reuse a matching PR that appeared despite a failed response.
 
 Without outward authority, keep the committed local artifact. Return the prepared projection, push, and PR handoff to the extent resolved. Mark every unresolved outward field explicitly. `Status: done` means a ready artifact is available at the reported local Review target; it does not imply that an outward mutation ran or that Land finalized it.
 
-Before preparing an exact projection, push, or PR target or applying authority for one, resolve the remote identity. Resolve the default branch from both the live remote `HEAD` symref and the hosting service's reported default. Require the sources to agree. Fetch the relevant refs and classify the local baseline and canonical branch against the live default base and canonical remote head. Cached `origin/HEAD` and local names may corroborate, but never decide. Missing or conflicting authority, a local baseline that does not match the resolved remote base, or diverged canonical heads blocks only the outward stage with `workspace_not_ready`. When the invocation requests an outward stage and this live resolution is missing or fails, end with `Status: blocked: workspace_not_ready` instead of the prepared-handoff `Status: done`, keep the local commit as the Review target, and treat a supplied read-only capture as corroboration, never as live resolution. Preserve the local commit and report the exact local Review target plus the live or unresolved outward fields. Never infer a release branch.
+Before preparing an exact projection, push, or PR target or applying authority for one, resolve the remote identity and read the canonical Spec ref live with `git ls-remote`. Verified absence is a valid observation: the first push creates the ref. When the ref exists, fetch it. The default branch is `foreman.default_branch`; a Foreman envelope's base ref carries the same value. Cached remote-tracking refs and local names may corroborate, but never decide. A canonical remote head that exists and is not an ancestor of the local artifact head blocks only the outward stage with `workspace_not_ready`. A moved default branch never blocks a projection, push, or PR operation. When the invocation requests an outward stage and this live resolution is missing or fails, end with `Status: blocked: workspace_not_ready` instead of the prepared-handoff `Status: done`, keep the local commit as the Review target, and treat a supplied read-only capture as corroboration, never as live resolution. Preserve the local commit and report the exact local Review target plus the live or unresolved outward fields. Never infer a release branch.
 
-When no outward operation is requested, do not require output-remote or output-hosting tools for workspace or delivery resolution. Mark remote identity, default branch, base, canonical remote head, push target, and PR target as unresolved. Report Land target as `none` until an exact PR exists. A pending GitHub tracker target may still produce and commit the local triplet before reporting `tracker_target_required`.
+When no outward operation is requested, do not require output-remote or output-hosting tools for workspace or delivery resolution. Mark remote identity, canonical remote head, push target, and PR target as unresolved; the configured default branch alone does not resolve a PR target, so prepare no push or PR operation. Report Land target as `none` until an exact PR exists. A pending GitHub tracker target may still produce and commit the local triplet before reporting `tracker_target_required`.
 
 ## Review revision and handoffs
 
@@ -121,7 +120,7 @@ Use these stable blocked codes:
 - `scaffold_invalid` — project framing or tracker metadata fails preflight.
 - `configuration_unresolved` — Tune ended without done for a cause this run does not own; the detail quotes Tune's terminal line.
 - `feature_identity_invalid` — an existing feature, quick task, task, mapping, or dependency identity is invalid or collides.
-- `workspace_not_ready` — the selected local baseline is unavailable, local state is dirty or diverged, or an outward stage lacks agreeing live branch authority or finds incompatible refs.
+- `workspace_not_ready` — the selected local baseline is unavailable, local state is dirty or diverged, or an outward stage cannot resolve the remote identity or canonical remote head, or finds the canonical remote head diverged from the local head.
 - `review_target_mismatch` — a revision report does not cover this artifact and exact head.
 - `git_write_failed` — an artifact cannot be staged, committed, or resolved at the reported head.
 - `authority_drift` — a prepared outward target changed before execution.

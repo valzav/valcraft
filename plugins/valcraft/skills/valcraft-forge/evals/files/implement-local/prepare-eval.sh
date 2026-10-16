@@ -60,7 +60,10 @@ EOF
 if [ "$mode" = implemented ]; then
   cp eval-tools/implementation/retention.py src/retention.py
   cp eval-tools/implementation/test_retention.py tests/test_retention.py
-  git add src/retention.py tests/test_retention.py
+  tasks=$(ls specs/*/tasks.md)
+  sed 's/^- \[ \] T-001 /- [x] T-001 /' "$tasks" > .eval/tasks.md
+  mv .eval/tasks.md "$tasks"
+  git add src/retention.py tests/test_retention.py "$tasks"
   GIT_AUTHOR_DATE=2031-04-08T12:05:00Z GIT_COMMITTER_DATE=2031-04-08T12:05:00Z \
     git commit -q -m "feat(retention): implement T-001 window parser"
   head_sha=$(git rev-parse HEAD)
@@ -71,7 +74,7 @@ Logical worker: forge-F001-T001
 Physical worker: external/forge-f001-t001-eval
 Repository: example/retention
 Remote: origin = $PWD/.eval/remote.git
-Base: main at $plan_sha
+Start SHA: $plan_sha (the passed plan-review SHA)
 Local head: $head_sha
 Canonical ref: refs/heads/feat/f001-t001-retention-window
 Observed remote head: $plan_sha

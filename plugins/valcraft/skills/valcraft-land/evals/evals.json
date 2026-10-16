@@ -27,9 +27,9 @@
     },
     {
       "id": 2,
-      "name": "local-and-quick-tick-exceptions-are-exact",
-      "prompt": "$valcraft:valcraft-land — run `./prepare-eval.sh` in both evals/files/tracker-local/ and evals/files/delivery/, then compare completion-tick candidates for local feature task F001 T-002 in evals/files/tracker-local/ and quick task Q-007 QT-001 in evals/files/delivery/ from their reviewed heads. For each target, delta A changes only the selected unchecked checkbox to checked; delta B makes the same tick and edits adjacent prose. The assignment permits preparation only. For each accepted delta, state the required commit, authorized push, exact-head reread, and applicable-check reclassification sequence that execution would follow. Do not push or merge.",
-      "expected_output": "Land applies the completion-tick exception to both the selected local feature task and the selected quick task only for their exact delta A. It prepares one task-owned tick commit for each candidate, requires target-bound push authority before pushing it, and re-runs applicable checks against the new head. Each delta B is uncovered and must return to Review because adjacent prose invalidates the exception. No candidate inherits coverage from its earlier head. With preparation-only authority, Land performs no push, merge, or closure and reports the prepared operations.",
+      "name": "completion-transition-rides-in-the-reviewed-head",
+      "prompt": "$valcraft:valcraft-land — run `./prepare-eval.sh` in both evals/files/tracker-local/ and evals/files/delivery/, then prepare finalization of the task PR for local feature task F001 T-002 in evals/files/tracker-local/ and of the task PR for quick task Q-007 QT-001 in evals/files/delivery/. Review passed on the reviewed head named in each case of evals/files/delivery/captures/completion-transitions.md, and applicable checks pass on every current head. For each target and each of cases A, B, and C in that capture, state what Land prepares and its terminal status. The assignment permits preparation only. Do not push or merge.",
+      "expected_output": "Land resolves `local` tracker mode for F001 T-002 and treats the quick task's transition the same way in every mode. In case A the reviewed head already carries the selected task's exact unchecked-to-checked transition: Land adds no commit, prepares the configured merge of the covered head, and, with preparation-only authority, ends `Status: blocked: authority_required` listing that merge. In case B the reviewed head lacks the transition: Land returns `review_required` naming the missing transition. In case C the current head differs from the reviewed head: the tick pushed after Review is uncovered, no exception admits it, and Land returns `review_required` with both full SHAs. Land never prepares, commits, or pushes a tick of its own, and performs no push, merge, or closure.",
       "files": [
         "evals/files/delivery/.gitignore",
         "evals/files/delivery/prepare-eval.sh",
@@ -42,14 +42,13 @@
         "evals/files/delivery/.valcraft/config.yaml",
         "evals/files/delivery/docs/product-brief.md",
         "evals/files/delivery/specs/quick/007-normalize-export-headers.md",
-        "evals/files/delivery/captures/tick-deltas.md"
+        "evals/files/delivery/captures/completion-transitions.md"
       ],
       "assertions": [
-        "Only the exact unchecked-to-checked transition for local feature task F001 T-002 bypasses another scoped Review",
-        "Only the exact unchecked-to-checked transition for quick task Q-007 QT-001 bypasses another scoped Review",
-        "Adjacent prose makes each delta B uncovered and routes its exact delta to Review",
-        "The completion tick is committed and pushed only with exact target-bound push authority",
-        "Applicable checks are re-evaluated on the tick commit's new exact head",
+        "In case A Land adds no commit and prepares the merge of the covered head for both the feature task and the quick task",
+        "In case B Land returns `review_required` naming the missing completion transition for both targets",
+        "In case C Land returns `review_required` naming the reviewed and current heads, and does not treat the post-Review tick commit as an exception",
+        "Land never prepares, commits, or pushes a completion-tick commit of its own",
         "Preparation-only authority causes no push, merge, or tracker closure"
       ]
     },
@@ -99,7 +98,7 @@
       "id": 5,
       "name": "unattended-landing-across-trackers-and-backends",
       "prompt": "$valcraft:valcraft-land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: `tracker.mode` local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each trusted assignment authorizes the exact repository, PR, base, head, configured squash merge, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
-      "expected_output": "Land resolves tracker mode and squash merge strategy from the committed `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode applies only the exact local feature-task tick and merge. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate.",
+      "expected_output": "Land resolves tracker mode and squash merge strategy from the committed `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode merges the reviewed head, which already carries the feature task's exact completion transition, and adds no commit. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
         "evals/files/tracker-local/.valcraft/config.yaml",
@@ -116,7 +115,7 @@
         "All four local or github tracker and native or external-orchestrator backend combinations may complete ordinary unattended landing",
         "Shared native-session and external-orchestrator project permission provide execution capability but do not grant mutation authority",
         "Land requires exact trusted target-bound authorization and immediate authoritative revalidation before mutation",
-        "Local mode uses the exact feature-task tick while github mode uses the serialized hosted tracker-close batch",
+        "Local mode merges the reviewed head carrying the feature task's completion transition and adds no tick commit, while github mode uses the serialized hosted tracker-close batch",
         "A future backend lets authorized Land execute, maps host permission prompts or transport denials to permission_blocked, and preserves producer-owned Land failures",
         "Shared backend permission does not block ordinary landing or transfer the merge to Foreman",
         "With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate"
@@ -189,7 +188,7 @@
       "id": 9,
       "name": "closed-unmerged-pr-never-closes-task",
       "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, reconcile captured task PR 43. The PR is closed without merge, task issue 18 remains open with in-progress applied, and no completion tick exists. The assignment authorizes ordinary merge and tracker closure if valid. Explain the result without mutating external state.",
-      "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It performs no tick, merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: question: owner_decision_required —` with the prepared forward variants and their trade-off.",
+      "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It adds no commit and performs no merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: question: owner_decision_required —` with the prepared forward variants and their trade-off.",
       "files": [
         "evals/files/delivery/AGENTS.md",
         "evals/files/delivery/.valcraft/config.yaml",
@@ -200,7 +199,7 @@
       ],
       "assertions": [
         "A closed-unmerged PR is not a merged PR and does not prove task completion",
-        "Land performs no completion tick or merge",
+        "Land adds no commit and performs no merge",
         "Land performs no close comment, task close, or in-progress label removal",
         "Land does not delete the branch or create a replacement PR",
         "The report preserves the exact closed-unmerged target and ends `Status: question: owner_decision_required` with the prepared variants and their trade-off"
@@ -210,7 +209,7 @@
       "id": 10,
       "name": "direct-invocation-resolves-tracker-mode",
       "prompt": "$valcraft:valcraft-land — compare direct finalization of F001 T-002 in evals/files/tracker-local/ with F001 T-002 in evals/files/tracker-github/. The GitHub task maps to captured issue 42. Both task PRs are reviewed, checks pass, and no mutation authority is supplied. Resolve tracker behavior from each repository root and prepare the mode-valid closure without mutating state. Then inspect evals/files/tracker-conflict/, evals/files/tracker-missing/, and evals/files/tracker-invalid/, and explain why each stops before selecting closure operations.",
-      "expected_output": "Land reads project instructions from each root AGENTS.md and reads Tune's complete closed configuration contract before accepting the resolved configuration. The local project resolves `tracker.mode: local` and prepares the exact F001 T-002 unchecked-to-checked task transition plus the configured squash merge, with no hosted tracker batch. The GitHub project resolves `tracker.mode: github` and prepares the configured squash merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. Direct invocation grants no implicit mutation authority, so both valid results stop at authority_required with exact prepared operations. For the duplicate-key, missing-file, and unknown-foreman-key cases, Land rejects the configuration, invokes Tune for the affected section, and selects no closure path. With no interactive repair answers, Tune preserves the existing bytes and returns configuration_required.",
+      "expected_output": "Land reads project instructions from each root AGENTS.md and reads Tune's complete closed configuration contract before accepting the resolved configuration. The local project resolves `tracker.mode: local` and requires the exact F001 T-002 unchecked-to-checked transition in the reviewed head and prepares the configured squash merge, with no tick commit of its own and no hosted tracker batch. The GitHub project resolves `tracker.mode: github` and prepares the configured squash merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. Direct invocation grants no implicit mutation authority, so both valid results stop at authority_required with exact prepared operations. For the duplicate-key, missing-file, and unknown-foreman-key cases, Land rejects the configuration, invokes Tune for the affected section, and selects no closure path. With no interactive repair answers, Tune preserves the existing bytes and returns configuration_required.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
         "evals/files/tracker-local/.valcraft/config.yaml",
@@ -227,7 +226,7 @@
       ],
       "assertions": [
         "Land reads Tune's complete closed configuration contract, then resolves tracker mode and merge strategy only from the committed `.valcraft/config.yaml`",
-        "Local mode prepares the exact feature-task checkbox transition and no hosted tracker batch",
+        "Local mode requires the feature-task checkbox transition in the reviewed head, prepares no tick commit of its own, and prepares no hosted tracker batch",
         "GitHub mode prepares the serialized hosted tracker-close batch and does not tick the feature task",
         "Direct invocation supplies no implicit mutation authority",
         "A duplicate YAML key delegates complete repair to Tune before closure selection",
@@ -351,8 +350,8 @@
     {
       "id": 17,
       "name": "ref-bound-grant-conditions",
-      "prompt": "$valcraft:valcraft-land — Foreman's Landing assignment for FEAT-005 T-002 (local tracker, strategy `squash`, no release branch) carries a ref-bound Land grant: repository `acme/tiles` on remote `origin`, task PR #41, base `refs/heads/main` at `ba5e222222222222222222222222222222222222`, covered head `c0ffee1111111111111111111111111111111111` from the passing code Review, and the operation set: non-force push of the completion-tick commit, merge, head-branch deletion. Checks classify `none-applicable`. For each live state, state what you do and your terminal status. Case A: the PR head and `main` are exactly as bound. Case B: the PR head is now `d00d666666666666666666666666666666666666`, a commit someone pushed on the covered head that edits `src/grid.js`. Case C: the PR head is as bound but `main` has moved to `ba5e333333333333333333333333333333333333`. Do not mutate anything.",
-      "expected_output": "Case A: Land prepares one commit on c0ffee1… that is exactly T-002's unchecked-to-checked tick in `tasks.md`, which meets the grant's condition. It states that it revalidates every bound field, pushes the tick without force, re-reads the PR head, classifies checks on it, merges with squash pinned to the new head, and deletes the head branch, all in this assignment without asking, then reports completion with `Status: done`. Case B: the delta c0ffee1..d00d666 is not the tick exception, so Review does not cover the head: `Status: blocked: review_required` with both SHAs, and no mutation. Case C: a bound field changed, so Land performs no mutation and returns `Status: blocked: authority_drift` with the live base.",
+      "prompt": "$valcraft:valcraft-land — Foreman's Landing assignment for FEAT-005 T-002 (local tracker, strategy `squash`, no release branch) carries a ref-bound Land grant: repository `acme/tiles` on remote `origin`, task PR #41, base `refs/heads/main` at `ba5e222222222222222222222222222222222222`, covered head `c0ffee1111111111111111111111111111111111` from the passing code Review, and the operation set: merge and head-branch deletion. The covered head carries T-002's exact completion transition. Checks classify `none-applicable`. For each live state, state what you do and your terminal status. Case A: the PR head and `main` are exactly as bound. Case B: the PR head is now `d00d666666666666666666666666666666666666`, a commit someone pushed on the covered head that edits `src/grid.js`. Case C: the PR head is as bound but `main` has moved to `ba5e333333333333333333333333333333333333`; the commits that moved it change only `docs/usage.md`, which the PR does not touch. Do not mutate anything.",
+      "expected_output": "Case A: the final head is the covered head c0ffee1…, which already carries T-002's transition, so Land adds no commit. It revalidates every bound field, fetches `main`, confirms with `git merge-tree --write-tree` that c0ffee1… merges cleanly, merges with squash pinned to c0ffee1…, and deletes the head branch, all in this assignment without asking, then reports `Status: done`. Case B: c0ffee1..d00d666 is uncovered, so `Status: blocked: review_required` with both SHAs, and no mutation. Case C: under `squash` the base is bound by name and by a clean merge, not by its SHA. Land fetches `main`, runs `git merge-tree --write-tree ba5e333… c0ffee1…`, gets a clean result, records ba5e333… as the live base head, merges, and deletes the branch, ending `Status: done` without `authority_drift`.",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -360,9 +359,9 @@
         "../valcraft-foreman/references/contracts.md"
       ],
       "assertions": [
-        "In case A Land states that it pushes a commit that is exactly the tick, merges pinned to that new head, and deletes the branch in the same assignment, ending `Status: done` without an `authority_required` report",
+        "In case A Land adds no commit, merges the covered head c0ffee1…, and deletes the branch in the same assignment, ending `Status: done` without an `authority_required` report",
         "In case B Land returns `review_required` with the covered and current SHAs and mutates nothing",
-        "In case C Land returns `authority_drift` for the moved base and mutates nothing",
+        "In case C Land runs `git merge-tree --write-tree` on the live base head and the covered head, and on a clean result merges and records the live base head instead of returning `authority_drift`",
         "Land does not ask the operator or Foreman to confirm in case A"
       ]
     },
@@ -427,6 +426,41 @@
         "The subject is exactly `spec(F001): state the header rule for repeated spaces (#43)`",
         "The body holds the full messages of both PR commits, subject and body, in the captured order, and no `Co-authored-by` line",
         "The report's `Prepared operations` section records the subject and body with the merge"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "moved-base-conflict-rebase-and-tool-failure",
+      "prompt": "$valcraft:valcraft-land — Foreman's Landing assignment for FEAT-005 T-003 (local tracker, no release branch) carries a ref-bound Land grant: repository `acme/tiles` on remote `origin`, task PR #44, base ref `main` observed at `ba5e444444444444444444444444444444444444` when Foreman dispatched, covered head `c0ffee2222222222222222222222222222222222` from the passing code Review, and the operation set merge and head-branch deletion. The PR head equals the covered head, the covered head carries T-003's exact completion transition, and checks classify `none-applicable`. Immediately before the merge, `main` has moved to `ba5e555555555555555555555555555555555555`. For each case, state what Land does and its terminal status. Case A: strategy `squash`; `git merge-tree --write-tree ba5e555… c0ffee2…` exits 1 and lists a conflict in `src/grid.js`. Case B: strategy `rebase`; the moved commits touch only `docs/usage.md`. Case C: strategy `squash`; the fetch of `main` fails with a network error. Do not mutate anything.",
+      "expected_output": "Case A: the merge-tree conflict means the base condition fails, so Land merges nothing and returns `Status: blocked: authority_drift` naming `src/grid.js` and the live base head. Case B: under `rebase` the base SHA is bound exactly, because a clean merge does not prove that each replayed commit applies cleanly, so the moved base returns `Status: blocked: authority_drift` with no mutation, even though the files do not overlap. Case C: a failed fetch is a tool failure before any mutation, so Land returns `Status: blocked: external_blocked` and does not treat it as drift.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "In case A Land returns `authority_drift` because `git merge-tree` reports the conflict, names the conflicting path `src/grid.js`, and merges nothing",
+        "In case B Land returns `authority_drift` because the `rebase` strategy binds the base SHA exactly, despite no file overlap",
+        "In case C Land returns `external_blocked` for the failed fetch, not `authority_drift`",
+        "Land mutates nothing in any case and does not ask the operator or Foreman to confirm a merge"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "feature-close-merges-onto-a-moved-base",
+      "prompt": "$valcraft:valcraft-land — Foreman's FeatureClose assignment for FEAT-003 quotes the operator's confirmation \"FEAT-003 is done, close it.\" and carries a ref-bound Land grant: repository `example/trails` on remote `origin`, close branch `close/f003-trail-maps` with no existing close PR, base ref `main`, strategy `squash`, and the operation set: create and push the close branch without force, create the PR, merge, and delete the head branch. You cut `close/f003-trail-maps` from `main` at `b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0`, committed exactly the feature-close marks as `c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1`, pushed it, and opened PR #58. Checks classify `none-applicable`. Before the merge, another machine merged an unrelated task PR and `main` moved to `b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1`; it touches no file under `specs/003-trail-maps/`. State what you check, whether you merge, what your report records, and your terminal status. Do not mutate anything.",
+      "expected_output": "The final head c1c1c1… is a single commit whose delta is exactly the feature-close marks and whose parent is b0b0b0…, the base head Land observed when it cut the branch; Land records b0b0b0… as that parent. The base is bound by name and by a clean merge, so Land fetches `main`, runs `git merge-tree --write-tree b1b1b1… c1c1c1…`, gets a clean result, records b1b1b1… as the live base head, merges PR #58 with squash, and deletes the head branch, ending `Status: done` without `authority_drift`.",
+      "files": [
+        "SKILL.md",
+        "references/final-head-and-checks.md",
+        "references/tracker-closure.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "Land checks that the close commit's delta is exactly the feature-close marks and that its parent is the base head it cut the branch from",
+        "Land runs `git merge-tree --write-tree` on the live base head and the close commit before merging",
+        "Land merges PR #58 onto the moved `main` and deletes the head branch, ending `Status: done` without `authority_drift`",
+        "The report records both the cut base head b0b0b0… and the live base head b1b1b1…"
       ]
     }
   ]

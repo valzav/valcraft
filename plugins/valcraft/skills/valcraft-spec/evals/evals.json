@@ -257,7 +257,7 @@
         "evals/files/authority-drift/captures/outward-authority.md"
       ],
       "assertions": [
-        "Spec revalidates repository, remote, base, local and remote heads, tracker target and revision, PR target, and operation set",
+        "Spec revalidates repository, remote, local and remote heads, tracker target and revision, PR target, and operation set",
         "The report names the canonical remote head and the tracker revision of issue #32 as drifted fields",
         "No tracker, push, or PR operation executes or is classified as executable after either bound field drifts",
         "The report returns a new exact prepared handoff with the live values and ends with Status: blocked: authority_drift"
@@ -266,8 +266,8 @@
     {
       "id": 12,
       "name": "standalone-default-branch-authority-not-release-config",
-      "prompt": "/valcraft:valcraft-spec — in evals/files/standalone-branch/, run `./prepare-eval.sh`, then create the feature contract from docs/access-log-prd.md and prepare its exact push and spec-PR handoff. The operator selects clean current local trunk at exact HEAD a35c02047c28fabb10ade04c98c351edfc1eadc7 as the local baseline. This eval cannot perform live reads or outward writes: the prepared repository has no reachable origin, the runner provides no hosting CLI or tracker adapter, and network access is forbidden. The harness stands in for this run's own live reads by stating their results below. Treat those results as this run's live reads, not as an operator-supplied snapshot the run did not read. Stated live-read results: `git ls-remote --symref origin HEAD` shows HEAD at refs/heads/trunk at the baseline SHA; `git ls-remote origin` shows no refs/heads/spec/ branch; and the hosting service reports default branch trunk at the same SHA and no open spec PR. The local cached origin/HEAD still points at main. Resolve any release setting only from the attached local configuration. No outward mutation is authorized. Commit the triplet for real. Do not execute any push or PR operation. Under `Outward mutations`, list the push and spec-PR operations of the prepared handoff, in order, with their exact targets, and mark each one prepared, not authorized. End the report with the status line the run would reach with these results.",
-      "expected_output": "Spec runs prepare-eval.sh and records local trunk at the baseline SHA. It treats the stated results as its own live reads, resolves the authoritative default branch as trunk at that SHA, and ignores the stale cached origin/HEAD for decision-making. It derives the canonical spec branch from the FEAT-001 identity, commits the triplet there, and never targets or infers stable for the spec PR. It prepares, without executing, a non-force push of the triplet head to the canonical spec ref and one spec PR with base trunk, and ends with Status: done.",
+      "prompt": "/valcraft:valcraft-spec — in evals/files/standalone-branch/, run `./prepare-eval.sh`, then create the feature contract from docs/access-log-prd.md and prepare its exact push and spec-PR handoff. The operator selects clean current local trunk at exact HEAD 64b3dbcda0d16acec8281bd4f8587ae8a36f5a98 as the local baseline. This eval cannot perform live reads or outward writes: the prepared repository has no reachable origin, the runner provides no hosting CLI or tracker adapter, and network access is forbidden. The harness stands in for this run's own live reads by stating their results below. Treat those results as this run's live reads, not as an operator-supplied snapshot the run did not read. Stated live-read results: `git ls-remote --symref origin HEAD` shows HEAD at refs/heads/trunk at the baseline SHA; `git ls-remote origin` shows no refs/heads/spec/ branch; and the hosting service reports default branch trunk at the same SHA and no open spec PR. The local cached origin/HEAD still points at main. Resolve any release setting only from the attached local configuration. No outward mutation is authorized. Commit the triplet for real. Do not execute any push or PR operation. Under `Outward mutations`, list the push and spec-PR operations of the prepared handoff, in order, with their exact targets, and mark each one prepared, not authorized. End the report with the status line the run would reach with these results.",
+      "expected_output": "Spec runs prepare-eval.sh and records local trunk at the baseline SHA. It reads the default branch trunk from `foreman.default_branch` in the committed configuration, treats the stated results as its own live reads of the remote identity and canonical spec ref, and ignores the stale cached origin/HEAD for decision-making. It derives the canonical spec branch from the FEAT-001 identity, commits the triplet there, and never targets or infers stable for the spec PR. It prepares, without executing, a non-force push of the triplet head to the canonical spec ref and one spec PR with base trunk, and ends with Status: done.",
       "files": [
         "evals/files/standalone-branch/.gitignore",
         "evals/files/standalone-branch/prepare-eval.sh",
@@ -278,11 +278,11 @@
         "evals/files/standalone-branch/specs/.gitkeep"
       ],
       "assertions": [
-        "The authoritative default branch is trunk at the matching live SHA; cached origin/HEAD does not override it",
+        "The default branch is trunk, read from `foreman.default_branch`; cached origin/HEAD does not override it",
         "The canonical spec branch is derived from FEAT-001 identity and the spec PR base is trunk",
         "The configured release branch stable is not selected or inferred for feature-contract delivery",
         "Spec reads release branch stable from `.valcraft/config.yaml`; AGENTS.md supplies no Valcraft setting",
-        "The triplet is committed on the canonical spec branch as a descendant of a35c02047c28fabb10ade04c98c351edfc1eadc7, and trunk still points at that commit",
+        "The triplet is committed on the canonical spec branch as a descendant of 64b3dbcda0d16acec8281bd4f8587ae8a36f5a98, and trunk still points at that commit",
         "No push or PR mutation occurs; the handoff lists a non-force push of the triplet head and one spec-PR creation with base trunk as prepared operations awaiting authority",
         "The report ends with Status: done"
       ]
@@ -368,7 +368,7 @@
       "id": 17,
       "name": "github-pending-local-artifact-without-usable-remote",
       "prompt": "/valcraft:valcraft-spec — in evals/files/github-pending/, run `./prepare-eval.sh`, then create the feature contract from docs/bookmark-import-prd.md. The operator selects the clean current local main ref as the local Spec baseline; resolve and record its exact HEAD locally. No usable git remote, hosting CLI, or hosting credentials exist. Keep the GitHub target pending and perform no outward mutation.",
-      "expected_output": "Spec does not require live remote or hosting-service default-branch authority to create the local feature contract. It verifies the selected clean local main ref and exact HEAD, derives and reconciles spec/f001-bookmark-import locally from that baseline, and creates and commits the complete FEAT-001 triplet with pending GitHub mappings. The Spec report records the exact local Review target, marks remote identity, remote default branch, canonical remote head, push and PR targets as unresolved for a future outward stage, and leaves Land target as none. It performs no fetch, tracker projection, push, or PR operation, does not infer a release branch or GitHub repository, and ends with Status: question: tracker_target_required and concise detail. The triplet commit is on spec/f001-bookmark-import, and main stays at the fixture baseline commit.",
+      "expected_output": "Spec does not require live remote or hosting-service default-branch authority to create the local feature contract. It verifies the selected clean local main ref and exact HEAD, derives and reconciles spec/f001-bookmark-import locally from that baseline, and creates and commits the complete FEAT-001 triplet with pending GitHub mappings. The Spec report records the exact local Review target, records the default branch `main` from `foreman.default_branch`, marks remote identity, canonical remote head, push and PR targets as unresolved for a future outward stage, and leaves Land target as none. It performs no fetch, tracker projection, push, or PR operation, does not infer a release branch or GitHub repository, and ends with Status: question: tracker_target_required and concise detail. The triplet commit is on spec/f001-bookmark-import, and main stays at the fixture baseline commit.",
       "files": [
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",
@@ -383,7 +383,7 @@
         "Spec verifies the clean local main ref and records its resolved exact HEAD as the operator-selected baseline",
         "Spec derives and reconciles spec/f001-bookmark-import locally without fetching or fabricating remote state",
         "The committed triplet preserves pending GitHub mappings and the report names its exact local Review target",
-        "Remote identity, default branch, canonical remote head, push target, and PR target remain explicitly unresolved for a future outward stage",
+        "Remote identity, canonical remote head, push target, and PR target remain explicitly unresolved, and the default branch comes from `foreman.default_branch`, not from a live remote read for a future outward stage",
         "Spec performs no output tracker inspection or outward mutation, leaves Land target none, and reports tracker_target_required",
         "The triplet commit is on the canonical Spec branch spec/f001-bookmark-import",
         "The baseline ref main still points at the fixture baseline commit after the run"
@@ -393,7 +393,7 @@
       "id": 18,
       "name": "remote-less-outward-stage-preserves-local-triplet",
       "prompt": "/valcraft:valcraft-spec — in evals/files/github-pending/, run `./prepare-eval.sh`, then create the feature contract from docs/bookmark-import-prd.md, then prepare its tracker projection, push, and PR. The operator selects the clean current local main ref as the local Spec baseline; resolve and record its exact HEAD locally. No usable git remote, hosting CLI, or hosting credentials exist.",
-      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet from the selected clean baseline before outward preparation. The outward stage then reports workspace_not_ready because repository, remote, remote default branch, canonical remote head, projection target, push target, and PR target cannot be resolved. It preserves the exact local triplet commit and Review target, leaves Land target none, fabricates no outward value, performs no outward mutation, and returns the exact missing outward authority needed to resume. The triplet commit is on spec/f001-bookmark-import, and main stays at the fixture baseline commit.",
+      "expected_output": "Spec creates and commits the complete local FEAT-001 triplet from the selected clean baseline before outward preparation. The outward stage then reports workspace_not_ready because repository, remote, canonical remote head, projection target, push target, and PR target cannot be resolved. It preserves the exact local triplet commit and Review target, leaves Land target none, fabricates no outward value, performs no outward mutation, and returns the exact missing outward authority needed to resume. The triplet commit is on spec/f001-bookmark-import, and main stays at the fixture baseline commit.",
       "files": [
         "evals/files/github-pending/.gitignore",
         "evals/files/github-pending/prepare-eval.sh",
@@ -407,7 +407,7 @@
         "Spec creates and commits the complete local triplet before outward preparation",
         "The outward stage alone reports workspace_not_ready when live remote and hosting authority are unavailable",
         "The exact local triplet commit and Review target remain preserved while Land target stays none",
-        "Repository, remote, default branch, canonical remote head, projection, push, and PR targets remain unresolved rather than fabricated",
+        "Repository, remote, canonical remote head, projection, push, and PR targets remain unresolved rather than fabricated",
         "Spec performs no fetch, projection, push, PR, tracker, or closure mutation, and no reset, rebase, merge, or force-push of any ref, including a reset of the baseline ref to undo its own commit",
         "The triplet commit is on the canonical Spec branch spec/f001-bookmark-import",
         "The baseline ref main still points at the fixture baseline commit after the run"
@@ -489,8 +489,8 @@
     {
       "id": 23,
       "name": "amendment-branch-derivation-and-stale-local-refs",
-      "prompt": "/valcraft:valcraft-spec — compare standalone amendment preparation for landed FEAT-014 in four cases: (a) a stale local spec/f014-export-filters branch remains and no longer descends from the selected baseline; (b) the checkout is dirty with unattributed changes; (c) the contract is not yet present on the baseline; (d) an executing push grant finds the live base changed. State the branch used, the result, and whether any merge, reset, or deletion occurs. Do not mutate anything.",
-      "expected_output": "Case (a) derives spec/f014-amend-<sha> from the exact baseline head, reports the stale local branch, and leaves it untouched. Case (b) returns workspace_not_ready and preserves the state. Case (c) uses the canonical spec/f014-export-filters branch because the contract has not landed. Case (d) returns authority_drift before any push. Spec never merges the baseline into a landed branch, resets, force-pushes, deletes a branch, or rewrites history.",
+      "prompt": "/valcraft:valcraft-spec — compare standalone amendment preparation for landed FEAT-014 in five cases: (a) a stale local spec/f014-export-filters branch remains and no longer descends from the selected baseline; (b) the checkout is dirty with unattributed changes; (c) the contract is not yet present on the baseline; (d) an executing push grant finds the canonical remote Spec ref changed; (e) an executing push grant finds every bound field unchanged, but `main` moved since the grant was issued. State the branch used, the result, and whether any merge, reset, or deletion occurs. Do not mutate anything.",
+      "expected_output": "Case (a) derives spec/f014-amend-<sha> from the exact baseline head, reports the stale local branch, and leaves it untouched. Case (b) returns workspace_not_ready and preserves the state. Case (c) uses the canonical spec/f014-export-filters branch because the contract has not landed. Case (d) returns authority_drift before any push. Case (e) pushes and creates or updates the spec PR: the default branch's head is not a bound field, so its movement is not drift. Spec never merges the baseline into a landed branch, resets, force-pushes, deletes a branch, or rewrites history.",
       "files": [
         "SKILL.md",
         "references/delivery.md"
@@ -500,8 +500,9 @@
         "A stale local Spec branch is reported and left untouched, never merged, reset, or deleted",
         "Dirty or unattributed state returns workspace_not_ready and is preserved",
         "An unlanded contract keeps the canonical spec/f014-<slug> branch",
-        "A drifted executing grant returns authority_drift before any outward mutation",
-        "No baseline merge, force-push, reset, or history rewrite is proposed"
+        "A grant whose canonical remote Spec ref drifted returns authority_drift before any outward mutation",
+        "No baseline merge, force-push, reset, or history rewrite is proposed",
+        "A moved `main` alone does not stop the push or the spec-PR operation in case (e)"
       ]
     },
     {
@@ -844,6 +845,23 @@
         "Finding resolutions records R-022 as left open because it needs new work, and names a new task as the way to deliver that work",
         "The amendment adds no new task to tasks.md",
         "Spec writes no files"
+      ]
+    },
+    {
+      "id": 42,
+      "name": "first-spec-push-to-an-absent-ref",
+      "prompt": "/valcraft:valcraft-spec — a Foreman Specifying dispatch for FEAT-001 carries the exact Spec publish grant: repository `example/records` on `origin`, covered head `7cf1f4d502cfa3f3ea6a7dd16da409fa29d169f0` that a passing Spec verdict covers, canonical ref `refs/heads/spec/f001-session-export` observed absent, PR base `main` by name, head `spec/f001-session-export`, no existing spec PR, and the operations non-force push and spec-PR creation. The committed configuration sets `foreman.default_branch: main`, and the local head is clean at 7cf1f4d…. Before the push, the run's own live reads return: `git remote get-url origin` shows https://github.example.test/example/records.git; `git ls-remote origin refs/heads/spec/f001-session-export` prints nothing and exits 0; `git fetch origin refs/heads/spec/f001-session-export` fails with `fatal: couldn't find remote ref refs/heads/spec/f001-session-export`; the hosting service reports no PR with head `spec/f001-session-export`. Describe each outward step Spec takes and its terminal status line. Do not execute anything.",
+      "expected_output": "Spec reads the canonical ref live with `git ls-remote` and treats the empty result as verified absence, which matches the bound observation; it fetches the ref only when it exists, so the failed fetch is not a resolution failure. Every bound field revalidates. Spec pushes 7cf1f4d… without force to `refs/heads/spec/f001-session-export`, verifies the remote ref equals the local head, queries for a matching spec PR, finds none, creates one against `main`, verifies its identity, base, and head, and ends `Status: done`. It does not return `workspace_not_ready`.",
+      "files": [
+        "SKILL.md",
+        "references/delivery.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "Spec treats the empty `git ls-remote` result as verified absence that matches the bound observation",
+        "Spec does not treat the failed fetch of the absent ref as a resolution failure and does not return `workspace_not_ready`",
+        "Spec pushes 7cf1f4d… without force, verifies the remote ref, and creates exactly one spec PR against `main`",
+        "The terminal line is `Status: done`"
       ]
     }
   ]

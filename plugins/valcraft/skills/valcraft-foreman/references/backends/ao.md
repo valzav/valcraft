@@ -35,7 +35,7 @@ For dispatch ordinal zero, hash the UTF-8 canonical logical identity with SHA-25
 Derive a unique physical branch from the physical alias. Resolve one workspace seed before worker creation:
 
 - For a git-backed workflow target, verify the predecessor's exact full SHA and canonical remote ref from the accepted producer report. Use that SHA as the workspace seed.
-- For a workflow target whose branch, PR, commit, and target SHA are all `none`, verify the live remote `HEAD` symref and host-reported default branch agree. Fetch that ref. Use its exact SHA only as the workspace seed. Keep the workflow target's git identity `none`.
+- For a workflow target whose branch, PR, commit, and target SHA are all `none`, fetch `foreman.default_branch` from the remote. Use its exact SHA only as the workspace seed. Keep the workflow target's git identity `none`.
 
 Then apply the physical guard:
 

@@ -136,7 +136,7 @@ Dispatch a fresh `code-reviewer-<identity>` with `valcraft-review` in code mode 
 
 ## `Landing`
 
-Dispatch `land-<identity>` with `valcraft-land`, the target kind, exact current target, Review report, applicable approval-mode decision, tracker closure target, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authorization. Land owns final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and external evidence recording.
+Dispatch `land-<identity>` with `valcraft-land`, the target kind, exact current target, Review report, applicable approval-mode decision, tracker closure target, and the ref-bound Land grant in `contracts.md` when its gate allows it, or other trusted target-bound authorization. Land owns final-head comparison, applicable checks, completion-transition verification, merge, closure, partial-mutation reconciliation, and external evidence recording.
 
 Route the Land report exactly:
 
@@ -157,7 +157,7 @@ A completed task target returns to Ready. A completed external closure returns t
 
 Dispatch a fresh `review-evidence-<identity>` with `valcraft-review` in evidence mode on Land's exact durable evidence record. Review owns criterion-by-criterion sufficiency. A sufficient report returns to Landing with the exact verdict. An insufficient or blocked report follows the registry. Foreman records and judges no evidence.
 
-The return re-enters `Landing` carrying the whole ownership listed there — final-head comparison, applicable checks, completion ticks, merge, closure, partial-mutation reconciliation, and evidence recording — not the completion tick alone. Which of those the resolved tracker mode actually requires, and in what order, is Land's own contract in [`../../valcraft-land/references/tracker-closure.md`](../../valcraft-land/references/tracker-closure.md).
+The return re-enters `Landing` carrying the whole ownership listed there — final-head comparison, applicable checks, completion-transition verification, merge, closure, partial-mutation reconciliation, and evidence recording — not the closure alone. Which of those the resolved tracker mode actually requires, and in what order, is Land's own contract in [`../../valcraft-land/references/tracker-closure.md`](../../valcraft-land/references/tracker-closure.md).
 
 ## `FeatureClose`
 

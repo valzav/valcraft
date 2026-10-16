@@ -10,7 +10,7 @@ Send every worker these fields in order:
 2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
 3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
 4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content. A Review assignment also names the highest existing R-ID: the highest R-ID in any Review report under `.valcraft/foreman/` whose logical worker carries the same feature or quick identity, found with a line-oriented search, or `none`. Review allocates new IDs after it, so findings of one feature or quick file share one R-ID sequence across Spec, plan, code, evidence, and retrospective reviews.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, `Foreman decision`, or `Foreman observation`, with its source and scope. A `Foreman decision` carries the answer and cited sources recorded under `approval-modes.md`'s Foreman decisions. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, branch base and head, PR or tracker target, configured merge strategy when applicable, and operation set. A Land merge grant's operation set includes deleting the merged PR's head branch and its matching local branch, as `../../valcraft-land/references/final-head-and-checks.md` defines; never exclude either.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, `Foreman decision`, or `Foreman observation`, with its source and scope. A `Foreman decision` carries the answer and cited sources recorded under `approval-modes.md`'s Foreman decisions. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, canonical ref and its observed head, PR base ref by name, PR or tracker target, configured merge strategy when applicable, and operation set. A Land merge grant's operation set includes deleting the merged PR's head branch and its matching local branch, as `../../valcraft-land/references/final-head-and-checks.md` defines; never exclude either.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel. Within the run directory, a worker writes only its assigned report path. A Review assignment also grants writes to temporary paths outside the repository, such as a temporary directory, a temporary dependency install, or a browser profile, for the replays its mode requires. That grant never covers a repository path, git state, or a remote.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
@@ -18,7 +18,7 @@ Every dated artifact resolves its date from repository policy, then an explicit 
 
 ## Prepared mutation continuation
 
-A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, authoritative base, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
+A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
 When Spec or Draft must publish its exact commit for the next Review worker, Specifying holds a passing Spec verdict without a landable PR, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
 
@@ -38,12 +38,11 @@ Spec and Draft advance to Review only when the next Review worker can access the
 A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. It and the ref-bound Land grant below are the grants that bind a head by condition instead of by SHA. Bind every other field exactly:
 
 - repository and remote identity;
-- authoritative base ref and SHA;
 - canonical remote task ref and its observed remote head, including absence;
-- PR base and head refs, and the existing task PR identity or its absence; and
+- PR base ref by name, PR head ref, and the existing task PR identity or its absence; and
 - the operation set: non-force push of the canonical task ref, and task-PR creation or update.
 
-The bound head is the clean local head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged. A remediation dispatch binds the currently pushed head as the observed remote head and the existing task PR identity. Forge revalidates every bound field immediately before mutation and returns `authority_drift` on any change. A Forge report without a task PR still takes the prepared continuation above.
+The default branch's head is not bound: the push and the PR operation neither read nor write it, so a moved default branch never stops them. The bound head is the clean local head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged. A remediation dispatch binds the currently pushed head as the observed remote head and the existing task PR identity. Forge revalidates every bound field immediately before mutation and returns `authority_drift` on any change. A Forge report without a task PR still takes the prepared continuation above.
 
 ## Ref-bound Land grant
 
@@ -51,22 +50,26 @@ A Land dispatch in `SpecLanding`, `Landing`, or `FeatureClose` may carry its aut
 
 - repository and remote identity;
 - target kind and PR identity; for a feature close, the close branch `close/fNNN-<slug>` and the existing close PR identity or its absence;
-- authoritative base ref and SHA;
+- the base ref by name, and for the `rebase` strategy also its SHA;
 - for a task or spec PR, the head SHA that the latest passing Review report covers;
 - the configured merge strategy; and
-- the operation set: for a task PR, non-force push of Land's completion-tick commit when the tracker mode requires one, merge, head-branch deletion, and any mode-valid hosted close batch; for a spec PR, merge and head-branch deletion; for a feature close, creating and pushing the close branch without force, PR creation, merge, head-branch deletion, and the confirmed hosted close in `github` mode.
+- the operation set: for a task PR, merge, head-branch deletion, and any mode-valid hosted close batch; for a spec PR, merge and head-branch deletion; for a feature close, creating and pushing the close branch without force, PR creation, merge, head-branch deletion, and the confirmed hosted close in `github` mode.
 
-The final merged head is the one field bound by condition. For a task or spec PR, it is the covered head, or a single commit on the covered head whose delta is exactly the completion-tick exception in [`../../valcraft-land/references/final-head-and-checks.md`](../../valcraft-land/references/final-head-and-checks.md). For a feature close, it is a single commit on the bound base SHA whose delta is exactly the feature-close marks. Land revalidates every bound field and the condition immediately before each mutation and returns `authority_drift` on any change. The grant waives no Review coverage, check classification, or release-branch rule, and a configured release-branch operation never receives it. A Land report that ends `authority_required` for an operation outside the grant still takes the prepared continuation above.
+Two fields are bound by condition:
+
+- **Final head.** For a task or spec PR, the final head is the covered head. For a feature close, it is a single commit whose delta is exactly the feature-close marks and whose parent is the base head Land observed when it cut the close branch.
+- **Base head.** Under the `squash` and `merge` strategies, the base head may move after dispatch. Immediately before merge, Land fetches the base ref and requires a clean merge of the final head onto the live base head, as [`../../valcraft-land/references/final-head-and-checks.md`](../../valcraft-land/references/final-head-and-checks.md#ref-bound-grant) defines. Under the `rebase` strategy, the base SHA stays bound exactly, because a clean merge does not prove that each replayed commit applies cleanly.
+
+Land revalidates every bound field and both conditions immediately before each mutation and returns `authority_drift` on any change. The grant waives no Review coverage, check classification, or release-branch rule, and a configured release-branch operation never receives it. A Land report that ends `authority_required` for an operation outside the grant still takes the prepared continuation above.
 
 ## Exact Spec publish grant
 
 After a passing Spec verdict covers an exact committed head and no landable spec PR exists, the Specifying dispatch may carry push and spec-PR authority, when that state's gate in `approval-modes.md` allows it. Foreman observes every bound field live and binds exactly:
 
 - repository and remote identity;
-- authoritative default-branch ref and base SHA;
 - the covered head SHA;
 - the canonical Spec ref and its observed remote head, including absence;
-- PR base and head refs, and the existing spec-PR identity or its absence; and
+- PR base ref by name, which is `foreman.default_branch`, PR head ref, and the existing spec-PR identity or its absence; and
 - the operation set: non-force push of the covered head and spec-PR creation or update.
 
 No field is bound by condition. Tracker projection stays outside this grant.

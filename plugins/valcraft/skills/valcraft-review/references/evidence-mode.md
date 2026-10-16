@@ -29,7 +29,9 @@ For each row:
 
 Preserve `Operator attestation` and `Foreman observation` labels. An attestation may support a criterion that permits attributed testimony. It never replaces verification that the criterion or an applicable check requires. Missing, inaccessible, contradictory, mismatched, or non-durable evidence is insufficient; do not fill the gap from context or implementation inspection.
 
-The overall verdict is exactly `sufficient` only when every criterion is sufficient. Otherwise it is `insufficient` and names every weak or missing criterion. Review never writes evidence, ticks a task, closes a target, or authorizes Land.
+For a local feature task or a quick task, the record's commit also carries exactly the selected task's unchecked-to-checked transition. A missing transition or any other change outside the record makes the overall verdict `insufficient`; name the delta.
+
+The overall verdict is exactly `sufficient` only when every criterion is sufficient and the transition check above holds. Otherwise it is `insufficient` and names every weak or missing criterion. Review never writes evidence, ticks a task, closes a target, or authorizes Land.
 
 ## Evidence-sufficiency report
 
