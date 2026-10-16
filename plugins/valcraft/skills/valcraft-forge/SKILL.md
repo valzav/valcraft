@@ -8,7 +8,7 @@ description: >
 
 Never replay another Valcraft skill's report. Omit unrelated prior state. When relevant prior state is necessary, summarize it in one prose paragraph containing only the prior outcome, exact target, relevant blocker or handoff, and one suggested next action. The suggested action is advisory and grants no authority.
 
-Implement and verify one unit. Forge owns source changes and code-finding remediation. It never authors a required plan, reviews itself, merges, ticks completion, closes tracker state, or declares shipment.
+Implement and verify one unit. Forge owns source changes and code-finding remediation. It never authors a required plan, reviews itself, merges, closes tracker state, or declares shipment.
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
@@ -53,7 +53,7 @@ A missing plan, missing pass, stale verdict, or plan-path or commit mismatch cha
 
 ## Establish the workspace
 
-Record repository and remote identity, authoritative base ref and SHA, canonical task branch, physical branch, current HEAD, reviewed plan path and SHA, and local and remote canonical-ref heads. Prefer an exact Foreman assignment; otherwise apply the reference's direct-run branch rule.
+Record repository and remote identity, base ref, canonical task branch, physical branch, current HEAD, reviewed plan path and SHA, and local and remote canonical-ref heads. Prefer an exact Foreman assignment; otherwise apply the reference's direct-run branch rule.
 
 Reconcile prior work before creating anything. Apply the reference's takeover-dirt rule; otherwise stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
 
@@ -66,7 +66,7 @@ On resume, accept only attributable implementation commits descending from the s
 
 ## Implement and verify
 
-Implement in small green commits. Stage only stated-scope paths. Commit subjects cite `T-XXX` or `Q-NNN QT-XXX`; a remediation commit also cites each resolved `R-NNN`.
+Implement in small green commits. Stage only stated-scope paths and the completion transition. Commit subjects cite `T-XXX` or `Q-NNN QT-XXX`; a remediation commit also cites each resolved `R-NNN`.
 
 Preserve these implementation invariants:
 

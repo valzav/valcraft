@@ -16,6 +16,48 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.8.30
+
+### Push and pull-request grants no longer bind the default-branch SHA
+
+The ref-bound Forge grant, the exact Spec publish grant, and Draft's and Spec's push authority bind the canonical ref and its observed remote head, and name the PR base ref only by name. A moved default branch no longer stops a task, plan, or spec push or its PR with `authority_drift` or `workspace_not_ready`. Forge's Review target keeps its start SHA, the passed plan-review SHA or a planless baseline, as its base.
+
+- Applies when: never on its own; the next push applies the rule.
+- Tune performs: none.
+- Operator: none.
+
+### Land's merge grant binds the base by a clean merge for squash and merge
+
+Under the `squash` and `merge` strategies, the ref-bound Land grant binds the base ref by name. Immediately before the merge, Land fetches the base and runs `git merge-tree --write-tree` on the live base head and the final head. A clean result merges and records the live base head; a conflict returns `authority_drift` naming the conflicting paths; a tool failure returns `external_blocked`. Under `rebase` the base SHA stays bound exactly. A feature-close commit's parent is the base head Land cut the close branch from. A host rule that requires a branch to be up to date with its base can still reject a merge this condition allows; Land reports that rejection as a merge error, not as drift. A clean merge can still combine changes that do not work together; the next task's checks run on the merged result.
+
+- Applies when: the operator checks that every machine that runs Land has Git 2.38 or later.
+- Tune performs: none.
+- Operator: upgrade Git on every machine where `git --version` reports a version older than 2.38.
+
+### Plan file names carry the task identity instead of a date sequence
+
+Draft names a new plan `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`, where the slug is `fNNN-tNNN-<semantic-slug>` for a feature task and `qNNN-qtNNN-<semantic-slug>` for a quick task. Draft no longer allocates a per-date plan number, so two machines can no longer choose the same name. Existing plans keep their paths.
+
+- Applies when: the operator checks the root `AGENTS.md` for a plan-path line.
+- Tune performs: none.
+- Operator: replace `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md` in the root `AGENTS.md` with `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`, where `<slug>` starts with the task identity (`fNNN-tNNN-` or `qNNN-qtNNN-`), through an ordinary reviewed change.
+
+### The default branch is read from `foreman.default_branch`
+
+Spec and Foreman take the default branch from the committed `foreman.default_branch` instead of requiring the remote `HEAD` symref and the hosting service's default to agree at push time. Draft no longer reads the default branch for a push.
+
+- Applies when: the operator checks that `foreman.default_branch` names the integration branch that spec and task PRs target.
+- Tune performs: none.
+- Operator: when it names another branch, run `/valcraft-tune`, choose `Foreman Loop`, and set the default branch to the integration branch.
+
+### The task completion tick is part of Forge's final commit
+
+In `local` tracker mode for a feature task, and in every mode for a quick task, Forge commits the task's exact unchecked-to-checked transition with its final implementation change, and code Review covers it. Land adds no completion-tick commit, pushes nothing before the merge, and merges the covered head; the one exception to exact Review coverage is the feature-close PR. A task PR opened before this release lacks the transition: Land returns it with `review_required`, and Review routes the missing transition to Forge.
+
+- Applies when: never on its own; the next Forge run applies the rule.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.29
 
 ### Foreman confirms a feature only when every task is closed

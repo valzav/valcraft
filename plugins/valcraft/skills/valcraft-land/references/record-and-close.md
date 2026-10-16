@@ -25,10 +25,10 @@ Return an evidence-mode `valcraft-review` handoff that names:
 
 Land never judges sufficiency and never spawns Review on direct invocation. The next caller supplies the Review report on resume.
 
-Accept only a fresh Review context's complete `## Evidence-sufficiency report` for the exact record. Every criterion needs an independent-verification result, `sufficient` or `insufficient`, and a reason. A mismatched or incomplete report returns `evidence_review_required`. Any insufficient row returns `evidence_insufficient`; leave the task open and unticked.
+Accept only a fresh Review context's complete `## Evidence-sufficiency report` for the exact record. Every criterion needs an independent-verification result, `sufficient` or `insufficient`, and a reason. A mismatched or incomplete report returns `evidence_review_required`. Any insufficient row returns `evidence_insufficient`; leave the task open and the record unmerged.
 
 ## Close against real state
 
 After a sufficient verdict, apply the check classifier to every real applicable target. A check that requires a commit cannot pass without one. With no git target, the final-head gate passes only when authoritative probes establish absence and no applicable check requires git.
 
-Then prepare the exact task closure under `tracker-closure.md`. For local or quick evidence, the evidence delta receives scoped Review before the exact completion tick. For a hosted tracker, the close batch cites the durable evidence locator and sufficient verdict. Execute only with target-bound tracker authority and preserve partial results for reconciliation.
+Then prepare the exact task closure under `tracker-closure.md`. For local or quick evidence, the evidence-record commit also carries the task's exact unchecked-to-checked transition, and the evidence Review covers both; Land adds no separate completion commit. For a hosted tracker, the close batch cites the durable evidence locator and sufficient verdict. Execute only with target-bound tracker authority and preserve partial results for reconciliation.

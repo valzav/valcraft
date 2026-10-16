@@ -100,7 +100,7 @@ For instructions, prompts, safety rules, and error messages, put one action in e
 - Product intent and feature-issue mapping live in `spec.md`; implementation detail lives in `design.md`.
 - Reference `FR-`, `AC-`, feature `T-`, and qualified `Q-NNN QT-XXX` identities from commits and tests.
 - Apply the MSW deletion test to commit messages and PR bodies.
-- Put non-trivial task plans in `docs/plans/YYYY-MM-DD-NNN-<type>-<slug>-plan.md`.
+- Put non-trivial task plans in `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`, where `<slug>` starts with the task identity (`fNNN-tNNN-` or `qNNN-qtNNN-`).
 - Update affected specs, ADRs, and docs with code changes.
 - Do not edit generated files by hand.
 

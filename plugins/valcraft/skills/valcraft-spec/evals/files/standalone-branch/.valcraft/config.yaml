@@ -5,7 +5,7 @@ tracker:
 foreman:
   backend: subagents
   approval_mode: unattended
-  default_branch: main
+  default_branch: trunk
   release_branch: stable
 pull_requests:
   merge_strategy: squash

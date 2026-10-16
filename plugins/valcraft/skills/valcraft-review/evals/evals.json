@@ -950,6 +950,21 @@
         "The verdict is material findings and Review edits nothing"
       ],
       "id": 47
+    },
+    {
+      "id": 48,
+      "name": "completion-transition-must-name-the-task",
+      "prompt": "/valcraft:valcraft-review — code-mode review of task PR #41 in `acme/tiles` for FEAT-005 T-002, base `main` at plan-review commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`, head `c0ffee1111111111111111111111111111111111`. The committed `.valcraft/config.yaml` sets `tracker.mode: local`. The passed plan for T-002 changes `src/grid.js` and `test/grid.test.js`, and the diff makes exactly those planned changes, which you may treat as correct. Forge's final commit `feat(F005 T-002): wrap grid edges` also changes one line of `specs/005-tiles/tasks.md`: `- [ ] T-003 Persist the grid between sessions; verifies FR-004.` becomes `- [x] T-003 Persist the grid between sessions; verifies FR-004.` The T-002 line stays `- [ ] T-002 Wrap grid edges; verifies FR-003.` Report in code-mode format.",
+      "expected_output": "In local tracker mode the head must carry exactly T-002's unchecked-to-checked transition. This head ticks T-003, another task, and leaves T-002 unchecked, so Review reports a material finding owned by Forge that names both the wrong transition and the missing one. The verdict is not pass while that finding is open.",
+      "files": [
+        "SKILL.md",
+        "references/code-mode.md"
+      ],
+      "assertions": [
+        "The report has a material finding owned by Forge for the T-003 checkbox change",
+        "The finding, or another material finding, names the missing T-002 transition",
+        "The verdict is not pass"
+      ]
     }
   ]
 }

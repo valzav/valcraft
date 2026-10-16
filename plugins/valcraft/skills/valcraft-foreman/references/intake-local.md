@@ -18,12 +18,12 @@ Record an unresolved task question in `state.md` and route it to the operator. C
 
 Pass these tracker semantics to Land without copying Land's procedure:
 
-- **Feature task PR:** the selected task's only local completion mutation is its exact unchecked-to-checked transition. Land owns that tick, final-head gates, merge, and reconciliation.
-- **Quick task PR:** Land applies the same exact tick to the selected `QT-XXX`. A file whose tasks are all checked is complete without feature confirmation or Temper.
-- **External completion:** Land records criterion-keyed evidence beside the selected task, returns the durable Review target, consumes fresh Review sufficiency, and then applies the valid tick and landing operations. Foreman writes and judges none of it.
+- **Feature task PR:** the selected task's only local completion mutation is its exact unchecked-to-checked transition. Forge commits it in the task's final commit and Review covers it. Land verifies it, merges, and reconciles.
+- **Quick task PR:** the same holds for the selected `QT-XXX`. A file whose tasks are all checked is complete without feature confirmation or Temper.
+- **External completion:** Land records criterion-keyed evidence and the task's transition beside the selected task, returns the durable Review target, consumes fresh Review sufficiency, and then applies the landing operations. Foreman writes and judges none of it.
 - **Feature closure:** Land records the exact operator confirmation, lands the feature-close PR that ticks the covered acceptance criteria and sets the triplet `status` to `complete`, and reports completion before Temper begins.
 
-Only Land's declared exact completion-tick exception can bypass another scoped Review. Adjacent text remains uncovered. Foreman never edits a task file, creates a PR, runs checks, merges, or ticks completion.
+Every completion transition reaches the default branch inside a reviewed head. Foreman never edits a task file, creates a PR, runs checks, merges, or ticks completion.
 
 ## Deferred findings
 

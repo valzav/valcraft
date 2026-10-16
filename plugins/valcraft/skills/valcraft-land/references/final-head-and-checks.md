@@ -14,7 +14,7 @@ When the local branch's head differs from the merged PR head, it holds local com
 
 Use `pull_requests.merge_strategy` from the committed `.valcraft/config.yaml` for every PR: task, spec, and feature-close. Do not infer a strategy from host defaults or repository history. If the configured strategy is unavailable for the target repository, invoke Tune for the pull-request section, show only host-supported strategies, and resume only after `Status: done`. Never substitute another strategy.
 
-Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Then verify the exact trusted target-bound authorization required by `SKILL.md`.
+Immediately before merge, re-read the PR identity, base, head, state, configured merge strategy, Review coverage, and check state. Under a ref-bound grant, also fetch the base ref and apply the base condition in [Ref-bound grant](#ref-bound-grant). Then verify the exact trusted target-bound authorization required by `SKILL.md`.
 
 After any merge command error, inspect live PR state before deciding the merge failed. If authoritative state says merged, mark merge complete and advance to remaining closure. If it says open, preserve the exact error and return the remaining operation. A closed-unmerged PR stops task closure under the rule in [Target kinds](tracker-closure.md#target-kinds).
 
@@ -24,23 +24,25 @@ Persist or report enough state to resume: target kind, exact identifiers, prepar
 
 Read the current PR head from the hosting service. Compare it with the exact head in the latest passing Review report for this target. A branch name, older verdict, merge base, or review summary is not coverage.
 
-When the heads differ, inspect the complete `<reviewed>..<current>` delta. Only the exact unchecked-to-checked transition of the selected local feature task or quick task may bypass another scoped Review. The exception contains no adjacent text, rename, generated output, merge, or other change.
+When the heads differ, the current head lacks coverage. Return `review_required` with the two full SHAs and the exact `<reviewed>..<current>` delta target.
 
-For that exact tick:
-
-1. prepare a task-owned commit on the PR branch;
-2. obtain exact push authority, or apply a ref-bound Land grant whose condition this commit meets;
-3. push without force;
-4. re-read the PR head; and
-5. classify applicable checks on that new head.
+In `local` tracker mode a feature task, and in every mode a quick task, carries its exact unchecked-to-checked completion transition in the covered head: Forge commits it and Review covers it. Land adds no commit. Verify that the PR's delta contains that transition. When it does not, return `review_required` naming the missing transition.
 
 A feature-close PR has no Review report. Its whole delta against its base must be exactly the completion marks `tracker-closure.md` defines for that feature: unchecked-to-checked `AC-` transitions in its `spec.md` and `status: draft` to `status: complete` in its three files. Such a delta needs no Review.
 
-Any other delta returns `review_required` with the two full SHAs and exact delta target. After a Review-driven change, restart this comparison.
+Any other feature-close delta returns `review_required` with the two full SHAs and exact delta target. After a Review-driven change, restart this comparison.
 
 ## Ref-bound grant
 
-A Foreman dispatch may carry a ref-bound Land grant ([`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-land-grant)). It binds the target fields and the operation set before you prepare, and binds the final head only by condition. Apply it when every bound field revalidates and the final head meets its condition: the covered head, or a single commit on it that is exactly the completion tick above; for a feature close, a single commit on the bound base SHA that is exactly the feature-close marks. Then perform the granted operations in the same assignment without asking. Return `authority_drift` when a bound field changed. An operation outside the grant still ends `authority_required`. The grant changes neither the Review coverage rule nor the check classifier.
+A Foreman dispatch may carry a ref-bound Land grant ([`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-land-grant)). It binds the target fields and the operation set before you prepare, and binds the final head and the base head only by condition.
+
+- **Final head.** For a task or spec PR, the final head is the covered head. For a feature close, it is a single commit that is exactly the feature-close marks, whose parent is the base head you observed when you cut the close branch. Record that base head under `Authoritative state`.
+- **Base head, `squash` or `merge` strategy.** Immediately before merge, fetch the base ref and run `git merge-tree --write-tree <live base head> <final head>`. Exit 0 meets the condition: record the live base head under `Authoritative state` and merge. Exit 1 is a conflict: return `authority_drift` naming the conflicting paths from the command output, and mutate nothing. Any other exit, or a failed fetch, is a tool failure before any mutation: return `external_blocked`. The command requires Git 2.38 or later.
+- **Base head, `rebase` strategy.** The base SHA is bound exactly. A moved base returns `authority_drift`, because a clean merge does not prove that each replayed commit applies cleanly.
+
+Apply the grant when every bound field revalidates and both conditions hold. Then perform the granted operations in the same assignment without asking. Return `authority_drift` when a bound field changed. An operation outside the grant still ends `authority_required`. The grant changes neither the Review coverage rule nor the check classifier.
+
+A host rule that requires the PR branch to be up to date with its base can reject a merge the base condition allows. Treat that rejection as a merge command error under [Merge and recovery](#merge-and-recovery); it is not drift.
 
 ## Applicable-check classifier
 
@@ -70,4 +72,4 @@ For a failed or missing check, record target kind, evidence, causal owner, and r
 
 External, configuration, and unresolved failures return `external_blocked`. Never infer an artifact owner from the target kind alone.
 
-The merge gate passes only when Review covers the exact final head, or the exact completion-tick or feature-close exception applies, and the state is `passing` or `none-applicable`.
+The merge gate passes only when Review covers the exact final head, or the feature-close PR's delta is exactly the feature-close marks, and the state is `passing` or `none-applicable`.

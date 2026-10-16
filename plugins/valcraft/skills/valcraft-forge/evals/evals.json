@@ -127,7 +127,7 @@
       "id": 6,
       "name": "quick-task-resolves-and-stops-at-review-gate",
       "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-task/, run `./prepare-eval.sh`, then implement Q-001. This run is unattended.",
-      "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and QT-001 through the cast quick reference, then applies quick.md's grammar and readiness rule. The quick file itself is a complete single-step implementation and verification contract, so no separate plan is required. Forge states scope, implements the two criteria, runs the documented tests, and cites real output. QT-001 stays unchecked; nothing is declared shipped or merged. Any commit and Changed (IDs) use Q-001 QT-001. The run ends with the complete producer-owned Forge report and exact code Review target.",
+      "expected_output": "Forge resolves Q-001 to specs/quick/001-trim-before-validate.md and QT-001 through the cast quick reference, then applies quick.md's grammar and readiness rule. The quick file itself is a complete single-step implementation and verification contract, so no separate plan is required. Forge states scope, implements the two criteria, runs the documented tests, and cites real output. Forge's final commit also changes QT-001's checkbox from unchecked to checked and nothing else in the quick file; nothing is declared shipped or merged. Any commit and Changed (IDs) use Q-001 QT-001. The run ends with the complete producer-owned Forge report and exact code Review target.",
       "files": [
         "evals/files/quick-task/.gitignore",
         "evals/files/quick-task/prepare-eval.sh",
@@ -145,7 +145,7 @@
         "require_non_empty raises ValueError naming the field for a whitespace-only value and returns ` a ` unchanged",
         "New tests follow the existing unittest style and cover AC-001 and AC-002",
         "Forge runs the documented test command and cites its real output as evidence",
-        "QT-001's checkbox in the quick file remains unchecked; the run ends at the review handoff without declaring the task shipped or merging",
+        "Forge's final commit changes QT-001's checkbox from unchecked to checked and no other line of the quick file; the run ends at the review handoff without declaring the task shipped or merging",
         "Any commit subject and Forge Changed (IDs) entry references Q-001 QT-001",
         "The run ends with every `## Forge report` heading present, verbatim and in order, followed by exactly `Status: done`"
       ]
@@ -154,7 +154,7 @@
       "id": 7,
       "name": "bare-q-id-picks-next-eligible-task-in-github-mode",
       "prompt": "/valcraft:valcraft-forge — in the Cast project at evals/files/quick-multi/, run `./prepare-eval.sh`, then implement Q-001. This run is unattended.",
-      "expected_output": "Forge resolves bare Q-001 through quick.md: QT-001 is checked, so next eligible QT-002 has its local dependency satisfied. Even in github mode dependency status comes only from that checkbox and no gh call runs. The quick file supplies a complete single-step implementation and verification contract, so Forge implements AC-002 while preserving AC-003 without a separate plan, runs the documented tests, and stops at Review: no checkbox ticked, label, merge, or closure. Commits and Changed (IDs) cite Q-001 QT-002; the producer-owned Forge report is last.",
+      "expected_output": "Forge resolves bare Q-001 through quick.md: QT-001 is checked, so next eligible QT-002 has its local dependency satisfied. Even in github mode dependency status comes only from that checkbox and no gh call runs. The quick file supplies a complete single-step implementation and verification contract, so Forge implements AC-002 while preserving AC-003 without a separate plan, runs the documented tests, commits QT-002's exact unchecked-to-checked transition with its final change because a quick task carries it in every tracker mode, and stops at Review: no label, merge, or closure. Commits and Changed (IDs) cite Q-001 QT-002; the producer-owned Forge report is last.",
       "files": [
         "evals/files/quick-multi/.gitignore",
         "evals/files/quick-multi/prepare-eval.sh",
@@ -173,7 +173,7 @@
         "Forge identifies the quick file as a complete single-step implementation and verification contract before proceeding without a separate plan",
         "New tests follow the existing unittest style and cover AC-002 and AC-003",
         "Forge runs the documented test command and cites its real output",
-        "QT-002's checkbox remains unchecked; the run ends at the review handoff without merging",
+        "Forge's final commit changes QT-002's checkbox from unchecked to checked and no other line of the quick file, even in github mode; the run ends at the review handoff without merging",
         "Any commit subject and Changed (IDs) entry references Q-001 QT-002",
         "The run ends with every `## Forge report` heading, verbatim and in order, followed by exactly `Status: done`"
       ]
@@ -270,7 +270,7 @@
       "id": 13,
       "name": "resumed-authority-executes-isolated-task-pr",
       "prompt": "/valcraft:valcraft-forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.valcraft/foreman/forge-assignment.md`. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
-      "expected_output": "Forge verifies the passing Review report covers the exact plan commit and that the external-orchestrator physical branch contains the prepared implementation head. It accepts only the resumed attributed authority generated for that exact head, revalidates every bound field, runs the real tests, non-force pushes physical HEAD to the canonical ref, and invokes the PR shim exactly once to create the task PR. The canonical remote ref equals the local head, `.eval/pr-calls.log` contains one create call, and the report pins the exact repository, base, head, canonical branch, physical branch, and PR before ending `Status: done`.",
+      "expected_output": "Forge verifies the passing Review report covers the exact plan commit and that the external-orchestrator physical branch contains the prepared implementation head. It accepts only the resumed attributed authority generated for that exact head, revalidates every bound field, runs the real tests, adds no commit, non-force pushes physical HEAD to the canonical ref, and invokes the PR shim exactly once to create the task PR. The canonical remote ref equals the local head, `.eval/pr-calls.log` contains one create call, and the report pins the exact repository, base, head, canonical branch, physical branch, and PR before ending `Status: done`.",
       "files": [
         "evals/files/implement-local/.gitignore",
         "evals/files/implement-local/AGENTS.md",
@@ -292,12 +292,12 @@
         "Forge requires the Review pass for the exact generated plan path and full plan SHA",
         "The external-orchestrator physical branch is verified from the reviewed plan SHA while refs/heads/feat/f001-t001-retention-window remains the canonical remote task ref",
         "Only the resumed attributed Foreman assignment for the generated exact implementation head permits push and PR operations",
-        "Forge immediately revalidates repository, remote, base SHA, local head, canonical ref and its remote head, PR target, and operation set",
+        "Forge immediately revalidates repository, remote, local head, canonical ref and its remote head, PR target, and operation set",
         "The repository test command passes against the prepared implementation",
         "The push is non-force from physical HEAD to the local canonical remote task ref, which then equals the exact local head",
         "The instrumented PR log records exactly one create call and the verified PR target matches main and the canonical head",
         "The Review target and Forge report identify repository example/retention, base main at its exact SHA, implementation head, canonical and physical branches, and exact PR",
-        "Forge performs no merge, completion tick, tracker close, plan write, or review"
+        "Forge performs no merge, tracker close, plan write, or review, and pushes the prepared head, which already carries T-001's completion transition, without adding a commit"
       ]
     },
     {
@@ -354,7 +354,7 @@
       "id": 17,
       "name": "review-findings-route-by-owner-and-preserve-boundaries",
       "prompt": "/valcraft:valcraft-forge — route two Review findings for T-001. R-001 proves an implementation defect within the passed plan. R-002 requires changing the plan's declared scope and approach. State ownership and boundaries; do not edit files.",
-      "expected_output": "Forge owns R-001 remediation, verifies the Review report covers the exact implementation head, changes source and tests within the passed plan, and returns a new exact code Review target. Forge does not revise the plan for R-002; it returns that stable finding and exact plan target to Draft with `draft_required`. It never plans, reviews, merges, ticks completion, or closes tracker state.",
+      "expected_output": "Forge owns R-001 remediation, verifies the Review report covers the exact implementation head, changes source and tests within the passed plan, and returns a new exact code Review target. Forge does not revise the plan for R-002; it returns that stable finding and exact plan target to Draft with `draft_required`. It never plans, reviews, merges, or closes tracker state.",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md"
@@ -363,7 +363,7 @@
         "A code finding within the passed plan remains Forge-owned and its remediation commit cites R-001",
         "A finding that changes plan scope or approach returns to Draft with R-002 and the exact plan path and commit",
         "Forge requires the incoming code review to cover the exact implementation head before remediation",
-        "Forge does not author or revise the plan, perform Review, merge, tick completion, or close tracker state",
+        "Forge does not author or revise the plan, perform Review, merge, or close tracker state",
         "Every Forge report uses its producer-owned headings and exactly one terminal Status line with a stable code on blocked or question outcomes"
       ]
     },
@@ -546,8 +546,8 @@
     {
       "id": 27,
       "name": "forge-outward-steps-with-foreman-field",
-      "prompt": "/valcraft:valcraft-forge — a Foreman-dispatched assignment for FEAT-002 T-002 on `acme/tiles`. Its attributed-context item reads: \"Foreman assignment field: ref-bound Forge grant. Repository `acme/tiles`, remote `origin`. Base `main` at `4b1e0c7d2a9f8e6b5c4d3a2f1e0d9c8b7a6f5e4d`. Canonical task ref `task/f002-t002`, observed remote head: absent. PR base `main`, head `task/f002-t002`, existing task PR: none. Operations: non-force push of `task/f002-t002`; task-PR creation. Head: the clean local head on which your full gate passed, descending from plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c` with the plan unchanged.\" Assume implementation is complete: the full gate passed on clean local head `c0ffee1234567890abcdef1234567890abcdef12`, which descends from the plan commit with the plan blob unchanged. When you check, `origin` still has no `task/f002-t002` and no matching PR exists. Describe every outward step Forge takes in this same assignment, in order, and what its report's `Outward mutations` and `Review target` sections record. Do not mutate anything.",
-      "expected_output": "Forge accepts the grant as Foreman-attributed authority and does not ask for further authority or return a prepared handoff. Immediately before mutation it re-reads every bound field and the clean local head, confirming the remote task ref is still absent; any change to a bound field, including a moved base, stops the mutation with `authority_drift` and the head meets the grant's condition. It pushes physical `HEAD` by non-force refspec to `task/f002-t002` and verifies the remote ref equals `c0ffee1…`. It queries PRs for the exact repository, base, head ref, and head SHA, finds none, creates one task PR citing the task identity, and verifies its identity, base, and head. `Outward mutations` names the grant as ref-bound and records the pushed head `c0ffee1…` and the PR; `Review target` names the PR identity, base `main` and its SHA, and head `c0ffee1…`. The report ends `Status: done`.",
+      "prompt": "/valcraft:valcraft-forge — a Foreman-dispatched assignment for FEAT-002 T-002 on `acme/tiles`. Its attributed-context item reads: \"Foreman assignment field: ref-bound Forge grant. Repository `acme/tiles`, remote `origin`. Canonical task ref `task/f002-t002`, observed remote head: absent. PR base `main`, head `task/f002-t002`, existing task PR: none. Operations: non-force push of `task/f002-t002`; task-PR creation. Head: the clean local head on which your full gate passed, descending from plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c` with the plan unchanged.\" Assume implementation is complete: the full gate passed on clean local head `c0ffee1234567890abcdef1234567890abcdef12`, which descends from the plan commit with the plan blob unchanged. When you check, `origin` still has no `task/f002-t002` and no matching PR exists. Describe every outward step Forge takes in this same assignment, in order, and what its report's `Outward mutations` and `Review target` sections record. Do not mutate anything.",
+      "expected_output": "Forge accepts the grant as Foreman-attributed authority and does not ask for further authority or return a prepared handoff. Immediately before mutation it re-reads every bound field and the clean local head, confirming the remote task ref is still absent and the head meets the grant's condition; any change to a bound field stops the mutation with `authority_drift`, and the default branch's head is not a bound field. It pushes physical `HEAD` by non-force refspec to `task/f002-t002` and verifies the remote ref equals `c0ffee1…`. It queries PRs for the exact repository, base, head ref, and head SHA, finds none, creates one task PR citing the task identity, and verifies its identity, base, and head. `Outward mutations` names the grant as ref-bound and records the pushed head `c0ffee1…` and the PR; `Review target` names the PR identity, base `main` with plan commit `8d3f2a1…` as its start SHA, and head `c0ffee1…`. The report ends `Status: done`.",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -555,7 +555,7 @@
       ],
       "assertions": [
         "Forge pushes and creates the PR in this assignment without asking for more authority or returning a prepared handoff",
-        "Right before the push Forge re-reads every bound field, including the base, and stops with `authority_drift` on any change, not only on a moved task ref",
+        "Right before the push Forge re-reads every bound field and the clean local head, and stops with `authority_drift` on any change to a bound field",
         "After the push Forge verifies the remote ref equals `c0ffee1…`",
         "Forge queries for a matching PR, creates exactly one, and verifies its identity, base, and head",
         "`Outward mutations` names the grant as ref-bound and records head `c0ffee1…`, and `Review target` names the PR",
@@ -634,6 +634,51 @@
         "Disclosure under Open questions is not treated as a substitute for draft_required"
       ],
       "id": 31
+    },
+    {
+      "id": 32,
+      "name": "final-commit-carries-the-completion-transition",
+      "prompt": "/valcraft:valcraft-forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh plan-only`, then implement T-001 from the exact passing plan Review at `.valcraft/foreman/plan-review.md`. The committed configuration uses `tracker.mode: local`. Commit on the current external-orchestrator physical branch and return the prepared outward handoff; this invocation grants no push or PR authority. After the report, print `git diff <plan SHA>..HEAD -- specs/001-retention-windows/tasks.md`.",
+      "expected_output": "Forge implements T-001 and, as the last edit before the full gate, changes exactly the T-001 line in specs/001-retention-windows/tasks.md from `- [ ]` to `- [x]`, committing it with the final implementation change. T-002, the frontmatter, and every other line of the triplet stay unchanged. No push or PR occurs. The printed diff shows that one-line transition and nothing else. The report treats the transition as part of the implementation for Review, not as Land's closure, and ends `Status: done`.",
+      "files": [
+        "evals/files/implement-local/.gitignore",
+        "evals/files/implement-local/AGENTS.md",
+        "evals/files/implement-local/.valcraft/config.yaml",
+        "evals/files/implement-local/bin/gh",
+        "evals/files/implement-local/prepare-eval.sh",
+        "evals/files/implement-local/docs/product-brief.md",
+        "evals/files/implement-local/docs/retention-windows-prd.md",
+        "evals/files/implement-local/docs/plans/2031-04-08-001-feat-t-001-retention-window-plan.md",
+        "evals/files/implement-local/specs/001-retention-windows/spec.md",
+        "evals/files/implement-local/specs/001-retention-windows/design.md",
+        "evals/files/implement-local/specs/001-retention-windows/tasks.md",
+        "evals/files/implement-local/src/validation.py",
+        "evals/files/implement-local/tests/test_validation.py"
+      ],
+      "assertions": [
+        "The commits from the plan SHA to HEAD change the T-001 line in tasks.md from unchecked to checked",
+        "No other line of tasks.md, spec.md, or design.md changes, and T-002 stays unchecked",
+        "The transition is in the head the report names as the Review target, not left for Land",
+        "No push or PR operation occurs and the report ends `Status: done`"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "moved-default-branch-never-stops-the-task-push",
+      "prompt": "/valcraft:valcraft-forge — a Foreman-dispatched assignment for FEAT-002 T-002 on `acme/tiles` carries the ref-bound Forge grant: repository `acme/tiles`, remote `origin`, canonical task ref `task/f002-t002` observed at plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`, PR base `main`, head `task/f002-t002`, existing task PR none, operations non-force push of `task/f002-t002` and task-PR creation, head bound to the clean local head on which the full gate passed, descending from the plan commit with the plan blob unchanged. When Forge started, `main` was at `b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1`. The full gate passed on clean head `c0ffee1234567890abcdef1234567890abcdef12`. While the gate ran, another machine merged a task PR and `main` moved to `b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2`. `origin/task/f002-t002` is still at the plan commit, and no matching PR exists. Describe every outward step Forge takes in this assignment, what its `Review target` records as base, and its terminal line. Do not mutate anything.",
+      "expected_output": "The default branch's head is not a bound field of the ref-bound Forge grant, so the moved `main` is not drift. Forge re-reads the bound fields: the remote task ref still equals the plan commit, the head passed the full gate and descends from the plan commit. It pushes `c0ffee1…` without force to `task/f002-t002`, verifies the remote ref, creates one task PR against `main`, and verifies it, all in this assignment. It neither merges nor rebases `main` into the task branch. The Review target names base `main` with the plan commit `8d3f2a1…` as its start SHA, not `b1b1…` or `b2b2…`. The report ends `Status: done`.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md",
+        "../valcraft-foreman/references/contracts.md"
+      ],
+      "assertions": [
+        "Forge treats the moved `main` as no drift and does not return `authority_drift`",
+        "Forge pushes `c0ffee1…` and creates the task PR in this assignment without asking for more authority",
+        "Forge does not merge, rebase, or reset the task branch onto the new `main`",
+        "The Review target's base SHA is the plan commit `8d3f2a1…`",
+        "The report ends with the terminal line `Status: done`"
+      ]
     }
   ]
 }
