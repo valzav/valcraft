@@ -12,7 +12,7 @@ Implement and verify one unit. Forge owns source changes and code-finding remedi
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
-Run only under a Foreman assignment envelope. Without one, change nothing and end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
+Run only under a Foreman assignment envelope. Without one, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
 
 Read `references/verification-and-handoff.md` first. It owns verification, outward-mutation authority, recovery, the Review handoff, routing codes, and the Forge report.
 
@@ -38,13 +38,7 @@ State touched files and tasks and deliberately untouched adjacent scope. Do not 
 
 ## Require the passed plan
 
-Draft is the sole task-plan producer. Treat every task as non-trivial unless the artifact carrying it is by itself a complete implementation and verification contract: it states its acceptance criteria in full and names the files, the exact change, and the tests that prove it. A task line that points at requirements held in another artifact is not that contract. Resolving the pointer is planning, and planning belongs to Draft.
-
-A task is also non-trivial when implementation needs a decision rather than transcription: conflicting contracts, an open approach, or wider scope. Precedence identifies the authority, not the plan it implies. Carry the conflict to Draft.
-
-Route to Draft a task that can reasonably be read as either trivial or non-trivial. An unnecessary plan costs one cycle; unplanned work puts an unreviewed change into code and contracts Forge does not own.
-
-Non-trivial work requires:
+Draft is the sole task-plan producer. Every task requires:
 
 - one committed semantic task plan produced by `valcraft-draft`;
 - a Review report whose plan verdict is `pass` for that exact repository, plan path, and full plan commit SHA; and
@@ -58,7 +52,7 @@ Record repository and remote identity, base ref, canonical task branch, physical
 
 Reconcile prior work before creating anything. Apply the reference's takeover-dirt rule; otherwise stop on dirty, ambiguous, or diverged state. Never stash, clean, reset, merge, rebase, or force-push to manufacture readiness.
 
-For first implementation, begin at the start SHA: Draft's exact passing plan-review SHA, or the reference's planless baseline.
+For first implementation, begin at the start SHA: Draft's exact passing plan-review SHA.
 
 - A shared checkout uses the canonical task branch and requires its clean HEAD to equal the start SHA.
 - An isolated-workspace backend uses a unique physical branch, verifies that it is clean and seeded from the start SHA, and keeps the canonical task branch as the remote ref. Never publish the physical branch name.

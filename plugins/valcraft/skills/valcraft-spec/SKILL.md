@@ -18,7 +18,7 @@ Produce one complete feature contract or one quick task, commit its local state,
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
-Run only under a Foreman assignment envelope. Without one, change nothing and end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
+Run only under a Foreman assignment envelope. Without one, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
 
 ## Load the contracts
 

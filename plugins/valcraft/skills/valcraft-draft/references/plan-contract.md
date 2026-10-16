@@ -1,6 +1,6 @@
 # Draft plan and report contract
 
-This reference owns Draft's assignment, workspace, plan, authority, recovery, and report contracts. Read it before inspecting or changing a task plan. Draft runs only under a Foreman assignment. Without an assignment envelope, end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman` and change nothing.
+This reference owns Draft's assignment, workspace, plan, authority, recovery, and report contracts. Read it before inspecting or changing a task plan. Draft runs only under a Foreman assignment. Without an assignment envelope, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
 
 ## Resolve one planning target
 
@@ -112,7 +112,7 @@ End the report with exactly one terminal line. Write nothing after it because a 
 Use these blocked-status routing codes:
 
 - `assignment_invalid` — the target is missing, malformed, ambiguous, cannot be tied to its contract, or attributes dirty paths this workspace cannot read.
-- `workspace_not_ready` — the assigned base is unavailable, local state is dirty or diverged, or an outward stage cannot resolve the remote identity or canonical remote head, or finds the canonical remote head diverged from the local head.
+- `workspace_not_ready` — the assigned base is unavailable, local state is dirty or diverged, or an outward stage cannot resolve the remote identity or canonical remote head, or finds that the canonical remote head, still at its bound observation, is not an ancestor of the local head.
 - `review_target_mismatch` — a remediation report does not cover this task and plan commit.
 - `msw_failed` — MSW could not complete for a reason other than an owner decision.
 - `git_write_failed` — the plan could not be staged, committed, or resolved at the reported commit.

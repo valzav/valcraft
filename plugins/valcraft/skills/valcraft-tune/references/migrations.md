@@ -20,7 +20,7 @@ Entry shape: a `### <title>` heading, one paragraph stating what changed, then `
 
 ### Spec, Draft, Forge, and Land run only under Foreman
 
-Spec, Draft, Forge, and Land accept work only from a Foreman assignment envelope. Invoked directly, they change nothing and end `Status: blocked: assignment_invalid` naming `valcraft-foreman`. Foreman starts every new feature, PRD, or quick task from the source the operator names, `valcraft-foreman <source>`, and takes over work in progress from git, tracker, and PR state; a report from outside the run is no longer takeover evidence. Cast hands its product brief to Foreman. On OpenCode, which has no Foreman worker backend, delivery is no longer available; Cast, Tune, Review, Temper, Roadmap, Hone, MSW, and Distill are unchanged.
+Spec, Draft, Forge, and Land accept work only from a Foreman assignment envelope. Invoked directly, they change nothing and end `Status: blocked: assignment_invalid` naming `valcraft-foreman`. Foreman starts every new feature, PRD, or quick task from the source the operator names, `valcraft-foreman <source>`, and takes over work in progress from git, tracker, and PR state; a report from outside the run is no longer takeover evidence. Cast hands its product brief to Foreman. Forge always requires a passed plan: the planless quick-task path, which only a direct Forge run reached, is removed. On OpenCode, which has no Foreman worker backend, delivery is no longer available; Cast, Tune, Review, Temper, Roadmap, Hone, MSW, and Distill are unchanged.
 
 - Applies when: the operator checks the root `AGENTS.md` and `README.md` for lines that tell readers to invoke Spec, Draft, Forge, or Land directly.
 - Tune performs: none.

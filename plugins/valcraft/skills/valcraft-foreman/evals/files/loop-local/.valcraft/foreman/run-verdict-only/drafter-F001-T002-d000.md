@@ -22,7 +22,7 @@ none
 
 ### Outward mutations
 
-none
+Authority: the ref-bound producer grant in this Drafting assignment, binding remote origin and canonical task ref feat/f001-t002-use-link. Pushed feat/f001-t002-use-link at 0123456789abcdef0123456789abcdef01234567 without force; the remote read-back equals the local head.
 
 ### Open questions
 

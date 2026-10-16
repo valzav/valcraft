@@ -1,0 +1,3 @@
+| assignment id | named state | target | logical worker | backend | host/harness | physical identity | physical branch or none | assigned report path | transcript path | predecessor SHA or none | backend return | worker state |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rq-spec-review-d000 | SpecReview | Q-002 quick file | spec-reviewer-Q002 | subagents | native host | native subagent agent-rq-review-000 | none | .valcraft/foreman/run-quick-pick/spec-reviewer-Q002-d000.md | none | c6dd2fe9888c3d0dee7946acea829c15228f3a76 | report_available | accepted and released |

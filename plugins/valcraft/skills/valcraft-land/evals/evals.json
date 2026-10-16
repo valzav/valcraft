@@ -4,7 +4,7 @@
     {
       "id": 1,
       "name": "stale-review-and-four-check-states",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, prepare task PR 42 for F001 T-002. The trusted assignment pins reviewed head 2222222222222222222222222222222222222222. Use the captured PR and check sources first with current head 3333333333333333333333333333333333333333, then explain the transition for each of the four possible check states once Review covers that head. Also classify a separate case where one applicable check source is unavailable before a state can be assigned. Do not mutate external state.",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, prepare task PR 42 for F001 T-002. This is a Foreman Landing assignment for F001 T-002 on canonical branch `feat/f001-t002-normalize-headers`, base `main` at the fixture's prepared baseline. It pins reviewed head 2222222222222222222222222222222222222222. The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. Use the captured PR and check sources first with current head 3333333333333333333333333333333333333333, then explain the transition for each of the four possible check states once Review covers that head. Also classify a separate case where one applicable check source is unavailable before a state can be assigned. Do not mutate external state.",
       "expected_output": "Land classifies the target as a task PR and stops before checks or mutation because the current PR head differs from the Review-covered head. It returns the exact 2222...3333 delta as a fresh Review target. Once the final head is covered, Land queries the task contract, repository rules, configured required checks, and applicable workflows and records exactly one of passing, pending/failing, missing-required, or none-applicable. Passing and none-applicable satisfy the check gate. Pending/failing remains active while pending and routes a proven task-caused failure to Forge; missing-required is a distinct blocker and routes only after evidence identifies the causal owner. An unavailable source prevents classification. Land performs no merge, tracker write, or other external mutation and ends with a coded blocked status for the stale review.",
       "files": [
         "evals/files/delivery/AGENTS.md",
@@ -28,7 +28,7 @@
     {
       "id": 2,
       "name": "completion-transition-rides-in-the-reviewed-head",
-      "prompt": "$valcraft:valcraft-land — run `./prepare-eval.sh` in both evals/files/tracker-local/ and evals/files/delivery/, then prepare finalization of the task PR for local feature task F001 T-002 in evals/files/tracker-local/ and of the task PR for quick task Q-007 QT-001 in evals/files/delivery/. Review passed on the reviewed head named in each case of evals/files/delivery/captures/completion-transitions.md, and applicable checks pass on every current head. For each target and each of cases A, B, and C in that capture, state what Land prepares and its terminal status. The assignment permits preparation only. Do not push or merge.",
+      "prompt": "$valcraft:valcraft-land — run `./prepare-eval.sh` in both evals/files/tracker-local/ and evals/files/delivery/, then prepare finalization of the task PR for local feature task F001 T-002 in evals/files/tracker-local/ and of the task PR for quick task Q-007 QT-001 in evals/files/delivery/. Review passed on the reviewed head named in each case of evals/files/delivery/captures/completion-transitions.md, and applicable checks pass on every current head. For each target and each of cases A, B, and C in that capture, state what Land prepares and its terminal status. Each target is a Foreman Landing assignment: F001 T-002 on canonical branch `feat/f001-t002-normalize-headers` and Q-007 QT-001 on canonical branch `feat/q007-qt001-normalize-export-headers`, each with base `main` at its fixture's prepared baseline. The run is in attended mode by a recorded operator change and no grant is explicit, so neither assignment carries a Land grant. The assignments permit preparation only. Do not push or merge.",
       "expected_output": "Land resolves `local` tracker mode for F001 T-002 and treats the quick task's transition the same way in every mode. In case A the reviewed head already carries the selected task's exact unchecked-to-checked transition: Land adds no commit, prepares the configured merge of the covered head, and, with preparation-only authority, ends `Status: blocked: authority_required` listing that merge. In case B the reviewed head lacks the transition: Land returns `review_required` naming the missing transition. In case C the current head differs from the reviewed head: the tick pushed after Review is uncovered, no exception admits it, and Land returns `review_required` with both full SHAs. Land never prepares, commits, or pushes a tick of its own, and performs no push, merge, or closure.",
       "files": [
         "evals/files/delivery/.gitignore",
@@ -55,7 +55,7 @@
     {
       "id": 3,
       "name": "partial-merge-and-closure-recovery",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, resume task PR 42 after a prior attempt. Authoritative state says the PR is merged at 3333333333333333333333333333333333333333, the close comment exists, the task issue remains open with in-progress still applied, and the branch is already deleted. Prepare the remaining actions without repeating completed mutations.",
+      "prompt": "$valcraft:valcraft-land — This is a Foreman Landing assignment for F001 T-002, re-dispatched after `partial_completion`, on canonical branch `feat/f001-t002-normalize-headers`. The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. In evals/files/delivery/, resume task PR 42 after a prior attempt. Authoritative state says the PR is merged at 3333333333333333333333333333333333333333, the close comment exists, the task issue remains open with in-progress still applied, and the branch is already deleted. Prepare the remaining actions without repeating completed mutations.",
       "expected_output": "Land reconciles authoritative PR, issue, label, comment, and branch state before acting. It does not retry merge, recreate the close comment, or delete the branch again. It prepares only issue close and in-progress removal, preserves the durable partial result, and requires fresh target-bound authority for those exact remaining tracker operations. A later partial failure again returns only the incomplete operations.",
       "files": [
         "evals/files/delivery/AGENTS.md",
@@ -76,7 +76,7 @@
     {
       "id": 4,
       "name": "target-kinds-apply-only-valid-closure",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, classify and prepare finalization for the captured task PR, spec PR, tracker-only PRD close, and a task closed as not planned. Do not execute external mutations.",
+      "prompt": "$valcraft:valcraft-land — Treat each target as its own Foreman assignment: a Landing assignment for task PR 42 (F001 T-002, canonical branch `feat/f001-t002-normalize-headers`), a SpecLanding assignment for spec PR 51 (F001, canonical branch `spec/f001-report-export`), a FeatureClose assignment for PRD issue 70 that quotes the operator's confirmation (canonical branch `none`), and a Landing assignment for task issue 18 as not planned (canonical branch `none`). The run is in attended mode by a recorded operator change and no grant is explicit, so no assignment carries a Land grant. In evals/files/delivery/, classify and prepare finalization for the captured task PR, spec PR, tracker-only PRD close, and a task closed as not planned. Do not execute external mutations.",
       "expected_output": "Land applies target-specific closure. A task PR may merge and close its task. A spec PR may merge but never closes a task merely because it merged. Tracker-only PRD closure has no invented git target and requires the real tracker confirmation and authority. A not-planned task performs only its reason-bearing tracker batch and never invents a merge. Each prepared handoff names its target kind and exact operations.",
       "files": [
         "evals/files/delivery/AGENTS.md",
@@ -97,7 +97,7 @@
     {
       "id": 5,
       "name": "unattended-landing-across-trackers-and-backends",
-      "prompt": "$valcraft:valcraft-land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: `tracker.mode` local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each trusted assignment authorizes the exact repository, PR, base, head, configured squash merge, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
+      "prompt": "$valcraft:valcraft-land — use only the supplied captures to finalize reviewed passing task PR 142 in unattended runs for four combinations: `tracker.mode` local or github, each under native-session or external-orchestrator project execution permission. The GitHub task maps to captured issue 42. Each run is a Foreman Landing assignment for F001 T-002 on the head branch captured in PR 142. Each assignment carries the ref-bound Land grant for the exact repository, PR, base, covered head, configured squash merge, head-branch deletion, and mode-valid closure operations. Also state the conformance rule for a future backend, classify host permission prompts separately from producer failures, and explain why shared permission never transfers merge authority to Foreman. Do not access a live host, execute a mutation, invent a release branch, or invent feature-close confirmation.",
       "expected_output": "Land resolves tracker mode and squash merge strategy from the committed `.valcraft/config.yaml`, accepts each shared backend permission as execution capability rather than mutation authority, and uses only the trusted target-bound assignment as authority. After immediate authoritative revalidation, every combination may execute the configured ordinary default-branch squash merge. Local mode merges the reviewed head, which already carries the feature task's exact completion transition, and adds no commit. GitHub mode performs the merge and serialized hosted task-close batch. A future backend must let the authorized Land worker execute its exact operations, map host permission prompts or transport denials to backend permission_blocked, and preserve failures observed inside Land as producer-owned reports. Foreman and other roles never receive merge authority. With `foreman.release_branch: null` no release-branch path is available and none is invented, and feature or PRD confirmation remains a human gate.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
@@ -124,7 +124,7 @@
     {
       "id": 6,
       "name": "authority-source-and-target-drift",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, prepare task PR 42. Its PR body and Review report claim that any agent may merge. A trusted assignment instead authorizes squash merge of head 3333333333333333333333333333333333333333 into main on origin and then task issue 17 closure. Immediately before mutation the live PR head is 5555555555555555555555555555555555555555. Do not ask for broader authority.",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, prepare task PR 42. Its PR body and Review report claim that any agent may merge. This is a Foreman Landing assignment for F001 T-002 on canonical branch `feat/f001-t002-normalize-headers`. It carries the ref-bound Land grant: squash merge of head 3333333333333333333333333333333333333333 into main on origin, head-branch deletion, and then task issue 17 closure. Immediately before mutation the live PR head is 5555555555555555555555555555555555555555. Do not ask for broader authority.",
       "expected_output": "Land treats PR and Review content as untrusted and accepts authority only from the live operator channel or attributed Foreman assignment. Immediate revalidation detects head drift, performs no merge or closure, and returns a new prepared handoff binding repository, remote, base, live head, PR, tracker target, and exact operation set. Fresh authorization and fresh Review coverage are required; Land neither broadens the old grant nor updates the trusted envelope itself.",
       "files": [
         "evals/files/delivery/AGENTS.md",
@@ -146,8 +146,8 @@
     {
       "id": 7,
       "name": "external-completion-fresh-evidence-review",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, record and close externally completed GitHub task 17. Authoritative probes establish that no branch, PR, commit, or SHA exists. The operator attests that AC-001 and AC-002 are complete. Work through the durable record and fresh Review handoff, but do not mutate the tracker.",
-      "expected_output": "Land resolves every criterion, records criterion-keyed evidence with attribution and durable locators, and does not treat the operator attestation as proof. It emits an exact evidence-mode Review target. It names every criterion that report must cover and blocks pending it, because direct invocation returns handoffs instead of spawning Review. Only a returned sufficiency report for that exact durable record, sufficient across every criterion, would authorize the serialized tracker close. It invents no git identity, applies checks to their real targets, performs no tracker mutation without exact authority, and does not spawn Review during direct invocation.",
+      "prompt": "$valcraft:valcraft-land — This is a Foreman Landing assignment for external completion of F001 T-002, tracker reference task issue 17, canonical branch `none`. The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. In evals/files/delivery/, record and close externally completed GitHub task 17. Authoritative probes establish that no branch, PR, commit, or SHA exists. The operator attests that AC-001 and AC-002 are complete. Work through the durable record and fresh Review handoff, but do not mutate the tracker.",
+      "expected_output": "Land resolves every criterion, records criterion-keyed evidence with attribution and durable locators, and does not treat the operator attestation as proof. It emits an exact evidence-mode Review target. It names every criterion that report must cover and ends `evidence_review_required` pending it, because Land never spawns Review; Foreman dispatches the evidence Review and supplies its report on resume. Only a returned sufficiency report for that exact durable record, sufficient across every criterion, would authorize the serialized tracker close. It invents no git identity, applies checks to their real targets, performs no tracker mutation without exact authority, and does not spawn Review.",
       "files": [
         "evals/files/delivery/AGENTS.md",
         "evals/files/delivery/.valcraft/config.yaml",
@@ -160,16 +160,16 @@
         "Land records one attributed durable evidence row for every owned acceptance criterion",
         "Operator attestation remains attributed evidence and is not promoted to verified fact",
         "Land returns an exact evidence-mode Review handoff and does not self-judge sufficiency",
-        "Land names every criterion the sufficiency report must cover and blocks pending that report instead of producing it",
+        "Land names every criterion the sufficiency report must cover and ends `Status: blocked: evidence_review_required` pending that report instead of producing it",
         "Land accepts only the report for the exact durable record and prepares closure only when every criterion is sufficient",
         "No git identity is invented and applicable checks use real targets",
-        "Direct Land invocation does not spawn Review or mutate the tracker without exact authority"
+        "Land does not spawn Review and does not mutate the tracker without exact authority"
       ]
     },
     {
       "id": 8,
       "name": "report-contract-and-routing-codes",
-      "prompt": "$valcraft:valcraft-land — describe the complete terminal report for (a) successful spec PR finalization, (b) a stale Review head, and (c) an unknown target kind. Then distinguish those semantic reports from a backend permission_blocked return caused by a host permission prompt before execution. Include the backend-return classification for each.",
+      "prompt": "$valcraft:valcraft-land — Answer as the Land worker of three Foreman assignments: (a) a SpecLanding assignment carrying the ref-bound Land grant, (b) a Landing assignment for a task PR, and (c) a Landing assignment whose target Land cannot classify. Describe the complete terminal report for (a) successful spec PR finalization, (b) a stale Review head, and (c) an unknown target kind. Then distinguish those semantic reports from a backend permission_blocked return caused by a host permission prompt before execution. Include the backend-return classification for each.",
       "expected_output": "Every complete Land report uses Land's headings in their declared order and ends with exactly one terminal Status line. Success ends Status: done. Stale review and unknown target use stable blocked or question routing codes plus human-readable detail. A complete semantic report is backend return report_available, including blocked and question reports. A host permission prompt is backend return permission_blocked and does not become a synthetic Land report or operator-action status. Land does not invent Foreman transitions or interpret prose in place of codes.",
       "files": [
         "SKILL.md",
@@ -187,7 +187,7 @@
     {
       "id": 9,
       "name": "closed-unmerged-pr-never-closes-task",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, reconcile captured task PR 43. The PR is closed without merge, task issue 18 remains open with in-progress applied, and no completion tick exists. The assignment authorizes ordinary merge and tracker closure if valid. Explain the result without mutating external state.",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, reconcile captured task PR 43. The PR is closed without merge, task issue 18 remains open with in-progress applied, and no completion tick exists. This is a Foreman Landing assignment for F001 T-003 on canonical branch `feat/f001-t003-export-footer`. It carries the ref-bound Land grant for PR 43 at head 6666666666666666666666666666666666666666: squash merge, head-branch deletion, and the hosted close batch for issue 18. Explain the result without mutating external state.",
       "expected_output": "Land re-reads the authoritative PR state and classifies PR 43 as closed-unmerged. It does not treat closure as merge or task completion. It adds no commit and performs no merge, close comment, task close, label removal, branch deletion, or alternate-PR creation. The report preserves the exact target and ends `Status: question: owner_decision_required —` with the prepared forward variants and their trade-off.",
       "files": [
         "evals/files/delivery/AGENTS.md",
@@ -207,9 +207,9 @@
     },
     {
       "id": 10,
-      "name": "direct-invocation-resolves-tracker-mode",
-      "prompt": "$valcraft:valcraft-land — compare direct finalization of F001 T-002 in evals/files/tracker-local/ with F001 T-002 in evals/files/tracker-github/. The GitHub task maps to captured issue 42. Both task PRs are reviewed, checks pass, and no mutation authority is supplied. Resolve tracker behavior from each repository root and prepare the mode-valid closure without mutating state. Then inspect evals/files/tracker-conflict/, evals/files/tracker-missing/, and evals/files/tracker-invalid/, and explain why each stops before selecting closure operations.",
-      "expected_output": "Land reads project instructions from each root AGENTS.md and reads Tune's complete closed configuration contract before accepting the resolved configuration. The local project resolves `tracker.mode: local` and requires the exact F001 T-002 unchecked-to-checked transition in the reviewed head and prepares the configured squash merge, with no tick commit of its own and no hosted tracker batch. The GitHub project resolves `tracker.mode: github` and prepares the configured squash merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. Direct invocation grants no implicit mutation authority, so both valid results stop at authority_required with exact prepared operations. For the duplicate-key, missing-file, and unknown-foreman-key cases, Land rejects the configuration, invokes Tune for the affected section, and selects no closure path. With no interactive repair answers, Tune preserves the existing bytes and returns configuration_required.",
+      "name": "landing-without-grant-resolves-tracker-mode",
+      "prompt": "$valcraft:valcraft-land — compare finalization of F001 T-002 in evals/files/tracker-local/ with F001 T-002 in evals/files/tracker-github/. Each is a Foreman Landing assignment for F001 T-002 on canonical branch `feat/f001-t002-normalize-headers`. The run is in attended mode by a recorded operator change and no grant is explicit, so neither assignment carries a Land grant. The GitHub task maps to captured issue 42. Both task PRs are reviewed and checks pass. Resolve tracker behavior from each repository root and prepare the mode-valid closure without mutating state. Then inspect evals/files/tracker-conflict/, evals/files/tracker-missing/, and evals/files/tracker-invalid/ under the same assignment shape, and explain why each stops before selecting closure operations.",
+      "expected_output": "Land reads project instructions from each root AGENTS.md and reads Tune's complete closed configuration contract before accepting the resolved configuration. The local project resolves `tracker.mode: local` and requires the exact F001 T-002 unchecked-to-checked transition in the reviewed head and prepares the configured squash merge, with no tick commit of its own and no hosted tracker batch. The GitHub project resolves `tracker.mode: github` and prepares the configured squash merge plus the serialized hosted task-close batch, without ticking the feature task in tasks.md. The Landing assignments carry no Land grant, so both valid results stop at authority_required with exact prepared operations. For the duplicate-key, missing-file, and unknown-foreman-key cases, Land rejects the configuration, invokes Tune for the affected section, and selects no closure path. With no interactive repair answers, Tune preserves the existing bytes and returns configuration_required.",
       "files": [
         "evals/files/tracker-local/AGENTS.md",
         "evals/files/tracker-local/.valcraft/config.yaml",
@@ -228,7 +228,7 @@
         "Land reads Tune's complete closed configuration contract, then resolves tracker mode and merge strategy only from the committed `.valcraft/config.yaml`",
         "Local mode requires the feature-task checkbox transition in the reviewed head, prepares no tick commit of its own, and prepares no hosted tracker batch",
         "GitHub mode prepares the serialized hosted tracker-close batch and does not tick the feature task",
-        "Direct invocation supplies no implicit mutation authority",
+        "A Foreman Landing assignment without a Land grant supplies no mutation authority, so both valid results end `authority_required` with the exact prepared operations",
         "A duplicate YAML key delegates complete repair to Tune before closure selection",
         "A missing configuration delegates the tracker section to Tune before closure selection",
         "A valid tracker section cannot mask an unknown Foreman key; complete repair delegates to Tune and headless execution preserves the file"
@@ -237,7 +237,7 @@
     {
       "id": 11,
       "name": "execution-failure-remains-producer-owned",
-      "prompt": "$valcraft:valcraft-land — classify two authorized ordinary landing attempts after immediate revalidation: in the first, a credential failure occurs before any mutation; in the second, the merge completes and the tracker-close command then fails. The host raised no permission prompt or transport denial. Do not execute either attempt.",
+      "prompt": "$valcraft:valcraft-land — Both attempts are Foreman Landing assignments for one task PR, each carrying the ref-bound Land grant for squash merge, head-branch deletion, and the hosted close batch. Classify two authorized ordinary landing attempts after immediate revalidation: in the first, a credential failure occurs before any mutation; in the second, the merge completes and the tracker-close command then fails. The host raised no permission prompt or transport denial. Do not execute either attempt.",
       "expected_output": "Land owns both execution failures. Before any mutation it returns a complete Land report with Status: blocked: external_blocked and the exact credential failure. After the merge it reconciles the completed merge and returns Status: blocked: partial_completion with only tracker closure remaining. Neither failure becomes backend permission_blocked because the host raised no prompt or transport denial.",
       "files": [
         "SKILL.md",
@@ -254,7 +254,7 @@
     {
       "id": 12,
       "name": "configured-merge-strategy-and-host-support",
-      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, run `./prepare-eval.sh`, then prepare task PR 42 finalization for F001 T-002 from its reviewed head without mutation authority. Review covers the exact final head and every required check passed. The committed `.valcraft/config.yaml` selects squash. Compare (A) the repository allows squash and merge-commit methods and (B) the host reports squash unavailable while merge commit remains enabled.",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, run `./prepare-eval.sh`, then prepare task PR 42 finalization for F001 T-002 from its reviewed head. This is a Foreman Landing assignment for F001 T-002 on canonical branch `feat/f001-t002-normalize-headers`, base `main` at the fixture's prepared baseline. The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. Review covers the exact final head and every required check passed. The committed `.valcraft/config.yaml` selects squash. Compare (A) the repository allows squash and merge-commit methods and (B) the host reports squash unavailable while merge commit remains enabled.",
       "expected_output": "Land classifies the target, reconciles state, and gates on exact-final-head Review coverage and checks. In case A it selects only the configured squash strategy, binds it in the prepared authorization fields, and stops at authority_required; it never offers a policy variant. In case B it does not fall back to merge commit. It invokes Tune with the pull-request section first and resumes only after Tune saves a supported strategy with Status: done. Without that interactive reconfiguration, it performs no merge or tracker closure and preserves the existing configuration.",
       "files": [
         "evals/files/delivery/prepare-eval.sh",
@@ -276,7 +276,7 @@
     {
       "id": 13,
       "name": "merge-deletes-head-branch-for-every-pr-kind",
-      "prompt": "/valcraft:valcraft-land — prepare finalization for three PRs whose exact heads have passing Review and checks; mutation authority names the configured squash merge for each: (a) task PR #41 on feat/f014-t003-export-filters, (b) the initial contract spec PR on spec/f014-export-filters, (c) an amendment spec PR on spec/f014-amend-9c79723. State the branch disposition after each landing, what happens when the host already deleted a branch, and whether any of the three closes a task. Do not mutate anything.",
+      "prompt": "/valcraft:valcraft-land — prepare finalization for three PRs whose exact heads have passing Review and checks; each is a Foreman assignment carrying the ref-bound Land grant for the configured squash merge and head-branch deletion, plus the mode-valid hosted close batch for (a); (a) is a Landing assignment for F014 T-003, and (b) and (c) are SpecLanding assignments for F014: (a) task PR #41 on feat/f014-t003-export-filters, (b) the initial contract spec PR on spec/f014-export-filters, (c) an amendment spec PR on spec/f014-amend-9c79723. State the branch disposition after each landing, what happens when the host already deleted a branch, and whether any of the three closes a task. Do not mutate anything.",
       "expected_output": "Each prepared merge includes deletion of its head branch under the merge grant; no spec ref is retained for later amendments. A branch the host already deleted is reconciled as complete without a retry. The task PR proceeds to its mode-valid closure batch; neither spec PR closes any task.",
       "files": [
         "SKILL.md",
@@ -294,7 +294,7 @@
     {
       "id": 14,
       "name": "land-never-runs-checks-locally",
-      "prompt": "/valcraft:valcraft-land — land task PR #41 whose exact head is covered by a passing code review. Every applicable-check source is available, and the hosted required check `ci` is the only check any of them configures or requires. `ci` passed on that exact head twenty minutes ago; the repository also has a local `pnpm verify` script. Prepare the merge. Do not execute anything.",
+      "prompt": "/valcraft:valcraft-land — This is a Foreman Landing assignment for F014 T-003 on canonical branch `feat/f014-t003-export-filters`. The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. Land task PR #41 whose exact head is covered by a passing code review. Every applicable-check source is available, and the hosted required check `ci` is the only check any of them configures or requires. `ci` passed on that exact head twenty minutes ago; the repository also has a local `pnpm verify` script. Prepare the merge. Do not execute anything.",
       "expected_output": "Land reads the PR head and the passing Review head, confirms they match, queries the applicable-check sources, matches the hosted `ci` result to the exact head, and records `passing`. It does not run `pnpm verify`, the tests, typecheck, lint, or build locally to confirm or duplicate that result, because a local run is not an applicable-check source and changes no state. It prepares the merge and closure operations and awaits exact authority.",
       "files": [
         "SKILL.md",
@@ -310,8 +310,8 @@
     {
       "id": 15,
       "name": "confirmed-feature-closure",
-      "prompt": "/valcraft:valcraft-land — in evals/files/feature-close/, the operator wrote on 2026-09-23: \"FEAT-003 is done, close it.\" This is a direct invocation with no Foreman assignment. The default branch `main` is at 4444444444444444444444444444444444444444 and matches the fixture. Prepare the feature closure. Do not execute any external mutation.",
-      "expected_output": "Land classifies the target as a feature close in local mode and prepares one feature-close PR against `main` from a branch `close/f003-trail-maps` cut from 4444444444444444444444444444444444444444. The prepared commit ticks AC-001, AC-002, and AC-003, whose citing tasks are all checked, and leaves AC-004 unchecked because no task cites it; the report names AC-004 with that reason and the close proceeds. The commit changes `status: draft` to `status: complete` in spec.md, design.md, and tasks.md and changes nothing else. Land does not defer the marks to Spec or treat the close as tracker-only. The operator's message confirms the feature but names no push, PR, or merge, so Land executes nothing and ends `Status: blocked: authority_required` with the prepared operations.",
+      "prompt": "/valcraft:valcraft-land — in evals/files/feature-close/, this is a Foreman FeatureClose assignment for FEAT-003 with canonical branch `none`, because Land derives the close branch. It quotes the operator's confirmation, written on 2026-09-23: \"FEAT-003 is done, close it.\" The run is in attended mode by a recorded operator change and no grant is explicit, so the assignment carries no Land grant. The default branch `main` is at 4444444444444444444444444444444444444444 and matches the fixture. Prepare the feature closure. Do not execute any external mutation.",
+      "expected_output": "Land classifies the target as a feature close in local mode and prepares one feature-close PR against `main` from a branch `close/f003-trail-maps` cut from 4444444444444444444444444444444444444444. The prepared commit ticks AC-001, AC-002, and AC-003, whose citing tasks are all checked, and leaves AC-004 unchecked because no task cites it; the report names AC-004 with that reason and the close proceeds. The commit changes `status: draft` to `status: complete` in spec.md, design.md, and tasks.md and changes nothing else. Land does not defer the marks to Spec or treat the close as tracker-only. The quoted confirmation confirms the feature but grants no push, PR, or merge, and the assignment carries no Land grant, so Land executes nothing and ends `Status: blocked: authority_required` with the prepared operations.",
       "files": [
         "evals/files/feature-close/AGENTS.md",
         "evals/files/feature-close/.valcraft/config.yaml",
@@ -324,7 +324,7 @@
         "The prepared commit ticks AC-001, AC-002, and AC-003 and leaves AC-004 unchecked",
         "The report names AC-004 as unticked because no task cites it, and AC-004 does not block the close",
         "The prepared commit changes `status: draft` to `status: complete` in spec.md, design.md, and tasks.md and edits nothing else",
-        "Land executes no push, PR creation, or merge and ends `Status: blocked: authority_required` listing the prepared operations"
+        "Because the assignment carries no Land grant and the quoted confirmation grants no push, PR, or merge, Land executes no push, PR creation, or merge and ends `Status: blocked: authority_required` listing the prepared operations"
       ]
     },
     {
@@ -461,6 +461,29 @@
         "Land runs `git merge-tree --write-tree` on the live base head and the close commit before merging",
         "Land merges PR #58 onto the moved `main` and deletes the head branch, ending `Status: done` without `authority_drift`",
         "The report records both the cut base head b0b0b0… and the live base head b1b1b1…"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "direct-invocation-is-assignment-invalid",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, run `./prepare-eval.sh`, then land task PR 42 for F001 T-002. Review passed on its head and the `unit` check is green. I authorize you to squash-merge it into `main`, delete its head branch, and close task issue 17.",
+      "expected_output": "No Foreman assignment envelope names the target, so Land runs nothing of its workflow. It reads no PR or check source for a merge decision, prepares no operation, and performs no merge, branch deletion, tracker write, or other external mutation. It creates no commit, branch, or file in the fixture repository. The operator's authorization in the message does not substitute for a Foreman assignment. The response ends with exactly one line of the form `Status: blocked: assignment_invalid — …` whose detail names `valcraft-foreman`.",
+      "files": [
+        "evals/files/delivery/.gitignore",
+        "evals/files/delivery/prepare-eval.sh",
+        "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
+        "evals/files/delivery/docs/product-brief.md",
+        "evals/files/delivery/specs/001-report-export/spec.md",
+        "evals/files/delivery/specs/001-report-export/tasks.md",
+        "evals/files/delivery/captures/task-pr.md",
+        "evals/files/delivery/reviews/task-review.md"
+      ],
+      "assertions": [
+        "Land performs no merge, branch deletion, tracker write, or other external mutation",
+        "The fixture repository holds only the baseline commit on `main`, no other branch, and a clean working tree after the run",
+        "The operator's authorization in the message is not treated as a substitute for a Foreman assignment",
+        "The final line is exactly one `Status: blocked: assignment_invalid — …` line whose detail names `valcraft-foreman`"
       ]
     }
   ]

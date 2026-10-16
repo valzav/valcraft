@@ -4,9 +4,7 @@ Read this reference before editing code. It owns Forge's assignment, verificatio
 
 ## Assignment and workspace
 
-Forge runs only under a Foreman assignment. Without an assignment envelope, end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman` and change nothing. Require the envelope's repository, task identity, canonical task branch, start SHA, backend identity, and any physical branch. Never derive a branch.
-
-A planless quick task is a quick task whose file is by itself its complete implementation and verification contract, so it runs without a plan. Its envelope carries the baseline SHA as the start SHA. For a planless quick task, every rule in this reference that names the reviewed, passed, or plan-review plan SHA uses the baseline SHA instead, and a condition on the reviewed plan or its blob does not apply. Record the plan path and plan SHA as `none` in the Forge report's `Plan and plan review` section and in the Review target. Record the baseline SHA in that `Plan and plan review` section so a resumed run can read it. On resume, revalidate that the baseline SHA exists and that the canonical task branch's attributable implementation history descends cleanly from it; stop with `workspace_not_ready` on ambiguous ancestry or divergence.
+Forge runs only under a Foreman assignment. Without an assignment envelope, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`. Require the envelope's repository, task identity, canonical task branch, start SHA, which is the passed plan-review SHA, backend identity, and any physical branch. Never derive a branch.
 
 Follow [`../../valcraft-foreman/references/outward-mutation.md`](../../valcraft-foreman/references/outward-mutation.md) for shared-checkout and isolated-workspace rules. Takeover-attributed dirty Forge paths are allowed only on the already-correct shared canonical branch at an attributable implementation head that equals or descends from the reviewed-plan SHA while the reviewed plan remains unchanged; validate and incorporate them as that reference defines.
 
@@ -59,11 +57,11 @@ Under `Outward mutations`, name the grant as ref-bound and record the exact head
 Return one exact code target:
 
 - repository identity;
-- base ref and full base SHA: the base ref's head observed when you report, or the baseline SHA for a planless quick task. Review diffs from the merge base of base and head, so the target covers every commit on the task branch, including implementation committed under an earlier plan;
+- base ref and full base SHA: the base ref's head observed when you report. Review diffs from the merge base of base and head, so the target covers every commit on the task branch, including implementation committed under an earlier plan;
 - head ref and full implementation SHA;
 - canonical task branch and physical branch or `none`;
 - PR identity or `none`; and
-- verification evidence and the passed plan path and full plan SHA, each `none` for a planless quick task.
+- verification evidence and the passed plan path and full plan SHA.
 
 Foreman routes the target to a fresh `valcraft-review` worker. Forge never invokes itself as reviewer and never treats its own verification as a Review verdict.
 
@@ -106,7 +104,7 @@ Use these stable routing codes:
 - `workspace_not_ready` — required branch state is dirty, missing, ambiguous, or diverged.
 - `configuration_required` — Tune needs interactive operator answers this run cannot supply.
 - `configuration_unresolved` — Tune ended without done for another cause; the detail quotes Tune's terminal line.
-- `implementation_blocked` — the passed plan, or a planless quick task's file, cannot be implemented or verified from current repository evidence.
+- `implementation_blocked` — the passed plan cannot be implemented or verified from current repository evidence.
 - `product_decision_required` — an unsettled behavior-changing owner decision is required.
 - `review_target_mismatch` — a remediation report does not cover the task and exact implementation head.
 - `authority_drift` — a prepared or ref-bound outward target changed before execution.

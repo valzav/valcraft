@@ -15,8 +15,9 @@ Immediately before each mutation stage, re-read every bound field from its autho
 
 - Read a canonical remote ref with `git ls-remote`. Verified absence is a valid observation: the first push creates the ref. Fetch the ref only when it exists.
 - Cached remote-tracking refs and local names may corroborate, but never decide.
-- A canonical remote head that exists and is not an ancestor of the local head blocks the outward stage with `workspace_not_ready`.
-- Any other change to a bound field performs no mutation in that stage. Return the live values as a new prepared handoff with `authority_drift`.
+- When the remote identity or the canonical ref cannot be resolved live, perform no outward mutation, keep the local commit as the Review target, and end with `workspace_not_ready`. A supplied read-only capture corroborates but never replaces a live read.
+- A change to any bound field, including a canonical remote head that moved from its bound observation, performs no mutation in that stage. Return the live values as a new prepared handoff with `authority_drift`.
+- A canonical remote head that still equals its bound observation but is not an ancestor of the local head blocks the outward stage with `workspace_not_ready`.
 - The default branch's head is not a bound field. A moved default branch never stops a push or a PR operation.
 
 ## Push

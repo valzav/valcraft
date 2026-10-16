@@ -17,7 +17,7 @@ Create one implementation-ready task plan and stop at the Review handoff. Draft 
 
 Claude Code `/valcraft:valcraft-<name>`; Codex `$valcraft:valcraft-<name>`; OpenCode `valcraft-<name>`; Cursor `/valcraft-<name>`.
 
-Run only under a Foreman assignment envelope. Without one, change nothing and end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
+Run only under a Foreman assignment envelope. Without one, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
 
 Read `references/plan-contract.md` before inspecting the assignment. It owns target resolution, workspace recovery, plan contents, MSW use, mutation authority, routing codes, and the final Draft report.
 

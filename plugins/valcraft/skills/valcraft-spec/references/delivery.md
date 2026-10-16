@@ -1,6 +1,6 @@
 # Spec workspace, delivery, and report contract
 
-This reference owns Spec's workspace, commit, outward-mutation, exact handoff, recovery, and report contracts. Spec runs only under a Foreman assignment. Without an assignment envelope, end with `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman` and change nothing.
+This reference owns Spec's workspace, commit, outward-mutation, exact handoff, recovery, and report contracts. Spec runs only under a Foreman assignment. Without an assignment envelope, change nothing and reply with only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`.
 
 ## Resolve the workspace
 
@@ -36,7 +36,7 @@ Spec's outward operations are the push of the canonical ref, spec-PR creation or
 - **Push and PR.** The dispatch carries the ref-bound producer grant in [`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-producer-grant). After committing a contract or amendment branch, push its head to the canonical Spec ref and create or update the one spec PR against `foreman.default_branch` in the same assignment. For commit target `task branch`, push the task ref and open no PR. For a new contract, the grant binds the canonical Spec ref by condition: the ref you derived, observed absent on the remote at push time.
 - **Projection.** Tracker projection is outside the grant, because its authority binds an exact preview. Prepare it as `github-projection.md` defines and report it under `Projection` and `Outward mutations` as a prepared continuation with its tracker target, projection revision, issue mappings or verified absence, and exact operation set. Perform it only when a later assignment grants exact projection authority. A mapping commit after projection is a new head: push it under the grant and report it as the new Review target.
 
-When live resolution of the remote identity or the canonical ref fails, end with `Status: blocked: workspace_not_ready`, keep the local commit as the Review target, and treat a supplied read-only capture as corroboration, never as live resolution. Report the live or unresolved outward fields. Never infer a release branch. `Status: done` means the artifact is committed, pushed, and, for a contract or amendment branch, in its spec PR; it does not mean Land finalized it.
+When live resolution of the remote identity or the canonical ref fails, end with `Status: blocked: workspace_not_ready`, keep the local commit as the Review target, and treat a supplied read-only capture as corroboration, never as live resolution. Report the live or unresolved outward fields. Never infer a release branch. `Status: done` means the artifact is committed, pushed, and, for a contract or amendment branch, in its spec PR; a complete contract already present unchanged on the default branch needs no commit, push, or PR. It does not mean Land finalized it.
 
 ## Review revision and handoffs
 
@@ -91,10 +91,10 @@ Use these stable blocked codes:
 - `scaffold_invalid` — project framing or tracker metadata fails preflight.
 - `configuration_unresolved` — Tune ended without done for a cause this run does not own; the detail quotes Tune's terminal line.
 - `feature_identity_invalid` — an existing feature, quick task, task, mapping, or dependency identity is invalid or collides.
-- `workspace_not_ready` — the assigned base is unavailable, local state is dirty or diverged, or an outward stage cannot resolve the remote identity or canonical remote head, or finds the canonical remote head diverged from the local head.
+- `workspace_not_ready` — the assigned base is unavailable, local state is dirty or diverged, or an outward stage cannot resolve the remote identity or canonical remote head, or finds that the canonical remote head, still at its bound observation, is not an ancestor of the local head.
 - `review_target_mismatch` — a revision report does not cover this artifact and exact head.
 - `git_write_failed` — an artifact cannot be staged, committed, or resolved at the reported head.
-- `authority_drift` — a prepared outward target changed before execution.
+- `authority_drift` — a bound or prepared outward target changed before execution.
 - `projection_failed` — an authorized projection failed or cannot be verified.
 - `push_failed` — the canonical remote ref cannot be verified at the local head.
 - `pr_failed` — the one exact spec PR cannot be created, updated, reconciled, or verified.

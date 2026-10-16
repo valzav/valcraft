@@ -2,11 +2,11 @@
 
 ### Mode and change class
 
-plan; class: quick-task contract; target specs/quick/002-login-redirect-query.md at a492032455667580b736ad0f29d8117be414d0b0 on `dev`
+plan; class: quick-task contract; target specs/quick/002-login-redirect-query.md at c6dd2fe9888c3d0dee7946acea829c15228f3a76 on `dev`
 
 ### Verdict
 
-verdict: pass; open: none; covered: specs/quick/002-login-redirect-query.md at a492032455667580b736ad0f29d8117be414d0b0
+verdict: pass; open: none; covered: specs/quick/002-login-redirect-query.md at c6dd2fe9888c3d0dee7946acea829c15228f3a76
 
 The quick file meets `quick.md`'s readiness rule: AC-001 is observable, `Approach` states the mechanism and the untouched scope, TS-001 is complete, and QT-001's cross-file dependency resolves.
 
@@ -16,8 +16,8 @@ none
 
 ### Reproductions
 
-- Identity: `git show a492032455667580b736ad0f29d8117be414d0b0:specs/quick/002-login-redirect-query.md | grep -c "^id: Q-002$"` printed `1`.
-- Dependency: `git show a492032455667580b736ad0f29d8117be414d0b0:specs/quick/001-export-filename-date.md | grep -c "^- \[x\] QT-001 "` printed `1`.
+- Identity: `git show c6dd2fe9888c3d0dee7946acea829c15228f3a76:specs/quick/002-login-redirect-query.md | grep -c "^id: Q-002$"` printed `1`.
+- Dependency: `git show c6dd2fe9888c3d0dee7946acea829c15228f3a76:specs/quick/001-export-filename-date.md | grep -c "^- \[x\] QT-001 "` printed `1`.
 
 ### Checks performed
 
