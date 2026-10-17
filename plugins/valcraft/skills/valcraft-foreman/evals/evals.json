@@ -2411,7 +2411,7 @@
     {
       "id": 147,
       "name": "github-projection-continuation-and-mapping-commit",
-      "prompt": "/valcraft:valcraft-foreman — an `unattended` run with `tracker.mode: github` and target `acme/tiles`, default branch `main`. In Specifying, Spec's first report from logical worker `specifier-new-batch-import` ends `Status: done` and reports identity FEAT-008. Its Workspace names `spec/f008-batch-import` at head `8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a`. Its Outward mutations section reports a non-force push of that head with a matching remote read-back and spec PR #31 created against `main`. Its Projection and Outward mutations sections also report a prepared projection: tracker target `acme/tiles`, projection revision `r3`, issue mappings verified absent, local artifact head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the operation set that creates the feature issue and three task issues with their labels and relationships. (1) State the transition and the next dispatch. (2) The next Spec report ends `Status: done`, reports the projection executed, and names mapping commit `8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b`, pushed to `spec/f008-batch-import` with a matching read-back, with PR #31 updated to that head. State the transition and the next dispatch. Do not mutate anything.",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run with `tracker.mode: github` and target `acme/tiles`, default branch `main`. In Specifying, Spec's first report from logical worker `specifier-new-batch-import` ends `Status: done` and reports identity FEAT-008. Its Workspace names `spec/f008-batch-import` at head `8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a`. Its Outward mutations section reports a non-force push of that head with a matching remote read-back and spec PR #31 created against `main`. Its Projection section reports a prepared projection: tracker target `acme/tiles`, projection revision `r3`, issue mappings verified absent, local artifact head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the operation set that creates the feature issue and three task issues with their labels and relationships. (1) State the transition and the next dispatch. (2) The next Spec report ends `Status: done`, reports the projection executed, and names mapping commit `8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b`, pushed to `spec/f008-batch-import` with a matching read-back, with PR #31 updated to that head. State the transition and the next dispatch. Do not mutate anything.",
       "expected_output": "(1) The report prepares a tracker projection, so Foreman applies the prepared mutation continuation before any Review. It keeps Specifying active and records the accepted report and exact prepared fields in state.md. It applies the Specifying row for an exact tracker projection prepared: in unattended mode it issues exact projection authority after it validates every prepared field. It dispatches the same logical producer `specifier-new-batch-import` under a fresh physical identity and report path. The projection authority binds tracker target `acme/tiles`, projection revision `r3`, the verified-absent mappings, local artifact head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the prepared operation set, and it requires Spec to revalidate every bound field immediately before the first write. The same dispatch carries the ref-bound producer grant, binding 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a as the observed remote head and PR #31. Foreman does not enter SpecReview on 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a and performs no tracker write. (2) The mapping commit is a new head pushed under the grant, so Foreman enters SpecReview on 8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b as the new Review target and dispatches a fresh spec-reviewer-F008 in plan mode on that head.",
       "files": [
         "references/approval-modes.md",
@@ -2484,6 +2484,66 @@
         "The shown command that reads finding rows matches a row that starts with `R-` and has no leading `|`",
         "The shown command anchors the R-ID to the start of the row, so its output contains no line matched only through `FR-013`",
         "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land or Spec worker"
+      ]
+    },
+    {
+      "id": 150,
+      "name": "task-branch-amendment-applies-prepared-projection-before-drafting",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-github/, resume run `run-amend-projection` from .valcraft/foreman/run-amend-projection/ and take the next loop step. This eval cannot perform live reads. The harness stands in for this run's own live reads: the remote ref `refs/heads/feat/f001-t002-expired-link-rejection` is at 7777777777777777777777777777777777777777, and issue #42 is open with the body hash the Spec report names as current. Treat those results as this run's live reads. Show each command you run to read the Spec report, with its output. State the transition and the next dispatch with its authority fields. Do not dispatch workers or modify files.",
+      "expected_output": "Foreman validates the Spec report in .valcraft/foreman/run-amend-projection/specifier-F001-d000.md: it ends `Status: done`, its commit target is the task branch, and the task ref is pushed at 7777777777777777777777777777777777777777. Foreman reads `### Projection`, which prepares one tracker operation: update only issue #42's body to the revised T-002 text at artifact head 7777777777777777777777777777777777777777. `### Outward mutations` says no tracker write was performed. Because the report prepares a projection, Foreman applies the prepared continuation first and stays in Specifying; it does not enter Drafting yet. It records the prepared fields in state.md, applies the Specifying projection row in unattended mode, and issues exact projection authority after it validates every prepared field. The authority binds target github.com/example/loop-github, revision `sha256:4c1d9e0b7a3f5e2d8c6b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d`, the verified mappings #40 to #43, head 7777777777777777777777777777777777777777, and the single issue #42 body update. The next dispatch goes to logical worker specifier-F001 under a fresh physical identity and report path. After that projection completes, the task-branch report keeps T-002 selected and enters Drafting. Foreman performs no tracker write itself.",
+      "files": [
+        "evals/files/loop-github/AGENTS.md",
+        "evals/files/loop-github/.valcraft/config.yaml",
+        "evals/files/loop-github/.gitignore",
+        "evals/files/loop-github/docs/product-brief.md",
+        "evals/files/loop-github/specs/001-invite-links/spec.md",
+        "evals/files/loop-github/specs/001-invite-links/design.md",
+        "evals/files/loop-github/specs/001-invite-links/tasks.md",
+        "evals/files/loop-github/.valcraft/foreman/run-amend-projection/state.md",
+        "evals/files/loop-github/.valcraft/foreman/run-amend-projection/workers.md",
+        "evals/files/loop-github/.valcraft/foreman/run-amend-projection/plan-reviewer-F001-T002-d000.md",
+        "evals/files/loop-github/.valcraft/foreman/run-amend-projection/specifier-F001-d000.md",
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "Foreman reads the report's `### Projection` section and identifies the prepared update of issue #42's body",
+        "Foreman stays in Specifying and does not enter Drafting for T-002 on this report",
+        "Foreman issues exact projection authority bound to github.com/example/loop-github, the projection revision the report names, head 7777777777777777777777777777777777777777, and the single issue #42 body update, after it validates the prepared fields",
+        "The next dispatch goes to logical worker specifier-F001 under a fresh physical identity and report path",
+        "Foreman states that T-002 enters Drafting only after the projection completes",
+        "Foreman performs no tracker write itself"
+      ]
+    },
+    {
+      "id": 151,
+      "name": "feature-gate-covers-prd-issue-whose-other-children-are-closed",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-github/, resume run `run-prd-gate` from .valcraft/foreman/run-prd-gate/ and take the next loop step. Stop at the first point that waits for the operator. This eval cannot perform live reads. The harness stands in for this run's own live reads: task issues #41, #42, and #43 are closed; feature issue #40 is open; issue #40's parent is issue #39, the PRD issue the contract was specified from; issue #39 is open, and its sub-issues are #38, closed, and #40. Treat those results as this run's live reads. State what the operator question covers, and state the FeatureClose dispatch target for the answer close as is. Do not dispatch workers or modify files.",
+      "expected_output": "Foreman accepts the T-003 Land report and returns to Ready. The live reads show every FEAT-001 task issue closed, so Foreman reaches the feature confirmation gate. It lists the Spec-owned P3 notes, or states that none remain. In github mode it reads issue #40's parent live: PRD issue #39, whose only other sub-issue, #38, is closed. The confirmation therefore covers PRD issue #39 too, and close as is confirms both targets. For close as is, FeatureClose dispatches Land with the exact feature target FEAT-001 and its issue #40, PRD issue #39, and the operator's quoted confirmation. Foreman waits for the operator even though the approval mode is unattended, and it closes no issue itself.",
+      "files": [
+        "evals/files/loop-github/AGENTS.md",
+        "evals/files/loop-github/.valcraft/config.yaml",
+        "evals/files/loop-github/.gitignore",
+        "evals/files/loop-github/docs/product-brief.md",
+        "evals/files/loop-github/specs/001-invite-links/spec.md",
+        "evals/files/loop-github/specs/001-invite-links/design.md",
+        "evals/files/loop-github/specs/001-invite-links/tasks.md",
+        "evals/files/loop-github/.valcraft/foreman/run-prd-gate/state.md",
+        "evals/files/loop-github/.valcraft/foreman/run-prd-gate/workers.md",
+        "evals/files/loop-github/.valcraft/foreman/run-prd-gate/land-F001-T003-d000.md",
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/intake-github.md"
+      ],
+      "assertions": [
+        "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land worker",
+        "The operator question states that it also covers PRD issue #39, because #39's only other sub-issue, #38, is closed",
+        "For the answer close as is, the FeatureClose dispatch names both FEAT-001 (issue #40) and PRD issue #39 as exact targets with the quoted confirmation",
+        "Foreman closes no issue itself"
       ]
     }
   ]

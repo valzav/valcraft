@@ -1,0 +1,9 @@
+#!/bin/sh
+# Console reader for the probe page served by the recorded browser route.
+LOG="$(dirname "$0")/../.probe/console.log"
+case "$1" in
+  --version) echo "consolelog 2.4.1" ;;
+  read) cat "$LOG" ;;
+  clear) echo "console cleared" ;;
+  *) echo "usage: consolelog read|clear|--version" >&2; exit 2 ;;
+esac
