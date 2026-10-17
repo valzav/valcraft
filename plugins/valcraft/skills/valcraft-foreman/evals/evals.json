@@ -2350,7 +2350,7 @@
     {
       "id": 144,
       "name": "new-source-intake-dispatches-specifier-new",
-      "prompt": "/valcraft:valcraft-foreman — approval mode is attended, backend subagents, tracker local, default branch `main`, and the configuration is valid. No Foreman checkpoint exists. The operator says: \"Start a new feature from docs/requirements/bulk-labels.md.\" The file is readable, and no feature directory under specs/ matches it. Remote `origin` resolves, and `main` is at `abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd`. Describe what Foreman does up to the first dispatch, and write out the Specifying envelope's identity, target, and authority fields. Do not spawn workers or mutate files.",
+      "prompt": "/valcraft:valcraft-foreman — approval mode is attended, backend subagents, tracker local, default branch `main`, and the configuration is valid. No Foreman checkpoint exists. The operator says: \"Start a new feature from docs/requirements/bulk-labels.md.\" The file is readable, no feature directory under specs/ matches it, and `git ls-remote origin` lists no `spec/` ref. Remote `origin` resolves, and `main` is at `abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd`. Describe what Foreman does up to the first dispatch, and write out the Specifying envelope's identity, target, and authority fields. Do not spawn workers or mutate files.",
       "expected_output": "The named readable source with no contract enters new contract intake. Foreman creates a run and enters Specifying without takeover discovery or a confirmation wait, even in attended mode, because no prior work exists to attribute. The envelope records identity `none`, canonical branch `none`, logical worker `specifier-new-bulk-labels`, the source path, and the reconciled predecessor `main` at abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd. Its attributed Foreman authority is the ref-bound producer grant: repository and remote `origin`; the canonical Spec ref bound by condition, as the ref Spec derives after it allocates the identity, observed absent on the remote at push time; PR base `main` by name, the head ref under that same condition, and no existing spec PR; and the operation set non-force push of the canonical Spec ref plus spec-PR creation. The pushed head is the committed artifact head Spec reports as its Review target. The default branch's head is not bound, and tracker projection is outside the grant. Spec resolves whether the source resumes a contract, allocates the identity, derives `spec/fNNN-<slug>`, and reports both; Foreman records them and keeps the logical worker `specifier-new-bulk-labels`. Foreman selects no source, allocates no identity, and derives no Spec branch itself.",
       "files": [
         "SKILL.md",
@@ -2428,6 +2428,28 @@
         "The re-dispatch also carries the ref-bound producer grant, binding 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a as the observed remote head and PR #31",
         "After the mapping commit is pushed under the grant, Foreman enters SpecReview on 8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b as the new Review target",
         "Foreman performs no tracker, push, or PR operation itself"
+      ]
+    },
+    {
+      "id": 148,
+      "name": "repeated-source-with-pushed-spec-ref-enters-takeover",
+      "prompt": "/valcraft:valcraft-foreman — approval mode is attended, backend subagents, tracker local, default branch `main`, and the configuration is valid. No Foreman checkpoint exists. The operator says: \"Start a new feature from docs/requirements/bulk-labels.md.\" The file is readable, and no feature directory under specs/ on `main` matches it. Remote `origin` resolves, and `main` is at `abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd`. `git ls-remote origin` lists `refs/heads/spec/f004-bulk-labels` at `c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4`. On that ref, `specs/004-bulk-labels/spec.md` has a `Sources` section with exactly `docs/requirements/bulk-labels.md`. No pull request has head `spec/f004-bulk-labels`. No Review report for FEAT-004 exists. Describe what Foreman does up to the first dispatch. Then assume the operator answers `confirm`, and write out the Specifying envelope's identity, target, and authority fields. Do not spawn workers or mutate files.",
+      "expected_output": "A contract on the remote ref `spec/f004-bulk-labels` names the canonical source, so prior work exists: an earlier run pushed the contract without opening its spec PR. Foreman does not apply new contract intake. It enters takeover bootstrap with FEAT-004 as the operator-named target. Before creating a run it presents the repository and target, the evidence (the remote ref at c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absent spec PR), the inferred named state Specifying because no Spec Review proof exists, and the next producer and action, and it waits for `confirm`, `correct`, or `cancel` even in attended mode. It infers no Review verdict from the branch. After `confirm`, it creates the run and dispatches Specifying with identity FEAT-004 and canonical branch `spec/f004-bulk-labels`, not identity `none` or a `specifier-new-` worker. The ref-bound producer grant binds repository and remote `origin`, the canonical Spec ref `spec/f004-bulk-labels` at its observed remote head c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4, PR base `main` by name, head ref `spec/f004-bulk-labels`, and the absence of a spec PR, with the operation set non-force push of the canonical Spec ref plus spec-PR creation or update. It does not bind the Spec ref as absent, so Spec can open the missing spec PR without `authority_drift`.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/outward-mutation.md",
+        "../valcraft-spec/references/feature-contract.md"
+      ],
+      "assertions": [
+        "Foreman does not apply new contract intake: it dispatches no Specifying envelope with identity `none` or logical worker `specifier-new-bulk-labels`",
+        "Foreman enters takeover bootstrap with FEAT-004 as the target and waits for `confirm`, `correct`, or `cancel` before creating a run",
+        "The takeover presentation cites the remote ref `spec/f004-bulk-labels` at c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absent spec PR as evidence and infers Specifying, without inferring a Review verdict",
+        "After `confirm`, the Specifying envelope names identity FEAT-004 and canonical branch `spec/f004-bulk-labels`",
+        "The grant binds `spec/f004-bulk-labels` at its observed remote head c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absence of a spec PR, with non-force push and spec-PR creation against `main` by name",
+        "The grant does not bind the canonical Spec ref as absent"
       ]
     }
   ]
