@@ -2451,6 +2451,40 @@
         "The grant binds `spec/f004-bulk-labels` at its observed remote head c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absence of a spec PR, with non-force push and spec-PR creation against `main` by name",
         "The grant does not bind the canonical Spec ref as absent"
       ]
+    },
+    {
+      "id": 149,
+      "name": "feature-gate-matches-finding-rows-without-leading-pipe",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-gate-p3/, resume run `run-gate` from .valcraft/foreman/run-gate/ and take the next loop step. Stop at the first point that waits for the operator. Show each command you run to read finding rows from the Review reports, with its output. Also state the highest existing R-ID that the next Review assignment for FEAT-001 would name. Do not dispatch workers or modify files.",
+      "expected_output": "Foreman accepts the T-003 Land report, returns to Ready, and reads from the tasks.md checkboxes that every FEAT-001 task is closed. Before the feature confirmation gate it reads the finding rows of the feature's Review reports with an anchored match that accepts an optional leading pipe, such as `grep -E '^\\|? *R-[0-9]+ *\\|'`. That match returns the pipe-led rows R-001, R-002, and R-003 and the pipe-less rows R-004 and R-005, and it does not match `FR-013`. The gate lists the Spec-owned P3 notes R-001 in .valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md and R-005 in .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md, and no other row. No later Spec report resolved either note. The highest existing R-ID for FEAT-001 is R-005. The gate offers close as is or amend first and waits for the operator even though the approval mode is unattended. Foreman dispatches no Land or Spec worker.",
+      "files": [
+        "evals/files/loop-gate-p3/AGENTS.md",
+        "evals/files/loop-gate-p3/.valcraft/config.yaml",
+        "evals/files/loop-gate-p3/.gitignore",
+        "evals/files/loop-gate-p3/docs/product-brief.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/spec.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/design.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/tasks.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/state.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/workers.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/code-reviewer-F001-T002-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/land-F001-T003-d000.md",
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "The gate lists R-005 with the report path .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "The gate lists R-001 with the report path .valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md",
+        "The gate lists none of R-002, R-003, and R-004, whose resolutions name a skill other than valcraft-spec",
+        "Foreman states R-005 as the highest existing R-ID, not R-013 and not R-003",
+        "The shown command that reads finding rows matches a row that starts with `R-` and has no leading `|`",
+        "The shown command anchors the R-ID to the start of the row, so its output contains no line matched only through `FR-013`",
+        "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land or Spec worker"
+      ]
     }
   ]
 }

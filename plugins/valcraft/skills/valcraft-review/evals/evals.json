@@ -965,6 +965,37 @@
         "The finding, or another material finding, names the missing T-002 transition",
         "The verdict is not pass"
       ]
+    },
+    {
+      "id": 49,
+      "name": "plan-mode-routes-false-entry-to-spec-despite-plan-gap",
+      "prompt": "$valcraft:valcraft-review — in evals/files/false-entry-gap/, run `./prepare-eval.sh` and take the printed plan_head as the exact plan commit. Then do a plan-mode review of FEAT-001 T-002's plan, docs/plans/2026-10-17-feat-f001-t002-game-over-panel-plan.md, at that commit. The feature triplet passed Spec Review in an earlier round. This eval has no browser. The harness stands in for this run's own browser replay by stating its result below. Treat that result as this run's replay, not as an operator-supplied snapshot. Stated replay result: through the design's verification route, a scratch copy of `index.html` and `style.css` from the plan commit, with no script loaded, returns `true` for `agent-browser eval \"document.getElementById('game-over').hidden\"` and `flex` for `agent-browser eval \"getComputedStyle(document.getElementById('game-over')).display\"`, and `agent-browser screenshot` shows the panel's 'Game over' text over the board. Report in Review's plan-mode format, with each finding's severity and resolution owner, and the verdict. Do not edit files.",
+      "expected_output": "Review pins the plan at the printed commit and reads the triplet as its authorities. It reports a material finding against design.md's TS-002 entry: its observation reads the panel's `hidden` property, but `style.css`'s `#game-over { display: flex; }` keeps the panel rendered while `hidden` is `true`, as the stated replay shows. The check therefore passes on a page that shows the panel during play, so the entry states something false about what it observes. The plan names this as TS-002's gap and adds a computed-style check, but that workaround leaves the false entry in design.md for every later reader and task. The finding's resolution names `valcraft-spec` as owner, to correct the entry in design.md; it is not resolved by Draft alone. Review may also note that the plan should name the defect as a contract defect rather than a gap. The verdict is not pass while the TS-002 finding is open, and the verdict line lists it as open with its owner. Nothing is edited.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "evals/files/false-entry-gap/prepare-eval.sh",
+        "evals/files/false-entry-gap/.gitignore",
+        "evals/files/false-entry-gap/.valcraft/config.yaml",
+        "evals/files/false-entry-gap/AGENTS.md",
+        "evals/files/false-entry-gap/docs/product-brief.md",
+        "evals/files/false-entry-gap/docs/game-over-prd.md",
+        "evals/files/false-entry-gap/docs/plans/2026-10-17-feat-f001-t002-game-over-panel-plan.md",
+        "evals/files/false-entry-gap/specs/001-game-over/spec.md",
+        "evals/files/false-entry-gap/specs/001-game-over/design.md",
+        "evals/files/false-entry-gap/specs/001-game-over/tasks.md",
+        "evals/files/false-entry-gap/index.html",
+        "evals/files/false-entry-gap/style.css",
+        "evals/files/false-entry-gap/src/game.js",
+        "evals/files/false-entry-gap/test/game.test.js"
+      ],
+      "assertions": [
+        "A finding states that design.md's TS-002 entry is false: its observation reads the `hidden` property, which stays `true` while `#game-over { display: flex; }` keeps the panel visible, so the check passes on a page that shows the panel during play",
+        "That finding's resolution names `valcraft-spec` as the owner",
+        "That finding is not routed to `valcraft-draft` alone, and the plan's computed-visibility addition is not accepted as closing it",
+        "The verdict is not pass while that finding is open",
+        "Nothing in the fixture is edited"
+      ]
     }
   ]
 }

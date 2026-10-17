@@ -901,6 +901,24 @@
         "No push, PR, or tracker operation is attempted, and the operator's request to push and open a PR does not substitute for a Foreman assignment",
         "Spec replies with only one line, `Status: blocked: assignment_invalid — ` followed by detail that names `valcraft-foreman`, and emits no Spec report block"
       ]
+    },
+    {
+      "id": 44,
+      "name": "accumulator-control-re-executed-after-finding-fix",
+      "prompt": "/valcraft:valcraft-spec — This is a Foreman `Specifying` assignment for FEAT-007 that names its canonical Spec branch, the exact triplet head, and the ref-bound producer grant. It carries the accepted Spec Review report for that exact head; the report's only finding is R-001. Resolve R-001. FEAT-007 is a falling-block puzzle game. BR-002 reads: 'At level 1 the active piece falls one row every 800 ms. Source: requirements document.' The game-loop interface in design.md reads: 'Each animation frame calls `tick(dtMs)` with the frame delta in milliseconds as a JavaScript number. `tick` keeps an accumulator `acc` that starts at 0: `acc += dtMs; if (acc >= GRAVITY_MS) { acc -= GRAVITY_MS; dropRow(); }`, with `GRAVITY_MS = 800`.' Test strategy entry TS-004 covers AC-002 ('At level 1 the active piece falls one row per 800 ms') and reads: observation method — a unit test in the test runner calls `tick(1000 / 60)` repeatedly on a fresh level-1 game and counts the rows dropped; guarded defect — a gravity step other than 800 ms; failing input — a build with `GRAVITY_MS = 500` drops 3 rows after 96 frames; positive control — after 96 frames of `1000 / 60` ms (1600 ms), the piece has dropped exactly 2 rows; domain — the level-1 cadence at the 60 Hz frame delta, covered by the selected 96-frame case. R-001 reads: 'AC-005 requires catch-up after a stalled frame: at level 1, one 2000 ms frame drops 2 rows. The `if` in `tick` drops at most one row per frame, so a build following the design fails AC-005. No Test strategy entry covers AC-005.' Show every design.md hunk the resolution writes, including each new or revised Test strategy entry with all five fields. Do not create files.",
+      "expected_output": "Spec changes the `if` in `tick` to a loop that drops one row for each full 800 ms in the accumulator, and adds a Test strategy entry for AC-005 with all five fields. That change alters the accumulator that TS-004's positive control exercises, so Spec executes TS-004's control and the new entry's control against a scratch model of the revised `tick`, for example a Python or Node loop over `1000 / 60` ms frames. The model shows that 96 frames accumulate to 799.9999999999991 ms after the first drop, so only 1 row has dropped; 97 frames drop 2 rows. Spec does not ship the false 2-rows-after-96-frames control: it corrects TS-004, for example to 1 row after 96 frames or 2 rows after 97 frames, or changes the input so the stated count holds. Beside each executed entry, the design records the command and its result. One 2000 ms frame under the loop drops 2 rows, which the new entry may state.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "The resolution replaces the `if` in `tick` with a loop that drops one row per full 800 ms in the accumulator, and adds a Test strategy entry for AC-005 with all five fields",
+        "The run executes a scratch command that models the design's accumulator with `1000 / 60` ms frames and `GRAVITY_MS = 800`, and the transcript shows that command's output",
+        "The design.md text records, beside TS-004, the command that modeled the accumulator and its result",
+        "The revised hunks do not keep TS-004's claim that 96 frames of `1000 / 60` ms drop exactly 2 rows; TS-004 is corrected, for example to 1 row after 96 frames or 2 rows after 97 frames",
+        "Every row count the hunks state for a sequence of frames matches IEEE 754 double accumulation under the revised `tick`; verify by computing it"
+      ]
     }
   ]
 }

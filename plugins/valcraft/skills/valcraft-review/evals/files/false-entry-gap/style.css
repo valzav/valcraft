@@ -1,0 +1,3 @@
+body { margin: 0; font-family: sans-serif; background: #111; color: #eee; }
+#board { position: relative; width: 400px; margin: 0 auto; }
+#game-over { display: flex; align-items: center; justify-content: center; position: absolute; inset: 0; flex-direction: column; background: rgba(0, 0, 0, 0.8); }
