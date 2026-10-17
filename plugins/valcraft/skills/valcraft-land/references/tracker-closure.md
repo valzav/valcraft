@@ -45,3 +45,5 @@ Prepare one ordered, serialized batch before execution. A completed task batch n
 Treat every operation as independently reconcilable. If the comment exists but close or label removal failed, resume only the missing operations. If the PR merged but tracker work failed, do not attempt another merge.
 
 Feature or PRD closure requires authoritative proof that its children meet the tracker contract and a trusted operator confirmation for that exact target. Without it, return `operator_confirmation_required`. Quote the confirmation in the prepared close record.
+
+When one confirmation covers a feature and its parent PRD issue, complete the feature close first. Then re-read the PRD issue's sub-issues, and close the PRD issue only when every one is closed. When one is open, leave the PRD issue open and name the open sub-issue in the report.
