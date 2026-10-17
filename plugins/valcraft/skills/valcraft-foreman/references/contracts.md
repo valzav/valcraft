@@ -7,42 +7,66 @@ This registry links producer-owned reports to coordinator transitions. It never 
 Send every worker these fields in order:
 
 1. **Cold start.** Invoke the named skill, then read root `AGENTS.md`, then only the named artifacts and references.
-2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity, canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
-3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch, and physical branch when applicable. Use `none` instead of inventing a git target.
-4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content. A Review assignment also names the highest existing R-ID: the highest R-ID in any Review report under `.valcraft/foreman/` whose logical worker carries the same feature or quick identity, found with a line-oriented search, or `none`. Review allocates new IDs after it, so findings of one feature or quick file share one R-ID sequence across Spec, plan, code, evidence, and retrospective reviews.
-5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, `Foreman decision`, or `Foreman observation`, with its source and scope. A `Foreman decision` carries the answer and cited sources recorded under `approval-modes.md`'s Foreman decisions. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority. Bind authority to repository or remote, canonical ref and its observed head, PR base ref by name, PR or tracker target, configured merge strategy when applicable, and operation set. A Land merge grant's operation set includes deleting the merged PR's head branch and its matching local branch, as `../../valcraft-land/references/final-head-and-checks.md` defines; never exclude either.
+2. **Assignment identity.** Record the run id, assignment id, named state, feature or quick identity (`none` for a new contract, which Spec allocates), canonical logical worker identity, current physical worker identity, backend, and exact absolute report path.
+3. **Target.** Name the repository, tracker reference, authoritative task contract, exact predecessor artifact or PR identity and SHA, canonical branch from [Canonical branches](#canonical-branches), and physical branch when applicable. Use `none` instead of inventing a git target.
+4. **Intent.** Name the producer skill, its mode, and the exact transition this report may unlock. Pass contract and prior-report paths rather than copied content. A Review assignment also names the highest existing R-ID: the highest R-ID in any Review report under `.valcraft/foreman/` whose logical worker carries the same feature or quick identity, found by matching finding rows as [Coordinator reads](#coordinator-reads) defines, or `none`. Review allocates new IDs after it, so findings of one feature or quick file share one R-ID sequence across Spec, plan, code, evidence, and retrospective reviews.
+5. **Attributed context.** Label each item `Operator instruction/decision`, `Operator attestation`, `Foreman decision`, or `Foreman observation`, with its source and scope. A `Foreman decision` carries the answer and cited sources recorded under `approval-modes.md`'s Foreman decisions. Include each takeover-confirmed dirty path when present. Only a live operator instruction or an attributed Foreman assignment field can carry mutation authority, under [`outward-mutation.md`](outward-mutation.md). Bind authority to repository or remote, canonical ref and its observed head, PR base ref by name, PR or tracker target, configured merge strategy when applicable, and operation set. A Land merge grant's operation set includes deleting the merged PR's head branch and its matching local branch, as `../../valcraft-land/references/final-head-and-checks.md` defines; never exclude either.
 6. **Report instruction.** Require the producer's unchanged report contract at the assigned path. Require the producer to return only that path and its terminal `Status:` line through the backend channel. Within the run directory, a worker writes only its assigned report path. A Review assignment also grants writes to temporary paths outside the repository, such as a temporary directory, a temporary dependency install, or a browser profile, for the replays its mode requires. That grant never covers a repository path, git state, or a remote.
 7. **Trust boundary.** Include `SKILL.md`'s trust-boundary paragraph verbatim.
 
 Every dated artifact resolves its date from repository policy, then an explicit operator date for that artifact, then its creation date. The run id does not supply an artifact date.
 
+## Canonical branches
+
+A branch policy in root `AGENTS.md` replaces these names. Without one, use:
+
+| Branch | Name | Derived by |
+| --- | --- | --- |
+| Feature contract before it lands | `spec/fNNN-<slug>` | Spec, after it allocates or resolves the identity; Foreman passes it on later dispatches |
+| Quick file before it lands | `spec/qNNN-<slug>` | Spec, the same way |
+| Amendment after the contract lands | `spec/fNNN-amend-<sha>` or `spec/qNNN-amend-<sha>`, where `<sha>` abbreviates the baseline head the branch is cut from | Foreman, at the Specifying dispatch |
+| Feature task | `feat/fNNN-tNNN-<slug>` | Foreman, at `Ready` |
+| Quick task | `feat/qNNN-qtNNN-<slug>` | Foreman, at `Ready` |
+| Feature close | `close/fNNN-<slug>` | Land |
+
+`<slug>` is a kebab-case semantic slug: the contract's title for a Spec branch or a feature close, the task's delivered outcome for a feature task, and the quick file's slug without its identity prefix for a quick task. Omit an imperative such as `add` when it only introduces the outcome. Preserve every identity digit. Draft and Forge never derive a branch; they use the envelope's.
+
 ## Prepared mutation continuation
 
-A producer cannot receive exact mutation authority until it has prepared the local head and every target field. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
+Two operations cannot be granted at dispatch, because each binds a value that exists only after the producer prepares it: Spec's tracker projection binds its exact preview, and a Land operation outside the ref-bound Land grant binds its exact prepared target. Treat a producer report as a prepared continuation only when its structured mutation and handoff fields name every applicable repository, remote, exact local head, canonical ref and observed remote head, PR or tracker target, and remaining operation. Do not infer a prepared target from prose.
 
-When Spec or Draft must publish its exact commit for the next Review worker, Specifying holds a passing Spec verdict without a landable PR, Forge still reports task PR `none`, or Land reports `authority_required` for an ordinary prepared operation:
+When Spec reports a prepared tracker projection, or Land reports `authority_required` for an ordinary prepared operation:
 
 1. Keep the producer's current named state active.
 2. Record the accepted report and exact prepared fields in `state.md`.
 3. Apply that named state's approval gate from `approval-modes.md`.
-4. Dispatch the same logical producer under a fresh physical identity and report path, or send the continuation to the kept producer as a new assignment when the backend declares producer continuity for prepared outward operations.
+4. Dispatch the same logical producer under a fresh physical identity and report path.
 5. Attribute newly granted authority to the exact prepared fields and operation set.
 6. Require the producer to revalidate every bound field immediately before mutation.
 
 Attended mode waits unless the live operator already granted the exact operation. Unattended mode may issue the exact Foreman authority only after every prepared field validates. The approval mode does not itself become authority. Foreman never executes the prepared operation.
 
-Spec and Draft advance to Review only when the next Review worker can access their exact commit. A native shared checkout may provide that access without a push. An isolated Review worker requires the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it enters SpecLanding with a current exact spec PR, or returns to Specifying until Spec reports a landable exact PR; it remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
+Spec, Draft, and Forge push under the ref-bound producer grant below before they report `done`, so the next Review worker resolves their exact commit from the canonical remote ref. A passing Spec verdict enters Ready when its exact covered contract is already present on the reconciled default branch. Otherwise it enters SpecLanding with the spec PR Spec opened; it remains valid only while the exact covered head is unchanged. Forge advances only after its report names the exact PR identity and Review target. Land advances only after its report proves the authorized operations complete or names a different declared route. A structured `authority_required` report from Land uses this continuation; it does not enter Blocked. Temper prepares no outward operation and never reports `authority_required`.
 
-## Ref-bound Forge grant
+## Ref-bound producer grant
 
-A Forge dispatch in `Implementing` may carry push and task-PR authority before the implementation head exists, when that state's gate in `approval-modes.md` allows it. It and the ref-bound Land grant below are the grants that bind a head by condition instead of by SHA. Bind every other field exactly:
+Every Spec, Draft, and Forge dispatch carries push authority for its canonical ref, and PR authority where the table names it, in both approval modes and before the producer's head exists. Bind exactly:
 
 - repository and remote identity;
-- canonical remote task ref and its observed remote head, including absence;
-- PR base ref by name, PR head ref, and the existing task PR identity or its absence; and
-- the operation set: non-force push of the canonical task ref, and task-PR creation or update.
+- the canonical ref and its observed remote head, including absence;
+- when the operation set includes a PR operation, the PR base ref by name, which is `foreman.default_branch`, the PR head ref, and the existing PR identity or its absence; and
+- the operation set in the table.
 
-The default branch's head is not bound: the push and the PR operation neither read nor write it, so a moved default branch never stops them. The bound head is the clean local head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged. A remediation dispatch binds the currently pushed head as the observed remote head and the existing task PR identity. Forge revalidates every bound field immediately before mutation and returns `authority_drift` on any change. A Forge report without a task PR still takes the prepared continuation above.
+| Producer and target | Operation set | Pushed head |
+| --- | --- | --- |
+| Draft | non-force push of the canonical task ref | the committed plan head that Draft reports as its Review target |
+| Forge | non-force push of the canonical task ref; task-PR creation or update | the clean head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged |
+| Spec, new contract or amendment branch | non-force push of the canonical Spec ref; spec-PR creation or update | the committed artifact head that Spec reports as its Review target |
+| Spec, commit target `task branch` | non-force push of the canonical task ref | the committed amendment head |
+
+The pushed head is bound by condition: the producer pushes only the head its row names, and that head must descend from the observed remote head. For a new contract, the canonical ref is bound by condition too: the ref Spec derives after it allocates the identity, observed absent on the remote at push time. The default branch's head is not bound: a push and a PR operation neither read nor write it, so a moved default branch never stops them.
+
+A Specifying dispatch for a Spec-owned plan finding names the task branch and a fallback amendment branch; its grant covers both rows, the amendment branch observed absent, and Spec uses the one its scope test selects. Forge's first grant observes the task ref at Draft's pushed plan head. A remediation dispatch binds the currently pushed head as the observed remote head and the existing PR identity. The producer revalidates every bound field immediately before mutation and returns `authority_drift` on any change. Tracker projection stays outside this grant and uses the prepared continuation above.
 
 ## Ref-bound Land grant
 
@@ -62,36 +86,24 @@ Two fields are bound by condition:
 
 Land revalidates every bound field and both conditions immediately before each mutation and returns `authority_drift` on any change. The grant waives no Review coverage, check classification, or release-branch rule, and a configured release-branch operation never receives it. A Land report that ends `authority_required` for an operation outside the grant still takes the prepared continuation above.
 
-## Exact Spec publish grant
-
-After a passing Spec verdict covers an exact committed head and no landable spec PR exists, the Specifying dispatch may carry push and spec-PR authority, when that state's gate in `approval-modes.md` allows it. Foreman observes every bound field live and binds exactly:
-
-- repository and remote identity;
-- the covered head SHA;
-- the canonical Spec ref and its observed remote head, including absence;
-- PR base ref by name, which is `foreman.default_branch`, PR head ref, and the existing spec-PR identity or its absence; and
-- the operation set: non-force push of the covered head and spec-PR creation or update.
-
-No field is bound by condition. Tracker projection stays outside this grant.
-
 ## Message registry
 
 | Message | Producer | Consumer | Authoritative report contract | Active state | `done` transition |
 | --- | --- | --- | --- | --- | --- |
-| Project frame | Cast | direct caller, then Spec | [`../../valcraft-cast/SKILL.md#report`](../../valcraft-cast/SKILL.md#report) | OutsideLoop | `ReturnToCaller` |
-| Feature or quick contract | Spec | direct caller or Foreman, Review, Land | [`../../valcraft-spec/references/delivery.md#spec-report`](../../valcraft-spec/references/delivery.md#spec-report) | OutsideLoop or Specifying | `ReturnToCaller` or `SpecResult` |
+| Project frame | Cast | direct caller, then Foreman | [`../../valcraft-cast/SKILL.md#report`](../../valcraft-cast/SKILL.md#report) | OutsideLoop | `ReturnToCaller` |
+| Feature or quick contract | Spec | Foreman, Review, Land | [`../../valcraft-spec/references/delivery.md#spec-report`](../../valcraft-spec/references/delivery.md#spec-report) | Specifying | `SpecResult` |
 | Task plan | Draft | Foreman, Review | [`../../valcraft-draft/references/plan-contract.md#report`](../../valcraft-draft/references/plan-contract.md#report) | Drafting | `DraftResult` |
 | Plan verdict | Review | Foreman, Spec, Draft, Forge, or Land | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | SpecReview or PlanReview | `PlanVerdict` |
 | Task implementation and PR | Forge | Foreman, Review | [`../../valcraft-forge/references/verification-and-handoff.md#forge-report`](../../valcraft-forge/references/verification-and-handoff.md#forge-report) | Implementing | `ForgeResult` |
 | Code verdict | Review | Foreman, Forge or Land | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | CodeReview | `CodeVerdict` |
-| Finalization or evidence record | Land | Foreman, Review or direct caller | [`../../valcraft-land/SKILL.md#report`](../../valcraft-land/SKILL.md#report) | SpecLanding, Landing, or FeatureClose | `LandResult` |
+| Finalization or evidence record | Land | Foreman, Review | [`../../valcraft-land/SKILL.md#report`](../../valcraft-land/SKILL.md#report) | SpecLanding, Landing, or FeatureClose | `LandResult` |
 | Evidence-sufficiency verdict | Review | Foreman, Land | [`../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report`](../../valcraft-review/references/evidence-mode.md#evidence-sufficiency-report) | EvidenceReview | `Landing` |
 | Retrospective report | Temper | Foreman, Review | [`../../valcraft-temper/SKILL.md#report`](../../valcraft-temper/SKILL.md#report) | Retrospective | `TemperResult` |
 | Retrospective verdict | Review | Foreman, Temper | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | RetroReview | `RetroVerdict` |
 | Business roadmap | Roadmap | direct caller or Foreman, Review | [`../../valcraft-roadmap/SKILL.md#report`](../../valcraft-roadmap/SKILL.md#report) | OutsideLoop or RoadmapRefresh | `ReturnToCaller` or `RoadmapResult` |
 | Roadmap verdict | Review | Foreman, Roadmap | [`../../valcraft-review/SKILL.md#reports`](../../valcraft-review/SKILL.md#reports) | RoadmapReview | `RoadmapVerdict` |
 
-`SpecResult`, `DraftResult`, and `ForgeResult` first apply the prepared outward continuation above; they advance only when the next worker can resolve the exact target. A `SpecResult` with commit target `task branch` enters Drafting for the selected task and prepares no spec PR. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `RoadmapResult` advances to RoadmapReview on its exact candidate commit, or applies `ResumeDelivery` when it names no Review target. `PlanVerdict`, `CodeVerdict`, `RetroVerdict`, and `RoadmapVerdict` read the report's structured verdict, not prose. A SpecReview pass enters Ready when the reviewed contract is already present on the reconciled default branch. Otherwise it advances to SpecLanding only with a current exact spec PR or returns to Specifying. Material SpecReview findings return to Specifying. LandResult uses the reported target kind: a completed spec PR enters Ready after default-branch reconciliation, a completed task returns Ready, a completed feature close enters RoadmapRefresh when `docs/roadmap.md` exists and Retrospective otherwise, and completed external closure returns Ready.
+`SpecResult`, `DraftResult`, and `ForgeResult` advance only when the report names its pushed canonical ref, and for Forge and a Spec contract or amendment branch its PR. A `SpecResult` whose complete contract is already present, unchanged, on the reconciled default branch pushes nothing and enters `SpecReview` or `Ready` by the SpecReview rule below. A report without them re-dispatches the same producer under the ref-bound producer grant. A `SpecResult` that prepares a tracker projection first applies the prepared continuation above. A `SpecResult` with commit target `task branch` enters Drafting for the selected task and opens no spec PR. `TemperResult` advances to RetroReview on its path-and-hash Review target with no outward step. `RoadmapResult` advances to RoadmapReview on its exact candidate commit, or applies `ResumeDelivery` when it names no Review target. `PlanVerdict`, `CodeVerdict`, `RetroVerdict`, and `RoadmapVerdict` read the report's structured verdict, not prose. A SpecReview pass enters Ready when the reviewed contract is already present on the reconciled default branch. Otherwise it advances to SpecLanding on the spec PR Spec opened. Material SpecReview findings return to Specifying. LandResult uses the reported target kind: a completed spec PR enters Ready after default-branch reconciliation, a completed task returns Ready, a completed feature close enters RoadmapRefresh when `docs/roadmap.md` exists and Retrospective otherwise, and completed external closure returns Ready.
 
 ## Coordinator reads
 
@@ -114,6 +126,8 @@ A producer report body never enters Foreman's context. After `report_available`,
 | Retrospective verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
 | Business roadmap | `### Target`, `### Artifact`, `### Changes`, `### Evidence gaps`, `### Finding resolutions`, `### Review target`, `### Blockers` |
 | Roadmap verdict | the machine-readable first line of `### Verdict`, and the `### Findings` rows whose R-ID that line lists as open |
+
+A finding row is a line whose first cell is an R-ID. Review reports write it with or without a leading `|`, so match both forms and anchor the match to the first cell, for example `grep -E '^\|? *R-[0-9]+ *\|'`. An unanchored pattern also matches inside other IDs, such as `FR-013`. Apply this match to every read of finding rows, including the highest existing R-ID.
 
 Before the feature confirmation gate, Foreman also reads, in each plan and code verdict of the feature, the `### Findings` rows with severity `P3` whose resolution names `valcraft-spec`, and, in each later feature contract report, `### Finding resolutions`. The open finding rows carry the severity, claim, evidence, and resolution that `review-round.md`'s second-round triggers test. Every other section — verification evidence, resolved findings, informational findings other than the Spec-owned notes the feature confirmation gate lists, reproductions, checks performed, criterion detail — stays on disk for the worker whose role reads it. A field a transition needs that is absent from the named sections makes the report incomplete under [Validation and rejection](#validation-and-rejection); it is never a reason to read the body. The project frame is outside the loop and has no coordinator read.
 
@@ -167,7 +181,7 @@ In an unattended run, a `product_decision_required` or `owner_decision_required`
 | `partial_completion` | `PartialCompletionByTarget` |
 | `operator_confirmation_required`, `owner_decision_required`, `configuration_required` | `AwaitOwner` |
 | `authority_required` | `ResumeProducer` |
-| `missing_required_check`, `check_source_unavailable`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
+| `assignment_invalid`, `missing_required_check`, `check_source_unavailable`, `authority_drift`, `release_authority_required`, `evidence_insufficient`, `target_ambiguous`, `configuration_unresolved` | `Blocked` |
 | `external_blocked` | `ExternalRetry` |
 
 `ReviewByTarget` means task PR to CodeReview, spec PR to SpecReview, and feature-close PR to Blocked, because only completion marks may reach that PR without Review. It is one target-kind transition function.
@@ -213,10 +227,10 @@ Each producer contract makes a repeat safe. A push is non-force and verified by 
 `ExternalRetry` keeps the producer's named state active and applies the owner-established schedule:
 
 1. The failed run is attempt 1. Attempts 2, 3, and 4 start 1, 5, and 10 minutes after the preceding attempt's failure. This schedule replaces the two-attempt rule for this class only.
-2. Retry only a report that qualifies as a prepared continuation under [Prepared mutation continuation](#prepared-mutation-continuation). Otherwise enter `Blocked` at once.
+2. Retry only a report whose structured fields name every bound field of its grant and the remaining operation. Otherwise enter `Blocked` at once.
 3. Count attempts per budget: the logical producer plus the report's bound fields. Every code in this class counts against the same budget, so `push_failed` followed by `pr_failed` spends one budget. A new head after remediation starts a new budget.
 4. When an attempt's start time arrives, repeat the live read of every bound field that Foreman performs before dispatch. A failed read spends the attempt and dispatches nothing.
-5. After a successful read, apply steps 4–6 of the prepared continuation with the failed attempt's exact authority source. No approval gate applies, because the retry repeats an authorized operation set on the same bound fields. A moved remote still returns `authority_drift` through its own route.
+5. After a successful read, dispatch the same logical producer under a fresh physical identity and report path, with the failed attempt's exact grant and its reported head, and require it to revalidate every bound field immediately before mutation and to repeat only the remaining operations, not its work. No approval gate applies, because the retry repeats an authorized operation set on the same bound fields. A moved remote still returns `authority_drift` through its own route.
 6. When attempt 4 fails, by a class code or a failed live read, enter `Blocked`, naming every attempt's report path, live-read result, and time.
 
 ## Backend returns
@@ -243,11 +257,3 @@ A host or tool may surface an observation that is neither a producer report nor 
 Require the active assignment id, logical worker, physical worker, backend return, and report path to match `state.md` and `workers.md`. Reject a predecessor's late report after replacement, even when its report contract is complete. A report is complete only when its producer-owned headings are present in order, required exact identities are populated, and exactly one terminal status line is last.
 
 On the first incomplete report, reassign the same producer to append the missing named parts. On the second, escalate under the established two-attempt rule. Never fill a missing field, copy a shape into another report, interpret prose as a code, or advance on an undeclared code.
-
-## Adopted pre-run evidence
-
-During takeover only, accept a standalone producer report when a live operator message attributes its exact path and Foreman validates the complete producer-owned shape, content hash, repository, target, predecessor plan or artifact identity, and covered head or artifact hash against current authoritative state. Record the report as adopted pre-run evidence. Do not invent an assignment id, logical or physical worker, backend return, or `workers.md` row.
-
-Route adopted evidence by the same exact-target transition as a current worker report. In particular, an adopted complete Forge report that names the current implementation head and its exact task-PR Review target proves `CodeReview`; dispatch Review on that target. Reject stale or unattributed reports and resume from the earliest state that current durable evidence proves.
-
-Reject stale, incomplete, ambiguous, mismatched, prose-only, or unattributed material and dispatch the required producer or Review again. Adoption makes the report evidence for state inference; it does not grant mutation authority or convert the report into an active worker return.

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Blockfall</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="board">
+    <canvas id="field" width="400" height="560"></canvas>
+    <p>Score: <span id="score">0</span></p>
+    <div id="game-over" hidden>
+      <p>Game over</p>
+      <p>Final score: <span id="final-score"></span></p>
+    </div>
+  </main>
+  <script type="module" src="src/game.js"></script>
+</body>
+</html>

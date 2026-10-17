@@ -2,7 +2,7 @@
   "skills": [
     {
       "name": "valcraft-cast",
-      "version": "5b58ba55e9f32e0b",
+      "version": "d9e8fa631bb297a6",
       "files": [
         "SKILL.md",
         "references/github-tracker.md",
@@ -32,7 +32,7 @@
     },
     {
       "name": "valcraft-draft",
-      "version": "83e140777b26076f",
+      "version": "0419ee2d51e9a148",
       "files": [
         "SKILL.md",
         "references/baseline-facts.md",
@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "f0006835b5d69db8",
+      "version": "90a459081b0cdcb0",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -56,6 +56,7 @@
         "references/intake-github.md",
         "references/intake-local.md",
         "references/loop.md",
+        "references/outward-mutation.md",
         "references/review-round.md",
         "references/roadmap.md",
         "templates/run-dir.md",
@@ -64,7 +65,7 @@
     },
     {
       "name": "valcraft-forge",
-      "version": "e323a179002a7ba8",
+      "version": "91f16ee20f1c130d",
       "files": [
         "SKILL.md",
         "references/verification-and-handoff.md",
@@ -85,7 +86,7 @@
     },
     {
       "name": "valcraft-land",
-      "version": "14bf2cef65d90286",
+      "version": "9933ef5ea3323fc7",
       "files": [
         "SKILL.md",
         "references/final-head-and-checks.md",
@@ -105,7 +106,7 @@
     },
     {
       "name": "valcraft-review",
-      "version": "b0b2b2e1da849782",
+      "version": "5005cc6e7a5b187f",
       "files": [
         "SKILL.md",
         "references/code-mode.md",
@@ -127,7 +128,7 @@
     },
     {
       "name": "valcraft-spec",
-      "version": "839dd8d367e3d297",
+      "version": "951e5cb0c4cf5e8f",
       "files": [
         "SKILL.md",
         "references/delivery.md",
@@ -153,7 +154,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "10b355df65cb6cdc",
+      "version": "c67693d519f78c1b",
       "files": [
         "SKILL.md",
         "references/config.md",

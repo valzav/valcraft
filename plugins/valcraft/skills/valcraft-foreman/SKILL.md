@@ -1,7 +1,7 @@
 ---
 name: valcraft-foreman
 description: >
-  Coordinate or take over the spec-driven delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers. Own runtime readiness, takeover inference, task selection, intermediate tracker state, worker lifecycle, backend returns, report validation, approval gates, recovery, and named-state transitions. Use for "run the delivery loop", "take over delivery", "start sprint", "work through the tasks", "deliver quick", or "run foreman". Do not use for new feature or PRD creation (valcraft-spec), task planning (valcraft-draft), implementation (valcraft-forge), review (valcraft-review), landing or closure (valcraft-land), retrospective production (valcraft-temper), or project framing (valcraft-cast).
+  Coordinate or take over the spec-driven delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers, from a new feature, PRD, or quick-task source to landing and retrospective. Spec, Draft, Forge, and Land run only under it. Own runtime readiness, intake, takeover inference, task selection, intermediate tracker state, worker lifecycle, backend returns, report validation, approval gates, recovery, and named-state transitions. Use for a new feature, PRD, or quick task, "run the delivery loop", "take over delivery", "start sprint", "work through the tasks", "deliver quick", or "run foreman". Do not use for a standalone review (valcraft-review), retrospective (valcraft-temper), or project framing (valcraft-cast).
 ---
 
 # valcraft-foreman
@@ -29,14 +29,14 @@ Load [`references/review-round.md`](references/review-round.md) only after mater
 
 After compaction, resume, takeover, or another context reset, repeat configuration resolution, reload the governing contracts, and read the latest checkpoint rather than the whole log before the next dispatch. Reload `review-round.md` when a material-finding round is active. A summary carries state pointers, never configuration or contract authority.
 
-`new PRD`, feature-contract creation, and quick-task creation are outside this loop. Route the readable source directly to `valcraft-spec`; create no Foreman run.
+A new feature, PRD, or quick task from a readable source enters the loop through `loop.md`'s new contract intake.
 
 ## Invariants
 
 - Start every dispatch with a fresh worker, except the backend-declared continuities in `hygiene.md`. Preserve its logical identity across recovery. Give every dispatch a new assignment id and report path, and a new physical identity unless a continuity keeps the recorded one.
 - Keep only coordination state: active named state, exact artifact pointers, logical and physical worker identities, report paths, backend returns, gate decisions, and recovery observations.
-- Record a backend return before inspecting an active assignment's report. For `report_available`, read only the parts `contracts.md` names under Coordinator reads. The only exception is an exact standalone report the operator attributes during takeover; validate and record it as pre-run evidence under `contracts.md`.
-- Accept only the active assignment's attributed report path and logical and physical worker identity, or validated pre-run evidence during takeover. Reject stale, late, missing, or unattributed reports.
+- Record a backend return before inspecting an active assignment's report. For `report_available`, read only the parts `contracts.md` names under Coordinator reads.
+- Accept only the active assignment's attributed report path and logical and physical worker identity. Reject stale, late, missing, or unattributed reports.
 - Validate the producer-owned report contract mechanically. Route declared codes with the registry; never infer a transition from prose or synthesize a producer report.
 - Preserve independent Review. A producer's verification never becomes a Review pass.
 - End only at completion or a named human gate; follow the selected backend's wake contract for how the turn waits or ends. Never ask the operator for a status or continue prompt.
@@ -44,7 +44,7 @@ After compaction, resume, takeover, or another context reset, repeat configurati
 
 ## Roles
 
-- `specifier-<identity>` runs `valcraft-spec` only to resume an existing contract, resolve Spec findings, or complete its prepared outward handoff.
+- `specifier-<identity>` runs `valcraft-spec`; a new contract's worker is `specifier-new-<source-slug>`.
 - `spec-reviewer-<identity>` runs `valcraft-review` in plan mode on the feature triplet or quick file.
 - `drafter-<identity>` runs `valcraft-draft`.
 - `plan-reviewer-<identity>` runs `valcraft-review` in plan mode.

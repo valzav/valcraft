@@ -5,7 +5,7 @@
       "id": 1,
       "name": "fresh-project-scaffold",
       "prompt": "/valcraft:valcraft-cast — new project: \"pagewatch\", a CLI that watches a list of URLs and emails a diff when a page changes. Primary user: me. MVP: add a URL, run one check cycle, receive one diff email end to end. Stack: Python 3.12, no framework, SQLite, runs from cron. No public API, no domain-heavy vocabulary.",
-      "expected_output": "Cast invokes Tune before gathering scaffold facts. Tune runs the complete guided flow because no configuration exists, asks only the genuinely open questions as explained lists with the recommended option first, writes the base `.valcraft/config.yaml` immediately after the last answer with no confirmation question, and returns done; the file stays uncommitted for Cast's baseline. Cast gathers scaffold facts, records the exact project-frame proposal — the frame paths, `.valcraft/config.yaml`, the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair, assumptions, and one baseline commit — in its report and proceeds without waiting for approval. It creates and commits README.md, configuration-free AGENTS.md, a relative CLAUDE.md symlink, .gitignore, `.valcraft/config.yaml`, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. The Cast report names the product brief and exact full baseline head as the source and base for Spec to create 001-mvp. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
+      "expected_output": "Cast invokes Tune before gathering scaffold facts. Tune runs the complete guided flow because no configuration exists, asks only the genuinely open questions as explained lists with the recommended option first, writes the base `.valcraft/config.yaml` immediately after the last answer with no confirmation question, and returns done; the file stays uncommitted for Cast's baseline. Cast gathers scaffold facts, records the exact project-frame proposal — the frame paths, `.valcraft/config.yaml`, the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair, assumptions, and one baseline commit — in its report and proceeds without waiting for approval. It creates and commits README.md, configuration-free AGENTS.md, a relative CLAUDE.md symlink, .gitignore, `.valcraft/config.yaml`, docs/product-brief.md, docs/plans/, docs/architecture/overview.md, docs/architecture/adr/README.md, and a tracked empty specs/ frame, but no numeric feature directory and no spec.md, design.md, tasks.md, or quick file. The Cast report's `### Foreman handoff` names the product brief and exact full baseline head as the source and base from which Foreman starts 001-mvp through Spec. Local mode performs no GitHub inspection or mutation. Cast writes no implementation code and does not push without separate exact authority.",
       "files": [],
       "assertions": [
         "Cast records the proposed scaffold, assumptions, and TBDs in its report and proceeds without an approval wait",
@@ -21,7 +21,7 @@
         "The local path does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
         "Cast stages only the recorded scaffold delta, commits it once, and verifies an exact clean baseline head",
         "Cast writes no implementation code and does not push without separate trusted target-bound authority",
-        "The Cast report names docs/product-brief.md and the exact baseline head for Spec to create 001-mvp, then ends with Status: done"
+        "The Cast report's `### Foreman handoff` names docs/product-brief.md and the exact baseline head for Foreman to start 001-mvp, then the report ends with Status: done"
       ]
     },
     {
@@ -54,7 +54,7 @@
       "id": 3,
       "name": "fresh-project-pending-github-without-remote",
       "prompt": "/valcraft:valcraft-cast — new project: \"feedglass\", a Go CLI that reads a list of RSS feeds and prints unseen entries. Primary user: me. MVP: add one feed, fetch it, and print unseen entries end to end. Stack: Go, standard library, SQLite, local binary. No public API or domain glossary. In Tune choose GitHub Issues with repository `TBD`, select every other recommended option, and then continue Cast. This directory has no GitHub remote. Do not create or configure a repository or remote.",
-      "expected_output": "Cast invokes Tune first. Tune writes a complete GitHub-mode base with repository `TBD` and every other recommended choice immediately after the last answer, without a confirmation question, and returns done. Cast records the project-frame proposal and commits the frame — including `.valcraft/config.yaml` and the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair — without creating a repository, remote, numeric feature directory, triplet, or quick file. AGENTS.md contains no Valcraft configuration. Cast performs no gh or network-facing GitHub operation. The report names the clean baseline head and docs/product-brief.md for Spec, and records GitHub projection as pending until Tune receives an approved concrete target and Spec receives outward authority.",
+      "expected_output": "Cast invokes Tune first. Tune writes a complete GitHub-mode base with repository `TBD` and every other recommended choice immediately after the last answer, without a confirmation question, and returns done. Cast records the project-frame proposal and commits the frame — including `.valcraft/config.yaml` and the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair — without creating a repository, remote, numeric feature directory, triplet, or quick file. AGENTS.md contains no Valcraft configuration. Cast performs no gh or network-facing GitHub operation. The report's Foreman handoff names the clean baseline head and docs/product-brief.md, and the report records GitHub projection as pending until Tune receives an approved concrete target and Spec, under a Foreman assignment, receives exact projection authority.",
       "files": [],
       "assertions": [
         "Cast records github mode and pending activation in the proposal and proceeds without an approval wait",
@@ -63,57 +63,59 @@
         "The committed `.valcraft/config.yaml` contains `tracker.mode: github` and `tracker.github_repository: TBD`; AGENTS.md contains no Valcraft configuration",
         "Cast does not run gh or a network-facing GitHub operation and does not create or configure a repository or remote",
         "Cast writes no implementation code and does not push",
-        "The report names the product brief and exact clean baseline head for Spec and states that tracker projection remains pending"
+        "The report's Foreman handoff names the product brief and exact clean baseline head, and the report states that tracker projection remains pending"
       ]
     },
     {
       "id": 4,
-      "name": "staged-feature-routes-to-spec-with-open-product-question",
+      "name": "staged-feature-routes-to-foreman-with-open-product-question",
       "prompt": "/valcraft:valcraft-cast — resume the staged feature in evals/files/staged-feature/. The operator approves each exact local artifact proposal, but does not resolve or explicitly accept the behavior-affecting open product question. Do not inspect or activate GitHub.",
-      "expected_output": "Cast recognizes that resuming a staged feature is feature production and routes the exact repository, feature path, accepted source, and existing spec.md to Spec. It may load Spec's feature contract to validate the existing stage, but it does not propose, create, or edit design.md, tasks.md, spec.md, mappings, or tracker state. It preserves the open question and existing spec_issue: TBD without interpreting either as authority. The report identifies Spec as the sole feature owner and performs no local or GitHub mutation.",
+      "expected_output": "Cast recognizes that resuming a staged feature is feature production and writes nothing. It returns a Foreman handoff that names the exact repository, feature path, accepted source, and existing spec.md, so that Foreman resumes the feature through Spec. It may load Spec's feature contract to validate the existing stage, but it does not propose, create, or edit design.md, tasks.md, spec.md, mappings, or tracker state. It preserves the open question and existing spec_issue: TBD without interpreting either as authority. The report names valcraft-foreman as the entry point and Spec as the sole feature producer, performs no local or GitHub mutation, and ends with Status: done for the no-write Foreman route.",
       "files": [
         "evals/files/staged-feature/AGENTS.md",
         "evals/files/staged-feature/.valcraft/config.yaml",
         "evals/files/staged-feature/docs/product-brief.md",
         "evals/files/staged-feature/specs/001-notification-window/spec.md",
         "../valcraft-spec/SKILL.md",
-        "../valcraft-spec/references/feature-contract.md"
+        "../valcraft-spec/references/feature-contract.md",
+        "../valcraft-foreman/SKILL.md"
       ],
       "assertions": [
-        "Cast recognizes FEAT-001 as a staged feature and routes it to Spec rather than accepting feature production",
+        "Cast recognizes FEAT-001 as a staged feature and routes it to valcraft-foreman through a Foreman handoff rather than accepting feature production",
         "Cast preserves the existing spec_issue: TBD mapping in spec.md",
         "Cast creates or edits no spec.md, design.md, tasks.md, mapping, branch, or tracker state",
-        "The handoff names ../valcraft-spec/SKILL.md and ../valcraft-spec/references/feature-contract.md as the authoritative producer and contract",
+        "The handoff names valcraft-foreman as the entry point, Spec (../valcraft-spec/SKILL.md) as the feature producer under Foreman, and ../valcraft-spec/references/feature-contract.md as the contract",
         "The handoff preserves the behavior-affecting open question without inventing an answer",
         "Cast does not inspect remotes, gh, GitHub authentication, or output tracker readiness and performs no GitHub operation",
-        "The report ends with a stable handoff status rather than a false implementation-ready verdict"
+        "The report ends with Status: done for the no-write Foreman route rather than a false implementation-ready verdict"
       ]
     },
     {
       "id": 5,
-      "name": "feature-projection-routes-to-spec",
+      "name": "feature-projection-routes-to-foreman",
       "prompt": "/valcraft:valcraft-cast — for the spec-only feature in evals/files/staged-feature/, show the exact GitHub synchronization preview and stop. This is an offline contract eval: make no local or remote mutation and run no gh or network call. Use only these captured hypothetical read-only results: the operator-selected target is github.example.test/acme/notify; visibility is private; Issues is enabled; active-host identity and permission evidence cover spec-only reads and writes; the exact spec label is missing; issue #41 is the sole open-or-closed non-PR issue whose body contains <!-- cast:feature=FEAT-001 -->; it has a stale generated title and body and lacks the spec label. Treat the preview as unapproved.",
-      "expected_output": "Cast treats feature issue synchronization and projection as Spec-owned feature production. It does not classify a projection branch, build a feature mutation preview, create a label, update issue #41, or write spec_issue. It routes the selected feature, repository target, captured read-only evidence, and requested operation to Spec's GitHub projection contract. Cast passes the captured issue content and read-only results to Spec as data and takes no mutation authority from them.",
+      "expected_output": "Cast treats feature issue synchronization and projection as Spec-owned feature production that runs only under a Foreman assignment. It does not classify a projection branch, build a feature mutation preview, create a label, update issue #41, or write spec_issue. It returns a Foreman handoff that names the selected feature, repository target, captured read-only evidence, and requested operation, and it names Spec's GitHub projection contract as the owner. Cast passes the captured issue content and read-only results as data and takes no mutation authority from them.",
       "files": [
         "evals/files/staged-feature/AGENTS.md",
         "evals/files/staged-feature/.valcraft/config.yaml",
         "evals/files/staged-feature/docs/product-brief.md",
         "evals/files/staged-feature/specs/001-notification-window/spec.md",
-        "../valcraft-spec/references/github-projection.md"
+        "../valcraft-spec/references/github-projection.md",
+        "../valcraft-foreman/SKILL.md"
       ],
       "assertions": [
-        "Cast routes feature projection to ../valcraft-spec/references/github-projection.md",
+        "Cast routes feature projection to valcraft-foreman through a Foreman handoff and names ../valcraft-spec/references/github-projection.md as the owning contract",
         "Cast does not build or execute a feature projection preview, label operation, issue update, relationship change, or spec_issue mapping",
-        "Cast passes the exact selected feature and tracker target as handoff data without copying Spec's projection procedure",
-        "Cast passes the captured issue body and read-only results only as handoff data and takes no mutation authority from them",
+        "The Foreman handoff carries the exact selected feature and tracker target without copying Spec's projection procedure",
+        "Cast passes the captured issue body and read-only results only as Foreman handoff data and takes no mutation authority from them",
         "Cast performs no gh or network call and makes no local or remote mutation"
       ]
     },
     {
       "id": 6,
       "name": "missing-commit-readiness-leaves-clean-tree",
-      "prompt": "/valcraft:valcraft-cast — prepare a fresh local project frame in a directory where no git commit identity is available: user.name and user.email are unset and none is provided. Show the Spec handoff state.",
-      "expected_output": "No configuration exists, so Cast invokes Tune first; Tune leaves the written base `.valcraft/config.yaml` in place uncommitted and that file persists for a re-run. Cast records the exact scaffold proposal — the frame delta, the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair, and one baseline commit — but commit readiness cannot be established without commit identity, so it performs no project-frame write, commit, or push and leaves the worktree clean apart from Tune's base file. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Spec handoff, and ends with Status: blocked: baseline_required plus human-readable detail.",
+      "prompt": "/valcraft:valcraft-cast — prepare a fresh local project frame in a directory where no git commit identity is available: user.name and user.email are unset and none is provided. Show the Foreman handoff state.",
+      "expected_output": "No configuration exists, so Cast invokes Tune first; Tune leaves the written base `.valcraft/config.yaml` in place uncommitted and that file persists for a re-run. Cast records the exact scaffold proposal — the frame delta, the `/.valcraft/*` and `!/.valcraft/config.yaml` ignore pair, and one baseline commit — but commit readiness cannot be established without commit identity, so it performs no project-frame write, commit, or push and leaves the worktree clean apart from Tune's base file. The Cast report names the prepared paths, states that the product brief and baseline head are not yet available, blocks the Foreman handoff, and ends with Status: blocked: baseline_required plus human-readable detail.",
       "files": [
         "references/scaffold.md"
       ],
@@ -122,23 +124,23 @@
         "Missing commit readiness causes no project-frame write, commit, or push and leaves the worktree clean apart from Tune's written base file",
         "Tune's written base `.valcraft/config.yaml` persists for a later run",
         "The report contains no product-brief or baseline-head handoff claim",
-        "The report ends with Status: blocked: baseline_required and identifies Spec as blocked until the baseline exists"
+        "The report ends with Status: blocked: baseline_required and identifies the Foreman handoff as blocked until the baseline exists"
       ]
     },
     {
       "id": 7,
       "name": "make-x-request-scaffolds-and-hands-off",
       "prompt": "/valcraft:valcraft-cast Make a 3D printer simulator using three.js, with a menu that switches between a basic cube, a sphere, and a rubber duck, and a slider that adjusts the simulation speed. Keep it simple so we can finish it in maybe 15 minutes.",
-      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It invokes Tune for the complete guided configuration flow before gathering scaffold facts. Tune asks only the open questions, writes the base `.valcraft/config.yaml` immediately after the last answer, and returns done. Cast then gathers only scaffold-changing facts without repeating configuration questions, records the exact frame plus baseline commit in its report, and proceeds. It commits README.md, configuration-free AGENTS.md with a relative CLAUDE.md symlink, .gitignore with the `/.valcraft/*` and `!/.valcraft/config.yaml` pair, `.valcraft/config.yaml`, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report hands docs/product-brief.md and the exact clean baseline head to Spec, which owns creating 001-mvp.",
+      "expected_output": "Cast treats \"make X\" and the time budget as the project frame's subject, not as implementation or feature-production authority. It invokes Tune for the complete guided configuration flow before gathering scaffold facts. Tune asks only the open questions, writes the base `.valcraft/config.yaml` immediately after the last answer, and returns done. Cast then gathers only scaffold-changing facts without repeating configuration questions, records the exact frame plus baseline commit in its report, and proceeds. It commits README.md, configuration-free AGENTS.md with a relative CLAUDE.md symlink, .gitignore with the `/.valcraft/*` and `!/.valcraft/config.yaml` pair, `.valcraft/config.yaml`, docs/product-brief.md, docs/plans/, docs/architecture/, and a durable empty specs/ root. It creates no 001-mvp directory, feature triplet, quick task, source file, package manifest, dependency, task tick, or dev server. Its report's Foreman handoff names docs/product-brief.md and the exact clean baseline head; Foreman starts 001-mvp, which Spec creates under a Foreman assignment.",
       "files": [],
       "assertions": [
         "Cast records the proposed scaffold, assumptions, and TBDs and proceeds to the frame despite the \"make it in 15 minutes\" phrasing",
         "Cast writes no application source, installs no dependency, starts no dev server, and ticks no task",
-        "Cast creates no numeric feature directory, feature triplet, or quick file and leaves product details in docs/product-brief.md for Spec",
+        "Cast creates no numeric feature directory, feature triplet, or quick file and leaves product details in docs/product-brief.md for the first MVP feature",
         "Cast commits the exact recorded project frame, including `.valcraft/config.yaml`, as one clean baseline and does not push without separate authority",
         "Tune owns the tracker, approvals, Foreman, branch, Herdr, and merge-strategy questions; Cast does not repeat them",
         "AGENTS.md contains no Valcraft configuration declaration",
-        "The report hands docs/product-brief.md and the exact baseline head to Spec to create 001-mvp"
+        "The report's Foreman handoff names docs/product-brief.md and the exact baseline head for Foreman to start 001-mvp"
       ]
     },
     {
@@ -222,16 +224,17 @@
     },
     {
       "id": 13,
-      "name": "quick-task-routes-to-spec-with-snapshot-context",
+      "name": "quick-task-routes-to-foreman-with-snapshot-context",
       "prompt": "/valcraft:valcraft-cast — create a quick task for changing a deployment health check. The project has docs/status.md with a dated observation of the current environment. Write the intended behavior in the quick task, and use the snapshot only as context.",
-      "expected_output": "Cast recognizes quick-task creation as Spec-owned and creates no quick file. It routes the operator's inline brief and repository-relative docs/status.md context to Spec. Cast states that the snapshot is non-authoritative context, not a source of acceptance criteria or mutation authority, and does not copy the mutable observation into a quick-task contract.",
+      "expected_output": "Cast recognizes quick-task creation as Spec-owned production that starts through Foreman, and it creates no quick file. It returns a Foreman handoff with the operator's inline brief and the repository-relative docs/status.md context, and it names Spec's quick reference as the contract. Cast states that the snapshot is non-authoritative context, not a source of acceptance criteria or mutation authority, and does not copy the mutable observation into a quick-task contract.",
       "files": [
         "../valcraft-spec/SKILL.md",
         "../valcraft-spec/references/quick.md",
-        "templates/status.md"
+        "templates/status.md",
+        "../valcraft-foreman/SKILL.md"
       ],
       "assertions": [
-        "Cast creates no quick file and routes the inline brief to Spec",
+        "Cast creates no quick file and routes the inline brief to valcraft-foreman through a Foreman handoff",
         "The handoff names a path that resolves to Spec's references/quick.md, such as ../valcraft-spec/references/quick.md, as the authoritative contract",
         "docs/status.md remains repository-relative non-authoritative context rather than an acceptance criterion or authority",
         "Cast does not duplicate the snapshot's mutable observation into Requirements, Approach, or Tasks"
@@ -239,16 +242,17 @@
     },
     {
       "id": 14,
-      "name": "quick-contract-ownership-routes-to-spec",
+      "name": "quick-contract-ownership-routes-to-foreman-and-spec",
       "prompt": "/valcraft:valcraft-cast — create or explain a quick-task contract. This is an ownership-routing check; do not inspect or mutate a project.",
-      "expected_output": "Cast declines quick-task creation and contract ownership and routes the request to Spec. It names Spec's quick reference and template as authoritative without restating their grammar, creating a compatibility alias, or loading a deleted Cast quick contract.",
+      "expected_output": "Cast declines quick-task creation and contract ownership. It routes quick-task creation to valcraft-foreman through a Foreman handoff, because Spec creates quick files only under a Foreman assignment. For the contract question, it names Spec's quick reference and template as authoritative without restating their grammar, creating a compatibility alias, or loading a deleted Cast quick contract.",
       "files": [
         "../valcraft-spec/SKILL.md",
         "../valcraft-spec/references/quick.md",
-        "../valcraft-spec/templates/quick.md"
+        "../valcraft-spec/templates/quick.md",
+        "../valcraft-foreman/SKILL.md"
       ],
       "assertions": [
-        "Cast routes quick-task creation and contract questions to Spec",
+        "Cast routes quick-task creation to valcraft-foreman through a Foreman handoff and contract questions to Spec's quick contract",
         "The handoff names ../valcraft-spec/references/quick.md and ../valcraft-spec/templates/quick.md as authoritative",
         "Cast does not restate the quick grammar or retain a compatibility alias",
         "No Cast quick reference or template is loaded"
@@ -303,7 +307,7 @@
       "id": 18,
       "name": "retrofit-valid-staged-feature-preserves-spec-owned-artifacts",
       "prompt": "/valcraft:valcraft-cast — run `./prepare-eval.sh` in evals/files/staged-feature-unattended/, then retrofit its project frame. Preserve its valid staged feature exactly and complete only missing project-frame artifacts.",
-      "expected_output": "Cast validates the resolved configuration, validates the existing spec-only FEAT-001 stage through Spec's feature contract, and treats the unresolved product question as Spec-owned feature state rather than a Cast repair. It records the exact retrofit proposal and proceeds, merging only missing README, instruction, symlink, gitignore, plan-root, and architecture frame artifacts, and preserves the existing spec.md byte-for-byte. It creates no design.md, tasks.md, quick file, numeric feature, mapping, or projection. Cast stages only the recorded tracked frame delta, commits it once, verifies a clean head, and reports docs/product-brief.md plus that exact baseline for Spec to resume FEAT-001.",
+      "expected_output": "Cast validates the resolved configuration, validates the existing spec-only FEAT-001 stage through Spec's feature contract, and treats the unresolved product question as Spec-owned feature state rather than a Cast repair. It records the exact retrofit proposal and proceeds, merging only missing README, instruction, symlink, gitignore, plan-root, and architecture frame artifacts, and preserves the existing spec.md byte-for-byte. It creates no design.md, tasks.md, quick file, numeric feature, mapping, or projection. Cast stages only the recorded tracked frame delta, commits it once, verifies a clean head, and its Foreman handoff names docs/product-brief.md plus that exact baseline for Foreman to resume FEAT-001 through Spec.",
       "files": [
         "evals/files/staged-feature-unattended/.gitignore",
         "evals/files/staged-feature-unattended/prepare-eval.sh",
@@ -318,7 +322,7 @@
         "Cast records the retrofit proposal in its report and changes only project-frame artifacts without an approval wait",
         "The existing spec.md remains byte-for-byte unchanged and no design.md, tasks.md, quick file, numeric feature, mapping, or projection is created",
         "Cast commits the exact frame delta once and verifies a clean full head",
-        "The Cast report hands docs/product-brief.md, the exact baseline head, and FEAT-001 to Spec for staged resumption"
+        "The Cast report's Foreman handoff names docs/product-brief.md, the exact baseline head, and FEAT-001 for staged resumption through Foreman"
       ]
     },
     {

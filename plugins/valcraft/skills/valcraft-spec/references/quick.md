@@ -20,7 +20,7 @@ A change requiring several phases, a separate design artifact, a tracker issue h
 - A bare `Q-NNN` selects that file's first unchecked `QT-` in file order whose dependencies are checked. A bare `QT-XXX` resolves only when enumeration finds one matching valid quick file. A bare `T-XXX` searches feature tasks only. Zero or several matches stop.
 - A file with no eligible task resolves to nothing. Do not pick a blocked or checked task.
 
-Derive a task-delivery branch as `feat/q007-qt001-<slug>` and a logical worker or report identity as `Q007-QT001`, preserving every digit. That later task-delivery identity is separate from Spec's feature-contract delivery branch.
+A quick task's delivery branch is `feat/q007-qt001-<slug>`, which Foreman derives as [`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#canonical-branches) defines, and its logical worker or report identity is `Q007-QT001`, preserving every digit. That later task-delivery identity is separate from Spec's feature-contract delivery branch.
 
 ## Source and contents
 

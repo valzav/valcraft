@@ -158,10 +158,10 @@
     },
     {
       "id": 7,
-      "name": "cold-start-drafter-and-small-context",
+      "name": "cold-start-spec-reviewer-and-small-context",
       "coordination_coverage": "transport:claude-event-wake",
-      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-cold/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host. I attribute the Spec Review report at `.valcraft/reviews/spec-reviewer-F001.md` (SHA-256 `26a3528b3b09351c90c27ff436819a1639dbd1f1d581726108e295db50a94bcf`) to my own review run before this delivery run. Treat this message as my `confirm` of the takeover inference you present, provided it names feature 001-invite-links on `dev`, adopts that report, and attributes no dirty path.",
-      "expected_output": "Foreman resolves runtime, validates the operator-attributed passing Spec Review report against the triplet at the `dev` head and adopts it as pre-run evidence, infers Ready, applies the prompt's takeover confirmation, creates state.md and workers.md, and selects T-002 from task order and satisfied dependencies. It enters Drafting and dispatches a fresh drafter-F001-T002 with valcraft-draft, exact predecessor SHA, task paths, report path, terminal-status requirement, and trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event; Cursor uses a fresh Task generalPurpose dispatch, binds the absolute valcraft-draft SKILL.md path, records the Task agent id, and awaits in the active turn. Foreman does not read the artifacts to plan or run MSW itself.",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-cold/, run `./prepare-eval.sh`, then start a new delivery run for feature 001-invite-links and continue according to the active native-subagent host. I attribute the Spec Review report at `.valcraft/reviews/spec-reviewer-F001.md` (SHA-256 `26a3528b3b09351c90c27ff436819a1639dbd1f1d581726108e295db50a94bcf`) to my own review run before this delivery run. Treat this message as my `confirm` of the takeover inference you present, provided it names feature 001-invite-links on `dev` and attributes no dirty path.",
+      "expected_output": "Foreman resolves runtime and performs takeover discovery because no Foreman checkpoint exists. The operator-attributed Spec Review report comes from outside any Foreman run, so it is not evidence: Foreman neither validates nor adopts it and infers no Spec verdict from it. The complete triplet is committed on `dev` with no exact current Spec verdict, so Foreman infers SpecReview, applies the prompt's takeover confirmation, and creates state.md and workers.md. It dispatches a fresh spec-reviewer-F001 with valcraft-review in plan mode on the exact triplet at the `dev` head, with the highest existing R-ID `none`, the report path, the terminal-status requirement, and the trust boundary. Codex uses fork_turns none and foreground await; Claude Code establishes its event; Cursor uses a fresh Task generalPurpose dispatch, binds the absolute valcraft-review SKILL.md path, records the Task agent id, and awaits in the active turn. Foreman does not review the triplet, pick a task, or dispatch Draft.",
       "files": [
         "evals/files/loop-cold/prepare-eval.sh",
         "evals/files/loop-cold/AGENTS.md",
@@ -173,16 +173,19 @@
         "evals/files/loop-cold/specs/001-invite-links/spec.md",
         "evals/files/loop-cold/specs/001-invite-links/design.md",
         "evals/files/loop-cold/specs/001-invite-links/tasks.md",
-        "evals/files/loop-cold/.valcraft/reviews/spec-reviewer-F001.md"
+        "evals/files/loop-cold/.valcraft/reviews/spec-reviewer-F001.md",
+        "references/loop.md",
+        "references/contracts.md"
       ],
       "assertions": [
-        "Foreman adopts the operator-attributed passing Spec Review report as pre-run evidence, infers Ready rather than SpecReview, and picks T-002 from tasks.md order and dependency state",
+        "Foreman does not adopt, validate as evidence, or record the operator-attributed standalone Spec Review report, and infers no Spec verdict from it",
+        "Foreman infers SpecReview for the triplet committed on `dev`, not Ready, and picks no task",
         "Foreman creates a run directory with state.md and workers.md before dispatching",
-        "When the host exposes a todo-list tool, Foreman mirrors the loop in it after the pick: one item per named state on T-002's path titled `F001-T002 — <state>`, exactly one item in_progress, and no per-worker or per-dispatch item",
-        "The drafter is a fresh general-purpose worker, not a fork, with canonical logical identity drafter-F001-T002",
-        "The Draft assignment contains the cold-start reading order, report path, Status line instruction, exact predecessor, and trust-boundary paragraph",
-        "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending; Cursor dispatch uses Task generalPurpose, binds the absolute SKILL.md path, records the Task agent id, and awaits in the active turn",
-        "Foreman reads only the exact spec, design, and task evidence needed for Spec readiness and selection; it does not interpret those artifacts as a task plan or run MSW"
+        "When the host exposes a todo-list tool, Foreman mirrors the loop in it after the confirmed takeover: items titled `<target identity> — <state>` starting at SpecReview, exactly one item in_progress, and no per-worker or per-dispatch item",
+        "The spec reviewer is a fresh general-purpose worker, not a fork, with canonical logical identity spec-reviewer-F001, running valcraft-review in plan mode on the exact `dev` head",
+        "The SpecReview assignment contains the cold-start reading order, report path, Status line instruction, exact triplet head, highest existing R-ID `none`, and trust-boundary paragraph",
+        "Codex dispatch uses fork_turns: none, records the physical handle, and awaits in the active turn; Claude Code dispatch establishes the completion notification before ending; Cursor dispatch uses Task generalPurpose, binds the absolute valcraft-review SKILL.md path, records the Task agent id, and awaits in the active turn",
+        "Foreman reads only the exact spec, design, and task evidence needed for takeover inference; it does not review the triplet itself or run MSW"
       ]
     },
     {
@@ -285,8 +288,8 @@
     {
       "id": 12,
       "name": "deliver-quick-picks-across-files-without-github",
-      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-quick/, run `./prepare-eval.sh`, then deliver quick and continue according to the active native-subagent host. I attribute the Spec Review report at `.valcraft/reviews/spec-reviewer-Q002.md` (SHA-256 `a3a5789809f5c5c0799bac4f9c23d9779b8c65ea0e7609f11f92112d024c4439`) to my own review run before this delivery run. Treat this message as my `confirm` of the takeover inference you present, provided it names the quick pool on `dev`, adopts that report, and attributes no dirty path.",
-      "expected_output": "Foreman validates the Spec-owned quick pool, validates the operator-attributed passing Spec Review report against Q-002's quick file at the `dev` head and adopts it as pre-run evidence, applies the prompt's takeover confirmation, and selects Q-002 QT-001 after its checked cross-file dependency. It performs no GitHub task operation. It records branch feat/q002-qt001-<slug>, enters Drafting, and dispatches drafter-Q002-QT001 with the exact quick file, predecessor, report path, terminal status, and trust boundary. The physical handle is separate. Codex foreground-awaits; Claude Code establishes the event. Foreman writes no plan.",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-quick/, run `./prepare-eval.sh`, then resume run `run-quick-pick` from .valcraft/foreman/run-quick-pick/ and continue according to the active native-subagent host.",
+      "expected_output": "Foreman resumes the verified active checkpoint without takeover discovery or confirmation. It verifies the accepted passing Spec Review report in the run directory against Q-002's quick file at the `dev` head and, because that quick file is already present on `dev`, moves from SpecReview to Ready with no spec PR or SpecLanding. It validates the Spec-owned quick pool and selects Q-002 QT-001 after its checked cross-file dependency. It performs no GitHub task operation. It records branch feat/q002-qt001-<slug>, enters Drafting, and dispatches drafter-Q002-QT001 with the exact quick file, predecessor, report path, terminal status, and trust boundary. The physical handle is separate. Codex foreground-awaits; Claude Code establishes the event. Foreman writes no plan.",
       "files": [
         "evals/files/loop-quick/prepare-eval.sh",
         "evals/files/loop-quick/AGENTS.md",
@@ -295,7 +298,9 @@
         "evals/files/loop-quick/docs/product-brief.md",
         "evals/files/loop-quick/specs/quick/001-export-filename-date.md",
         "evals/files/loop-quick/specs/quick/002-login-redirect-query.md",
-        "evals/files/loop-quick/.valcraft/reviews/spec-reviewer-Q002.md",
+        "evals/files/loop-quick/.valcraft/foreman/run-quick-pick/state.md",
+        "evals/files/loop-quick/.valcraft/foreman/run-quick-pick/workers.md",
+        "evals/files/loop-quick/.valcraft/foreman/run-quick-pick/spec-reviewer-Q002-d000.md",
         "evals/files/loop-quick/invalid-project/AGENTS.md",
         "evals/files/loop-quick/invalid-project/.valcraft/config.yaml",
         "evals/files/loop-quick/invalid-project/.gitignore",
@@ -303,10 +308,11 @@
         "evals/files/loop-quick/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
+        "Foreman moves from SpecReview to Ready on the accepted in-run pass, with no spec PR, SpecLanding, or second Spec Review, because the reviewed quick file is already on `dev`",
         "Foreman picks Q-002 QT-001 by walking quick files in number order and resolving its checked cross-file Q-001 QT-001 dependency",
         "Foreman applies quick.md's readiness rule to the quick file before picking",
         "Foreman performs no gh command, label, or tracker batch for the quick task despite `tracker.mode: github`",
-        "Foreman creates a run directory with state.md and workers.md before dispatching",
+        "Foreman resumes run-quick-pick from its latest checkpoint without takeover discovery or confirmation, and records its new checkpoints and a new workers.md row before dispatching",
         "The canonical identity is Q-002 QT-001; branch feat/q002-qt001-<slug> and logical drafter-Q002-QT001 preserve it, while workers.md records a separate physical handle",
         "The Draft assignment names the quick file's absolute path plus predecessor, report path, Status line, and trust-boundary paragraph",
         "Codex awaits in the active parent turn; Claude Code ends only after dispatch establishes the completion notification",
@@ -645,24 +651,28 @@
     },
     {
       "id": 56,
-      "name": "feature-intake-bypasses-foreman",
-      "prompt": "$valcraft:valcraft-foreman — the operator supplies a local PRD in a project where `.valcraft/config.yaml` is missing. Resolve the route without calling tools or mutating files.",
-      "expected_output": "Feature-contract intake is outside the delivery loop. Foreman routes the readable PRD directly to valcraft-spec and creates no run, worker, plan, artifact, review, PR, approval relay, runtime default, or compatibility path. Foreman does not need delivery configuration to identify the owning skill. The handoff leaves Spec to apply its own configuration gate and invoke Tune before feature work.",
+      "name": "new-contract-intake-enters-foreman-after-configuration",
+      "prompt": "$valcraft:valcraft-foreman — the operator supplies a local PRD, `docs/prd-bulk-labels.md`, to start a new feature in a project where `.valcraft/config.yaml` is missing. (1) Resolve the route. (2) Later, after the configuration is valid and the Specifying assignment has run, Spec's report ends `Status: question: source_selection_required — the PRD stages two features; select one`. The run is unattended. State the transition. Do not call tools or mutate files.",
+      "expected_output": "(1) Foreman owns new contract intake, but configuration resolution comes first: with the committed base missing, Foreman invokes Tune and creates no run or worker before Tune returns Status: done. It does not route the PRD to valcraft-spec outside a run. After Tune returns done, the readable PRD creates a run and enters Specifying with no takeover confirmation, because no prior work exists to attribute. The Specifying envelope names the PRD as source, identity `none`, canonical branch `none`, and logical worker `specifier-new-prd-bulk-labels`. (2) source_selection_required routes to AwaitOwner. Foreman never selects the feature itself, and the unattended Foreman decisions step does not apply, because it covers only product_decision_required and owner_decision_required.",
       "files": [
         "SKILL.md",
-        "references/loop.md"
+        "references/loop.md",
+        "references/configuration.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
       ],
       "assertions": [
-        "A local PRD routes directly to Spec outside Foreman",
-        "Foreman creates no run or worker and performs no artifact or PR work",
-        "Foreman applies no runtime default and leaves the missing-configuration gate to Spec",
-        "Foreman creates no approval relay and no compatibility path between Cast and the delivery loop; the PRD goes straight to Spec"
+        "Foreman invokes Tune for the missing configuration and creates no run or worker before Tune returns Status: done",
+        "Foreman does not route the PRD directly to valcraft-spec outside a Foreman run",
+        "After the configuration is valid, the PRD creates a run and enters Specifying with no takeover confirmation",
+        "The Specifying envelope names identity `none`, canonical branch `none`, and logical worker `specifier-new-prd-bulk-labels`",
+        "source_selection_required routes to AwaitOwner, and Foreman neither selects a feature nor answers the question as a Foreman decision"
       ]
     },
     {
       "id": 57,
       "name": "named-state-resume-routes-by-exact-evidence",
-      "prompt": "$valcraft:valcraft-foreman — describe resume routing for four task checkpoints: a committed Draft plan with no Review report; an exact passing plan Review with no Forge report; a Forge task PR head with no code Review; and a passing code Review whose covered head still matches the PR. Do not spawn workers or mutate files.",
+      "prompt": "$valcraft:valcraft-foreman — describe resume routing for four task checkpoints: a committed Draft plan pushed to its canonical task ref with no Review report; an exact passing plan Review with no Forge report; a Forge task PR head with no code Review; and a passing code Review whose covered head still matches the PR. Do not spawn workers or mutate files.",
       "expected_output": "Foreman verifies every pointer and exact SHA, then routes the checkpoints to PlanReview, Implementing, CodeReview, and Landing respectively. It does not restart Draft, infer coverage from a branch name, or perform any producer's work.",
       "files": [
         "references/loop.md",
@@ -759,7 +769,7 @@
       "name": "polling-backend-classifies-attributed-active-session",
       "coordination_coverage": "transport:poll-wake",
       "prompt": "$valcraft:valcraft-foreman — for one attributed active assignment on the selected polling backend, classify five independent waiter observations: (1) the assigned report checksum changes; (2) its session status is blocked with no checksum change; (3) the session was observed working and is now idle with no checksum change; (4) the assigned session is absent with no checksum change; and (5) the session remains working with no checksum change. State the exact action order when a report becomes available, then audit every row of the active transport-deviation registry in `references/backends/README.md`: state whether it changes a dispatch, await, wake, or workspace primitive, whether it names a unique coverage key and a discriminating Foreman eval, and whether it is resolved or historical. Do not spawn workers or mutate files.",
-      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake (eval 7), Codex foreground wake and timeout continuation (eval 18), Cursor in-turn Task hold (eval 91), native shared checkout (eval 35); Agent Orchestrator external polling covered by this eval, isolated git-backed branches (eval 62), no-git transport workspaces (eval 67), Review continuity (eval 88), and the permission gate observed by the poll waiter (eval 89); and Herdr's unconfirmed prompt delivery (eval 73), startup exit (eval 104), background wake (eval 106), argv envelope (eval 84), cross-model roles (eval 74), shared checkout (eval 75), Review continuity (eval 85), producer continuity (eval 110), and permission gate observed in the pane (eval 87). Every row changes a dispatch, await, wake, or workspace primitive and names one unique coverage key and discriminating eval.",
+      "expected_output": "Foreman maps the attributed checksum change to report_available, blocked to permission_blocked, observed-working then idle without a report change to idle_without_report, and the missing assigned session to dead. A still-working session yields no return and polling continues. On wake, Foreman attributes and records the backend return against the active assignment before opening any report; only report_available permits access to the assigned path. The registry retains only active primitive deviations: Claude Code event wake (eval 7), Codex foreground wake and timeout continuation (eval 18), Cursor in-turn Task hold (eval 91), native shared checkout (eval 35); Agent Orchestrator external polling covered by this eval, isolated git-backed branches (eval 62), no-git transport workspaces (eval 67), Review continuity (eval 88), and the permission gate observed by the poll waiter (eval 89); and Herdr's unconfirmed prompt delivery (eval 73), startup exit (eval 104), background wake (eval 106), argv envelope (eval 84), cross-model roles (eval 74), shared checkout (eval 75), Review continuity (eval 85), and permission gate observed in the pane (eval 87). Every row changes a dispatch, await, wake, or workspace primitive and names one unique coverage key and discriminating eval.",
       "files": [
         "references/contracts.md",
         "references/backends/README.md",
@@ -798,23 +808,24 @@
     },
     {
       "id": 65,
-      "name": "prepared-producer-head-resumes-before-review",
-      "prompt": "$valcraft:valcraft-foreman — compare two complete producer reports whose exact local artifact exists but whose required outward handoff is still prepared: an `ao` external-orchestrator Draft plan commit that is not on its canonical remote ref, and a Forge implementation head with PR none. Then state why a Temper report never enters this path. Explain attended and unattended continuation. Do not execute any outward mutation.",
-      "expected_output": "Foreman keeps Drafting or Implementing active instead of advancing to Review or Blocked. It records the prepared target, applies that named state's approval gate, and resumes the same logical producer under a fresh physical identity with newly attributed exact target-bound authority. Attended waits unless the live operator already granted the exact operation. Unattended may issue the exact Foreman authority after validating the prepared fields. Draft enters PlanReview only when its exact commit is accessible to the Review worker; Forge enters CodeReview only after the exact PR exists. Temper has no outward handoff at all: its report is a local gitignored file pinned by path and content hash, so a complete Temper report goes straight to RetroReview. Foreman executes no push or PR operation.",
+      "name": "unpushed-producer-report-redispatches-under-grant",
+      "prompt": "$valcraft:valcraft-foreman — compare two complete producer reports that end `Status: done` but lack their required outward result: an `ao` external-orchestrator Draft report whose committed plan head is not on its canonical remote task ref, and a Forge report whose implementation head is pushed but whose task PR is `none`. Then state why a Temper report never enters this path. Explain attended and unattended handling. Do not execute any outward mutation.",
+      "expected_output": "Neither report advances. DraftResult advances only when the report names the plan head pushed to the canonical task ref, and ForgeResult only when the report names the exact task PR and Review target. Foreman keeps Drafting or Implementing active and re-dispatches the same logical producer under a fresh physical identity and report path with the ref-bound producer grant. Draft's grant binds the canonical task ref, its observed remote head, and the non-force push. Forge's re-dispatch binds the currently pushed head as the observed remote head, the PR base ref by name, the head ref, the absent task PR, and push plus task-PR creation. Attended and unattended handling are the same: no approval gate waits, because every Draft and Forge dispatch carries the grant in both modes, and neither report is a prepared continuation. Draft enters PlanReview only after it reports the pushed head; Forge enters CodeReview only after it reports the exact PR. Temper has no outward step: its report is a local gitignored file pinned by path and content hash, so a complete Temper report goes straight to RetroReview. Foreman executes no push or PR operation.",
       "files": [
         "references/loop.md",
         "references/contracts.md",
         "references/approval-modes.md",
+        "references/outward-mutation.md",
         "references/backends/README.md",
         "templates/run-dir.md"
       ],
       "assertions": [
-        "A prepared Draft or Forge outward handoff keeps its current producer state active",
-        "The same logical producer resumes under a fresh physical identity and report path",
-        "Fresh authority is attributed and bound to the exact prepared repository, remote, base, head, ref, PR target, and operation set",
-        "Attended waits without existing explicit authority; unattended may issue exact Foreman authority only after validating every prepared field",
-        "Draft advances only when Review can access its exact commit, and Forge advances only after the exact PR exists",
-        "Temper never enters the prepared-continuation path because its report has no git target",
+        "Neither report advances to Review; Foreman keeps Drafting or Implementing active",
+        "The same logical producer is re-dispatched under a fresh physical identity and report path with the ref-bound producer grant",
+        "Forge's re-dispatch binds the currently pushed head as the observed remote head and the absent task PR, with push and task-PR creation as the operation set",
+        "Attended and unattended mode both re-dispatch without an approval wait, and Foreman treats neither report as a prepared continuation",
+        "Draft advances only after it reports the plan head pushed to the canonical task ref, and Forge only after it reports the exact task PR",
+        "Temper never enters this path because its report has no git target",
         "Foreman performs no push or PR mutation"
       ]
     },
@@ -1360,64 +1371,67 @@
     {
       "id": 93,
       "name": "takeover-confirmation-always-waits-before-run-creation",
-      "prompt": "$valcraft:valcraft-foreman — approval mode is unattended and no verified active Foreman checkpoint exists. The operator names FEAT-014. On a shared-checkout backend, a clean committed Spec triplet exists on local branch spec/f014-bulk-labels at exact head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa and is accessible to the next Review worker; there is no current Review verdict, remote branch, PR, tracker projection, or standalone producer report. Describe the takeover bootstrap through its first gate. Do not create a run or dispatch a worker.",
-      "expected_output": "Foreman performs read-only takeover discovery because no exact active checkpoint can resume. It selects FEAT-014, reports the repository and exact contract target at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, the evidence it used and the absent outward state, no attributed dirty paths, inferred state SpecReview, and Review as the next producer action. It also states that later push, PR, tracker, landing, or closure operations still require their own applicable authority. Even in unattended mode it offers confirm, correct, or cancel and waits. It creates no run directory, progress display, assignment, or worker before confirmation. Confirmation would attribute only this inferred state and evidence; it would not grant mutation authority or change approval mode.",
+      "prompt": "$valcraft:valcraft-foreman — approval mode is unattended and no verified active Foreman checkpoint exists. The operator names FEAT-014 and attributes a standalone Spec report at /work/project/.local/spec-F014.md that says the triplet was pushed and is ready for Review. On a shared-checkout backend, a clean, committed, complete Spec triplet exists on local branch spec/f014-bulk-labels at exact head aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa. `git ls-remote` shows no remote spec/f014-bulk-labels, and there is no current Review verdict, PR, or tracker projection. Describe the takeover bootstrap through its first gate. Do not create a run or dispatch a worker.",
+      "expected_output": "Foreman performs read-only takeover discovery because no exact active checkpoint can resume. The standalone Spec report comes from outside any run, so it is not evidence: Foreman neither adopts nor records it, and the preview does not rely on its claim that the triplet was pushed. Durable evidence shows a complete contract at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa that is not on its canonical Spec ref, so Foreman infers Specifying. The next producer is Spec, which pushes spec/f014-bulk-labels and opens the spec PR under the ref-bound producer grant that the Specifying dispatch carries; SpecReview follows Spec's report. The preview names the repository and exact target, the evidence and the absent outward state, no attributed dirty paths, the inferred state, and the next action. It attributes the push and spec-PR authority to the dispatch grant and states that landing and closure operations keep their own authority gates. Even in unattended mode it offers confirm, correct, or cancel and waits. It creates no run directory, progress display, assignment, or worker before confirmation. Confirmation would attribute only the inferred state and dirty paths; it would not grant mutation authority or change approval mode.",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
         "references/contracts.md",
         "references/loop.md",
+        "references/outward-mutation.md",
         "templates/run-dir.md"
       ],
       "assertions": [
         "No verified active checkpoint selects takeover discovery rather than ordinary resume",
-        "The preview names FEAT-014, repository and exact target, evidence, dirty-path attribution, SpecReview, and Review as the next action",
-        "The preview preserves later outward-mutation authority gates",
+        "The standalone Spec report is not evidence: Foreman neither adopts nor records it and does not treat the triplet as pushed",
+        "The preview names FEAT-014, repository and exact target, evidence, no dirty-path attribution, Specifying, and Spec as the next producer to push the canonical Spec ref and open the spec PR",
+        "The preview attributes the push and spec-PR authority to the ref-bound producer grant the Specifying dispatch carries, not to confirmation, and keeps later landing and closure gates",
         "Unattended mode still waits for confirm, correct, or cancel",
         "No run directory, progress display, assignment, or worker exists before confirmation",
-        "Confirmation attributes the previewed evidence only and does not grant mutation authority or change approval mode"
+        "Confirmation attributes only the inferred state and dirty paths and does not grant mutation authority or change approval mode"
       ]
     },
     {
       "id": 94,
       "name": "takeover-routes-manual-spec-lifecycle-evidence",
-      "prompt": "$valcraft:valcraft-foreman — infer the takeover state and next producer for four confirmed FEAT-021 snapshots with no active checkpoint: (a) attributed dirty spec.md and design.md exist but tasks.md is missing; (b) spec PR #40 has current complete head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, accessible to the next Review worker, with no exact current verdict; (c) spec PR #41 has current head cccccccccccccccccccccccccccccccccccccccc and an exact passing Spec Review covers that same head; (d) local exact head dddddddddddddddddddddddddddddddddddddddd has an unchanged passing Spec Review but no landable PR. State the route for each, what Foreman must not infer, and whether quick-task contracts use the same lifecycle. Do not dispatch or mutate anything.",
-      "expected_output": "(a) is Specifying and dispatches Spec to reconcile the attributed partial contract; Foreman does not complete or commit it. (b) is SpecReview and dispatches Review against PR #40 at exact head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; the complete triplet and PR are not themselves a verdict. (c) is SpecLanding and dispatches Land against PR #41 at exact reviewed head cccccccccccccccccccccccccccccccccccccccc. (d) returns to Specifying and dispatches Spec to prepare projection, push, or PR publication while preserving the verdict only if the resulting exact head remains dddddddddddddddddddddddddddddddddddddddd. Foreman never infers Review pass from a branch, PR, implementation, or user summary, and the same state rules apply to a quick-task contract.",
+      "prompt": "$valcraft:valcraft-foreman — infer the takeover state and next producer for four confirmed FEAT-021 snapshots with no active checkpoint: (a) attributed dirty spec.md and design.md exist but tasks.md is missing; (b) spec PR #40 has current complete head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, pushed to its canonical Spec ref, with no exact current verdict; (c) spec PR #41 has current head cccccccccccccccccccccccccccccccccccccccc, and the operator attributes a standalone Spec Review report that passes that same head; (d) a complete contract at local exact head dddddddddddddddddddddddddddddddddddddddd is not on its canonical Spec ref and has no spec PR. State the route for each, what Foreman must not infer, and whether quick-task contracts use the same lifecycle. Do not dispatch or mutate anything.",
+      "expected_output": "(a) is Specifying and dispatches Spec to reconcile the attributed partial contract; Foreman does not complete or commit it. (b) is SpecReview and dispatches Review against PR #40 at exact head bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; the complete triplet and PR are not themselves a verdict. (c) is also SpecReview against PR #41 at cccccccccccccccccccccccccccccccccccccccc: the standalone Review report comes from outside the run, so it is not evidence and cannot move the contract to SpecLanding. (d) is Specifying: Spec pushes the canonical Spec ref and opens the spec PR under the ref-bound producer grant that the Specifying dispatch carries, and SpecReview follows Spec's report. Foreman never infers a Review pass from a branch, PR, implementation, standalone report, or user summary, and the same state rules apply to a quick-task contract.",
       "files": [
         "SKILL.md",
         "references/contracts.md",
         "references/loop.md",
         "references/intake-local.md",
-        "references/intake-github.md"
+        "references/intake-github.md",
+        "references/outward-mutation.md"
       ],
       "assertions": [
         "An attributed partial contract enters Specifying and returns to Spec",
         "A current spec PR without an exact verdict enters SpecReview and goes to Review",
-        "A landable spec PR with a passing verdict over its current exact head enters SpecLanding and goes to Land",
-        "A passing verdict without a landable PR returns to Specifying for publication and is preserved only while its covered head remains unchanged",
-        "Foreman never infers Review pass from branch, PR, implementation, or user prose",
+        "A standalone Spec Review report is not evidence, so spec PR #41 enters SpecReview at its current head rather than SpecLanding",
+        "A complete contract not on its canonical Spec ref enters Specifying, where Spec pushes the ref and opens the spec PR under the ref-bound producer grant",
+        "Foreman never infers a Review pass from a branch, PR, implementation, standalone report, or user prose",
         "Feature triplets and quick-task contracts use the same lifecycle"
       ]
     },
     {
       "id": 95,
-      "name": "takeover-adopts-only-exact-standalone-reports",
-      "prompt": "/valcraft:valcraft-foreman — no active checkpoint exists for T-004. Compare four proposed pre-run Forge reports: (a) the operator attributes /work/project/.local/forge-T-004.md, whose complete producer-owned shape and content hash match repository project-x, T-004, plan pppppppppppppppppppppppppppppppppppppppp, current task PR #52, and its exact Review target at implementation head dddddddddddddddddddddddddddddddddddddddd; (b) a complete report covers prior head eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee; (c) a matching report path is discovered but the operator did not attribute it; (d) an attributed complete current report still names task PR `none`. State what Foreman records and routes after takeover confirmation. Do not create workers or files.",
-      "expected_output": "Foreman may adopt (a) as pre-run evidence after validating the exact path, complete Forge shape, content hash, repository, target, plan, task PR #52, exact Review target, and current covered head. It records the evidence as adopted, infers CodeReview, and routes PR #52 at head dddddddddddddddddddddddddddddddddddddddd to Review. It creates no assignment id, logical or physical worker identity, backend return, or workers.md row for the historical Forge run. It rejects (b) as stale and (c) as unattributed. It may adopt (d) as current Forge evidence but remains in Implementing because no exact task PR and Review target exist. Rejected or prose-only evidence resumes from the earliest state current durable evidence proves. A user summary cannot substitute for a report.",
+      "name": "takeover-ignores-standalone-reports",
+      "prompt": "/valcraft:valcraft-foreman — no active checkpoint exists for FEAT-009 T-004 in repository project-x. Durable state: T-004's plan is committed and pushed at pppppppppppppppppppppppppppppppppppppppp, task PR #52 is open with head dddddddddddddddddddddddddddddddddddddddd on the canonical task ref, and the checkout is clean. Compare three items offered with the takeover: (a) the operator attributes /work/project/.local/forge-T-004.md, a complete Forge report whose content hash matches and which names PR #52 and Review target dddddddddddddddddddddddddddddddddddddddd; (b) a matching Forge report path is discovered under .local/, but the operator did not attribute it; (c) the operator says code review already passed for PR #52. State what Foreman records and infers from each, and what confirmation would attribute. Do not create workers or files.",
+      "expected_output": "None of the three is evidence. A report from outside the run, attributed or not, and a prose summary cannot contribute to takeover inference. Foreman does not validate, adopt, or record any of them as pre-run evidence, creates no assignment, worker identity, backend return, or workers.md row for them, and infers no Review verdict from them. Foreman infers the state only from durable evidence — git-owned contracts and commits, canonical branches, configured tracker state, and exact PR heads — and chooses the earliest named state whose required proof is absent. With no Review verdict proven, it cannot infer Landing for PR #52. The preview attributes no dirty path because the checkout is clean. Confirmation would attribute only the displayed inference and dirty paths and would grant no mutation authority.",
       "files": [
         "SKILL.md",
         "references/contracts.md",
         "references/loop.md",
+        "references/outward-mutation.md",
         "templates/run-dir.md"
       ],
       "assertions": [
-        "The exact operator-attributed complete report is validated and adopted as pre-run evidence",
-        "The adopted Forge report infers CodeReview only with an exact current task PR and Review target",
-        "Adoption fabricates no assignment, worker identity, backend return, or workers.md row",
-        "A report over an old head is rejected as stale",
-        "A discovered but unattributed report is rejected despite matching contents",
-        "A current Forge report with task PR none remains in Implementing",
-        "Rejected or prose-only evidence cannot skip the earliest unproven producer"
+        "The attributed complete Forge report is not adopted, recorded as pre-run evidence, or used for inference",
+        "The unattributed discovered report is not evidence either",
+        "The operator's claim that code review passed does not substitute for a Review verdict, so Foreman does not infer Landing",
+        "Foreman fabricates no assignment, worker identity, backend return, or workers.md row for any report",
+        "The inferred state comes only from durable git, tracker, and PR evidence, as the earliest named state whose required proof is absent",
+        "Confirmation attributes only the inferred state and dirty paths and grants no mutation authority"
       ]
     },
     {
@@ -1699,28 +1713,6 @@
       ]
     },
     {
-      "id": 110,
-      "name": "herdr-producer-continuity-for-prepared-push",
-      "coordination_coverage": "transport:herdr-producer-continuity",
-      "prompt": "/valcraft:valcraft-foreman — on the herdr backend, forge-F001-T003-d000 returned report_available with `Status: done`, task PR `none`, and prepared push and PR fields naming the repository, remote, base, exact local head, and canonical ref. Its pane is settled. Show how the prepared continuation is dispatched, what the envelope carries, and what happens if the same worker had instead returned material-finding remediation work or the pane no longer holds the recorded occupant. Do not operate Herdr.",
-      "expected_output": "Foreman keeps the Forge worker: after the Implementing gate in approval-modes, it revalidates the recorded pane with `herdr pane get` for the recorded occupant, agent_session, and settled state, then sends the continuation as a new assignment — next assignment id and dispatch ordinal, fresh absent report path, new workers.md row with the physical identity marked continued — whose envelope binds authority to the exact prepared fields and requires revalidation of every bound field immediately before mutation. Remediation is never sent to a kept producer; it spawns fresh. If the pane no longer resolves to the recorded occupant, Foreman records the observation, closes the pane, and dispatches the continuation as a fresh physical worker with the same logical identity. Foreman never executes the push or PR itself.",
-      "files": [
-        "references/backends/herdr.md",
-        "references/backends/README.md",
-        "references/contracts.md",
-        "references/approval-modes.md",
-        "references/hygiene.md"
-      ],
-      "assertions": [
-        "The prepared outward continuation goes to the kept producer as a new assignment with a new id, report path, and continued physical identity",
-        "The pane is revalidated with pane get before the follow-up prompt",
-        "The envelope binds authority to the exact prepared fields and requires revalidation before mutation",
-        "Remediation and other assignments spawn a fresh worker",
-        "A missing or replaced occupant leads to a fresh spawn with the same logical identity",
-        "Foreman executes no push or PR itself"
-      ]
-    },
-    {
       "id": 111,
       "name": "spec-owned-plan-finding-rides-task-branch",
       "prompt": "$valcraft:valcraft-foreman — PlanReview for FEAT-014 T-003 returns material findings: R-001 owned by Draft and R-002 owned by Spec. Route the round, name the Spec envelope fields, and follow each of two Spec reports: (a) commit target `task branch` at a new head; (b) commit target `amendment branch`. Do not spawn workers. Do not write files. Report only.",
@@ -1956,16 +1948,17 @@
     {
       "id": 124,
       "name": "forge-dispatch-outward-item",
-      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-002 on a GitHub repository `acme/tiles` with remote `origin`, default branch `main` at `4b1e0c7d2a9f8e6b5c4d3a2f1e0d9c8b7a6f5e4d`. PlanReview just passed the plan for T-002 at plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`. The canonical task branch `task/f002-t002` does not exist on `origin`, and no task PR exists. (1) Foreman now dispatches Forge. Write out the attributed-context item of the assignment envelope that concerns outward operations, field by field, or state that there is none and why. (2) Later, code Review of PR #7 (head `task/f002-t002` at `9f3c2e1d0a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d`) returns material finding R-004 owned by Forge, and Foreman dispatches Forge for remediation. Write out the same item for that dispatch. Do not mutate anything.",
-      "expected_output": "(1) The Implementing gate in unattended mode carries the ref-bound Forge grant in the first dispatch; Foreman does not wait for a prepared Forge report. The grant binds repository `acme/tiles` and remote `origin`; canonical remote task ref `task/f002-t002` with its observed remote head absent; PR base `main` and head `task/f002-t002`, with no existing task PR; and the operation set non-force push of the canonical task ref plus task-PR creation. It names no implementation head SHA: the head is bound by condition, the clean local head on which Forge's full gate passed, descending from plan commit `8d3f2a1…` with the plan blob unchanged. The default branch's SHA is not bound, so a moved `main` never stops the push. Forge revalidates every bound field before mutation and returns `authority_drift` on a change. (2) The remediation dispatch carries the same kind of grant, binding the currently pushed head `9f3c2e1…` as the observed remote head and the existing PR #7, with the operation set non-force push and task-PR update. In both cases Foreman itself pushes and creates nothing.",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run of FEAT-002 on a GitHub repository `acme/tiles` with remote `origin`, default branch `main` at `4b1e0c7d2a9f8e6b5c4d3a2f1e0d9c8b7a6f5e4d`. PlanReview just passed the plan for T-002 at plan commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`. Draft pushed that plan commit to the canonical task branch `feat/f002-t002-tile-cache` on `origin`, and no task PR exists. (1) Foreman now dispatches Forge. Write out the attributed-context item of the assignment envelope that concerns outward operations, field by field, or state that there is none and why. (2) Later, code Review of PR #7 (head `feat/f002-t002-tile-cache` at `9f3c2e1d0a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d`) returns material finding R-004 owned by Forge, and Foreman dispatches Forge for remediation. Write out the same item for that dispatch. Do not mutate anything.",
+      "expected_output": "(1) The Implementing dispatch carries the ref-bound producer grant in both approval modes; Foreman does not wait for a prepared Forge report. The grant binds repository `acme/tiles` and remote `origin`; canonical remote task ref `feat/f002-t002-tile-cache` with its observed remote head at Draft's pushed plan commit `8d3f2a1…`; PR base `main` by name and head `feat/f002-t002-tile-cache`, with no existing task PR; and the operation set non-force push of the canonical task ref plus task-PR creation. It names no implementation head SHA: the pushed head is bound by condition, the clean local head on which Forge's full gate passed, descending from plan commit `8d3f2a1…` with the plan blob unchanged. The default branch's SHA is not bound, so a moved `main` never stops the push. Forge revalidates every bound field before mutation and returns `authority_drift` on a change. (2) The remediation dispatch carries the same grant, binding the currently pushed head `9f3c2e1…` as the observed remote head and the existing PR #7, with the operation set non-force push and task-PR update. In both cases Foreman itself pushes and creates nothing.",
       "files": [
         "references/approval-modes.md",
         "references/contracts.md",
-        "references/loop.md"
+        "references/loop.md",
+        "references/outward-mutation.md"
       ],
       "assertions": [
         "The first Forge dispatch carries push and task-PR authority itself, instead of waiting for Forge to report a prepared head",
-        "The first grant binds repository and remote, the canonical task ref `task/f002-t002` with its remote head recorded as absent, PR base `main` by name and head ref, and the absence of a task PR, and does not bind the default branch's SHA",
+        "The first grant binds repository and remote, the canonical task ref `feat/f002-t002-tile-cache` with its observed remote head at plan commit `8d3f2a1…`, PR base `main` by name and head ref, and the absence of a task PR, and does not bind the default branch's SHA",
         "The first grant's operation set is non-force push plus task-PR creation",
         "The first grant names no implementation head SHA and binds the head by condition: the clean head on which Forge's full gate passed, descending from plan commit `8d3f2a1…` with the plan unchanged",
         "The remediation grant binds `9f3c2e1…` as the observed remote head and PR #7, with push and PR update",
@@ -1975,18 +1968,19 @@
     {
       "id": 125,
       "name": "forge-dispatch-outward-item-attended",
-      "prompt": "/valcraft:valcraft-foreman — an `attended` run of FEAT-002 on `acme/tiles`. PlanReview passed T-002's plan at commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`; the canonical task branch `task/f002-t002` does not exist on `origin` and no task PR exists. Case A: the operator has said nothing about pushes in this run. Case B: at run start the operator wrote \"Standing decision for this feature: Forge may push its task branches and open task PRs against main.\" For each case, state whether Forge's dispatch carries any push or task-PR authority, and what happens when Forge later reports a verified local head with task PR `none`. Do not mutate anything.",
-      "expected_output": "Case A: attended mode carries no push or task-PR authority in the Forge dispatch, because the operator granted none. When Forge reports a verified head with task PR `none`, Foreman records the prepared fields, stays in Implementing, and waits for the operator at the prepared task push and PR gate; after the operator grants the exact operation, the same logical Forge producer receives it. Case B: the standing decision names the operation class in advance, so the Forge dispatch carries the ref-bound Forge grant (every target field bound, the head bound by the condition that Forge's full gate passed on it), and Foreman records the standing decision's application in `state.md`. Forge then pushes and opens the PR within its first assignment, so the prepared-continuation wait does not arise unless Forge returns without a PR.",
+      "prompt": "/valcraft:valcraft-foreman — an `attended` run of FEAT-002 on `acme/tiles` with remote `origin`. PlanReview passed T-002's plan at commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`, which Draft pushed to the canonical task branch `feat/f002-t002-tile-cache`; no task PR exists. Case A: the operator has said nothing about pushes in this run. Case B: at run start the operator wrote \"Standing decision for this feature: Forge may push its task branches and open task PRs against main.\" For each case, state whether Forge's dispatch carries any push or task-PR authority, and what happens when Forge later returns a complete report with task PR `none`. Do not mutate anything.",
+      "expected_output": "In both cases the Forge dispatch carries the ref-bound producer grant, because the Implementing dispatch row carries it in attended and unattended mode alike. The grant binds repository and remote, the canonical task ref with its observed remote head at the plan commit, PR base `main` by name and the head ref, no existing task PR, and the operation set non-force push plus task-PR creation. It binds the pushed head by the condition that Forge's full gate passed on it. Forge pushes and opens the PR within its first assignment. Case A needs no operator grant, and Foreman asks for none. Case B's standing decision answers no gate: Foreman records it, but standing decisions answer only rows that wait unless already explicit and Land dispatch rows, so the Forge dispatch is identical to case A. In either case a complete Forge report with task PR `none` does not advance and does not wait for the operator: Foreman stays in Implementing and re-dispatches the same logical Forge producer under the grant.",
       "files": [
         "references/approval-modes.md",
         "references/contracts.md",
-        "references/loop.md"
+        "references/loop.md",
+        "references/outward-mutation.md"
       ],
       "assertions": [
-        "In case A the Forge dispatch carries no push or task-PR authority",
-        "In case A a verified head with task PR `none` keeps the run in Implementing and waits for the operator before authority is issued",
-        "In case B the dispatch carries the ref-bound grant because the standing decision named that operation class, and the grant binds the head by condition (the head on which Forge's full gate passed), not by a SHA or by branch alone",
-        "In case B Foreman records the application of the standing decision"
+        "In case A the attended Forge dispatch carries the ref-bound producer grant without any operator grant",
+        "The grant binds the canonical task ref with its observed remote head at plan commit `8d3f2a1…`, PR base `main` by name, no existing task PR, and push plus task-PR creation, and binds the head by the condition that Forge's full gate passed on it",
+        "In case B the standing decision answers no gate, and the Forge dispatch is the same as in case A",
+        "A complete Forge report with task PR `none` keeps the run in Implementing and re-dispatches Forge under the grant, with no wait for the operator"
       ]
     },
     {
@@ -2047,16 +2041,17 @@
       "id": 129,
       "name": "spec-publish-and-feature-close-grants",
       "prompt": "/valcraft:valcraft-foreman — an `unattended` run on `acme/tiles`, local tracker, merge strategy `merge`. Step 1: SpecReview passed FEAT-006's triplet at commit `5bec444444444444444444444444444444444444` on local branch `spec/f006-undo`; `origin/spec/f006-undo` does not exist and no spec PR exists; `main` is at `ba5e555555555555555555555555555555555555`. State the next named state, what its dispatch carries, and how many assignments it takes to have a spec PR. Step 2: much later, every FEAT-006 task is closed and `state.md` records the operator's confirmation \"FEAT-006 is done, close it.\" State what the FeatureClose Land dispatch carries and which head Land may merge. Do not mutate anything.",
-      "expected_output": "Step 1: a passing verdict without a landable spec PR enters Specifying. The unattended dispatch carries the exact Spec publish grant: repository and remote, the covered head 5bec444…, the canonical Spec ref `spec/f006-undo` with its observed absence on the remote, PR base `main` by name and head ref with no existing spec PR, and the operation set of non-force push and spec-PR creation; no field is bound by condition and tracker projection is outside it. Spec pushes and opens the PR in that one assignment, then SpecLanding follows. Step 2: the confirmation is recorded, so the FeatureClose Land dispatch carries the ref-bound Land grant: repository and remote, the close branch `close/f006-<slug>` with no existing close PR, base `main` by name, the `merge` strategy, and the operation set of creating and pushing the close branch, PR creation, merge, and head-branch deletion, with no hosted close in local mode. Land may merge only a single commit whose delta is exactly the feature-close marks and whose parent is the `main` head it cut the branch from, and only while `git merge-tree` shows that commit merges cleanly onto the live `main`.",
+      "expected_output": "Step 1: a passing verdict without a landable spec PR enters Specifying. The dispatch carries the ref-bound producer grant, as every Spec dispatch does in either mode: repository and remote, the canonical Spec ref `spec/f006-undo` with its observed absence on the remote, PR base `main` by name and head ref with no existing spec PR, and the operation set of non-force push and spec-PR creation. The pushed head is bound by condition: the committed artifact head Spec reports as its Review target. Tracker projection is outside the grant. Spec pushes and opens the PR in that one assignment. Because the passing verdict still covers the unchanged head 5bec444… and its spec PR, SpecLanding follows; a different pushed head would enter SpecReview instead. Step 2: the confirmation is recorded, so the FeatureClose Land dispatch carries the ref-bound Land grant: repository and remote, the close branch `close/f006-<slug>` with no existing close PR, base `main` by name, the `merge` strategy, and the operation set of creating and pushing the close branch, PR creation, merge, and head-branch deletion, with no hosted close in local mode. Land may merge only a single commit whose delta is exactly the feature-close marks and whose parent is the `main` head it cut the branch from, and only while `git merge-tree` shows that commit merges cleanly onto the live `main`.",
       "files": [
         "references/approval-modes.md",
         "references/contracts.md",
-        "references/loop.md"
+        "references/loop.md",
+        "references/outward-mutation.md"
       ],
       "assertions": [
-        "Step 1 enters Specifying with a dispatch carrying the exact Spec publish grant bound to the covered head 5bec444…, PR base `main` by name rather than its SHA, the canonical ref's observed absence, and no existing spec PR",
-        "Step 1's grant covers non-force push and spec-PR creation only, binds no field by condition, and excludes tracker projection",
-        "Step 1 reaches a spec PR in one Specifying assignment, with no prepare-then-authorize pair",
+        "Step 1 enters Specifying with a dispatch carrying the ref-bound producer grant, binding PR base `main` by name rather than its SHA, the canonical Spec ref's observed absence, and no existing spec PR",
+        "Step 1's grant covers non-force push and spec-PR creation only, binds the pushed head by condition rather than as a fixed SHA, and excludes tracker projection",
+        "Step 1 reaches a spec PR in one Specifying assignment, with no prepare-then-authorize pair, and enters SpecLanding only because the pushed head equals the covered head 5bec444…",
         "Step 2's FeatureClose dispatch carries the ref-bound Land grant for the close branch, PR creation, merge, and head-branch deletion, binding base `main` by name with the clean-merge condition",
         "Step 2 lets Land merge only a single commit whose delta is exactly the feature-close marks, cut from the observed `main` head, while it merges cleanly onto the live `main`"
       ]
@@ -2208,8 +2203,8 @@
     {
       "id": 137,
       "name": "external-retry-first-attempt-waits-and-redispatches",
-      "prompt": "$valcraft:valcraft-foreman — a Foreman run on a Claude Code controller with the `subagents` backend is in `Implementing` for F002-T004. Approval mode is attended; the Forge dispatch carried the ref-bound Forge grant the operator gave explicitly. The complete Forge report `forge-F002-T004-d000.md` ends `Status: blocked: push_failed — git push returned HTTP 502 from the remote`. Its Outward mutations section names the repository and remote, the clean local implementation head, the canonical remote task ref with its observed remote head (absent), task PR `none`, and the remaining operations: non-force push and task-PR creation. Foreman recorded the report at 14:00:00. Describe exactly what Foreman does next, when, what it records, how it ends the turn, and what it dispatches. Do not execute a backend.",
-      "expected_output": "`push_failed` from Forge routes to `ExternalRetry`, not `Blocked`. The report qualifies as a prepared continuation, so the failed run is attempt 1 of the budget keyed by the logical Forge producer and its bound fields. Foreman records the attempt in `state.md` and schedules attempt 2 for 14:01:00. On this event-wake controller it arms a background shell task that sleeps the remaining seconds, records its harness task id, and ends the turn with `Turn end: await <harness task id>`. When the task wakes Foreman, it repeats the live read of every bound field. After a successful read, it dispatches the same logical Forge producer under a fresh physical identity and report path with the same ref-bound grant, without an approval gate even in attended mode. Forge revalidates before pushing; Forge does not reimplement the task.",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on a Claude Code controller with the `subagents` backend is in `Implementing` for F002-T004. Approval mode is attended; the Forge dispatch carried the ref-bound producer grant. The complete Forge report `forge-F002-T004-d000.md` ends `Status: blocked: push_failed — git push returned HTTP 502 from the remote`. Its Outward mutations section names the repository and remote, the clean local implementation head, the canonical remote task ref with its observed remote head (absent), task PR `none`, and the remaining operations: non-force push and task-PR creation. Foreman recorded the report at 14:00:00. Describe exactly what Foreman does next, when, what it records, how it ends the turn, and what it dispatches. Do not execute a backend.",
+      "expected_output": "`push_failed` from Forge routes to `ExternalRetry`, not `Blocked`. The report's structured fields name every bound field of its grant and the remaining operation, so it qualifies for retry, and the failed run is attempt 1 of the budget keyed by the logical Forge producer and its bound fields. Foreman records the attempt in `state.md` and schedules attempt 2 for 14:01:00. On this event-wake controller it arms a background shell task that sleeps the remaining seconds, records its harness task id, and ends the turn with `Turn end: await <harness task id>`. When the task wakes Foreman, it repeats the live read of every bound field. After a successful read, it dispatches the same logical Forge producer under a fresh physical identity and report path with the same ref-bound grant, without an approval gate even in attended mode. Forge revalidates before pushing; Forge does not reimplement the task.",
       "files": [
         "references/contracts.md",
         "references/loop.md",
@@ -2225,7 +2220,7 @@
         "Before dispatching attempt 2, Foreman repeats the live read of every bound field",
         "Attempt 2 is the same logical Forge producer under a fresh physical identity and report path, carrying the same ref-bound grant",
         "No approval gate stops the retry although the mode is attended",
-        "The retry is a push and PR continuation, not a new implementation run"
+        "The retry repeats the push and PR operations, not a new implementation run"
       ]
     },
     {
@@ -2251,9 +2246,9 @@
     },
     {
       "id": 139,
-      "name": "external-retry-requires-a-prepared-continuation",
-      "prompt": "$valcraft:valcraft-foreman — a Foreman run on Herdr is in `Drafting` for F001-T006 and needs the plan commit on the canonical remote ref for an isolated Review worker. The complete Draft report `drafter-F001-T006-d000.md` ends `Status: blocked: push_failed — the remote read-back timed out`. Its Outward mutations section names the repository, remote, and exact local plan head, but records the canonical remote ref's observed head as `unknown` and names no remaining operation. Approval mode is unattended. Is this report retried on the external-failure schedule? Describe Foreman's transition and what it records.",
-      "expected_output": "`push_failed` belongs to the external-failure class, but `ExternalRetry` retries only a report that qualifies as a prepared continuation: its structured fields must name every applicable bound field, including the canonical ref's observed remote head and the remaining operation. This report does not, so Foreman enters `Blocked` at once without scheduling a retry, records the code, report path, and the missing prepared fields, and waits for the operator. Foreman does not infer the missing fields from prose or push itself.",
+      "name": "external-retry-requires-every-bound-field",
+      "prompt": "$valcraft:valcraft-foreman — a Foreman run on Herdr is in `Drafting` for F001-T006. The Draft dispatch carried the ref-bound producer grant. The complete Draft report `drafter-F001-T006-d000.md` ends `Status: blocked: push_failed — the remote read-back timed out`. Its Outward mutations section names the repository, remote, and exact local plan head, but records the canonical remote ref's observed head as `unknown` and names no remaining operation. Approval mode is unattended. Is this report retried on the external-failure schedule? Describe Foreman's transition and what it records.",
+      "expected_output": "`push_failed` belongs to the external-failure class, but `ExternalRetry` retries only a report whose structured fields name every bound field of its grant and the remaining operation, as step 2 of the External failures schedule in contracts.md states. This report records the canonical ref's observed remote head as `unknown` and names no remaining operation, so Foreman enters `Blocked` at once without scheduling a retry, records the code, report path, and the missing fields, and waits for the operator. Foreman does not infer the missing fields from prose or push itself.",
       "files": [
         "references/contracts.md",
         "references/loop.md",
@@ -2263,10 +2258,10 @@
         "references/backends/herdr.md"
       ],
       "assertions": [
-        "Foreman checks prepared-continuation eligibility before scheduling any retry",
+        "Foreman checks that the report names every bound field of its grant and the remaining operation before scheduling any retry",
         "The unknown observed remote head and missing remaining operation disqualify the report",
         "Foreman enters Blocked at once with no ExternalRetry attempt scheduled",
-        "The record names the missing prepared fields",
+        "The record names the missing fields",
         "Foreman neither infers the missing fields from prose nor pushes itself"
       ]
     },
@@ -2350,6 +2345,145 @@
         "Foreman reads that T-003 is open from the tasks.md checkboxes, not from the absence of an eligible task",
         "Foreman waits for the operator in Blocked even in unattended mode",
         "An answer that makes T-003 eligible returns to Ready, which selects T-003"
+      ]
+    },
+    {
+      "id": 144,
+      "name": "new-source-intake-dispatches-specifier-new",
+      "prompt": "/valcraft:valcraft-foreman — approval mode is attended, backend subagents, tracker local, default branch `main`, and the configuration is valid. No Foreman checkpoint exists. The operator says: \"Start a new feature from docs/requirements/bulk-labels.md.\" The file is readable, no feature directory under specs/ matches it, and `git ls-remote origin` lists no `spec/` ref. Remote `origin` resolves, and `main` is at `abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd`. Describe what Foreman does up to the first dispatch, and write out the Specifying envelope's identity, target, and authority fields. Do not spawn workers or mutate files.",
+      "expected_output": "The named readable source with no contract enters new contract intake. Foreman creates a run and enters Specifying without takeover discovery or a confirmation wait, even in attended mode, because no prior work exists to attribute. The envelope records identity `none`, canonical branch `none`, logical worker `specifier-new-bulk-labels`, the source path, and the reconciled predecessor `main` at abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd. Its attributed Foreman authority is the ref-bound producer grant: repository and remote `origin`; the canonical Spec ref bound by condition, as the ref Spec derives after it allocates the identity, observed absent on the remote at push time; PR base `main` by name, the head ref under that same condition, and no existing spec PR; and the operation set non-force push of the canonical Spec ref plus spec-PR creation. The pushed head is the committed artifact head Spec reports as its Review target. The default branch's head is not bound, and tracker projection is outside the grant. Spec resolves whether the source resumes a contract, allocates the identity, derives `spec/fNNN-<slug>`, and reports both; Foreman records them and keeps the logical worker `specifier-new-bulk-labels`. Foreman selects no source, allocates no identity, and derives no Spec branch itself.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/hygiene.md",
+        "references/outward-mutation.md"
+      ],
+      "assertions": [
+        "Foreman creates a run and enters Specifying without takeover discovery or a confirm, correct, or cancel wait, although the mode is attended",
+        "The envelope names identity `none` and canonical branch `none`",
+        "The logical worker is `specifier-new-bulk-labels`, derived from the source file name",
+        "The envelope carries the ref-bound producer grant with non-force push of the canonical Spec ref and spec-PR creation against `main` by name",
+        "The grant binds the canonical Spec ref by condition, as the ref Spec derives and observes absent on the remote at push time, rather than naming a branch",
+        "Foreman allocates no identity and derives no Spec branch itself; it records the identity and branch Spec reports and keeps the logical worker"
+      ]
+    },
+    {
+      "id": 145,
+      "name": "attended-draft-pushes-under-dispatch-grant",
+      "prompt": "/valcraft:valcraft-foreman — an `attended` run of FEAT-003 on `acme/tiles` with remote `origin` and default branch `main`. After the operator confirmed the pick, Foreman is in `Drafting` for T-002 with canonical task branch `feat/f003-t002-undo-stack`, predecessor `main` at `1a2b1a2b1a2b1a2b1a2b1a2b1a2b1a2b1a2b1a2b`, and no remote task ref. (1) Write out the authority item of the Draft dispatch envelope. (2) drafter-F003-T002 then returns a complete report ending `Status: done`. Its Plan names `docs/plans/2026-10-16-feat-f003-t002-undo-stack-plan.md` at `9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d`, and its Outward mutations section reports a non-force push of `feat/f003-t002-undo-stack` at that head with a matching remote read-back. State the transition and the next dispatch. Do not mutate anything.",
+      "expected_output": "(1) The Drafting dispatch carries the ref-bound producer grant in attended mode exactly as in unattended mode; Foreman does not ask the operator. The grant binds repository `acme/tiles` and remote `origin`, the canonical task ref `feat/f003-t002-undo-stack` with its observed remote head absent, and the operation set non-force push of the canonical task ref. It includes no PR operation. The pushed head is bound by condition: the committed plan head Draft reports as its Review target, descending from the observed remote head. (2) The report names the plan head pushed to the canonical task ref, so Foreman verifies the plan path and exact head and enters PlanReview. It dispatches a fresh plan-reviewer-F003-T002 in plan mode on 9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d. It dispatches no second Draft assignment to push, and it applies no approval wait or prepared continuation for the push.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/outward-mutation.md"
+      ],
+      "assertions": [
+        "The attended Draft dispatch carries the ref-bound producer grant without asking the operator",
+        "The grant's operation set is a non-force push of `feat/f003-t002-undo-stack` with no PR operation, and it binds the remote ref's observed absence",
+        "The grant binds the pushed head by condition, as the committed plan head Draft reports as its Review target",
+        "After the done report names the pushed plan head, Foreman enters PlanReview and dispatches a fresh plan-reviewer-F003-T002 on 9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d9e8d",
+        "Foreman dispatches no second Draft assignment and applies no approval wait or prepared continuation for the push",
+        "Foreman performs no push itself"
+      ]
+    },
+    {
+      "id": 146,
+      "name": "attended-spec-first-done-opens-spec-pr",
+      "prompt": "/valcraft:valcraft-foreman — an `attended` run with local tracking on `acme/tiles`, default branch `main`. Spec's first report for FEAT-007 ends `Status: done`. Its Workspace names canonical branch `spec/f007-tile-export` at head `7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c`. Its Outward mutations section reports a non-force push of that head with a matching remote read-back and spec PR #23 created against `main` with that head, and its Land target names PR #23. (1) State the transition and the next dispatch. (2) The spec reviewer then returns `verdict: pass; open: none; covered: specs/007-tile-export/{spec,design,tasks}.md at 7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c`, and the operator approves advancing. PR #23's head is still that SHA, and the contract is not on `main`. State the transition and the next dispatch. Do not mutate anything.",
+      "expected_output": "(1) The report names its pushed canonical Spec ref and its spec PR, so SpecResult advances: Foreman enters SpecReview on 7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c and dispatches a fresh spec-reviewer-F007 with valcraft-review in plan mode. It applies no prepared continuation and no attended wait for the push or PR, because the Specifying dispatch carried the ref-bound producer grant. (2) The pass covers PR #23's current head and the contract is not yet on `main`, so after the operator's approval SpecReview enters SpecLanding on PR #23 and dispatches land-F007 with target kind spec PR. Foreman does not return to Specifying to publish, because the spec PR already exists. In attended mode the Land dispatch carries the ref-bound Land grant only when the operator already made it explicit.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "../valcraft-spec/references/delivery.md"
+      ],
+      "assertions": [
+        "Spec's first done report naming the pushed head and spec PR #23 enters SpecReview on that head, with no attended wait or prepared continuation for the push or PR",
+        "Foreman dispatches a fresh spec-reviewer-F007 in plan mode on 7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+        "After the operator approves the pass, SpecReview enters SpecLanding on PR #23",
+        "Foreman does not re-dispatch Spec in Specifying after the pass",
+        "The SpecLanding Land dispatch carries the ref-bound Land grant only when the operator already made it explicit"
+      ]
+    },
+    {
+      "id": 147,
+      "name": "github-projection-continuation-and-mapping-commit",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run with `tracker.mode: github` and target `acme/tiles`, default branch `main`. In Specifying, Spec's first report from logical worker `specifier-new-batch-import` ends `Status: done` and reports identity FEAT-008. Its Workspace names `spec/f008-batch-import` at head `8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a`. Its Outward mutations section reports a non-force push of that head with a matching remote read-back and spec PR #31 created against `main`. Its Projection and Outward mutations sections also report a prepared projection: tracker target `acme/tiles`, projection revision `r3`, issue mappings verified absent, local artifact head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the operation set that creates the feature issue and three task issues with their labels and relationships. (1) State the transition and the next dispatch. (2) The next Spec report ends `Status: done`, reports the projection executed, and names mapping commit `8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b`, pushed to `spec/f008-batch-import` with a matching read-back, with PR #31 updated to that head. State the transition and the next dispatch. Do not mutate anything.",
+      "expected_output": "(1) The report prepares a tracker projection, so Foreman applies the prepared mutation continuation before any Review. It keeps Specifying active and records the accepted report and exact prepared fields in state.md. It applies the Specifying row for an exact tracker projection prepared: in unattended mode it issues exact projection authority after it validates every prepared field. It dispatches the same logical producer `specifier-new-batch-import` under a fresh physical identity and report path. The projection authority binds tracker target `acme/tiles`, projection revision `r3`, the verified-absent mappings, local artifact head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the prepared operation set, and it requires Spec to revalidate every bound field immediately before the first write. The same dispatch carries the ref-bound producer grant, binding 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a as the observed remote head and PR #31. Foreman does not enter SpecReview on 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a and performs no tracker write. (2) The mapping commit is a new head pushed under the grant, so Foreman enters SpecReview on 8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b as the new Review target and dispatches a fresh spec-reviewer-F008 in plan mode on that head.",
+      "files": [
+        "references/approval-modes.md",
+        "references/contracts.md",
+        "references/loop.md",
+        "references/outward-mutation.md",
+        "../valcraft-spec/references/delivery.md",
+        "../valcraft-spec/references/github-projection.md"
+      ],
+      "assertions": [
+        "Spec's report with a prepared projection keeps Specifying active and does not enter SpecReview on 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a",
+        "Foreman applies the Specifying projection gate row and, in unattended mode, issues exact projection authority only after it validates every prepared field",
+        "The re-dispatch goes to the same logical producer `specifier-new-batch-import` under a fresh physical identity and report path, with projection authority bound to target acme/tiles, revision r3, the verified-absent mappings, head 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a, and the prepared operation set",
+        "The re-dispatch also carries the ref-bound producer grant, binding 8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a as the observed remote head and PR #31",
+        "After the mapping commit is pushed under the grant, Foreman enters SpecReview on 8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b as the new Review target",
+        "Foreman performs no tracker, push, or PR operation itself"
+      ]
+    },
+    {
+      "id": 148,
+      "name": "repeated-source-with-pushed-spec-ref-enters-takeover",
+      "prompt": "/valcraft:valcraft-foreman — approval mode is attended, backend subagents, tracker local, default branch `main`, and the configuration is valid. No Foreman checkpoint exists. The operator says: \"Start a new feature from docs/requirements/bulk-labels.md.\" The file is readable, and no feature directory under specs/ on `main` matches it. Remote `origin` resolves, and `main` is at `abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd`. `git ls-remote origin` lists `refs/heads/spec/f004-bulk-labels` at `c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4`. On that ref, `specs/004-bulk-labels/spec.md` has a `Sources` section with exactly `docs/requirements/bulk-labels.md`. No pull request has head `spec/f004-bulk-labels`. No Review report for FEAT-004 exists. Describe what Foreman does up to the first dispatch. Then assume the operator answers `confirm`, and write out the Specifying envelope's identity, target, and authority fields. Do not spawn workers or mutate files.",
+      "expected_output": "A contract on the remote ref `spec/f004-bulk-labels` names the canonical source, so prior work exists: an earlier run pushed the contract without opening its spec PR. Foreman does not apply new contract intake. It enters takeover bootstrap with FEAT-004 as the operator-named target. Before creating a run it presents the repository and target, the evidence (the remote ref at c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absent spec PR), the inferred named state Specifying because no Spec Review proof exists, and the next producer and action, and it waits for `confirm`, `correct`, or `cancel` even in attended mode. It infers no Review verdict from the branch. After `confirm`, it creates the run and dispatches Specifying with identity FEAT-004 and canonical branch `spec/f004-bulk-labels`, not identity `none` or a `specifier-new-` worker. The ref-bound producer grant binds repository and remote `origin`, the canonical Spec ref `spec/f004-bulk-labels` at its observed remote head c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4, PR base `main` by name, head ref `spec/f004-bulk-labels`, and the absence of a spec PR, with the operation set non-force push of the canonical Spec ref plus spec-PR creation or update. It does not bind the Spec ref as absent, so Spec can open the missing spec PR without `authority_drift`.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/outward-mutation.md",
+        "../valcraft-spec/references/feature-contract.md"
+      ],
+      "assertions": [
+        "Foreman does not apply new contract intake: it dispatches no Specifying envelope with identity `none` or logical worker `specifier-new-bulk-labels`",
+        "Foreman enters takeover bootstrap with FEAT-004 as the target and waits for `confirm`, `correct`, or `cancel` before creating a run",
+        "The takeover presentation cites the remote ref `spec/f004-bulk-labels` at c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absent spec PR as evidence and infers Specifying, without inferring a Review verdict",
+        "After `confirm`, the Specifying envelope names identity FEAT-004 and canonical branch `spec/f004-bulk-labels`",
+        "The grant binds `spec/f004-bulk-labels` at its observed remote head c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4c4 and the absence of a spec PR, with non-force push and spec-PR creation against `main` by name",
+        "The grant does not bind the canonical Spec ref as absent"
+      ]
+    },
+    {
+      "id": 149,
+      "name": "feature-gate-matches-finding-rows-without-leading-pipe",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-gate-p3/, resume run `run-gate` from .valcraft/foreman/run-gate/ and take the next loop step. Stop at the first point that waits for the operator. Show each command you run to read finding rows from the Review reports, with its output. Also state the highest existing R-ID that the next Review assignment for FEAT-001 would name. Do not dispatch workers or modify files.",
+      "expected_output": "Foreman accepts the T-003 Land report, returns to Ready, and reads from the tasks.md checkboxes that every FEAT-001 task is closed. Before the feature confirmation gate it reads the finding rows of the feature's Review reports with an anchored match that accepts an optional leading pipe, such as `grep -E '^\\|? *R-[0-9]+ *\\|'`. That match returns the pipe-led rows R-001, R-002, and R-003 and the pipe-less rows R-004 and R-005, and it does not match `FR-013`. The gate lists the Spec-owned P3 notes R-001 in .valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md and R-005 in .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md, and no other row. No later Spec report resolved either note. The highest existing R-ID for FEAT-001 is R-005. The gate offers close as is or amend first and waits for the operator even though the approval mode is unattended. Foreman dispatches no Land or Spec worker.",
+      "files": [
+        "evals/files/loop-gate-p3/AGENTS.md",
+        "evals/files/loop-gate-p3/.valcraft/config.yaml",
+        "evals/files/loop-gate-p3/.gitignore",
+        "evals/files/loop-gate-p3/docs/product-brief.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/spec.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/design.md",
+        "evals/files/loop-gate-p3/specs/001-invite-links/tasks.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/state.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/workers.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/code-reviewer-F001-T002-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/land-F001-T003-d000.md",
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "The gate lists R-005 with the report path .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "The gate lists R-001 with the report path .valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md",
+        "The gate lists none of R-002, R-003, and R-004, whose resolutions name a skill other than valcraft-spec",
+        "Foreman states R-005 as the highest existing R-ID, not R-013 and not R-003",
+        "The shown command that reads finding rows matches a row that starts with `R-` and has no leading `|`",
+        "The shown command anchors the R-ID to the start of the row, so its output contains no line matched only through `FR-013`",
+        "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land or Spec worker"
       ]
     }
   ]

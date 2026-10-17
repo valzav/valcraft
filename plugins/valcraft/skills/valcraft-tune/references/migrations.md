@@ -16,6 +16,40 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.9.0
+
+### Spec, Draft, Forge, and Land run only under Foreman
+
+Spec, Draft, Forge, and Land accept work only from a Foreman assignment envelope. Invoked directly, they change nothing and end `Status: blocked: assignment_invalid` naming `valcraft-foreman`. Foreman starts every new feature, PRD, or quick task from the source the operator names, `valcraft-foreman <source>`, and takes over work in progress from git, tracker, and PR state; a report from outside the run is no longer takeover evidence. Cast hands its product brief to Foreman. Forge always requires a passed plan: the planless quick-task path, which only a direct Forge run reached, is removed. On OpenCode, which has no Foreman worker backend, delivery is no longer available; Cast, Tune, Review, Temper, Roadmap, Hone, MSW, and Distill are unchanged.
+
+- Applies when: the operator checks the root `AGENTS.md` and `README.md` for lines that tell readers to invoke Spec, Draft, Forge, or Land directly.
+- Tune performs: none.
+- Operator: start new work with `valcraft-foreman <source>`; replace each such line, through an ordinary reviewed change, with one that names Foreman as the way to start and deliver work.
+
+### Push and pull-request grants are issued at dispatch in both approval modes
+
+Every Spec, Draft, and Forge dispatch carries the ref-bound producer grant for its canonical ref, and for Forge and Spec's contract and amendment branches its PR, in both approval modes. No worker is dispatched only to push. Herdr no longer keeps a producer's pane for a prepared continuation. GitHub tracker projection and Land operations outside Land's grant still prepare first and receive exact authority afterwards.
+
+- Applies when: never on its own; the next dispatch applies the rule.
+- Tune performs: none.
+- Operator: a standing decision that pre-authorized task, plan, or spec pushes is no longer needed and may be dropped.
+
+### Spec opens the spec pull request before Spec Review
+
+Spec pushes a contract or amendment branch and opens its spec PR on its first `done`, so Spec Review runs on the pushed head and CI runs on the spec branch before the review.
+
+- Applies when: never on its own; the next Spec dispatch applies the rule.
+- Tune performs: none.
+- Operator: none.
+
+### Canonical branch names are defined in Foreman's contracts
+
+The spec, amendment, task, and feature-close branch names now live in one table in Foreman's `contracts.md`. Foreman derives every task and amendment branch; Spec derives a new contract's branch; Draft and Forge never derive one. The names are unchanged.
+
+- Applies when: never on its own.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.8.30
 
 ### Push and pull-request grants no longer bind the default-branch SHA
