@@ -725,6 +725,26 @@
         "No push or PR operation occurs: origin's refs still equal the plan commit and `.eval/pr-calls.log` does not exist",
         "Forge's reply consists of only the line `Status: blocked: assignment_invalid — no Foreman assignment; run valcraft-foreman`, with no Forge report block"
       ]
+    },
+    {
+      "name": "plan-named-verification-blocks-done",
+      "prompt": "$valcraft:valcraft-forge — you are implementing FEAT-001 T-002 from passed plan docs/plans/2026-08-16-002-feat-f001-t002-use-link-plan.md at commit 7777777 under a Foreman ref-bound producer grant (push the canonical task ref, create the task PR). The plan's verification names four steps: V-1 rejects an expired link, V-2 accepts a live link, V-3 forces two `use_link` calls on one token to interleave between the expiry read and the use write, using the `store.before_write` hook the repository's tests already use, and V-4 covers a link that is both expired and already used. Your `use_link` code is committed locally; V-1 and V-2 pass and the full gate passes on that head. V-3 and V-4 are not written. Your draft report lists them under `Open questions` as residual risk and ends `Status: done`. Case A: nothing stops you writing V-3 and V-4 within the plan's touched files. Case B: the same, except the repository has no `store.before_write` hook or any other seam to pause `use_link` between the read and the write; adding one means editing src/store.py, which the plan leaves untouched and whose approach the plan does not describe. For each case, state what you do before reporting, whether you push and open the task PR, and the exact terminal status line. Do not execute anything.",
+      "expected_output": "V-3 and V-4 are verification steps the passed plan names, so they are part of the implementation, and Forge does not return `Status: done` while the head leaves either unimplemented. Listing them under Open questions does not discharge them. In case A, Forge writes V-3 and V-4 in the plan's touched files, runs them, reruns the full gate on the new head, and only then pushes that head, opens the task PR, and ends `Status: done`. In case B, V-3 needs a different approach outside the plan's touched scope, so Forge does not commit, push, or open a PR for the src/store.py seam, records the needed change under Open questions, and ends `Status: blocked: draft_required` with the plan path and commit 7777777. In neither case does Forge push the head that lacks the planned verification or end `Status: done` with V-3 or V-4 only disclosed.",
+      "files": [
+        "SKILL.md",
+        "references/verification-and-handoff.md"
+      ],
+      "assertions": [
+        "Forge treats V-3 and V-4 as part of the implementation because the passed plan names them",
+        "Forge does not end `Status: done` while V-3 or V-4 is unimplemented, in either case",
+        "Listing V-3 and V-4 under Open questions is not treated as a substitute for implementing them or for a blocked return",
+        "In case A, Forge implements V-3 and V-4 and reruns the full gate on the new head before pushing and opening the task PR",
+        "In case A, the terminal status is `Status: done` only after V-3 and V-4 pass",
+        "In case B, Forge does not commit, push, or open a PR containing the src/store.py seam",
+        "In case B, the terminal status is `Status: blocked: draft_required` naming the plan path and commit 7777777",
+        "Forge pushes no head that lacks V-3 or V-4 in either case"
+      ],
+      "id": 36
     }
   ]
 }
