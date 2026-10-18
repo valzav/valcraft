@@ -2470,6 +2470,9 @@
         "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T001-d000.md",
         "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/code-reviewer-F001-T002-d000.md",
         "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/code-reviewer-F001-T001-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/plan-reviewer-F001-T002-d000.md",
+        "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/code-reviewer-F001-T003-d000.md",
         "evals/files/loop-gate-p3/.valcraft/foreman/run-gate/land-F001-T003-d000.md",
         "SKILL.md",
         "references/loop.md",
@@ -2544,6 +2547,45 @@
         "The operator question states that it also covers PRD issue #39, because #39's only other sub-issue, #38, is closed",
         "For the answer close as is, the FeatureClose dispatch names both FEAT-001 (issue #40) and PRD issue #39 as exact targets with the quoted confirmation",
         "Foreman closes no issue itself"
+      ]
+    },
+    {
+      "id": 152,
+      "name": "feature-gate-lists-spec-notes-from-every-local-run",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-gate-p3-runs/, resume run `run-gate` from .valcraft/foreman/run-gate/ and take the next loop step. Stop at the first point that waits for the operator. Show each command you run to find and read the feature's Review reports, with its output. Do not dispatch workers or modify files.",
+      "expected_output": "Foreman accepts the T-003 Land report, returns to Ready, and reads from the tasks.md checkboxes that every FEAT-001 task is closed. FEAT-001 was delivered over two runs, so before the feature confirmation gate it reads the Review reports of every run directory under .valcraft/foreman/ whose logical worker carries FEAT-001, not only run-gate. The gate lists the Spec-owned P3 notes R-001 in .valcraft/foreman/run-earlier/plan-reviewer-F001-T001-d000.md, R-003 in .valcraft/foreman/run-earlier/code-reviewer-F001-T001-d000.md, and R-005 in .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md, and no other row. No later Spec report resolved any of them. The gate also names T-002 as a closed task with no local code verdict. The gate offers close as is or amend first and waits for the operator even though the approval mode is unattended. Foreman dispatches no Land or Spec worker.",
+      "files": [
+        "evals/files/loop-gate-p3-runs/AGENTS.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/config.yaml",
+        "evals/files/loop-gate-p3-runs/.gitignore",
+        "evals/files/loop-gate-p3-runs/docs/product-brief.md",
+        "evals/files/loop-gate-p3-runs/specs/001-invite-links/spec.md",
+        "evals/files/loop-gate-p3-runs/specs/001-invite-links/design.md",
+        "evals/files/loop-gate-p3-runs/specs/001-invite-links/tasks.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-earlier/state.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-earlier/workers.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-earlier/plan-reviewer-F001-T001-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-earlier/code-reviewer-F001-T001-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-earlier/land-F001-T001-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/state.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/workers.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/plan-reviewer-F001-T002-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/code-reviewer-F001-T003-d000.md",
+        "evals/files/loop-gate-p3-runs/.valcraft/foreman/run-gate/land-F001-T003-d000.md",
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md"
+      ],
+      "assertions": [
+        "The gate lists R-001 with the report path .valcraft/foreman/run-earlier/plan-reviewer-F001-T001-d000.md",
+        "The gate lists R-003 with the report path .valcraft/foreman/run-earlier/code-reviewer-F001-T001-d000.md",
+        "The gate lists R-005 with the report path .valcraft/foreman/run-gate/plan-reviewer-F001-T003-d000.md",
+        "The gate lists neither R-002 nor R-004, whose resolutions name valcraft-draft",
+        "A shown command reads Review reports in .valcraft/foreman/run-earlier/, not only in .valcraft/foreman/run-gate/",
+        "The gate names T-002 as a closed task with no local code verdict",
+        "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land or Spec worker"
       ]
     }
   ]
