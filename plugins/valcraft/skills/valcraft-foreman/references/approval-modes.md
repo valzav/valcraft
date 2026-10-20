@@ -59,7 +59,7 @@ A Foreman decision is never outward-mutation authority. It never answers a proce
 
 Before stating a project fact in an operator question or its options, check it against the repository record and cite the locator beside it. Label a fact you have not checked as unchecked.
 
-When the harness offers a structured multiple-choice question tool, ask through it, within the tool's own limits. Put the option you recommend first, mark it recommended, and give its reason.
+When the harness offers a structured multiple-choice question tool, ask through it, within the tool's own limits. When you recommend an option, put it first, mark it recommended, and give its reason.
 
 Hold a `product_decision_required`, `owner_decision_required`, or task hold question that the unattended Foreman decisions step does not settle, but only when the shared checkout is clean and another task is eligible without its answer. Record the question in `state.md`, hold its task, and continue. A question whose producer left uncommitted work is not held, because no other work can proceed through that state.
 
