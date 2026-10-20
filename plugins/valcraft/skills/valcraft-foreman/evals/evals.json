@@ -1913,7 +1913,7 @@
     {
       "id": 122,
       "name": "unattended-producer-questions-three-cases",
-      "prompt": "/valcraft:valcraft-foreman — an `unattended` run receives three producer questions in turn. State for each whether Foreman answers it itself or waits for the operator, and why. Do not mutate anything.\n\n(a) Spec: `product_decision_required` — NFR-003 needs a minimum terrain height span; the PRD says 'the terrain rises in stepped slopes to clearly different heights' in a world up to 16 blocks high, and Spec's measured prototype seed spans 9 levels.\n(b) Draft: `owner_decision_required` — how many automatic reruns a flaky browser test gets before the plan treats it as failed; no source mentions reruns.\n(c) Spec: `product_decision_required` — which camera the page opens with; `docs/prd.md` requires an orbit camera, while `docs/product-brief.md` says the product opens in first person. The operator has recorded no decision.",
+      "prompt": "/valcraft:valcraft-foreman — an `unattended` run receives three producer questions in turn. No other task is eligible without their answers. State for each whether Foreman answers it itself or waits for the operator, and why. Do not mutate anything.\n\n(a) Spec: `product_decision_required` — NFR-003 needs a minimum terrain height span; the PRD says 'the terrain rises in stepped slopes to clearly different heights' in a world up to 16 blocks high, and Spec's measured prototype seed spans 9 levels.\n(b) Draft: `owner_decision_required` — how many automatic reruns a flaky browser test gets before the plan treats it as failed; no source mentions reruns.\n(c) Spec: `product_decision_required` — which camera the page opens with; `docs/prd.md` requires an orbit camera, while `docs/product-brief.md` says the product opens in first person. The operator has recorded no decision.",
       "expected_output": "(a) Foreman answers it: a necessary product threshold is a product decision, and the PRD wording, the 16-block world, and the measured 9-level seed support one derived value, so Foreman records a minimum span with its derivation and sources in `state.md` and returns it to Spec as a `Foreman decision`. (b) Foreman waits for the operator: a rerun count is a process limit on how the work is done, which is never a Foreman decision. (c) Foreman waits for the operator: the PRD and the product brief conflict, so no single answer is supported. Both (b) and (c) enter AwaitOwner.",
       "files": [
         "references/approval-modes.md",
@@ -2586,6 +2586,55 @@
         "A shown command reads Review reports in .valcraft/foreman/run-earlier/, not only in .valcraft/foreman/run-gate/",
         "The gate names T-002 as a closed task with no local code verdict",
         "Foreman waits for the operator at the feature confirmation gate although the approval mode is unattended, and dispatches no Land or Spec worker"
+      ]
+    },
+    {
+      "id": 153,
+      "name": "operator-question-checks-premises-and-leaves-encoding",
+      "prompt": "/valcraft:valcraft-foreman — in the project at evals/files/operator-question-premise/, run `./prepare-eval.sh`, then resume run `run-export` from .valcraft/foreman/run-export/ and take the next loop step, up to and including the first operator question. This harness offers a structured multiple-choice question tool. To call it, append the call as one JSON object to `outputs/question-calls.jsonl` in your run directory, holding each question, its options in order, and which option is marked recommended with its reason. The tool returns this scripted answer: the operator chooses to include restricted transcripts for records-team members and adds \"yes, the records team approved exporting transcripts; the export task in FEAT-004 must not start before Q-006 QT-001 lands.\" Then write the attributed-context item of the next Spec assignment envelope. Do not dispatch workers or modify the project's files.",
+      "expected_output": "Foreman validates the Spec report and routes owner_decision_required. The run is attended, and no other task is eligible while FEAT-004 is being specified, so the question is not held: it enters AwaitOwner. Before asking, Foreman checks the state.md observation that the archive holds no restricted transcripts against the repository: docs/archive.md records 37 restricted transcripts, so the question cites docs/archive.md and never states that none exist. No repository record mentions the records team's approval, so the question labels that premise unchecked. The question goes through the structured tool as one call in question-calls.jsonl, with the option Foreman recommends first, marked recommended, and with its reason. In the next Spec envelope, the operator's choice is an Operator instruction/decision item, and the records-team approval is a separate Operator attestation item marked unchecked. The ordering is stated as intent, that the export task must not start before Q-006 QT-001 lands, and the envelope leaves its encoding to Spec: it prescribes no `blocked by Q-006 QT-001` or other dependency-line form.",
+      "files": [
+        "evals/files/operator-question-premise/prepare-eval.sh",
+        "evals/files/operator-question-premise/AGENTS.md",
+        "evals/files/operator-question-premise/.valcraft/config.yaml",
+        "evals/files/operator-question-premise/.gitignore",
+        "evals/files/operator-question-premise/docs/product-brief.md",
+        "evals/files/operator-question-premise/docs/archive.md",
+        "evals/files/operator-question-premise/docs/requirements/transcript-export.md",
+        "evals/files/operator-question-premise/specs/quick/006-access-check.md",
+        "evals/files/operator-question-premise/.valcraft/foreman/run-export/state.md",
+        "evals/files/operator-question-premise/.valcraft/foreman/run-export/workers.md",
+        "evals/files/operator-question-premise/.valcraft/foreman/run-export/specifier-F004-d000.md"
+      ],
+      "assertions": [
+        "The operator question cites docs/archive.md or labels the archive premise unchecked, and never states that the archive holds no restricted transcripts",
+        "The operator question labels the records team's approval as unchecked",
+        "question-calls.jsonl holds the question as one structured call, with the recommended option first, marked recommended, and with its reason",
+        "The Spec envelope carries the records team's approval as a separate Operator attestation item marked unchecked, not inside the Operator instruction/decision item",
+        "The Spec envelope states the ordering as intent and prescribes no `blocked by Q-006 QT-001` or other dependency-line form",
+        "Foreman enters AwaitOwner for the question rather than holding it, because no other task is eligible"
+      ]
+    },
+    {
+      "id": 154,
+      "name": "held-questions-wait-for-independent-work-and-ask-as-one-set",
+      "prompt": "A Foreman run on a shared checkout with tracker.mode local, backend subagents, and approval mode unattended is delivering FEAT-002. In specs/002-billing-alerts/tasks.md, T-001 has landed and is checked. T-002, T-003, and T-005 are each blocked by T-001; T-004 is blocked by T-002. No task is held. The harness offers a structured multiple-choice question tool. Answer both parts, stating each transition, what Foreman records, and what it asks the operator and when. Do not execute a backend.\n\n(a) Forge for T-002 returns `Status: question: owner_decision_required — how many times a failing webhook delivery is retried before the alert is dropped`. No project source mentions retries. Forge committed its verified work locally on the T-002 task branch and left a clean checkout. Foreman continues. Draft for the next task then writes its plan, its MSW pass exposes a necessary threshold, and it returns `Status: question: product_decision_required — the minimum spend change that triggers an alert`. docs/prd.md says 'alert on any meaningful change' and docs/product-brief.md says 'alert only on changes over 10%'. Draft's plan file remains uncommitted in the checkout.\n\n(b) Instead of the second question in (a), T-003 and T-005 land while T-002 is still held.",
+      "expected_output": "(a) A retry count is a process limit, which is never a Foreman decision, so T-002's question escalates. The checkout is clean and T-003 is eligible without the answer, so Foreman holds the question: it records it in state.md, holds T-002, does not wait, and Ready selects T-003. T-004 depends on T-002 and is never selected. Draft for T-003 returns a threshold question whose sources conflict, so it escalates too. Draft left its plan uncommitted, so no other work can proceed through the shared checkout: Foreman does not hold the question, does not select T-005, and switches no branch. It enters AwaitOwner and asks T-002's and T-003's questions together in one set through the structured question tool, with any recommended option first. (b) After T-003 and T-005 land, Ready finds no eligible task: T-002 is held and T-004 depends on it. The run enters Blocked, names T-002 with its held question and T-004 with its dependency on T-002, and asks the held question through the structured tool. It waits for the operator even in unattended mode.",
+      "files": [
+        "SKILL.md",
+        "references/loop.md",
+        "references/contracts.md",
+        "references/approval-modes.md",
+        "references/intake-local.md"
+      ],
+      "assertions": [
+        "After T-002's question, Foreman records it in state.md, holds T-002, does not wait for the operator, and selects T-003",
+        "Foreman never selects T-004 while T-002 is held",
+        "Neither question becomes a Foreman decision: the retry count is a process limit, and the threshold's sources conflict",
+        "After T-003's question, Foreman does not hold it and does not select T-005, because Draft's plan is uncommitted in the shared checkout",
+        "Foreman switches no branch while Draft's plan is uncommitted",
+        "Foreman enters AwaitOwner and asks T-002's and T-003's questions together in one set through the structured question tool",
+        "In part (b), Ready finds no eligible task, the run enters Blocked, and the ask names T-002's held question and T-004's dependency on T-002"
       ]
     }
   ]
