@@ -941,6 +941,24 @@
         "TS-007 records, beside the entry, the command that tested the reset step and its observed result",
         "TS-007 states an observation method, a guarded defect, a failing input, a positive control, and a domain"
       ]
+    },
+    {
+      "id": 46,
+      "name": "guard-entries-take-their-domain-from-the-mechanism",
+      "prompt": "/valcraft:valcraft-spec — This is a Foreman `Specifying` assignment for FEAT-031 that names its canonical Spec branch, exact base SHA, and the ref-bound producer grant. Write the design's Test strategy entries for FR-001, for FR-002 with NFR-001, and for AC-003, and show any design.md hunk they require; do not write files. Design facts: `requirements.txt` pins `PyYAML==6.0.3`, and the project runs on Python 3.12. Existing code at the baseline, in `src/notes/model.py`:\n\n```python\n@dataclass\nclass BaseRecord:\n    updated_at: datetime.date | None = None\n\n@dataclass\nclass Note(BaseRecord):\n    title: str = \"\"\n    tags: list[str] = field(default_factory=list)\n```\n\nIn `src/notes/store.py`, the Save action names a note's file with `note_path(root, title)`, which returns `root / (re.sub(r'[^a-z0-9.]+', '-', title.lower()).strip('-') + '.md')`. The Save as draft action writes `<slug>.draft.md`.\n\nRequirements: FR-001: `load(dump(note)) == note` for every `Note`. FR-002 and NFR-001: building the index never halts; a note whose front matter cannot be read is skipped and listed in `index.skipped`. AC-003: a note saved with Save is never listed as a draft.\n\nThe current design draft: The design's `dump(note)` returns `yaml.safe_dump({'title': note.title, 'tags': note.tags})`, and `load(text)` returns `Note(**yaml.safe_load(text))`. `build_index(root)` parses each note's front matter with `yaml.safe_load` inside `try: ... except yaml.YAMLError:`, which records the note as skipped. `is_draft(path)` returns `path.name.endswith('.draft.md')`.\n\nWrite each complete entry, and show the command and result of every input you execute.",
+      "expected_output": "The FR-001 entry's domain is every field `Note` declares or inherits, including `updated_at` from `BaseRecord`. Its fixture sets `updated_at`, so the draft `dump`, which writes only `title` and `tags`, fails it, and Spec revises `dump` to write every field. For FR-002 with NFR-001, Spec revises the boundary to catch every failure of reading a note, not `yaml.YAMLError` alone, because the never-halt requirement contains every failure of the loader. The entry records a failing input outside the listed syntax errors, such as unquoted `updated_at: 2026-02-30`, executed against PyYAML 6.0.3 with its command and result: `ValueError`, which is not a `yaml.YAMLError`. The AC-003 entry's domain includes every name Save generates. Spec finds that a title such as `Release.draft` yields `release.draft.md`, which `is_draft` classifies as a draft, and it changes the design so that Save never produces a draft name, with that title as the entry's failing input.",
+      "files": [
+        "SKILL.md",
+        "references/feature-contract.md",
+        "templates/design.md"
+      ],
+      "assertions": [
+        "The FR-001 entry's domain includes the inherited `updated_at` field, and its fixture sets it",
+        "The design's boundary is revised to catch every failure of reading a note rather than `yaml.YAMLError` alone",
+        "The FR-002 entry records a failing input outside the listed syntax errors, executed against PyYAML 6.0.3 with its command and result",
+        "The AC-003 entry's domain includes names Save generates, and Spec addresses the `Release.draft` collision with a design change or an explicit finding",
+        "No entry claims a domain copied only from the cases the draft design lists"
+      ]
     }
   ]
 }

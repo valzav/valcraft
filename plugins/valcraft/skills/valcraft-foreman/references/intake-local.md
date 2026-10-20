@@ -12,7 +12,7 @@ Quick runs walk files and tasks in order, use canonical `Q-NNN QT-XXX`, and deri
 
 ## Hold
 
-Record an unresolved task question in `state.md` and route it to the operator. Continue to another task only when the feature remains ready or the operator's accepted uncertainty is committed by the artifact owner. A contract-changing answer routes to Spec before delivery resumes. A rejected or unnecessary task changes through an ordinary reviewed Spec or task-artifact change; Foreman never deletes it.
+Record an unresolved task question in `state.md` and hold or ask it under [`approval-modes.md`](approval-modes.md#operator-questions). Continue to another task only when the feature remains ready or the operator's accepted uncertainty is committed by the artifact owner. A contract-changing answer routes to Spec before delivery resumes. A rejected or unnecessary task changes through an ordinary reviewed Spec or task-artifact change; Foreman never deletes it.
 
 ## Land targets
 

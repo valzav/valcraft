@@ -55,6 +55,16 @@ In an unattended run, Foreman first tries to settle a producer's `product_decisi
 
 A Foreman decision is never outward-mutation authority. It never answers a process limit (a cap, retry or round count, timeout, or budget on how the work is done), takeover, authority, release-branch safety, the FeatureClose confirmation, or any other row that always waits. Attended mode always waits for the operator. When Foreman requests the operator's FeatureClose confirmation, list every Foreman decision of the run with its answer and cited sources.
 
+## Operator questions
+
+Before stating a project fact in an operator question or its options, check it against the repository record and cite the locator beside it. Label a fact you have not checked as unchecked.
+
+When the harness offers a structured multiple-choice question tool, ask through it, within the tool's own limits. When you recommend an option, put it first, mark it recommended, and give its reason.
+
+Hold a `product_decision_required`, `owner_decision_required`, or task hold question that the unattended Foreman decisions step does not settle, but only when the shared checkout is clean and another task is eligible without its answer. Record the question in `state.md`, hold its task, and continue. A question whose producer left uncommitted work is not held, because no other work can proceed through that state.
+
+A question that cannot be held enters `AwaitOwner`. Ask it together with every question already held, in one set. When `Ready` finds only held tasks open, `Blocked` asks their questions as one set. A gate row waits when reached, as its row says.
+
 ## Rules in every mode
 
 - When the harness offers a push notification, send one at every wait, escalation, and run end, naming the gate. A notification is display and changes no state.
