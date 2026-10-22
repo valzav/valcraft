@@ -24,6 +24,8 @@ Persist or report enough state to resume: target kind, exact identifiers, prepar
 
 Read the current PR head from the hosting service. Compare it with the exact head in the latest passing Review report for this target. A branch name, older verdict, merge base, or review summary is not coverage.
 
+A report whose verdict is not `pass` covers no head, including the exact current head. An operator decision, approval mode, or grant in the assignment is not coverage either. When no passing report covers the current head, return `review_required` naming the latest report, its verdict, and its open R-IDs.
+
 When the heads differ, the current head lacks coverage. Return `review_required` with the two full SHAs and the exact `<reviewed>..<current>` delta target.
 
 In `local` tracker mode a feature task, and in every mode a quick task, carries its exact unchecked-to-checked completion transition in the covered head: Forge commits it and Review covers it. Land adds no commit. Verify that the PR's delta contains that transition. When it does not, return `review_required` naming the missing transition.

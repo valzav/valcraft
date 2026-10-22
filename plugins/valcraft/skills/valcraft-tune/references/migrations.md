@@ -16,6 +16,10 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.10.3
+
+This release changes nothing a consumer repository must contain.
+
 ## v0.10.2
 
 This release changes nothing a consumer repository must contain.
