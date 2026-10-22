@@ -15,9 +15,9 @@ Read this after a SpecReview, PlanReview, CodeReview, RetroReview, or RoadmapRev
 4. Return second-round findings once more to the producer, then run a closure check. Escalate immediately when the producer declines a finding that round two upholds, or when a material finding remains open after closure. Foreman never decides it. The escalation enters `Blocked` and offers only these answers:
    - Authorize a named number of extra targeted rounds for the stated trigger. Return the open R-IDs to the owning producer, then run the closure check.
    - Instruct the owning producer, for example to amend the contract so that it records an accepted loss. Return the instruction and the open R-IDs to that producer as an attributed `Operator instruction/decision`. The closure check then decides each R-ID against the amended target, and every Review and Land gate applies.
-   - Stop the work. The target stays `Blocked`. A task may instead close as `not planned` through Land under its own exact authority.
+   - Stop the work. The target stays `Blocked`. A task may instead close as `not planned` through Land under its own exact authority. That closure merges nothing and records the task as not delivered, so the open R-ID does not stop it.
 
-   No answer lands, merges, or closes a target while a material R-ID is open on it, because [approval cannot waive exact Review coverage](approval-modes.md#rules-in-every-mode). When the operator gives such an answer, dispatch no Land. Record the answer as not admissible, and ask again with the admissible answers.
+   No answer merges a target or closes it as done while a material R-ID is open on it, because [approval cannot waive exact Review coverage](approval-modes.md#rules-in-every-mode). When the operator gives such an answer, dispatch no Land for it. Record the answer as not admissible, and ask again with the admissible answers. When the answer means to accept the open finding, name the instruction to the owning producer to record the accepted loss in the contract as the route for that intent.
 5. Without a second-round trigger, treat the closure-check table as the round's final state.
 
 Record the branch and evidence in `state.md`. Cross-task ownership, external-completion origin, adjacency, or small size grants no exemption.

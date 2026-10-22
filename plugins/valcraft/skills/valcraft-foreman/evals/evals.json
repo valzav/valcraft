@@ -2641,7 +2641,7 @@
       "id": 155,
       "name": "code-cap-spec-residue-escalates-without-landing",
       "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-code-cap` from .valcraft/foreman/run-code-cap/ and take the next loop step.",
-      "expected_output": "Foreman verifies that the second CodeReview round on PR #16 ran because Spec declined material R-005, and that round two upheld it. The two-round cap stops another dispatch. Foreman enters Blocked and waits for the operator even in unattended mode, naming R-005, its owner valcraft-spec, and the disagreement. It offers only the admissible escalation answers: a named number of extra targeted rounds, an instruction to the owning producer such as a contract amendment that records an accepted loss, or stopping the work. It offers no answer that lands, merges, or closes T-002 while R-005 is open, and it dispatches no Land.",
+      "expected_output": "Foreman verifies that the second CodeReview round on PR #16 ran because Spec declined material R-005, and that round two upheld it. The two-round cap stops another dispatch. Foreman enters Blocked and waits for the operator even in unattended mode, naming R-005, its owner valcraft-spec, and the disagreement. It offers only the admissible escalation answers: a named number of extra targeted rounds, an instruction to the owning producer such as a contract amendment that records an accepted loss, or stopping the work. It offers no answer that merges PR #16 or closes T-002 as done while R-005 is open, and it dispatches no Land; closing T-002 as `not planned` under the stop answer merges nothing and is admissible.",
       "files": [
         "evals/files/loop-local/prepare-eval.sh",
         "evals/files/loop-local/AGENTS.md",
@@ -2663,7 +2663,7 @@
         "Foreman recognizes that two CodeReview rounds have completed and that round two upheld R-005 after Spec declined it",
         "Foreman enters Blocked and waits even though the approval mode is unattended",
         "Foreman offers extra targeted rounds, an instruction to the owning producer (for example a contract amendment that records an accepted loss), and stopping the work as the answers",
-        "Foreman offers no answer that lands, merges, or closes T-002 or PR #16 while R-005 is open, including landing it as is with the finding listed for later",
+        "Foreman offers no answer that merges PR #16 or closes T-002 as done while R-005 is open, including landing it as is with the finding listed for later",
         "Foreman dispatches no Land assignment and does not advance to Landing"
       ]
     },
@@ -2695,6 +2695,35 @@
         "Foreman records the refused answer in state.md and stays Blocked",
         "Foreman asks again with the admissible answers: extra targeted rounds, an instruction to the owning producer, or stopping the work",
         "Foreman offers a Spec instruction to amend the contract so that it records the accepted loss as the route for the operator's intent, with the closure check and Review gates still applying"
+      ]
+    },
+    {
+      "id": 157,
+      "name": "operator-not-planned-at-round-cap-is-admissible",
+      "prompt": "/valcraft:valcraft-foreman — in the Cast project at evals/files/loop-local/, run `./prepare-eval.sh`, then resume run `run-code-cap` from .valcraft/foreman/run-code-cap/. The run is Blocked at the round-cap escalation for R-005. The operator answers: \"Stop T-002 and close it as not planned: unknown-token handling is out of scope for this release.\" Take the next loop step.",
+      "expected_output": "Foreman treats the answer as admissible: closing T-002 as `not planned` merges nothing and records the task as not delivered, so the open R-005 does not stop it. Foreman does not refuse the answer or ask again. It routes the `not planned` closure to Land with the operator's deciding answer and reason, under the same exact authority as done closure, and never closes the task itself. It prepares or dispatches no merge of PR #16, no completion tick, and no done closure of T-002.",
+      "files": [
+        "evals/files/loop-local/prepare-eval.sh",
+        "evals/files/loop-local/AGENTS.md",
+        "evals/files/loop-local/.valcraft/config.yaml",
+        "evals/files/loop-local/.gitignore",
+        "evals/files/loop-local/docs/product-brief.md",
+        "evals/files/loop-local/docs/plans/2026-08-16-001-feat-t-002-use-link-plan.md",
+        "evals/files/loop-local/specs/001-invite-links/spec.md",
+        "evals/files/loop-local/specs/001-invite-links/design.md",
+        "evals/files/loop-local/specs/001-invite-links/tasks.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/state.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/workers.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/forge-F001-T002-d000.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/code-reviewer-F001-T002-d000.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/specifier-F001-d000.md",
+        "evals/files/loop-local/.valcraft/foreman/run-code-cap/code-reviewer-F001-T002-d001.md"
+      ],
+      "assertions": [
+        "Foreman treats the `not planned` answer as admissible and does not record it as not admissible or re-ask the escalation",
+        "Foreman routes T-002's `not planned` closure to Land with the operator's deciding answer and reason, and does not close the task itself",
+        "Foreman prepares or dispatches no merge of PR #16, no completion tick, and no done closure of T-002",
+        "Foreman records the operator's answer and the routing in state.md"
       ]
     }
   ]
