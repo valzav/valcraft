@@ -485,6 +485,32 @@
         "The operator's authorization in the message is not treated as a substitute for a Foreman assignment",
         "The final line is exactly one `Status: blocked: assignment_invalid — …` line whose detail names `valcraft-foreman`"
       ]
+    },
+    {
+      "id": 24,
+      "name": "non-pass-verdict-at-exact-head-is-not-coverage",
+      "prompt": "$valcraft:valcraft-land — in evals/files/delivery/, run `./prepare-eval.sh`, then prepare landing of task PR 42 for F001 T-002. This is a Foreman Landing assignment for F001 T-002 on canonical branch `feat/f001-t002-normalize-headers`, base `main` at the fixture's prepared baseline. The fixture's `reviews/` directory holds both code Review reports for PR 42: the earlier `reviews/task-review.md` and the latest, `reviews/task-review-material.md`. The assignment pins the latest report's covered head 3333333333333333333333333333333333333333. It quotes the operator's answer at the round-cap escalation: \"Land T-002 as is; list R-009 at feature close.\" It carries a ref-bound Land grant: repository `example/reports` on remote `origin`, task PR 42, base ref `main`, strategy `squash`, and the operation set merge, head-branch deletion, and closing task issue 17. Use `captures/task-pr.md` as the PR and check source. Do not mutate external state.",
+      "expected_output": "The latest Review report, `reviews/task-review-material.md`, covers the current PR head 3333333333333333333333333333333333333333, but its verdict is `material findings` with R-009 open, so it covers no head. The earlier passing report `reviews/task-review.md` covers head 2222222222222222222222222222222222222222 and does not cover past the later material report. The operator's answer and the grant in the assignment are not coverage. Land returns `review_required` whose status line names `reviews/task-review-material.md`, its verdict, and open R-009. It does not route the delta from the earlier passing report's head as the Review target, because a delta review would not carry R-009. It prepares no merge, deletes no branch, closes no issue, and performs no other mutation.",
+      "files": [
+        "evals/files/delivery/.gitignore",
+        "evals/files/delivery/prepare-eval.sh",
+        "evals/files/delivery/AGENTS.md",
+        "evals/files/delivery/.valcraft/config.yaml",
+        "evals/files/delivery/docs/product-brief.md",
+        "evals/files/delivery/specs/001-report-export/spec.md",
+        "evals/files/delivery/specs/001-report-export/tasks.md",
+        "evals/files/delivery/captures/task-pr.md",
+        "evals/files/delivery/reviews/task-review.md",
+        "evals/files/delivery/reviews/task-review-material.md"
+      ],
+      "assertions": [
+        "Land treats the `material findings` report as no coverage even though its head equals the current PR head 3333333333333333333333333333333333333333",
+        "Land inspects the earlier passing report `reviews/task-review.md` at head 2222222222222222222222222222222222222222 and states that the later `material findings` report takes precedence over it",
+        "Land does not treat the operator's \"land as is\" answer or the Land grant as Review coverage",
+        "The terminal `review_required` status line names `reviews/task-review-material.md`, its `material findings` verdict, and open R-009",
+        "Land does not return the delta from the older passing report's head 2222222222222222222222222222222222222222 to 3333333333333333333333333333333333333333 as the Review target",
+        "Land prepares or performs no merge, branch deletion, issue close, or other external mutation"
+      ]
     }
   ]
 }
