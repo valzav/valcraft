@@ -5,7 +5,7 @@
       "id": 1,
       "name": "first-run-writes-and-commits-base",
       "prompt": "$valcraft:valcraft-tune — initialize configuration in a git repository whose `.gitignore` carries `/.valcraft/*` and `!/.valcraft/config.yaml`. No configuration exists. I select each recommended option. The remote symbolic HEAD authoritatively identifies `trunk` as the default branch. Show each question exactly as Tune asks it, with its options in order and their explanations, before applying my answer.",
-      "expected_output": "Tune asks only the genuinely open first-run questions as explained lists with the recommended choice first: Tasks/Issue Tracker, the Foreman Loop backend and approval, the answer page, release branch, and pull request strategy. The recommended answer-page choice, Off, writes no `answer_page` key. It stores the authoritatively detected default branch trunk without asking, asks no Cast, GitHub-only, or Herdr-only question, and offers only Subagents and Herdr as backends. It writes immediately after the last answer with no confirmation question: a validated same-directory temporary file atomically replaces `.valcraft/config.yaml`, the destination is re-read and revalidated, and Tune stages and commits only that path. The report shows the exact saved YAML and the commit before `Status: done`.",
+      "expected_output": "Tune asks only the genuinely open first-run questions as explained lists with the recommended choice first: Tasks/Issue Tracker, the Foreman Loop backend and approval, the answer page, release branch, and pull request strategy. The recommended answer-page choice, Chat, writes no `answer_page` key. It stores the authoritatively detected default branch trunk without asking, asks no Cast, GitHub-only, or Herdr-only question, and offers only Subagents and Herdr as backends. It writes immediately after the last answer with no confirmation question: a validated same-directory temporary file atomically replaces `.valcraft/config.yaml`, the destination is re-read and revalidated, and Tune stages and commits only that path. The report shows the exact saved YAML and the commit before `Status: done`.",
       "files": [
         "SKILL.md",
         "references/config.md",
@@ -378,17 +378,17 @@
     {
       "id": 21,
       "name": "first-run-offers-answer-page-off-first",
-      "prompt": "$valcraft:valcraft-tune — initialize configuration in a git repository whose `.gitignore` carries `/.valcraft/*` and `!/.valcraft/config.yaml`. No configuration exists. The remote symbolic HEAD authoritatively identifies `main` as the default branch. I select each recommended option, except that I answer the answer-page question with On. Then state what the saved base would hold had I chosen Off. Show each question exactly as Tune asks it, with its options in order and their explanations, before applying my answer.",
-      "expected_output": "Tune asks an `Answer page` question after the Foreman Loop approval question, as an explained list with `Off (Recommended)` first, explained as answering every operator question in the chat, and `On` second, explained as large question sets and the feature-close confirmation opening as a local HTML page answered with checkboxes and pasted back. The On answer writes `foreman.answer_page: true` into the committed base, which Tune validates, writes without a confirmation question, and commits as its only path. Had the operator chosen Off, the base would hold no `answer_page` key, because an absent key means the page is off; Tune never writes `answer_page: false` to the base.",
+      "prompt": "$valcraft:valcraft-tune — initialize configuration in a git repository whose `.gitignore` carries `/.valcraft/*` and `!/.valcraft/config.yaml`. No configuration exists. The remote symbolic HEAD authoritatively identifies `main` as the default branch. I select each recommended option, except that I answer the answer-page question with HTML. Then state what the saved base would hold had I chosen Chat. Show each question exactly as Tune asks it, with its options in order and their explanations, before applying my answer.",
+      "expected_output": "Tune asks an `Answer page` question after the Foreman Loop approval question, as an explained list with `Chat (Recommended)` first, explained as answering every operator question in the chat, and `HTML` second, explained as large question sets and the feature-close confirmation opening as a local HTML page answered with checkboxes and pasted back. The HTML answer writes `foreman.answer_page: true` into the committed base, which Tune validates, writes without a confirmation question, and commits as its only path. Had the operator chosen Chat, the base would hold no `answer_page` key, because an absent key means the page is off; Tune never writes `answer_page: false` to the base.",
       "files": [
         "SKILL.md",
         "references/config.md",
         "evals/files/first-run/.gitignore"
       ],
       "assertions": [
-        "Tune asks the answer-page question after the approval question, with Off first and labeled Recommended; Off is explained as answering in the chat, and On as large question sets and the feature-close confirmation opening as a local HTML page",
+        "Tune asks the answer-page question after the approval question, with Chat first and labeled Recommended; Chat is explained as answering in the chat, and HTML as large question sets and the feature-close confirmation opening as a local HTML page",
         "The saved base holds `foreman.answer_page: true` alongside the recommended values for every other key",
-        "Tune states that the Off answer writes no `answer_page` key and never writes `answer_page: false` to the base",
+        "Tune states that the Chat answer writes no `answer_page` key and never writes `answer_page: false` to the base",
         "No confirmation question follows the last answer, and Tune commits only .valcraft/config.yaml"
       ]
     },
@@ -396,7 +396,7 @@
       "id": 22,
       "name": "answer-page-off-for-everyone-removes-base-key",
       "prompt": "$valcraft:valcraft-tune — turn off the answer page. When Tune asks where the change applies, answer For everyone.",
-      "expected_output": "Tune begins with the section menu, with Foreman Loop first and marked recommended because the request names it, and its summary shows the answer page on. The answer page is user-scoped, so Tune asks the layer question. For everyone with Off removes `foreman.answer_page` from the committed base instead of writing `false`, leaves every other value unchanged, writes immediately after the last answer, commits only `.valcraft/config.yaml`, and reports the exact YAML with `Status: done`. No overlay is written.",
+      "expected_output": "Tune begins with the section menu, with Foreman Loop first and marked recommended because the request names it, and its summary shows the answer page on. The answer page is user-scoped, so Tune asks the layer question. For everyone with Chat removes `foreman.answer_page` from the committed base instead of writing `false`, leaves every other value unchanged, writes immediately after the last answer, commits only `.valcraft/config.yaml`, and reports the exact YAML with `Status: done`. No overlay is written.",
       "files": [
         "SKILL.md",
         "references/config.md",
