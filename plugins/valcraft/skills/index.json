@@ -42,7 +42,7 @@
     },
     {
       "name": "valcraft-foreman",
-      "version": "5f67f65c5698eaa0",
+      "version": "0e90602b2270664c",
       "files": [
         "SKILL.md",
         "references/approval-modes.md",
@@ -59,6 +59,7 @@
         "references/outward-mutation.md",
         "references/review-round.md",
         "references/roadmap.md",
+        "templates/answer-page.html",
         "templates/run-dir.md",
         "agents/openai.yaml"
       ]
@@ -154,7 +155,7 @@
     },
     {
       "name": "valcraft-tune",
-      "version": "c43a3f8815a34975",
+      "version": "97190b295c7f0867",
       "files": [
         "SKILL.md",
         "references/config.md",

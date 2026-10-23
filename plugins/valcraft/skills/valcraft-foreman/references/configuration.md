@@ -4,9 +4,10 @@ Read the committed `.valcraft/config.yaml`, the optional gitignored `.valcraft/c
 
 Resolution rules:
 
-- Resolve the configuration per the Tune contract: the base overridden by the overlay on the user-scoped keys `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`, with `backend` and its backend-specific mapping overriding as a unit. Require the resolved configuration to be complete and valid. Never apply read-time defaults.
+- Resolve the configuration per the Tune contract: the base overridden by the overlay on the user-scoped keys `foreman.approval_mode`, `foreman.answer_page`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`, with `backend` and its backend-specific mapping overriding as a unit. Require the resolved configuration to be complete and valid. Never apply read-time defaults.
 - A repo-scoped key in the overlay is invalid configuration; delegate it to `valcraft-tune`.
 - Use `tracker.mode` to select intake. Use the resolved `foreman.backend` and `foreman.approval_mode`, and the base `foreman.default_branch` and `foreman.release_branch`, exactly as stored.
+- A resolved configuration without `foreman.answer_page` means the answer page is off. This is the key's absence meaning in the Tune contract, not a read-time default. An overlay `false` turns the page off over a base `true`. The key selects only how operator question sets are delivered, as [`approval-modes.md`](approval-modes.md#answer-page) defines.
 - In GitHub mode, use `foreman.clarification_assignees` exactly as stored.
 - For Herdr, use the resolved session and complete worker map. See its backend reference for translation to native command arguments.
 - For AO, use the resolved `foreman.ao.project_id` exactly as stored, only as an argument value.

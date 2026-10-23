@@ -8,6 +8,7 @@ Create one gitignored directory per Foreman run:
 ├── workers.md
 ├── A-001-envelope.txt
 ├── A-002-envelope.txt
+├── answers-S-001.html
 ├── specifier-F004-d000.md
 ├── spec-reviewer-F004-d000.md
 ├── drafter-F004-T012-d000.md
@@ -24,6 +25,8 @@ Create one gitignored directory per Foreman run:
 ```
 
 `<run-id>` is either the next repository-valid dated run id or an operator-provided name matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` other than `.` or `..`. Resolve the final path inside `.valcraft/foreman/`. A run id never supplies an artifact date.
+
+An `answers-<set-id>.html` file is an [answer page](../references/approval-modes.md#answer-page) for one operator question set. Foreman writes a new file for each set and never rewrites one.
 
 ## `workers.md`
 

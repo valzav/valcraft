@@ -1,0 +1,12 @@
+valcraft_version: "0.12.0"
+
+tracker:
+  mode: local
+foreman:
+  backend: subagents
+  approval_mode: unattended
+  answer_page: true
+  default_branch: main
+  release_branch: null
+pull_requests:
+  merge_strategy: squash

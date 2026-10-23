@@ -107,3 +107,13 @@ External-completion evals characterize routing ownership: Land records and close
 | AO keeps a Review worker for its closure check and refetches the canonical ref; a missing session falls back to a fresh one | 88 |
 | AO escalated permission gate stays under the re-armed waiter; an operator answer in tmux resolves it | 89 |
 | Herdr worker panes stack in one right column; the orchestrator keeps the full-height left column | 90 |
+
+## Answer page
+
+| Scenario | Eval |
+| --- | --- |
+| A Blocked set larger than the tool goes to one answer page; question text renders inert; the push notification names the page | 158 |
+| A stale block is rejected whole; a valid block applies its answers and the unanswered question is asked again as a new set | 159 |
+| With the setting on, the FeatureClose confirmation always uses the page, and Land quotes the pasted confirmation | 160 |
+| A set within the tool's limits uses the tool in both approval modes and writes no page | 161, 162 |
+| An absent key, or an overlay `false` over a base `true`, writes no page | 163, 164 |
