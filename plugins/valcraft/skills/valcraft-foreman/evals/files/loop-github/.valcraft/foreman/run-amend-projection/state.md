@@ -1,7 +1,7 @@
 run: run-amend-projection
 active named state: Specifying
 target kind: contract amendment on a task branch
-canonical task identity: FEAT-001 T-002
+canonical task identity: FEAT-001/T-002
 tracker reference: GitHub issue #42
 authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md
 canonical branch: feat/f001-t002-expired-link-rejection

@@ -38,7 +38,7 @@ A prose summary or a producer report from outside the run is not evidence: do no
 
 ## Quick tasks
 
-Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraft-spec/references/quick.md). Walk files and `QT-XXX` tasks in number order. Preserve the canonical identity `Q-NNN QT-XXX`, branch `feat/qNNN-qtNNN-<slug>`, and report identity `QNNN-QTNNN`. Quick tasks use the same states and gates as feature tasks. Their task artifact replaces `spec.md`, `design.md`, and `tasks.md` in assignments. The last Land completion finishes the file without feature confirmation or Temper.
+Validate the pool with [`../../valcraft-spec/references/quick.md`](../../valcraft-spec/references/quick.md). Walk files and `QT-XXX` tasks in number order. Preserve the canonical identity `Q-NNN/QT-XXX`, branch `feat/qNNN-qtNNN-<slug>`, and report identity `QNNN-QTNNN`. Quick tasks use the same states and gates as feature tasks. Their task artifact replaces `spec.md`, `design.md`, and `tasks.md` in assignments. The last Land completion finishes the file without feature confirmation or Temper.
 
 ## Rebuild before transition
 

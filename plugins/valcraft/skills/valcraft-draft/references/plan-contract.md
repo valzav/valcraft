@@ -6,8 +6,8 @@ This reference owns Draft's assignment, workspace, plan, authority, recovery, an
 
 Read the repository's root `AGENTS.md` first. The assignment names exactly one target:
 
-- A feature task is one `T-XXX` in one `specs/NNN-<slug>/tasks.md`. Read the whole feature triplet, accepted ADRs that govern it, and the product brief context needed to interpret it. A bare `T-XXX` must resolve exactly once across feature task files.
-- A quick task is canonically `Q-NNN QT-XXX`. Read `../../valcraft-spec/references/quick.md`, validate the selected quick file and its referenced dependencies, and use that one file as its spec, design, and task list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Reject an invalid identity instead of mapping it to a valid one.
+- A feature task is one `T-XXX` in one `specs/NNN-<slug>/tasks.md`, canonically `FEAT-NNN/T-XXX`. Read the whole feature triplet, accepted ADRs that govern it, and the product brief context needed to interpret it. A bare `T-XXX` must resolve exactly once across feature task files.
+- A quick task is canonically `Q-NNN/QT-XXX`. Read `../../valcraft-spec/references/quick.md`, validate the selected quick file and its referenced dependencies, and use that one file as its spec, design, and task list. Resolve bare `Q-NNN` or `QT-XXX` only as `quick.md` permits. Reject an invalid identity instead of mapping it to a valid one.
 - An existing task plan is a repository-relative tracked path. Resolve the task identity and git-owned contract it cites before revising it.
 
 The assignment envelope must name the exact task artifact. It may also name verified deferred-finding locators. Read each locator from its durable source. Never accept only a coordinator checkpoint as the task contract.
@@ -30,7 +30,7 @@ Do not infer a release branch. A configured release branch does not select the b
 
 Write one tracked plan under `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`. Use an explicit operator artifact date when supplied; otherwise use the current local date. Preserve the existing path on revision.
 
-Preserve an existing semantic name. For a new feature-task plan, use type `feat` unless the root `AGENTS.md` requires another semantic type. For a new quick-task plan, obey an explicit semantic type rule in the root `AGENTS.md`; `quick` is not a plan type solely because the task is quick. Start the slug with the task identity, so that no two tasks share a plan name: `fNNN-tNNN-<semantic-slug>` for a feature task and `qNNN-qtNNN-<semantic-slug>` for a quick task. The semantic slug names the task's delivered outcome in kebab case; omit an imperative such as `add` when it only introduces the outcome. Under Valcraft's task-branch convention it equals the canonical task branch's slug. Take the identity from the task, never from the branch name, because a repository branch policy may omit it. A quick task remains `Q-NNN QT-XXX` in plan content, commit messages, and reports.
+Preserve an existing semantic name. For a new feature-task plan, use type `feat` unless the root `AGENTS.md` requires another semantic type. For a new quick-task plan, obey an explicit semantic type rule in the root `AGENTS.md`; `quick` is not a plan type solely because the task is quick. Start the slug with the task identity, so that no two tasks share a plan name: `fNNN-tNNN-<semantic-slug>` for a feature task and `qNNN-qtNNN-<semantic-slug>` for a quick task. The semantic slug names the task's delivered outcome in kebab case; omit an imperative such as `add` when it only introduces the outcome. Under Valcraft's task-branch convention it equals the canonical task branch's slug. Take the identity from the task, never from the branch name, because a repository branch policy may omit it. In plan content, commit messages, and reports, a feature task remains `FEAT-NNN/T-XXX` and a quick task remains `Q-NNN/QT-XXX`.
 
 The plan must contain the smallest implementation-ready contract that proves the task:
 
@@ -51,7 +51,7 @@ Do not put execution progress in the plan. Do not edit implementation source, fe
 
 After every plan write or revision, invoke `valcraft-msw` on that plan. Read its complete report and verify that the surviving plan still satisfies the task contract. A product decision that MSW exposes, including a necessary product threshold with no sourced value, reports `product_decision_required`; a necessary process limit or other owner choice reports `owner_decision_required`. Do not commit a plan as reviewable while either question remains.
 
-Commit each reviewable plan state. Stage only the plan path and inspect the staged diff. The commit subject cites the feature `T-XXX` or canonical `Q-NNN QT-XXX`; a review remediation subject also cites every resolved `R-NNN`. Record the full commit SHA and subject line in the report so its task and R-ID citations are visible. Verify that the plan blob at that commit matches the reported Review target.
+Commit each reviewable plan state. Stage only the plan path and inspect the staged diff. The commit subject cites the canonical `FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`; a review remediation subject also cites every resolved `R-NNN`. Record the full commit SHA and subject line in the report so its task and R-ID citations are visible. Verify that the plan blob at that commit matches the reported Review target.
 
 ## Address plan-review findings
 

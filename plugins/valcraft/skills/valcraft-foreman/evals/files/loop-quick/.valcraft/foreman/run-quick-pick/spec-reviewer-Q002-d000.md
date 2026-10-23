@@ -26,7 +26,7 @@ none
 - Task obligations and check IDs: QT-001 carries path and query through the sign-in redirect → TS-001.
 - Invariants: none stated.
 - Failing input constructible at QT-001's head: TS-001's two-parameter link.
-- Task identities and dependencies: `QT-001` is valid; `blocked by Q-001 QT-001` resolves to a checked task.
+- Task identities and dependencies: `QT-001` is valid; `blocked by Q-001/QT-001` resolves to a checked task.
 - Open questions and assumptions: none.
 
 ### Not examined

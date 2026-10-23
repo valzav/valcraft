@@ -20,4 +20,4 @@ Add the behavior after the foundation.
 
 ## Tasks
 
-- [ ] QT-001 Add dependent behavior; verifies AC-001; blocked by Q-001 QT-001.
+- [ ] QT-001 Add dependent behavior; verifies AC-001; blocked by Q-001/QT-001.

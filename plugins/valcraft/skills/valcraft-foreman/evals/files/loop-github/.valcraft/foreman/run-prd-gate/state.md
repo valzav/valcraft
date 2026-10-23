@@ -1,7 +1,7 @@
 run: run-prd-gate
 active named state: Landing
 target kind: task PR and tracker task
-canonical task identity: FEAT-001 T-003
+canonical task identity: FEAT-001/T-003
 tracker reference: GitHub issue #43
 authoritative contract paths: specs/001-invite-links/spec.md; specs/001-invite-links/design.md; specs/001-invite-links/tasks.md
 active assignment id: rg-land-t003-d000

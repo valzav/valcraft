@@ -23,7 +23,7 @@ Resolve the tracker mode from the committed `.valcraft/config.yaml` before prepa
 
 - In `local` mode, a selected feature task closes through its exact unchecked-to-checked transition in `tasks.md`. The transition is already in the reviewed head; the merge lands it. Verify it as `final-head-and-checks.md` defines. Do not prepare a hosted tracker batch.
 - In `github` mode, a selected feature task closes through the serialized hosted tracker batch. Do not tick the feature task in `tasks.md`.
-- In every tracker mode, a selected `Q-NNN QT-XXX` closes through its exact unchecked-to-checked transition in the quick-task file. The transition is already in the reviewed head; the merge lands it. Verify it as `final-head-and-checks.md` defines. Do not create a hosted quick-task close batch. A completed quick file needs no feature confirmation or retrospective.
+- In every tracker mode, a selected `Q-NNN/QT-XXX` closes through its exact unchecked-to-checked transition in the quick-task file. The transition is already in the reviewed head; the merge lands it. Verify it as `final-head-and-checks.md` defines. Do not create a hosted quick-task close batch. A completed quick file needs no feature confirmation or retrospective.
 
 For `not planned`, follow the committed tracker contract. Record the deciding reason. Do not invent a task PR or completed implementation.
 

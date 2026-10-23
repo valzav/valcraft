@@ -19,6 +19,15 @@ Read this reference after corpus preflight and before examining evidence. It own
 5. **Search transcripts before settling for C.** Before leaving an upstream candidate at C because direct run evidence is missing, search the readable transcripts of the assignments it cites for the instruction text the candidate names and for the agent's decision at that point. Record what the search found as the candidate's direct run evidence, or record that it found nothing. A C grade that rests on an unsearched readable transcript is incomplete.
 6. **Route each candidate** per the routing section below and write the report.
 
+## Task identity in commit history
+
+Commits made before Valcraft v0.11.0 cite tasks in earlier forms, and history is never rewritten. When grouping commits by task, resolve these forms as well as the canonical `FEAT-NNN/T-XXX` and `Q-NNN/QT-XXX`:
+
+- `FEAT-NNN T-XXX` and `Q-NNN QT-XXX` resolve to the same canonical identity.
+- A bare `T-XXX` resolves only when the commit's task branch or PR names exactly one feature. Otherwise the commit is unqualified.
+
+Report each resolved citation under its canonical identity. A legacy form in a commit is not an identity defect.
+
 ## Synthesize mode
 
 The input is two or more analyze reports. Read only the reports; re-open an underlying corpus only to settle a contradiction between reports.

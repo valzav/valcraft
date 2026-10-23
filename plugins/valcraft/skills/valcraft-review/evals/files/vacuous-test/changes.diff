@@ -2,7 +2,7 @@ commit 4f2a91c3e8b7d5a06c1e2f3a4b5c6d7e8f9a0b1c
 Author: Dev <dev@example.test>
 Date:   Sat Aug 8 11:04:22 2026 +0000
 
-    T-002: reject blank document titles; verifies FR-002
+    FEAT-001/T-002: reject blank document titles; verifies FR-002
 
     Validation ran against the raw title, so a whitespace-only title passed the
     empty check and produced an empty slug. Normalize first, then validate.

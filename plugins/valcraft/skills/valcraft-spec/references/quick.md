@@ -13,9 +13,9 @@ A change requiring several phases, a separate design artifact, a tracker issue h
 - The filename is `<NNN>-<slug>.md`: at least three decimal digits, then a slug matching `[a-z0-9]+(?:-[a-z0-9]+)*`.
 - Frontmatter holds exactly one `id: Q-NNN` whose digits equal the filename.
 - Allocate the greatest valid number in `specs/quick/` plus one, padded to three digits; use `001` when the directory is absent or empty. Re-run identity and collision checks immediately before writing. Never reuse a gap or append a suffix.
-- `FR-`, `AC-`, and `QT-` IDs restart per quick file. A task ID is `QT-XXX`, with at least three digits. `Q-NNN` qualifies it; the canonical identity in assignments, branches, reviews, and reports is `Q-007 QT-001`.
+- `FR-`, `AC-`, and `QT-` IDs restart per quick file. A task ID is `QT-XXX`, with at least three digits. `Q-NNN` qualifies it; the canonical identity in assignments, reviews, reports, commit subjects, and PR titles is `Q-007/QT-001`.
 - `T-XXX` is feature-only. A quick file containing a `T-` task, mixed prefixes, a malformed task ID, or a wrong-prefix dependency is invalid. A feature `tasks.md` containing `QT-XXX` is invalid. Stop before selection or work.
-- A local dependency is exactly `blocked by QT-XXX` and resolves in the current file. A cross-file dependency is exactly `blocked by Q-NNN QT-XXX`. The file and task must exist. Dependency status is the referenced checkbox.
+- A local dependency is exactly `blocked by QT-XXX` and resolves in the current file. A cross-file dependency is exactly `blocked by Q-NNN/QT-XXX`. The file and task must exist. Dependency status is the referenced checkbox.
 - Read every checkbox that decides selection, eligibility, or dependency status from the quick file on the default branch named by `foreman.default_branch`, never from a task branch. A task branch carries its own task's checked box before Land merges it, and that unmerged transition is not completion.
 - A bare `Q-NNN` selects that file's first unchecked `QT-` in file order whose dependencies are checked. A bare `QT-XXX` resolves only when enumeration finds one matching valid quick file. A bare `T-XXX` searches feature tasks only. Zero or several matches stop.
 - A file with no eligible task resolves to nothing. Do not pick a blocked or checked task.

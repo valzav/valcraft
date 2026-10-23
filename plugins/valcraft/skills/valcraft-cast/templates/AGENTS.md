@@ -53,7 +53,7 @@ In local mode, use feature `tasks.md` checkboxes as status. Resolve hard depende
 
 When `tracker.mode` is `github`, use checkbox-free feature tasks as git-owned definitions and GitHub issue state as completion status. Use only explicit `blocked by T-XXX` annotations as dependencies. Treat an unresolved tracker target, feature mapping, or task mapping as pending Spec projection.
 
-Quick tasks track locally in both modes. Use `blocked by QT-XXX` within one file and `blocked by Q-NNN QT-XXX` across quick files.
+Quick tasks track locally in both modes. Use `blocked by QT-XXX` within one file and `blocked by Q-NNN/QT-XXX` across quick files.
 
 Do not create or reconcile generated feature and task issues by hand. Route projection or mapping drift to `valcraft-foreman`, which dispatches Spec.
 
@@ -98,7 +98,8 @@ For instructions, prompts, safety rules, and error messages, put one action in e
 ## Change discipline
 
 - Product intent and feature-issue mapping live in `spec.md`; implementation detail lives in `design.md`.
-- Reference `FR-`, `AC-`, feature `T-`, and qualified `Q-NNN QT-XXX` identities from commits and tests.
+- Reference `FR-`, `AC-`, and canonical task identities, `FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`, from commits, PR titles, and tests.
+- When you save an agent memory during a Valcraft assignment, cite that assignment's canonical identity in it.
 - Apply the MSW deletion test to commit messages and PR bodies.
 - Put non-trivial task plans in `docs/plans/YYYY-MM-DD-<type>-<slug>-plan.md`, where `<slug>` starts with the task identity (`fNNN-tNNN-` or `qNNN-qtNNN-`).
 - Update affected specs, ADRs, and docs with code changes.

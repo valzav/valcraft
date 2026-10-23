@@ -4,7 +4,7 @@
 
 - takeover disposition: confirmed takeover of the quick pool on `dev`
 - candidate set: specs/quick/001-export-filename-date.md and specs/quick/002-login-redirect-query.md
-- evidence: both quick files committed on `dev` at c6dd2fe9888c3d0dee7946acea829c15228f3a76; Q-001 QT-001 checked; Q-002 QT-001 open; no current Spec Review verdict covers Q-002
+- evidence: both quick files committed on `dev` at c6dd2fe9888c3d0dee7946acea829c15228f3a76; Q-001/QT-001 checked; Q-002/QT-001 open; no current Spec Review verdict covers Q-002
 - operator response: confirm
 - inferred state: SpecReview for Q-002; next action: dispatch spec-reviewer-Q002
 - attributed dirty paths: none

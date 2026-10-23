@@ -20,4 +20,4 @@ Expose the existing validated result without changing validation behavior.
 
 ## Tasks
 
-- [ ] QT-001 Expose the validated result; verifies AC-001; blocked by Q-001 QT-001.
+- [ ] QT-001 Expose the validated result; verifies AC-001; blocked by Q-001/QT-001.

@@ -79,7 +79,7 @@
       "id": 4,
       "name": "code-mode-vacuous-test-and-scope-creep",
       "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/vacuous-test/, review the change in changes.diff. The working tree already holds the post-change state. Reproduce claims locally; the documented test command is `PYTHONPATH=src python3 -m unittest discover -s tests`.",
-      "expected_output": "Review selects code mode and maps the diff to its governing contract through the commit subject, which cites T-002 and FR-002 in FEAT-001. It reports a P2 that the shipped regression test is vacuous: `test_collapses_whitespace` passes against both the pre-change and post-change code, so it does not discriminate the fix, and the reviewer proves this by reverting the fix and re-running the test rather than by reading it. It notes that the discriminating case is a whitespace-only title, which returns an empty slug on the pre-change code and raises ValueError after the fix, so AC-002 has no regression test. It reports a P1 that the added telemetry emit and src/telemetry.py are scope creep violating the spec's stated non-goal of no usage analytics, metrics, or telemetry in this feature. Evidence cells carry the reproduced command output. The verdict is material findings. Review edits no file, reverts nothing permanently, and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
+      "expected_output": "Review selects code mode and maps the diff to its governing contract through the commit subject, which cites FEAT-001/T-002 and FR-002. It reports a P2 that the shipped regression test is vacuous: `test_collapses_whitespace` passes against both the pre-change and post-change code, so it does not discriminate the fix, and the reviewer proves this by reverting the fix and re-running the test rather than by reading it. It notes that the discriminating case is a whitespace-only title, which returns an empty slug on the pre-change code and raises ValueError after the fix, so AC-002 has no regression test. It reports a P1 that the added telemetry emit and src/telemetry.py are scope creep violating the spec's stated non-goal of no usage analytics, metrics, or telemetry in this feature. Evidence cells carry the reproduced command output. The verdict is material findings. Review edits no file, reverts nothing permanently, and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
       "files": [
         "evals/files/vacuous-test/AGENTS.md",
         "evals/files/vacuous-test/docs/document-slugs-prd.md",
@@ -92,7 +92,7 @@
         "evals/files/vacuous-test/changes.diff"
       ],
       "assertions": [
-        "Review selects code mode and maps the diff to T-002 and FR-002 through the commit subject",
+        "Review selects code mode and maps the diff to FEAT-001/T-002 and FR-002 through the commit subject",
         "A material finding reports that test_collapses_whitespace passes on both the pre-change and post-change code and therefore does not discriminate the fix",
         "The vacuous-test claim is proved by actually running the test against the reverted code, and the finding's evidence cell carries that command output rather than a description of it",
         "The report identifies the whitespace-only title as the discriminating case that no test covers, leaving AC-002 unverified",
@@ -150,7 +150,7 @@
       "id": 7,
       "name": "code-mode-docs-only-change-class",
       "prompt": "/valcraft:valcraft-review — in the Cast project at evals/files/docs-only/, review the change in changes.diff. The working tree already holds the post-change state. Reproduce claims locally; the documented test command is `PYTHONPATH=src python3 -m unittest discover -s tests -v`.",
-      "expected_output": "Review selects code mode (the target is a diff) and, from the diff's file list — README.md only — states the change class as docs in the report. It maps the diff to T-001, FR-001, and AC-001 through the commit subject. It reports a P1: README.md prints `python3 -m pytest`, not the AGENTS.md test command FR-001 requires verbatim, and the reviewer proves AC-001 fails by running `python3 -m pytest` from the repository root (it fails — pytest is absent or the tests cannot import `slug` without PYTHONPATH=src) while `PYTHONPATH=src python3 -m unittest discover -s tests -v` passes; the evidence cell carries both outputs. The verdict is material findings. The class is stated as information; the report does not relax any check or propose a round policy because the change is docs-only. Review edits no file and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
+      "expected_output": "Review selects code mode (the target is a diff) and, from the diff's file list — README.md only — states the change class as docs in the report. It maps the diff to FEAT-001/T-001, FR-001, and AC-001 through the commit subject. It reports a P1: README.md prints `python3 -m pytest`, not the AGENTS.md test command FR-001 requires verbatim, and the reviewer proves AC-001 fails by running `python3 -m pytest` from the repository root (it fails — pytest is absent or the tests cannot import `slug` without PYTHONPATH=src) while `PYTHONPATH=src python3 -m unittest discover -s tests -v` passes; the evidence cell carries both outputs. The verdict is material findings. The class is stated as information; the report does not relax any check or propose a round policy because the change is docs-only. Review edits no file and commits nothing. The report ends with the `## Review report` block: Mode and change class, Verdict, Findings, Reproductions, Checks performed, Not examined — every heading present, in order, none omitted (empty sections say `none`).",
       "files": [
         "evals/files/docs-only/AGENTS.md",
         "evals/files/docs-only/README.md",
@@ -164,7 +164,7 @@
       ],
       "assertions": [
         "Review selects code mode and states the change class as docs, derived from the diff touching only README.md",
-        "The report maps the diff to T-001, FR-001, and AC-001 through the commit subject",
+        "The report maps the diff to FEAT-001/T-001, FR-001, and AC-001 through the commit subject",
         "A P1 finding cites FR-001 and shows, with reproduced command output, that the README command fails while the AGENTS.md command passes",
         "The verdict is material findings, with an R-NNN ID and a resolution column",
         "The report does not skip a check or propose a round policy on account of the docs class",
@@ -197,7 +197,7 @@
       "id": 9,
       "name": "code-mode-maps-qualified-quick-commit",
       "prompt": "/valcraft:valcraft-review — in evals/files/quick-file/code-project/, perform an offline code-mode contract review of changes.diff using the captured commit list in commit-log.txt.",
-      "expected_output": "Review maps current commit Q-002 QT-001 to specs/quick/002-dependent.md, distinguishes it from repeated QT-001 in Q-001, validates the checked cross-file dependency, and does not interpret historical Q-001 T-001 as current work. The report uses Q-002 QT-001 throughout.",
+      "expected_output": "Review maps current commit Q-002/QT-001 to specs/quick/002-dependent.md, distinguishes it from repeated QT-001 in Q-001, validates the checked cross-file dependency, and does not interpret historical Q-001 T-001 as current work. The report uses Q-002/QT-001 throughout.",
       "files": [
         "evals/files/quick-file/code-project/AGENTS.md",
         "evals/files/quick-file/code-project/docs/product-brief.md",
@@ -209,10 +209,10 @@
         "evals/files/quick-file/code-project/prepare-eval.sh"
       ],
       "assertions": [
-        "Review maps Q-002 QT-001 to the Q-002 file, not the repeated QT-001 in Q-001",
-        "Review resolves checked dependency Q-001 QT-001 from quick-file checkbox state",
+        "Review maps Q-002/QT-001 to the Q-002 file, not the repeated QT-001 in Q-001",
+        "Review resolves checked dependency Q-001/QT-001 from quick-file checkbox state",
         "Historical Q-001 T-001 is not interpreted as current quick work",
-        "The report preserves canonical Q-002 QT-001 identity"
+        "The report preserves canonical Q-002/QT-001 identity"
       ]
     },
     {
@@ -230,7 +230,7 @@
         "evals/files/quick-file/invalid-project/prepare-eval.sh"
       ],
       "assertions": [
-        "Review reports feature-only T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Review reports feature-only T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009/QT-999",
         "Review reports QT-001 in feature tasks.md as a wrong-prefix feature task",
         "The verdict is material findings before readiness or implementation",
         "No compatibility mapping or edit occurs"
@@ -239,8 +239,8 @@
     {
       "id": 11,
       "name": "quick-plan-keeps-semantic-name",
-      "prompt": "/valcraft:valcraft-review — in evals/files/quick-file/code-project/, review docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md for Q-002 QT-001.",
-      "expected_output": "Review resolves the qualified quick task and checked dependency, accepts semantic type `fix` and slug `dependent-behavior`, and does not require or propose a quick type or slug component. The plan's task identity remains Q-002 QT-001.",
+      "prompt": "/valcraft:valcraft-review — in evals/files/quick-file/code-project/, review docs/plans/2026-08-18-001-fix-dependent-behavior-plan.md for Q-002/QT-001.",
+      "expected_output": "Review resolves the qualified quick task and checked dependency, accepts semantic type `fix` and slug `dependent-behavior`, and does not require or propose a quick type or slug component. The plan's task identity remains Q-002/QT-001.",
       "files": [
         "evals/files/quick-file/code-project/AGENTS.md",
         "evals/files/quick-file/code-project/docs/product-brief.md",
@@ -252,7 +252,7 @@
       "assertions": [
         "Review preserves semantic type fix and slug dependent-behavior",
         "Review does not require, add, or recommend a quick plan type or slug token",
-        "The plan resolves canonical Q-002 QT-001 and its checked Q-001 QT-001 dependency"
+        "The plan resolves canonical Q-002/QT-001 and its checked Q-001/QT-001 dependency"
       ]
     },
     {
@@ -351,7 +351,7 @@
     {
       "id": 17,
       "name": "code-mode-validates-governing-feature-prefix",
-      "prompt": "/valcraft:valcraft-review — apply code-mode contract mapping to a change whose commit cites FEAT-001 QT-001 and whose governing feature file is evals/files/quick-file/invalid-project/specs/001-feature/tasks.md. Treat the mapping as a static check; do not edit files.",
+      "prompt": "/valcraft:valcraft-review — apply code-mode contract mapping to a change whose commit cites FEAT-001/QT-001 and whose governing feature file is evals/files/quick-file/invalid-project/specs/001-feature/tasks.md. Treat the mapping as a static check; do not edit files.",
       "expected_output": "Review validates the governing feature tasks.md before mapping the change and reports a finding because QT-001 is invalid in a feature task file; feature tasks use T-XXX. It does not map the commit to current feature work, reinterpret QT-001 as T-001, or wait for a quick-task path to discover the error.",
       "files": [
         "evals/files/quick-file/invalid-project/AGENTS.md",
@@ -596,7 +596,7 @@
     {
       "id": 29,
       "name": "closure-check-covers-spec-routed-amendment",
-      "prompt": "/valcraft:valcraft-review — run the closure check for FEAT-014 T-003's plan at head X. The assignment names R-002, owned by Spec and resolved on the task branch, and Spec's report claims the scope test passed. Case (a): the predecessor-to-X diff changes only design text mapped to AC-007, which tasks.md assigns to T-003, and the plan. Case (b): the diff also edits T-005's line in tasks.md. State what is pinned, what is re-run, and the verdict. Do not edit files.",
+      "prompt": "/valcraft:valcraft-review — run the closure check for FEAT-014/T-003's plan at head X. The assignment names R-002, owned by Spec and resolved on the task branch, and Spec's report claims the scope test passed. Case (a): the predecessor-to-X diff changes only design text mapped to AC-007, which tasks.md assigns to T-003, and the plan. Case (b): the diff also edits T-005's line in tasks.md. State what is pinned, what is re-run, and the verdict. Do not edit files.",
       "expected_output": "Review pins the plan and the triplet blobs at X, re-runs R-002 against the pinned blobs, and verifies the scope claim against the diff. Case (a) closes R-002 and, with the plan checks passing, passes. Case (b) records an out-of-scope hunk as a material finding owned by Spec. In neither case does Review require a separate Spec Review; the closure check is the review of the amendment.",
       "files": [
         "SKILL.md",
@@ -613,7 +613,7 @@
     {
       "id": 30,
       "name": "task-pr-triplet-change-requires-pinned-spec-commit",
-      "prompt": "/valcraft:valcraft-review — review task PR #41 for FEAT-014 T-003 in code mode. Its commits are: a Spec-owned commit changing design.md and citing FEAT-014, T-003, and R-002, whose triplet blobs the passed plan Review pinned and which the PR body names with its R-ID; Forge commits citing T-003; and one Forge commit that also edits a sentence in spec.md. State how each triplet change is judged. Do not edit files.",
+      "prompt": "/valcraft:valcraft-review — review task PR #41 for FEAT-014/T-003 in code mode. Its commits are: a Spec-owned commit changing design.md and citing FEAT-014, T-003, and R-002, whose triplet blobs the passed plan Review pinned and which the PR body names with its R-ID; Forge commits citing T-003; and one Forge commit that also edits a sentence in spec.md. State how each triplet change is judged. Do not edit files.",
       "expected_output": "The pinned Spec-owned commit named in the PR body is accepted as part of the task. The spec.md edit inside a Forge commit is a finding because it is not a Spec-owned commit the plan Review pinned. The Spec-owned commit's acceptance does not exempt the other Forge commits from ordinary code-mode checks.",
       "files": [
         "SKILL.md",
@@ -668,7 +668,7 @@
     {
       "id": 33,
       "name": "code-mode-observes-ui-criteria-through-the-route",
-      "prompt": "/valcraft:valcraft-review — code-mode review of PR #7 for FEAT-010 T-002 at its exact head. The design's recorded verification route is agent-browser headless with requestAnimationFrame timestamps readable through eval, and the NFR-001 entry requires no animation frame longer than three display refresh intervals during a scripted orbit. The reviewer's harness cannot open a headed window. State how NFR-001 is verified, what the report returns if the measurement fails, and what the report returns if the entry instead named the operator as the judge. Do not run anything.",
+      "prompt": "/valcraft:valcraft-review — code-mode review of PR #7 for FEAT-010/T-002 at its exact head. The design's recorded verification route is agent-browser headless with requestAnimationFrame timestamps readable through eval, and the NFR-001 entry requires no animation frame longer than three display refresh intervals during a scripted orbit. The reviewer's harness cannot open a headed window. State how NFR-001 is verified, what the report returns if the measurement fails, and what the report returns if the entry instead named the operator as the judge. Do not run anything.",
       "expected_output": "Review runs the scripted orbit itself through the headless route and reads the intervals; a headed window is not needed. A measurement over the bound is a material finding routed to Forge. Review never returns review_blocked to obtain an operator's perception: an entry that names the operator as judge is a material finding owned by Spec, and the criterion is otherwise observed through the route.",
       "files": [
         "SKILL.md",
@@ -954,7 +954,7 @@
     {
       "id": 48,
       "name": "completion-transition-must-name-the-task",
-      "prompt": "/valcraft:valcraft-review — code-mode review of task PR #41 in `acme/tiles` for FEAT-005 T-002, base `main` at plan-review commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`, head `c0ffee1111111111111111111111111111111111`. The committed `.valcraft/config.yaml` sets `tracker.mode: local`. The passed plan for T-002 changes `src/grid.js` and `test/grid.test.js`, and the diff makes exactly those planned changes, which you may treat as correct. Forge's final commit `feat(F005 T-002): wrap grid edges` also changes one line of `specs/005-tiles/tasks.md`: `- [ ] T-003 Persist the grid between sessions; verifies FR-004.` becomes `- [x] T-003 Persist the grid between sessions; verifies FR-004.` The T-002 line stays `- [ ] T-002 Wrap grid edges; verifies FR-003.` Report in code-mode format.",
+      "prompt": "/valcraft:valcraft-review — code-mode review of task PR #41 in `acme/tiles` for FEAT-005/T-002, base `main` at plan-review commit `8d3f2a1c0b9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c`, head `c0ffee1111111111111111111111111111111111`. The committed `.valcraft/config.yaml` sets `tracker.mode: local`. The passed plan for T-002 changes `src/grid.js` and `test/grid.test.js`, and the diff makes exactly those planned changes, which you may treat as correct. Forge's final commit `feat(FEAT-005/T-002): wrap grid edges` also changes one line of `specs/005-tiles/tasks.md`: `- [ ] T-003 Persist the grid between sessions; verifies FR-004.` becomes `- [x] T-003 Persist the grid between sessions; verifies FR-004.` The T-002 line stays `- [ ] T-002 Wrap grid edges; verifies FR-003.` Report in code-mode format.",
       "expected_output": "In local tracker mode the head must carry exactly T-002's unchecked-to-checked transition. This head ticks T-003, another task, and leaves T-002 unchecked, so Review reports a material finding owned by Forge that names both the wrong transition and the missing one. The verdict is not pass while that finding is open.",
       "files": [
         "SKILL.md",
@@ -969,7 +969,7 @@
     {
       "id": 49,
       "name": "plan-mode-routes-false-entry-to-spec-despite-plan-gap",
-      "prompt": "$valcraft:valcraft-review — in evals/files/false-entry-gap/, run `./prepare-eval.sh` and take the printed plan_head as the exact plan commit. Then do a plan-mode review of FEAT-001 T-002's plan, docs/plans/2026-10-17-feat-f001-t002-game-over-panel-plan.md, at that commit. The feature triplet passed Spec Review in an earlier round. This eval has no browser. The harness stands in for this run's own browser replay by stating its result below. Treat that result as this run's replay, not as an operator-supplied snapshot. Stated replay result: through the design's verification route, a scratch copy of `index.html` and `style.css` from the plan commit, with no script loaded, returns `true` for `agent-browser eval \"document.getElementById('game-over').hidden\"` and `flex` for `agent-browser eval \"getComputedStyle(document.getElementById('game-over')).display\"`, and `agent-browser screenshot` shows the panel's 'Game over' text over the board. Report in Review's plan-mode format, with each finding's severity and resolution owner, and the verdict. Do not edit files.",
+      "prompt": "$valcraft:valcraft-review — in evals/files/false-entry-gap/, run `./prepare-eval.sh` and take the printed plan_head as the exact plan commit. Then do a plan-mode review of FEAT-001/T-002's plan, docs/plans/2026-10-17-feat-f001-t002-game-over-panel-plan.md, at that commit. The feature triplet passed Spec Review in an earlier round. This eval has no browser. The harness stands in for this run's own browser replay by stating its result below. Treat that result as this run's replay, not as an operator-supplied snapshot. Stated replay result: through the design's verification route, a scratch copy of `index.html` and `style.css` from the plan commit, with no script loaded, returns `true` for `agent-browser eval \"document.getElementById('game-over').hidden\"` and `flex` for `agent-browser eval \"getComputedStyle(document.getElementById('game-over')).display\"`, and `agent-browser screenshot` shows the panel's 'Game over' text over the board. Report in Review's plan-mode format, with each finding's severity and resolution owner, and the verdict. Do not edit files.",
       "expected_output": "Review pins the plan at the printed commit and reads the triplet as its authorities. It reports a material finding against design.md's TS-002 entry: its observation reads the panel's `hidden` property, but `style.css`'s `#game-over { display: flex; }` keeps the panel rendered while `hidden` is `true`, as the stated replay shows. The check therefore passes on a page that shows the panel during play, so the entry states something false about what it observes. The plan names this as TS-002's gap and adds a computed-style check, but that workaround leaves the false entry in design.md for every later reader and task. The finding's resolution names `valcraft-spec` as owner, to correct the entry in design.md; it is not resolved by Draft alone. Review may also note that the plan should name the defect as a contract defect rather than a gap. The verdict is not pass while the TS-002 finding is open, and the verdict line lists it as open with its owner. Nothing is edited.",
       "files": [
         "SKILL.md",

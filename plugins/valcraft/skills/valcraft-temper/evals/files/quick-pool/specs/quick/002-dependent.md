@@ -20,4 +20,4 @@ Build on the completed foundation.
 
 ## Tasks
 
-- [x] QT-001 Add dependent behavior; verifies AC-001; blocked by Q-001 QT-001.
+- [x] QT-001 Add dependent behavior; verifies AC-001; blocked by Q-001/QT-001.

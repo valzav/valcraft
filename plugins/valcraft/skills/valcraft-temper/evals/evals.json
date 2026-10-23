@@ -5,7 +5,7 @@
       "id": 1,
       "name": "quick-pool-uses-qualified-identities",
       "prompt": "/valcraft:valcraft-temper — in evals/files/quick-pool/, analyze the quick pool using the captured commit list in commit-log.txt as offline history. Stop after inventory; do not write a report.",
-      "expected_output": "Temper validates the pool, inventories Q-001 QT-001 and Q-002 QT-001 as distinct units despite repeated QT-001, links each current qualified commit to its file, and ignores historical Q-001 T-001 as a current unit. The checked Q-001 QT-001 satisfies Q-002's cross-file dependency.",
+      "expected_output": "Temper validates the pool, inventories Q-001/QT-001 and Q-002/QT-001 as distinct units despite repeated QT-001, links each current qualified commit to its file, and ignores historical Q-001 T-001 as a current unit. The checked Q-001/QT-001 satisfies Q-002's cross-file dependency.",
       "files": [
         "evals/files/quick-pool/AGENTS.md",
         "evals/files/quick-pool/docs/product-brief.md",
@@ -14,11 +14,11 @@
         "evals/files/quick-pool/commit-log.txt"
       ],
       "assertions": [
-        "Inventory has separate Q-001 QT-001 and Q-002 QT-001 rows",
+        "Inventory has separate Q-001/QT-001 and Q-002/QT-001 rows",
         "Repeated QT-001 values are never grouped without their Q qualifier",
         "Qualified commits map to the corresponding quick files",
         "Historical Q-001 T-001 is not interpreted as current work",
-        "The checked cross-file Q-001 QT-001 dependency validates"
+        "The checked cross-file Q-001/QT-001 dependency validates"
       ]
     },
     {
@@ -32,7 +32,7 @@
         "evals/files/quick-pool/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
-        "Temper reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Temper reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009/QT-999",
         "Temper stops before inventory, incident extraction, grading, routing, or report creation",
         "No compatibility parser, fallback, migration, or historical mapping is used"
       ]

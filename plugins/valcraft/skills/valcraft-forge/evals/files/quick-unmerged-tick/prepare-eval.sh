@@ -22,7 +22,7 @@ sed 's/^- \[ \] QT-001 /- [x] QT-001 /' specs/quick/001-validation-hardening.md 
 mv .git/quick.md specs/quick/001-validation-hardening.md
 git add src/validation.py tests/test_validation.py specs/quick/001-validation-hardening.md
 GIT_AUTHOR_DATE=2026-08-12T10:00:00Z GIT_COMMITTER_DATE=2026-08-12T10:00:00Z \
-  git commit -q -m "fix(validation): reject whitespace-only values (Q-001 QT-001)"
+  git commit -q -m "fix(validation): reject whitespace-only values (Q-001/QT-001)"
 
 printf 'main_head=%s\n' "$main_head"
 printf 'task_head=%s\n' "$(git rev-parse HEAD)"

@@ -50,7 +50,7 @@ A necessary change can fall outside the passed plan's touched scope, or change i
 
 Local implementation and commits follow from the Forge assignment. The dispatch carries the ref-bound producer grant in [`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-producer-grant): non-force push of the canonical task ref and task-PR creation or update. It binds every field except the head, and authorizes pushing only the clean head on which your full gate passed, descending from the passed plan SHA with the plan blob unchanged. It covers no other head. Follow [`../../valcraft-foreman/references/outward-mutation.md`](../../valcraft-foreman/references/outward-mutation.md) for revalidation, push, PR, partial results, and the codes `authority_drift`, `workspace_not_ready`, `push_failed`, and `pr_failed`.
 
-When that head exists, push it and create or update the one task PR in the same assignment. The PR body cites the task identity and, for each Spec-owned commit the passed plan Review pinned, that commit and its R-IDs. A remediation push updates the same PR.
+When that head exists, push it and create or update the one task PR in the same assignment. The PR title starts with the canonical task identity, and the PR body cites it and, for each Spec-owned commit the passed plan Review pinned, that commit and its R-IDs. A remediation push updates the same PR.
 
 Under `Outward mutations`, name the grant as ref-bound and record the exact head it pushed and the PR. `Status: done` means the implementation is pushed and in its task PR, ready for Review; it does not imply the task shipped.
 

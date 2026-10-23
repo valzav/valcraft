@@ -40,7 +40,7 @@ Before submission, save the exact assignment envelope as `<assignment id>-envelo
 Append checkpoints with:
 
 - a wall-clock time on every checkpoint heading (`## CP-NNN 2026-08-21T17:19:05-0400 <title>`), backend return, and dispatch, so run timing does not depend on report-file mtimes. Never compose a time. Capture it in the shell call that writes it, `NOW=$(date +%Y-%m-%dT%H:%M:%S%z)`, and write `$NOW`. A time that a tool reported may be copied from that tool's output;
-- active named state, target kind, canonical task identity, tracker reference, and authoritative contract paths;
+- active named state, target kind, canonical task identity (`FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`), tracker reference, and authoritative contract paths;
 - takeover disposition: exact checkpoint resume or confirmed takeover; for takeover record the candidate set, evidence and conflicts, operator response, inferred state, next action, and exact attributed dirty paths;
 - active assignment id, logical and physical worker identities, physical branch, attributed report path, and predecessor target;
 - effective backend and worker settings with the source file and key, or the backend source when it supplies those settings;

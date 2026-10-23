@@ -2,7 +2,7 @@
 
 ### Target
 
-FEAT-001 T-002 plan at 6666666666666666666666666666666666666666 on feat/f001-t002-expired-link-rejection
+FEAT-001/T-002 plan at 6666666666666666666666666666666666666666 on feat/f001-t002-expired-link-rejection
 
 ### Verdict
 

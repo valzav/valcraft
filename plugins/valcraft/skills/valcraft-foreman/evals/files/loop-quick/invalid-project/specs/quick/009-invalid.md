@@ -21,6 +21,6 @@ Process one record.
 ## Tasks
 
 - [x] QT-001 Add processing; verifies AC-001.
-- [ ] T-002 Add logging; verifies AC-001; blocked by Q-404 T-001.
-- [ ] QT-003 Check an existing file target; verifies AC-001; blocked by Q-009 QT-999.
-- [ ] QT-004 Check a missing file target; verifies AC-001; blocked by Q-404 QT-001.
+- [ ] T-002 Add logging; verifies AC-001; blocked by Q-404/T-001.
+- [ ] QT-003 Check an existing file target; verifies AC-001; blocked by Q-009/QT-999.
+- [ ] QT-004 Check a missing file target; verifies AC-001; blocked by Q-404/QT-001.
