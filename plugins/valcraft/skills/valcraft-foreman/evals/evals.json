@@ -373,7 +373,7 @@
         "templates/run-dir.md"
       ],
       "assertions": [
-        "Canonical Q-1000 QT-001 and logical forge-Q1000-QT001 remain intact",
+        "Canonical Q-1000/QT-001 and logical forge-Q1000-QT001 remain intact",
         "The external-orchestrator backend maps Draft, Forge, Review, Land, and Temper to d, f, r, l, and t with no alias for producer-owned substeps",
         "The external-orchestrator alias uses lowercase hexadecimal SHA-256 over the UTF-8 canonical identity and as many leading digest characters as fit the 20-character contract",
         "The forced external-orchestrator collision is detected before spawn and deterministically rehashes the dispatch preimage plus newline collision:1 until a distinct checked alias is available",

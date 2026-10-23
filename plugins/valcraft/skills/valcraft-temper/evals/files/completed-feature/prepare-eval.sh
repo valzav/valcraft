@@ -16,7 +16,7 @@ GIT_AUTHOR_DATE=2026-08-10T09:00:00Z GIT_COMMITTER_DATE=2026-08-10T09:00:00Z \
 
 git add src/export.py tests/test_export.py
 GIT_AUTHOR_DATE=2026-08-12T09:00:00Z GIT_COMMITTER_DATE=2026-08-12T09:00:00Z \
-  git commit -q -m "feat(export): FEAT-001/T-001 add record serialization"
+  git commit -q -m "feat(export): FEAT-001 T-001 add record serialization"
 
 git add src/report.py tests/test_report.py
 GIT_AUTHOR_DATE=2026-08-14T09:00:00Z GIT_COMMITTER_DATE=2026-08-14T09:00:00Z \

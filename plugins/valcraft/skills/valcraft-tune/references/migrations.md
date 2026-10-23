@@ -33,7 +33,8 @@ Outside its own task file, a task is cited by its canonical identity: `FEAT-NNN/
 - Applies when: a file under `specs/quick/` contains a quick citation in the space form `Q-<number> QT-<number>`, or the root `AGENTS.md` contains `Q-NNN QT-XXX` in its cross-file dependency rule or its citation rule.
 - Tune performs: none.
 - Operator: in the root `AGENTS.md`, replace the line ``- Reference `FR-`, `AC-`, feature `T-`, and qualified `Q-NNN QT-XXX` identities from commits and tests.`` with the two lines ``- Reference `FR-`, `AC-`, and canonical task identities, `FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`, from commits, PR titles, and tests.`` and ``- When you save an agent memory during a Valcraft assignment, cite that assignment's canonical identity in it.``
-- Operator: then rewrite every remaining space-form quick citation, from the repository root: `perl -pi -e 's/\b(Q-(?:\d{3,}|NNN)) (QT-(?:\d{3,}|XXX))\b/$1\/$2/g' AGENTS.md specs/quick/*.md`. Commit both changes through an ordinary reviewed change.
+- Operator: then, from the repository root, rewrite every remaining space-form quick citation in `AGENTS.md`: `perl -pi -e 's/\b(Q-(?:\d{3,}|NNN)) (QT-(?:\d{3,}|XXX))\b/$1\/$2/g' AGENTS.md`.
+- Operator: then rewrite the same citations in every existing quick file. The command does nothing when `specs/quick/` is absent or empty: `if [ -d specs/quick ]; then find specs/quick -maxdepth 1 -name '*.md' -exec perl -pi -e 's/\b(Q-(?:\d{3,}|NNN)) (QT-(?:\d{3,}|XXX))\b/$1\/$2/g' {} +; fi`. Commit all three changes through an ordinary reviewed change.
 
 ## v0.10.3
 
