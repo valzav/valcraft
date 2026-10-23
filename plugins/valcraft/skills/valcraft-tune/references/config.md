@@ -13,7 +13,7 @@ Every mapping in either file is closed: reject unknown keys at every level. Reje
 
 Repo-scoped settings live only in the base: `valcraft_version`, the whole `tracker` section, `foreman.default_branch`, `foreman.release_branch`, `foreman.clarification_assignees`, and `pull_requests.merge_strategy`. A repo-scoped key in the overlay is a validation error.
 
-User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`.
+User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.answer_page`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`.
 
 The [browser record](#browser-record) `browser` is overlay-only. It records the state of one machine, so `browser` in the base is a validation error.
 
@@ -22,6 +22,7 @@ The [browser record](#browser-record) `browser` is overlay-only. It records the 
 Each overlay key replaces the corresponding base value atomically; nothing merges deeper.
 
 - An overlay `foreman.approval_mode` replaces the base value.
+- An overlay `foreman.answer_page` replaces the base value, including an overlay `false` over a base `true`. An overlay without the key inherits the base value.
 - `foreman.backend` and the backend-specific mappings `foreman.herdr` and `foreman.ao` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping, and an overlay backend of `ao` requires a complete overlay `ao` mapping; an overlay `backend` masks every base backend-specific mapping. An overlay `herdr` or `ao` mapping without an overlay `backend` is valid only when the resolved backend matches it, and it replaces the whole base mapping.
 
 Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys, and `browser`; the resolved configuration against the shape below, including reviewer independence.
@@ -65,6 +66,8 @@ Changing `tracker.mode` when committed feature artifacts exist is blocked: every
 - `approval_mode`: `attended` or `unattended`;
 - `default_branch`: a branch identifier stored as a string; and
 - `release_branch`: a branch identifier stored as a string or YAML `null` when no separate release branch exists.
+
+`foreman` may also hold `answer_page`, a YAML boolean. `true` turns on Foreman's answer page: large operator question sets and the feature-close confirmation are delivered as a local HTML page that the operator answers and pastes back, as Foreman's [`approval-modes.md`](../../valcraft-foreman/references/approval-modes.md#answer-page) defines. A resolved configuration without the key means the page is off; that is the key's absence meaning, not a read-time default. Tune never writes `false` to the base, because an absent base key already means off; the overlay records `false` to turn the page off over a base `true`.
 
 When `tracker.mode` is `github`, `foreman` also requires `clarification_assignees` with exactly `product` and `default`. Each value is an assignee identifier string or YAML `null`. Omit this mapping in local mode.
 
@@ -139,12 +142,13 @@ Walk this order. Every quoted choice is a list item with its explanation, not an
 1. **Tasks/Issue Tracker:** `Local (Recommended)` — keep task state in the repository with no hosted tracker; `GitHub` — project features and tasks through GitHub Issues. For GitHub, ask for the repository identifier as free-form input; accept the literal `TBD` to defer target selection.
 2. **Foreman Loop — backend.** Foreman is the coordinator that runs the delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers. Offer `Subagents (Recommended)` — use workers provided by the active coding session; `Herdr` — dispatch roles through a Herdr session with configured models. `ao` remains a valid `foreman.backend` value but is not offered interactively; when the operator explicitly configures `ao`, ask for `foreman.ao.project_id` as free-form input. `ao` is temporarily unsupported because Foreman's retry of external failures is not verified on it; state that in the report whenever the resolved backend is `ao`.
 3. **Foreman Loop — approval:** `Unattended (Recommended)` — advance routine prepared stages while preserving mandatory authority gates; `Attended` — pause at Foreman's optional coordination gates.
-4. **Default branch:** detect the branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. Store an unambiguous detected branch silently. Ask only when authoritative sources disagree — explain the conflict — or when none exists, offering `main (Recommended)` and `Enter another branch`. Store an explicit value in every case.
-5. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
-6. **Clarification assignees, GitHub only:** `No default assignees (Recommended)` — store both values as YAML `null`; `Configure assignees` — ask separately for optional product and default assignee identifiers, with `None (Recommended)` first for each.
-7. **Herdr, only when selected:** ask the session and worker questions below.
-8. **Browser tools, Herdr only:** `Discover browser tools (Recommended)` — each configured harness reports a browser tool it can drive on this machine, and Spec starts its browser checks from that record; `Skip — no web UI` — record nothing. Apply `Discover` without asking when a committed `design.md` records a browser verification route under `Verified baseline assumptions`. Run [browser discovery](#browser-discovery) after the last other answer.
-9. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
+4. **Answer page:** `Chat (Recommended)` — answer every operator question in the chat; `HTML` — large question sets and the feature-close confirmation open as a local HTML page that you answer with checkboxes, option picks, and notes, then paste back into the chat. `Chat` writes no key; `HTML` writes `foreman.answer_page: true`.
+5. **Default branch:** detect the branch from authoritative local or host metadata available without mutation, preferring an explicit hosting-service default or the remote symbolic HEAD. Do not call the current checkout authoritative merely because it is checked out. Store an unambiguous detected branch silently. Ask only when authoritative sources disagree — explain the conflict — or when none exists, offering `main (Recommended)` and `Enter another branch`. Store an explicit value in every case.
+6. **Release branch:** `No separate release branch (Recommended)` — use YAML `null`; `Configure a release branch` — ask for the branch identifier.
+7. **Clarification assignees, GitHub only:** `No default assignees (Recommended)` — store both values as YAML `null`; `Configure assignees` — ask separately for optional product and default assignee identifiers, with `None (Recommended)` first for each.
+8. **Herdr, only when selected:** ask the session and worker questions below.
+9. **Browser tools, Herdr only:** `Discover browser tools (Recommended)` — each configured harness reports a browser tool it can drive on this machine, and Spec starts its browser checks from that record; `Skip — no web UI` — record nothing. Apply `Discover` without asking when a committed `design.md` records a browser verification route under `Verified baseline assumptions`. Run [browser discovery](#browser-discovery) after the last other answer.
+10. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
 
 ### Herdr
 
@@ -174,7 +178,7 @@ For Custom, ask each role in the table order. Offer Claude, Codex, and Cursor; p
 For an existing valid resolved configuration, reconfigure only when the caller or operator asks for it; a bare direct invocation is that request. The first question is always a list of sections, including when the request already named one. Naming a section is not an answer to this question, whether a caller or the operator named it: it selects the order, so put that section first and mark it recommended. The menu shows every section the operator may also want to change in the same run, which a named section cannot establish. Otherwise use this order:
 
 1. `Tasks/Issue Tracker (Recommended)` — change local or GitHub tracking and its dependent assignees.
-2. `Foreman Loop` — change backend, approval mode, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers.
+2. `Foreman Loop` — change backend, approval mode, answer page, branches, and backend-dependent settings. Foreman is the coordinator that runs the delivery loop through fresh Spec, Draft, Review, Forge, Land, and Temper workers.
 3. `Herdr workers` — change session, preset, or role settings; show only when the resolved backend is Herdr.
 4. `Pull request strategy` — change the merge strategy.
 5. `Browser tools` — discover this machine's browser tools again, which replaces the record, or remove the record; show only when the resolved backend is Herdr.
@@ -182,6 +186,8 @@ For an existing valid resolved configuration, reconfigure only when the caller o
 Show each section with its current resolved value summary.
 
 **Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. The browser record always goes to the overlay and never takes the layer question. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
+
+The answer page follows the layer answer. `For everyone` writes `foreman.answer_page: true` to the base for `HTML`, and removes the key from the base for `Chat`. `Just for you` writes the chosen value, `true` for `HTML` or `false` for `Chat`, to the overlay.
 
 Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`, and the resolved move removes the overlay's `browser`; moving to Herdr asks the complete Herdr flow. A worker-map change that removes every role on a harness removes that harness's `browser` entry. A change that adds a harness leaves it without an entry, and the report names the `Browser tools` section that fills it.
 

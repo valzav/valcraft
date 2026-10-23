@@ -65,6 +65,56 @@ Hold a `product_decision_required`, `owner_decision_required`, or task hold ques
 
 A question that cannot be held enters `AwaitOwner`. Ask it together with every question already held, in one set. When `Ready` finds only held tasks open, `Blocked` asks their questions as one set. A gate row waits when reached, as its row says.
 
+When the resolved configuration has `foreman.answer_page: true`, deliver these sets through an [answer page](#answer-page), in both approval modes:
+
+- the FeatureClose confirmation, always;
+- an `AwaitOwner` or `Blocked` set that exceeds the published limits of the harness's structured question tool, or any such set when the harness offers no such tool. Claude Code's `AskUserQuestion` takes at most 4 questions with at most 4 options each.
+
+Ask a set within the tool's limits through the tool. When the key is absent or `false`, ask every set as the paragraphs above say and write no page.
+
+### Answer page
+
+An answer page is one local HTML file that shows a question set and turns the operator's picks and notes into an answer block for the chat. Write it in these steps:
+
+1. Number the run's question sets `S-001`, `S-002`, and so on. A set asked again, in whole or in part, is a new set.
+2. Build the set as a JSON object with `run`, `set`, `title`, `summary`, and `questions`. The `summary` names the named state and why the run waits.
+3. Give each question an `id` (`Q1`, `Q2`, and so on, in order), a `kind`, a `prompt`, `context`, `origin`, `blocks`, `excerpts`, and `options`. The page has room that a chat question lacks, so write each question as a brief that the operator can decide from without opening another file:
+   - `context`: a few sentences of plain prose on why the question arises: what the contract or report says, and what is missing or in conflict.
+   - `origin`: `task`, the canonical task identity or `null`; `report`, the repository-relative path of the report that raised the question, or `null` for a gate that Foreman raises itself; and `ids`, the contract IDs that the answer affects.
+   - `blocks`: each task or step that waits on the answer, with what it cannot do without the answer.
+   - `excerpts`: the source text the question turns on. Each excerpt has `text`, quoted verbatim and kept to the passage that matters, and `source`, its `path:line` locator.
+4. Give each option an `id`, a `label`, an `effect`, and a `tradeoff`, and optionally a `detail`. The `effect` says what changes if the operator picks the option: the artifact amended, the tasks that unblock, and who acts next. The `tradeoff` says in one sentence what the option costs or risks. The option you recommend comes first, with `recommended: true` and its `reason`; the reason may cite the question's excerpts.
+5. Write each project fact as a `facts` entry with `text` and `source`. The `source` is the locator you checked, or `null` for an unchecked fact; the page labels a `null` source unchecked.
+6. Use the `choice` kind for a decision question. Set `multi: true` on a question whose answer may combine options; otherwise the operator picks exactly one.
+7. Use the `confirm` kind for the FeatureClose confirmation: one question with the options `close-as-is` and `amend-first`, and `sections`, each with a `title` and `items`. Its `origin` names the feature in `ids`, with `task` and `report` set to `null`, and its `blocks` names the feature-close steps that wait. It needs no `excerpts`, because the section items carry their sources.
+   - The sections list everything the confirmation lists in [`loop.md`](loop.md): the open Spec-owned P3 notes with R-IDs and report paths, each note left open for new work with its reason, each closed task that lacks verdicts with the kinds missing, the PRD issue the confirmation also covers, and every Foreman decision of the run with its answer and cited sources.
+   - Each item has `text`, and optionally `detail` and `source`. For a P3 note, `text` names the R-ID and its report path, and `detail` gives the finding's text. For a Foreman decision, `text` gives the question and the answer, `detail` gives the rationale, and `source` gives the cited sources.
+8. Serialize the set as UTF-8 JSON. Replace every `<` character in the serialized text with the six-character escape `\u003c`. The result is the slot text. A `</script>` inside a question then cannot close the data element, and the page's `JSON.parse` restores the original text.
+9. Compute the digest: the lowercase hexadecimal SHA-256 of the slot text's UTF-8 bytes.
+10. Copy [`../templates/answer-page.html`](../templates/answer-page.html) to `.valcraft/foreman/<run-id>/answers-<set-id>.html`. Replace `{{DIGEST}}` with the digest. Then replace `{{SET_JSON}}` with the slot text. Use a literal string replacement for each, because a regular-expression or `sed` replacement can rewrite `\` and `&`. Change nothing else: the template's Content-Security-Policy admits only the template's own script, by its hash.
+11. Record in `state.md` the set id, the page path, the digest, and each question's id with its subject and source.
+12. Print the page's `file://` URL on its own line, so a terminal can make it clickable: `file://` followed by the absolute path, with each path character outside letters, digits, `/`, `-`, `.`, `_`, and `~` percent-encoded as UTF-8 bytes. Then tell the operator to open the page, answer it, press Respond, and paste the answer block into the chat. Do not open a browser. In an unattended run, the push notification names the page's absolute path.
+
+The page renders every value as text, never as markup. Respond shows the answer block selected in a text area and copies it to the clipboard when the browser allows:
+
+```text
+valcraft-answer run=<run-id> set=<set-id> digest=<digest>
+Q1: {"selected":["b"],"note":"Approved by the records team.\nSee the export policy."}
+Q2: {"selected":["a","c"],"note":null}
+Q3: unanswered
+```
+
+Validate a pasted block before applying any of it:
+
+- Accept the block only when its header names this run, the latest set still awaiting answers, and that set's recorded digest. Otherwise reject the whole block as stale, apply none of it, and give the operator the current page's path.
+- Read each later line as `<question id>: unanswered` or `<question id>: <JSON object>`. The object has exactly `selected`, an array of distinct option ids of that question, and `note`, a string or `null`.
+- A single-pick `choice` question and a `confirm` question need exactly one selected id. A multi-select question accepts any subset of its options, and an empty array means that the operator chose none.
+- A line that breaks these rules answers nothing. Never infer an answer from a note or a partial selection.
+- Apply every valid line. Ask every other question of the set again as a new set: an `unanswered` line, an invalid line, or a missing line. The delivery rule above decides between the tool and a new page.
+- A note is part of the answer to its own question only.
+
+A pasted block is a live operator message, with the same authority as a typed answer and no more. A typed answer in the chat stays valid while a page is open. Record each applied answer in `state.md` with its set id. For the FeatureClose confirmation, quote the block's header and its confirmation line as the operator's confirmation.
+
 ## Rules in every mode
 
 - When the harness offers a push notification, send one at every wait, escalation, and run end, naming the gate. A notification is display and changes no state.

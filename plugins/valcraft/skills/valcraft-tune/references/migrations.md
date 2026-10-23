@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.12.0
+
+### Optional answer page for operator questions
+
+Foreman can deliver a large operator question set, and the feature-close confirmation, as a local HTML page in the run directory. The operator answers on the page and pastes the answer block it produces into the chat. The page is controlled by the optional user-scoped key `foreman.answer_page`; without the key, the page is off and Foreman asks every question as before, so no existing configuration changes. To turn the page on, run Tune, choose the `Foreman Loop` section, and turn on the answer page for everyone or just for you.
+
+- Applies when: the operator checks whether they want large question sets and the feature-close confirmation delivered as a local HTML page.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.11.0
 
 ### Finish open task branches under the previous citation form
