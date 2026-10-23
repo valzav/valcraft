@@ -86,7 +86,7 @@ An answer page is one local HTML file that shows a question set and turns the op
 8. Compute the digest: the lowercase hexadecimal SHA-256 of the slot text's UTF-8 bytes.
 9. Copy [`../templates/answer-page.html`](../templates/answer-page.html) to `.valcraft/foreman/<run-id>/answers-<set-id>.html`. Replace `{{DIGEST}}` with the digest. Then replace `{{SET_JSON}}` with the slot text. Use a literal string replacement for each, because a regular-expression or `sed` replacement can rewrite `\` and `&`. Change nothing else: the template's Content-Security-Policy admits only the template's own script, by its hash.
 10. Record in `state.md` the set id, the page path, the digest, and each question's id with its subject and source.
-11. Print the page's absolute path, and tell the operator to answer on the page, press Respond, and paste the answer block into the chat. Do not open a browser. In an unattended run, the push notification names the page's absolute path.
+11. Print the page's `file://` URL on its own line, so a terminal can make it clickable: `file://` followed by the absolute path, with each path character outside letters, digits, `/`, `-`, `.`, `_`, and `~` percent-encoded as UTF-8 bytes. Then tell the operator to open the page, answer it, press Respond, and paste the answer block into the chat. Do not open a browser. In an unattended run, the push notification names the page's absolute path.
 
 The page renders every value as text, never as markup. Respond shows the answer block selected in a text area and copies it to the clipboard when the browser allows:
 
