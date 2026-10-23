@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-QN+towXALe7bMvES9He1asobkr/FLtXVq22hIOoTCkI='">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-xEtOBsGBaEKi3EH9HqA1NaB+AQCBxyiqa+Lp8owM8rg='">
 <title>Valcraft operator answers</title>
 <style>
 :root {
@@ -25,7 +25,15 @@ h1 { font-size: 1.5rem; margin: 0 0 4px; }
 fieldset { background: var(--card); border: 1px solid var(--line); border-radius: 8px; margin: 0 0 20px; padding: 16px; min-width: 0; }
 legend { font-weight: 600; padding: 0 6px; }
 .prompt { font-weight: 600; white-space: pre-wrap; margin: 0 0 8px; }
-.context { white-space: pre-wrap; color: var(--muted); margin: 0 0 8px; }
+.context { white-space: pre-wrap; margin: 0 0 8px; }
+.origin { color: var(--muted); font-size: 0.875rem; margin: 0 0 8px; overflow-wrap: anywhere; }
+.blocks { font-size: 0.9375rem; margin: 0 0 8px; white-space: pre-wrap; }
+details.excerpts { margin: 0 0 12px; }
+details.excerpts summary { cursor: pointer; color: var(--accent); font-size: 0.9375rem; }
+blockquote { margin: 8px 0 2px; padding: 6px 12px; border-left: 3px solid var(--line); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.9375rem; }
+blockquote + .source { margin: 0 0 8px 15px; }
+.effect, .tradeoff { display: block; white-space: pre-wrap; font-size: 0.9375rem; }
+.effect strong, .tradeoff strong, .blocks strong { font-weight: 600; }
 .facts, .section ul { margin: 0 0 12px; padding-left: 20px; }
 .facts li, .section li { white-space: pre-wrap; overflow-wrap: anywhere; }
 .source { color: var(--muted); font-size: 0.875rem; }
@@ -67,6 +75,13 @@ button { font: inherit; font-weight: 600; padding: 10px 20px; border: 0; border-
     return node;
   }
 
+  function labelled(cls, label, text) {
+    var node = el("span", cls);
+    node.appendChild(el("strong", null, label));
+    node.appendChild(document.createTextNode(String(text)));
+    return node;
+  }
+
   function fail(message) {
     app.appendChild(el("p", "error", message));
   }
@@ -101,7 +116,26 @@ button { font: inherit; font-weight: 600; padding: 10px 20px; border: 0; border-
     var box = el("fieldset");
     box.appendChild(el("legend", null, q.id));
     box.appendChild(el("p", "prompt", q.prompt));
+    var origin = q.origin || {};
+    var meta = [];
+    if (origin.task) meta.push(origin.task);
+    if (Array.isArray(origin.ids) && origin.ids.length) meta.push(origin.ids.join(", "));
+    if (origin.report) meta.push("raised in " + origin.report);
+    if (meta.length) box.appendChild(el("p", "origin", meta.join(" · ")));
     if (q.context) box.appendChild(el("p", "context", q.context));
+    if (Array.isArray(q.blocks) && q.blocks.length) {
+      box.appendChild(labelled("blocks", "Waiting on this answer: ", q.blocks.join("; ")));
+    }
+
+    if (Array.isArray(q.excerpts) && q.excerpts.length) {
+      var excerpts = el("details", "excerpts");
+      excerpts.appendChild(el("summary", null, "Source excerpts (" + q.excerpts.length + ")"));
+      q.excerpts.forEach(function (excerpt) {
+        excerpts.appendChild(el("blockquote", null, excerpt.text));
+        excerpts.appendChild(el("p", "source", excerpt.source ? "from " + excerpt.source : "(unchecked)"));
+      });
+      box.appendChild(excerpts);
+    }
 
     if (Array.isArray(q.facts) && q.facts.length) {
       var facts = el("ul", "facts");
@@ -120,7 +154,15 @@ button { font: inherit; font-weight: 600; padding: 10px 20px; border: 0; border-
         var part = el("div", "section");
         part.appendChild(el("h3", null, section.title));
         var list = el("ul");
-        (section.items || []).forEach(function (text) { list.appendChild(el("li", null, text)); });
+        (section.items || []).forEach(function (item) {
+          var entry = el("li", null, item.text);
+          if (item.source) {
+            entry.appendChild(document.createTextNode(" "));
+            entry.appendChild(el("span", "source", "(" + item.source + ")"));
+          }
+          if (item.detail) entry.appendChild(el("span", "detail", item.detail));
+          list.appendChild(entry);
+        });
         if (!(section.items || []).length) list.appendChild(el("li", null, "None."));
         part.appendChild(list);
         box.appendChild(part);
@@ -141,6 +183,8 @@ button { font: inherit; font-weight: 600; padding: 10px 20px; border: 0; border-
       if (option.recommended) text.appendChild(el("span", "badge", "Recommended"));
       if (option.recommended && option.reason) text.appendChild(el("span", "reason", option.reason));
       if (option.detail) text.appendChild(el("span", "detail", option.detail));
+      if (option.effect) text.appendChild(labelled("effect", "If chosen: ", option.effect));
+      if (option.tradeoff) text.appendChild(labelled("tradeoff", "Trade-off: ", option.tradeoff));
       row.appendChild(text);
       box.appendChild(row);
       inputs.push(input);
