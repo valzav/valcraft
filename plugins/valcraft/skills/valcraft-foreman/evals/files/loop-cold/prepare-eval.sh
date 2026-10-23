@@ -15,7 +15,7 @@ git config commit.gpgsign false
 # assumption cites.
 git add .gitignore AGENTS.md .valcraft/config.yaml docs prepare-eval.sh src tests
 GIT_AUTHOR_DATE=2026-08-16T09:00:00Z GIT_COMMITTER_DATE=2026-08-16T09:00:00Z \
-  git commit -q -m "feat(invites): FEAT-001 T-001 add Link record and create_link"
+  git commit -q -m "feat(invites): FEAT-001/T-001 add Link record and create_link"
 
 # The Spec Review report under .valcraft/reviews/ is gitignored and covers
 # the triplet at this commit.

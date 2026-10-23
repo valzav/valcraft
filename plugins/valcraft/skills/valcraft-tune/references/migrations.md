@@ -16,6 +16,26 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.11.0
+
+### Finish open task branches under the previous citation form
+
+Review checks every commit on a task branch against the citation form introduced in this release, so an unmerged task branch whose commit subjects cite a bare feature `T-XXX`, `FEAT-NNN T-XXX`, or `Q-NNN QT-XXX` fails Review even after compliant commits are added. Land or abandon every open task branch and task PR with the previous plugin version before upgrading. Merged history is never rewritten; Temper still resolves the earlier forms in it.
+
+- Applies when: the operator checks whether any unmerged task branch or open task PR carries a commit subject that cites a bare feature `T-XXX`, `FEAT-NNN T-XXX`, or `Q-NNN QT-XXX`.
+- Tune performs: none.
+- Operator: on each such branch, reword every affected commit subject to the canonical form `FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`, then push the branch with `git push --force-with-lease`. Foreman reviews the branch again at its new head.
+
+### Task citations use the slash-qualified form
+
+Outside its own task file, a task is cited by its canonical identity: `FEAT-NNN/T-XXX` for a feature task and `Q-NNN/QT-XXX` for a quick task. Assignments, reviews, reports, commit subjects, and PR titles use that form, and a task PR title starts with it. A cross-file quick dependency is exactly `blocked by Q-NNN/QT-XXX`; Spec, Review, Forge, and Foreman reject the space form. Cast's `AGENTS.md` template also asks agents to cite the current assignment's canonical identity in any agent memory saved during it. Bare IDs inside their own task file, worker names, branch and plan slugs, report identities, and the GitHub task marker are unchanged.
+
+- Applies when: a file under `specs/quick/` contains a quick citation in the space form `Q-<number> QT-<number>`, or the root `AGENTS.md` contains `Q-NNN QT-XXX` in its cross-file dependency rule or its citation rule.
+- Tune performs: none.
+- Operator: in the root `AGENTS.md`, replace the line ``- Reference `FR-`, `AC-`, feature `T-`, and qualified `Q-NNN QT-XXX` identities from commits and tests.`` with the two lines ``- Reference `FR-`, `AC-`, and canonical task identities, `FEAT-NNN/T-XXX` or `Q-NNN/QT-XXX`, from commits, PR titles, and tests.`` and ``- When you save an agent memory during a Valcraft assignment, cite that assignment's canonical identity in it.``
+- Operator: then, from the repository root, rewrite every remaining space-form quick citation in `AGENTS.md`: `perl -pi -e 's/\b(Q-(?:\d{3,}|NNN)) (QT-(?:\d{3,}|XXX))\b/$1\/$2/g' AGENTS.md`.
+- Operator: then rewrite the same citations in every existing quick file. The command does nothing when `specs/quick/` is absent or empty: `if [ -d specs/quick ]; then find specs/quick -maxdepth 1 -name '*.md' -exec perl -pi -e 's/\b(Q-(?:\d{3,}|NNN)) (QT-(?:\d{3,}|XXX))\b/$1\/$2/g' {} +; fi`. Commit all three changes through an ordinary reviewed change.
+
 ## v0.10.3
 
 This release changes nothing a consumer repository must contain.

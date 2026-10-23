@@ -30,9 +30,9 @@ Temper touches no git state. It creates no branch, commit, push, or PR, and it i
 Resolve and pin every explicit target. An invalid or empty explicit corpus returns `corpus_invalid` before report creation. An unavailable optional source is recorded as unavailable and never expands the corpus.
 
 - **Feature:** require every task in `tasks.md` to use `T-XXX`, then inventory each task and its linked commits.
-- **Quick:** validate the selected pool through [`../valcraft-spec/references/quick.md`](../valcraft-spec/references/quick.md). Stop on a missing Q file or QT-ID, malformed or mixed prefix, wrong-prefix dependency, or `QT-XXX` in feature tasks. Inventory every qualified `Q-NNN QT-XXX` separately. Historical `Q-NNN T-XXX` is not current work.
+- **Quick:** validate the selected pool through [`../valcraft-spec/references/quick.md`](../valcraft-spec/references/quick.md). Stop on a missing Q file or QT-ID, malformed or mixed prefix, wrong-prefix dependency, or `QT-XXX` in feature tasks. Inventory every qualified `Q-NNN/QT-XXX` separately. Historical `Q-NNN T-XXX` is not current work.
 - **PR:** inventory one unit per PR.
-- **Commit range or date window:** group commits only by a stable git-owned task ID; treat an unqualified commit as its own unit.
+- **Commit range or date window:** group commits only by a task identity `references/process.md` resolves; treat an unqualified commit as its own unit.
 - **Synthesis:** require at least two distinct readable analyze reports.
 
 ## Evidence

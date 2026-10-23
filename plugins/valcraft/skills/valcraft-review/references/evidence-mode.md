@@ -6,7 +6,7 @@ Use this mode only for a Land external-completion record. It is a narrow suffici
 
 Require:
 
-- one committed feature task or canonical `Q-NNN QT-XXX` contract;
+- one committed feature task or canonical `Q-NNN/QT-XXX` contract;
 - the exact durable evidence record and immutable locator or version;
 - the real git target, or authoritative probes that established its absence; and
 - every authoritative source the record cites.

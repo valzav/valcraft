@@ -1,6 +1,6 @@
 # Record and close external completion
 
-Use this flow for one open feature task or canonical `Q-NNN QT-XXX` completed outside the delivery loop. It does not implement work or bypass an open finding.
+Use this flow for one open feature task `FEAT-NNN/T-XXX` or quick task `Q-NNN/QT-XXX` completed outside the delivery loop. It does not implement work or bypass an open finding.
 
 ## Record criterion evidence
 

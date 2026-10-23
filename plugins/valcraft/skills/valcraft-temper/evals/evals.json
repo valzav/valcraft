@@ -5,7 +5,7 @@
       "id": 1,
       "name": "quick-pool-uses-qualified-identities",
       "prompt": "/valcraft:valcraft-temper — in evals/files/quick-pool/, analyze the quick pool using the captured commit list in commit-log.txt as offline history. Stop after inventory; do not write a report.",
-      "expected_output": "Temper validates the pool, inventories Q-001 QT-001 and Q-002 QT-001 as distinct units despite repeated QT-001, links each current qualified commit to its file, and ignores historical Q-001 T-001 as a current unit. The checked Q-001 QT-001 satisfies Q-002's cross-file dependency.",
+      "expected_output": "Temper validates the pool, inventories Q-001/QT-001 and Q-002/QT-001 as distinct units despite repeated QT-001, links each current qualified commit to its file, including the pre-v0.11.0 space-form `Q-001 QT-001` commit, which groups under Q-001/QT-001 and is not an identity defect, and ignores historical Q-001 T-001 as a current unit. The checked Q-001/QT-001 satisfies Q-002's cross-file dependency.",
       "files": [
         "evals/files/quick-pool/AGENTS.md",
         "evals/files/quick-pool/docs/product-brief.md",
@@ -14,11 +14,12 @@
         "evals/files/quick-pool/commit-log.txt"
       ],
       "assertions": [
-        "Inventory has separate Q-001 QT-001 and Q-002 QT-001 rows",
+        "Inventory has separate Q-001/QT-001 and Q-002/QT-001 rows",
         "Repeated QT-001 values are never grouped without their Q qualifier",
         "Qualified commits map to the corresponding quick files",
+        "Commit abc1234, cited in the space form Q-001 QT-001, groups under Q-001/QT-001 and is not reported as an identity defect",
         "Historical Q-001 T-001 is not interpreted as current work",
-        "The checked cross-file Q-001 QT-001 dependency validates"
+        "The checked cross-file Q-001/QT-001 dependency validates"
       ]
     },
     {
@@ -32,7 +33,7 @@
         "evals/files/quick-pool/invalid-project/specs/quick/009-invalid.md"
       ],
       "assertions": [
-        "Temper reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Temper reports legacy T-002, mixed prefixes, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009/QT-999",
         "Temper stops before inventory, incident extraction, grading, routing, or report creation",
         "No compatibility parser, fallback, migration, or historical mapping is used"
       ]
@@ -247,6 +248,27 @@
         "T-003 is not labeled verified deep on a partial record read and one grep; it takes the lower depth those reads support"
       ],
       "id": 13
+    },
+    {
+      "id": 14,
+      "name": "feature-history-resolves-legacy-citations",
+      "prompt": "/valcraft:valcraft-temper — in evals/files/feature-history/, analyze the completed feature at specs/001-feature/ using the captured commit list in commit-log.txt as offline history. Each row gives the commit's PR, PR title, and branch. Stop after inventory; do not write a report.",
+      "expected_output": "Temper groups each commit under a canonical task identity only when process.md resolves it. a1b2c3d (canonical FEAT-001/T-001) and d4e5f6a (bare T-001 whose PR title names FEAT-001/T-001) group under FEAT-001/T-001. b2c3d4e (pre-v0.11.0 space form FEAT-001 T-002) and c3d4e5f (bare T-002 on branch feat/f001-t002-field-count) group under FEAT-001/T-002. e5f6a7b (bare T-001 whose PR title and branch name no feature) is unqualified: it is not attributed to FEAT-001/T-001 and stays outside the feature's units, even though FEAT-001 is the only feature with a T-001. No legacy form is reported as an identity defect.",
+      "files": [
+        "evals/files/feature-history/AGENTS.md",
+        "evals/files/feature-history/docs/product-brief.md",
+        "evals/files/feature-history/specs/001-feature/spec.md",
+        "evals/files/feature-history/specs/001-feature/design.md",
+        "evals/files/feature-history/specs/001-feature/tasks.md",
+        "evals/files/feature-history/commit-log.txt"
+      ],
+      "assertions": [
+        "a1b2c3d and d4e5f6a group under FEAT-001/T-001",
+        "b2c3d4e, cited in the space form FEAT-001 T-002, groups under FEAT-001/T-002",
+        "c3d4e5f, a bare T-002 on branch feat/f001-t002-field-count, groups under FEAT-001/T-002",
+        "e5f6a7b, a bare T-001 whose PR and branch name no feature, is not attributed to FEAT-001/T-001",
+        "No legacy citation form is reported as an identity defect"
+      ]
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 Each case names the head the passing code Review covers and the current PR head.
 
-## Feature task F001 T-002
+## Feature task FEAT-001/T-002
 
 ### Case A
 
@@ -26,7 +26,7 @@ The reviewed head's delta changes no line of `specs/001-neutral/tasks.md`. The c
 +- [x] T-002 Normalize headers. Covers FR-002 and AC-002.
 ```
 
-## Quick task Q-007 QT-001
+## Quick task Q-007/QT-001
 
 ### Case A
 

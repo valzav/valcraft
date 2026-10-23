@@ -1,0 +1,6 @@
+sha	pr	pr_title	branch	subject
+a1b2c3d	#11	FEAT-001/T-001: add record serialization	feat/f001-t001-serialization	feat(export): FEAT-001/T-001 add record serialization
+b2c3d4e	#12	Report written field count	feat/f001-t002-field-count	feat(export): FEAT-001 T-002 report written field count
+c3d4e5f	#12	Report written field count	feat/f001-t002-field-count	test(export): T-002 cover an empty record
+d4e5f6a	#13	FEAT-001/T-001: handle an empty record list	fix/empty-export	fix(export): T-001 handle an empty record list
+e5f6a7b	#14	Tidy imports	chore/tidy-imports	chore: T-001 tidy imports

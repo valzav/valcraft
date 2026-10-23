@@ -20,7 +20,7 @@ GIT_AUTHOR_DATE=2026-08-12T09:00:00Z GIT_COMMITTER_DATE=2026-08-12T09:00:00Z \
 
 git add src/report.py tests/test_report.py
 GIT_AUTHOR_DATE=2026-08-14T09:00:00Z GIT_COMMITTER_DATE=2026-08-14T09:00:00Z \
-  git commit -q -m "feat(export): FEAT-001 T-002 report written field count"
+  git commit -q -m "feat(export): FEAT-001/T-002 report written field count"
 
 mkdir -p .eval
 git init -q --bare .eval/remote.git

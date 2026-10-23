@@ -2,7 +2,7 @@
 name: valcraft-draft
 description: >
   Under a Foreman assignment, write or revise one implementation task plan for a
-  feature T-XXX, quick Q-NNN QT-XXX, or existing task plan; apply MSW, commit and
+  feature FEAT-NNN/T-XXX, quick Q-NNN/QT-XXX, or existing task plan; apply MSW, commit and
   push the reviewable plan, and hand its exact commit to Review. Foreman
   dispatches it for task planning and plan-review remediation; start work with
   valcraft-foreman. Not for implementation, feature specification, review, PR

@@ -38,8 +38,8 @@ created: <YYYY-MM-DD>
 ## Tasks
 
 <!-- Checkbox status is authoritative in every tracker mode. Cite a task as
-     `Q-001 QT-001`. Use `blocked by QT-XXX` locally or
-     `blocked by Q-NNN QT-XXX` across quick files. -->
+     `Q-001/QT-001`. Use `blocked by QT-XXX` locally or
+     `blocked by Q-NNN/QT-XXX` across quick files. -->
 
 - [ ] QT-001 <Task>; verifies AC-001.
 

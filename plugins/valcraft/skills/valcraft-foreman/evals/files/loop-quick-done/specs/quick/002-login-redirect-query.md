@@ -20,4 +20,4 @@ In the export download route's login redirect, build the return target from path
 
 ## Tasks
 
-- [x] QT-001 Carry path and query through the sign-in redirect; verifies AC-001; blocked by Q-001 QT-001.
+- [x] QT-001 Carry path and query through the sign-in redirect; verifies AC-001; blocked by Q-001/QT-001.

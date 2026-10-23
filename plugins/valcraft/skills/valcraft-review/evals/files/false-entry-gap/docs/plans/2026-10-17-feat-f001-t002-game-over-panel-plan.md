@@ -1,8 +1,8 @@
-# FEAT-001 T-002 game-over panel plan
+# FEAT-001/T-002 game-over panel plan
 
 ## Task
 
-FEAT-001 T-002: show the game-over panel with the final score when the game ends, and keep it hidden during play. Authorities: `specs/001-game-over/spec.md`, `design.md`, and `tasks.md`. T-001 is complete at the baseline.
+FEAT-001/T-002: show the game-over panel with the final score when the game ends, and keep it hidden during play. Authorities: `specs/001-game-over/spec.md`, `design.md`, and `tasks.md`. T-001 is complete at the baseline.
 
 ## Contract
 

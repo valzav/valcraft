@@ -15,7 +15,7 @@ git config user.name "Valcraft Eval"
 git config user.email "eval@example.test"
 git add .gitignore .valcraft/config.yaml AGENTS.md bin docs prepare-eval.sh specs src tests
 GIT_AUTHOR_DATE=2031-04-08T12:00:00Z GIT_COMMITTER_DATE=2031-04-08T12:00:00Z \
-  git commit -q -m "docs(plan): define T-001 retention parser"
+  git commit -q -m "docs(plan): define FEAT-001/T-001 retention parser"
 
 mkdir -p .eval .valcraft/foreman
 git init -q --bare .eval/remote.git

@@ -347,7 +347,7 @@
         "evals/files/quick-brief/invalid-project/specs/quick/009-invalid-prefixes.md"
       ],
       "assertions": [
-        "Spec reports legacy T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009 QT-999",
+        "Spec reports legacy T-002, malformed QT-03, wrong-prefix Q-404 T-001, missing Q-404, and missing Q-009/QT-999",
         "Spec stops before eligibility, allocation, commit, or outward mutation and does not create Q-010",
         "No legacy mapping, fallback, or migration occurs"
       ]
@@ -613,7 +613,7 @@
     },
     {
       "name": "plan-finding-resolution-spanning-two-tasks",
-      "prompt": "/valcraft:valcraft-spec — a Foreman assignment names Spec-owned finding R-003 from the plan Review of FEAT-005 T-002. It names the task branch `feat/f005-t002-offline-queue` at plan head 1111111111111111111111111111111111111111 as the canonical branch, and `spec/f005-amend-2222222` cut from default-branch head 2222222222222222222222222222222222222222 as the fallback amendment branch. The dispatch carries the ref-bound producer grant for both placements: a non-force push of the task ref, observed at the plan head, and, for the fallback, a non-force push of the amendment ref, observed absent, with spec-PR creation against main. R-003 reads: AC-004 cannot be observed within T-002 because it needs the sync endpoint that T-003 builds; move AC-004 to T-003. In `tasks.md`, T-002's line cites AC-003 and AC-004, and T-003's line cites AC-005. State which hunks Spec writes, where it commits them, and what its report records. Do not mutate anything.",
+      "prompt": "/valcraft:valcraft-spec — a Foreman assignment names Spec-owned finding R-003 from the plan Review of FEAT-005/T-002. It names the task branch `feat/f005-t002-offline-queue` at plan head 1111111111111111111111111111111111111111 as the canonical branch, and `spec/f005-amend-2222222` cut from default-branch head 2222222222222222222222222222222222222222 as the fallback amendment branch. The dispatch carries the ref-bound producer grant for both placements: a non-force push of the task ref, observed at the plan head, and, for the fallback, a non-force push of the amendment ref, observed absent, with spec-PR creation against main. R-003 reads: AC-004 cannot be observed within T-002 because it needs the sync endpoint that T-003 builds; move AC-004 to T-003. In `tasks.md`, T-002's line cites AC-003 and AC-004, and T-003's line cites AC-005. State which hunks Spec writes, where it commits them, and what its report records. Do not mutate anything.",
       "expected_output": "Resolving R-003 requires two hunks: removing AC-004 from T-002's line and adding AC-004 to T-003's line. The assignment's Spec-owned finding authorizes both, so Spec does not refuse or ask. The T-003 hunk is another task's line, so the scope test fails, and the whole amendment is committed on the fallback amendment branch `spec/f005-amend-2222222` cut from 2222222222222222222222222222222222222222, not on the task branch. The report gives commit target `amendment branch` and lists the T-003 hunk under `Workspace` with R-003 as the finding that requires it. Spec pushes the amendment branch and creates its spec PR under the grant, and the ordinary Review and Land flow follows. Spec changes nothing no named finding requires.",
       "files": [
         "SKILL.md",

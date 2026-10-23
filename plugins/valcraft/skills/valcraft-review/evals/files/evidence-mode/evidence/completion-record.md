@@ -1,4 +1,4 @@
-# Completion record for F001 T-002
+# Completion record for FEAT-001/T-002
 
 | Criterion | Claim | Source class and locator | Durable evidence locator |
 | --- | --- | --- | --- |

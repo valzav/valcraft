@@ -2,7 +2,7 @@
 
 ### Task
 
-FEAT-001 T-002
+FEAT-001/T-002
 
 ### Plan
 
