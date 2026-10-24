@@ -73,7 +73,7 @@ Preserve these implementation invariants:
 - Revalidate instead of inventing a numeric bound when stale state is the defect.
 - Search for every old form after a mechanical migration.
 
-Verify as the reference scopes it: targeted checks while iterating and the full gate on the exact head to push. Use its discriminating evidence.
+Verify as the reference scopes it: targeted checks while iterating, the full gate on the exact head to push, and the hosted checks at the pushed head before handoff. Use its discriminating evidence.
 
 ## Remediate Review findings
 

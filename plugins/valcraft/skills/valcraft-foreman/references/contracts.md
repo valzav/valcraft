@@ -60,7 +60,7 @@ Every Spec, Draft, and Forge dispatch carries push authority for its canonical r
 | Producer and target | Operation set | Pushed head |
 | --- | --- | --- |
 | Draft | non-force push of the canonical task ref | the committed plan head that Draft reports as its Review target |
-| Forge | non-force push of the canonical task ref; task-PR creation or update | the clean head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged |
+| Forge | non-force push of the canonical task ref; task-PR creation or update | a clean head that a passed Forge full gate covers, as Forge's verification reference defines coverage, descending from the passed plan SHA with the plan blob unchanged |
 | Spec, new contract or amendment branch | non-force push of the canonical Spec ref; spec-PR creation or update | the committed artifact head that Spec reports as its Review target |
 | Spec, commit target `task branch` | non-force push of the canonical task ref | the committed amendment head |
 

@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.12.1
+
+### Committed documents carry no delivery state
+
+Spec, Draft, and Forge no longer write delivery state into a git-owned document: the status of a Review finding, hold, or operator gate, a pending operator decision, whether an accepted risk still stands, or whether a task, PR, or feature has landed. That state lives in the task's own hold and completion lines, the tracker, Review reports, and Foreman's run record. Review reports such a statement as a material finding. Forge also waits for the hosted checks at each pushed head and cites their conclusions before handing off to Review; that needs no consumer change. Forge reuses a passed full gate across later changes only when every changed path lies outside the gate's inputs as the repository declares them, in its gate configuration's path filters or a path list in root `AGENTS.md`. A repository that declares none keeps a full run on every changed head.
+
+- Applies when: never on its own; a delivery-state statement in a reviewed plan, feature artifact, quick file, or changed document is a material finding at its next review.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.12.0
 
 ### Optional answer page for operator questions
