@@ -19,6 +19,7 @@ Immediately before each mutation stage, re-read every bound field from its autho
 - A change to any bound field, including a canonical remote head that moved from its bound observation, performs no mutation in that stage. Return the live values as a new prepared handoff with `authority_drift`.
 - A canonical remote head that still equals its bound observation but is not an ancestor of the local head blocks the outward stage with `workspace_not_ready`.
 - The default branch's head is not a bound field. A moved default branch never stops a push or a PR operation.
+- This assignment's own verified mutations advance the bound observations they change, for the rest of the same assignment. A verified push advances the ref's bound remote head to the pushed head. A verified PR creation advances the bound PR absence to the created PR's identity. A later mutation in the assignment, such as Forge's fix for a failed hosted check, revalidates against these advanced observations. A live value that equals neither the bound observation nor its advanced one is drift.
 
 ## Push
 

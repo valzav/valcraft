@@ -269,6 +269,24 @@
         "e5f6a7b, a bare T-001 whose PR and branch name no feature, is not attributed to FEAT-001/T-001",
         "No legacy citation form is reported as an identity defect"
       ]
+    },
+    {
+      "id": 15,
+      "name": "absence-claim-reads-the-references",
+      "prompt": "/valcraft:valcraft-temper — analyze mode, mid-run. A Foreman run's checkpoint headers are out of time order, and the controller's own note says it estimated header times. You are drafting upstream candidate U-2: \"valcraft-foreman names no time source for checkpoint headers.\" Your evidence so far is a search of the invoked revision's SKILL.md, references/contracts.md, references/loop.md, and references/hygiene.md for the strings \"timestamp\", \"clock\", and \"date -u\", which found nothing. State what you must do before writing U-2, and how the candidate changes if references/loop.md says \"Stamp every state.md checkpoint with the output of `date`, captured in the shell call that appends it ... never compose a time\" and templates/run-dir.md requires `NOW=$(date +%Y-%m-%dT%H:%M:%S%z)`. Do not write a report.",
+      "expected_output": "A keyword search cannot prove that the instruction text omits a rule. Before writing U-2, Temper reads, at the invoked revision, Foreman's SKILL.md, every reference the checkpoint-writing step loads, and every template those files name, including templates/run-dir.md, and names the files read. With the quoted loop.md and run-dir.md text present, the instruction text does state a time source, so U-2 is not an omission in the skill's text and is not reported as an upstream candidate on that ground. The incident is the controller not following an existing rule, recorded as such with the loop.md and run-dir.md locators.",
+      "files": [
+        "SKILL.md",
+        "references/process.md",
+        "references/report-format.md"
+      ],
+      "assertions": [
+        "Temper does not treat the keyword search as proof that the rule is absent",
+        "Temper reads SKILL.md, the references the step loads, and the templates they name, including templates/run-dir.md, before writing the candidate",
+        "Temper names the files it read",
+        "Given the quoted loop.md and run-dir.md text, Temper does not report U-2 as an omission in the instruction text",
+        "Temper records the incident as the controller departing from an existing rule, citing the loop.md and run-dir.md text"
+      ]
     }
   ]
 }

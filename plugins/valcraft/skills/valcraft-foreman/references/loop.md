@@ -137,7 +137,7 @@ Dispatch a fresh `plan-reviewer-<identity>` with `valcraft-review` in plan mode 
 
 Dispatch `forge-<identity>` with `valcraft-forge`, the exact passing plan Review report, canonical remote task ref, predecessor head, and the ref-bound producer grant in `contracts.md`. Forge owns implementation, code-finding remediation, verification, push, and task-PR creation or update.
 
-A complete Forge report whose task PR is still `none` re-dispatches Forge under the grant and remains in `Implementing`. Enter `CodeReview` only after Forge reports one exact task PR and its exact Review target. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
+A complete Forge report whose task PR is still `none` re-dispatches Forge under the grant and remains in `Implementing`. So does a report that cites a running hosted check at its head, or a failed one without `Open questions` evidence that the change cannot cause it. Enter `CodeReview` only after Forge reports one exact task PR, its exact Review target, and, under `### Review target`, a concluded result for every hosted check at that head. `draft_required` returns to Drafting. Route every other code through the registry. Foreman never edits source, pushes, or creates a PR.
 
 ## `CodeReview`
 

@@ -22,6 +22,7 @@ Read the blob at the pinned commit, or the file at the pinned hash. A newer comm
 - Assess a configured value's necessity separately from its authority. A governed conflict is a finding. A necessary ungoverned value is implementation discretion whose behavior and evidence still require review.
 - Compare proposed work with goals and non-goals. Work no requirement asks for is scope creep.
 - When the plan declares an exclusive scope, resolve every git-owned document the change makes contradictory by the contract it describes, not by searching for a changed identifier; a document can describe the same shape in prose without naming the symbol. Report an omitted document as a material finding.
+- Report delivery state in the plan or feature artifact, as `feature-contract.md`'s delivery-state rule defines it, as a material finding.
 - Route task-plan findings to Draft. Route feature and quick-artifact findings to Spec. Review never revises the target.
 - A finding that a contract entry states something false is a feature or quick-artifact finding. This covers a `Test strategy` entry's observation method, failing input, or positive control, and a recorded verification route. Route it to Spec even when the plan names it as a gap or works around it.
 

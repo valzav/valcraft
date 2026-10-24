@@ -1014,6 +1014,25 @@
         "A material finding owned by Spec on TS-003 names a Save-generated name such as `release.draft.md` that `is_draft` classifies as a draft",
         "No finding demands an enumeration of every exception class PyYAML can raise, and no finding rests on a form the review did not reproduce"
       ]
+    },
+    {
+      "id": 51,
+      "name": "plan-delivery-state-is-material",
+      "prompt": "/valcraft:valcraft-review — plan mode. Review task plan docs/plans/2026-09-10-004-feat-f003-t004-gate-split-plan.md at commit 6666666 for FEAT-003/T-004. Assume the plan's steps, verification, and Test strategy citations are otherwise sound. Its text includes these four lines: (1) \"R-067 remains the operator-accepted parallel live-test risk.\" (2) \"The commissioning hold on T-005 remains pending the operator's decision.\" (3) \"Step 3 resolves R-062 by refusing an empty usage list.\" (4) \"The closing helpers move to crates/testkit/src/closing.rs when FEAT-003/T-004 lands.\" List the findings you would report for these lines, with severity class and owner. Do not execute anything.",
+      "expected_output": "Lines 1, 2, and 4 record delivery state as feature-contract.md's delivery-state rule defines it: an accepted risk's standing, a hold's and a pending operator decision's status, and a statement conditioned on a task landing. Each is a material finding routed to Draft, because the plan is a task plan; each copy goes false when the state settles and nothing obliges a later change to correct it. The fix states the behavior or contract that holds at the plan's head, citing a finding or task by identity without asserting its status. Line 3 records the plan's own decision, which stays true at that head, so it is not a finding.",
+      "files": [
+        "SKILL.md",
+        "references/plan-mode.md",
+        "../valcraft-spec/references/feature-contract.md"
+      ],
+      "assertions": [
+        "Line 1 is reported as a material finding for recording an accepted risk's standing",
+        "Line 2 is reported as a material finding for recording a hold's or pending operator decision's status",
+        "Line 4 is reported as a material finding for a statement conditioned on a task landing",
+        "Line 3 is not reported as a finding",
+        "The delivery-state findings are routed to Draft",
+        "The findings cite feature-contract.md's delivery-state rule or describe delivery state in its terms"
+      ]
     }
   ]
 }

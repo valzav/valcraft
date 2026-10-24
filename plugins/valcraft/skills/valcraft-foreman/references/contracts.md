@@ -60,13 +60,13 @@ Every Spec, Draft, and Forge dispatch carries push authority for its canonical r
 | Producer and target | Operation set | Pushed head |
 | --- | --- | --- |
 | Draft | non-force push of the canonical task ref | the committed plan head that Draft reports as its Review target |
-| Forge | non-force push of the canonical task ref; task-PR creation or update | the clean head on which Forge's full gate passed, descending from the passed plan SHA with the plan blob unchanged |
+| Forge | non-force push of the canonical task ref; task-PR creation or update | a clean head that a passed Forge full gate covers, as Forge's verification reference defines coverage, descending from the passed plan SHA with the plan blob unchanged |
 | Spec, new contract or amendment branch | non-force push of the canonical Spec ref; spec-PR creation or update | the committed artifact head that Spec reports as its Review target |
 | Spec, commit target `task branch` | non-force push of the canonical task ref | the committed amendment head |
 
 The pushed head is bound by condition: the producer pushes only the head its row names, and that head must descend from the observed remote head. For a new contract, the canonical ref is bound by condition too: the ref Spec derives after it allocates the identity, observed absent on the remote at push time. The default branch's head is not bound: a push and a PR operation neither read nor write it, so a moved default branch never stops them.
 
-A Specifying dispatch for a Spec-owned plan finding names the task branch and a fallback amendment branch; its grant covers both rows, the amendment branch observed absent, and Spec uses the one its scope test selects. Forge's first grant observes the task ref at Draft's pushed plan head. A remediation dispatch binds the currently pushed head as the observed remote head and the existing PR identity. The producer revalidates every bound field immediately before mutation and returns `authority_drift` on any change. Tracker projection stays outside this grant and uses the prepared continuation above.
+A Specifying dispatch for a Spec-owned plan finding names the task branch and a fallback amendment branch; its grant covers both rows, the amendment branch observed absent, and Spec uses the one its scope test selects. Forge's first grant observes the task ref at Draft's pushed plan head. A remediation dispatch binds the currently pushed head as the observed remote head and the existing PR identity. The producer revalidates every bound field immediately before mutation and returns `authority_drift` on any change. Its own verified push or PR creation within the assignment is not a change: it advances the bound remote head or PR identity, as `outward-mutation.md` defines. Tracker projection stays outside this grant and uses the prepared continuation above.
 
 ## Ref-bound Land grant
 

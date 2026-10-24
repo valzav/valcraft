@@ -14,7 +14,7 @@ Run the repository's real tests, typecheck, lint, and applicable integration che
 
 Every verification step the passed plan names is part of the implementation. Do not return `Status: done` while the head leaves one unimplemented. Implement it. Return `implementation_blocked` when current repository evidence cannot support it, and `draft_required` when it needs a different approach. Disclosing the step under `Open questions` does not replace that return.
 
-Scope each run to what the change can affect. While iterating, run the targeted suites, checks, and reproductions for the files and contracts the commit touches; red-first evidence and mutation checks use the targeted suite. Run the repository's full gate — every configured test, typecheck, lint, and build — on the exact head that will be pushed. Reuse a full-gate result only when that run passed and the verification inputs it depended on — the head, the toolchain, the configuration, and the data state — are unchanged. Retry a failed run after its cause is fixed. A changed head or input needs a new run. Do not re-run a passed gate on unchanged inputs, and do not run the full gate in place of a targeted reproduction. Cite each full-gate run beside the head SHA and inputs it covered.
+Scope each run to what the change can affect. While iterating, run the targeted suites, checks, and reproductions for the files and contracts the commit touches; red-first evidence and mutation checks use the targeted suite. Run the repository's full gate — every configured test, typecheck, lint, and build — on the exact head that will be pushed. Reuse a full-gate result only when that run passed and the verification inputs it depended on — the head, the toolchain, the configuration, and the data state — are unchanged. A head whose only changes since the passed run lie outside the gate's inputs counts as unchanged, but only when the repository itself declares those paths as outside the gate, such as in its gate configuration's path filters or a path list in root `AGENTS.md`. Documents can feed a gate through doc tests, compiled-in files, snapshots, or link and text checks, so never classify a path as outside the gate on your own judgment. Without such a declaration, a changed head needs a new run. When you reuse a result this way, cite the declaration and the files changed since the passed run beside it; the passed full gate then covers the new head. Retry a failed run after its cause is fixed. Any other changed head or input needs a new run. Do not re-run a passed gate on unchanged inputs, and do not run the full gate in place of a targeted reproduction. Cite each full-gate run beside the head SHA and inputs it covered.
 
 Before accepting verification results, establish the effective environment prerequisites the check depends on and record the evidence beside the result. For browser checks, prove that the runner reaches the intended candidate, including when it reuses an existing server. Inspect effective configuration or data state when it can change the result; a requested command or exported variable is not proof of the state used. Do not require unrelated infrastructure checks. An unresolved prerequisite leaves the affected verification unproven and follows the existing blocker route.
 
@@ -29,7 +29,7 @@ Before accepting verification results, establish the effective environment prere
 - Read raw command or CI output when a wrapper may hide failure.
 - Verify UI criteria yourself through the recorded verification route, headless when the route allows it. Never defer a UI judgment to the operator or to Review. When no route is available, report the code-only exception.
 
-Update affected git-owned contracts and documentation in the same change. Verify branch claims against the final code. Confirm no secret or consumer-specific material was added.
+Update affected git-owned contracts and documentation in the same change. Write no delivery state into them, as `feature-contract.md`'s delivery-state rule defines it. Verify branch claims against the final code. Confirm no secret or consumer-specific material was added.
 
 ## Commit the completion transition
 
@@ -48,11 +48,19 @@ A necessary change can fall outside the passed plan's touched scope, or change i
 
 ## Push and open the task PR
 
-Local implementation and commits follow from the Forge assignment. The dispatch carries the ref-bound producer grant in [`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-producer-grant): non-force push of the canonical task ref and task-PR creation or update. It binds every field except the head, and authorizes pushing only the clean head on which your full gate passed, descending from the passed plan SHA with the plan blob unchanged. It covers no other head. Follow [`../../valcraft-foreman/references/outward-mutation.md`](../../valcraft-foreman/references/outward-mutation.md) for revalidation, push, PR, partial results, and the codes `authority_drift`, `workspace_not_ready`, `push_failed`, and `pr_failed`.
+Local implementation and commits follow from the Forge assignment. The dispatch carries the ref-bound producer grant in [`../../valcraft-foreman/references/contracts.md`](../../valcraft-foreman/references/contracts.md#ref-bound-producer-grant): non-force push of the canonical task ref and task-PR creation or update. It binds every field except the head, and authorizes pushing only a clean head that a passed full gate covers, descending from the passed plan SHA with the plan blob unchanged. It covers no other head. Follow [`../../valcraft-foreman/references/outward-mutation.md`](../../valcraft-foreman/references/outward-mutation.md) for revalidation, push, PR, partial results, and the codes `authority_drift`, `workspace_not_ready`, `push_failed`, and `pr_failed`.
 
 When that head exists, push it and create or update the one task PR in the same assignment. The PR title starts with the canonical task identity, and the PR body cites it and, for each Spec-owned commit the passed plan Review pinned, that commit and its R-IDs. A remediation push updates the same PR.
 
-Under `Outward mutations`, name the grant as ref-bound and record the exact head it pushed and the PR. `Status: done` means the implementation is pushed and in its task PR, ready for Review; it does not imply the task shipped.
+Under `Outward mutations`, name the grant as ref-bound and record the exact head it pushed and the PR. `Status: done` means the implementation is pushed and in its task PR, and every hosted check at its head has concluded and is cited, ready for Review; it does not imply the task shipped.
+
+## Await hosted checks
+
+After every push, wait for the hosted checks at the pushed head before handing off. Read them from the sources Land's [applicable-check classifier](../../valcraft-land/references/final-head-and-checks.md#applicable-check-classifier) names, matched to the exact pushed head. Keep the run active while a check runs. A hosted result never replaces the full gate, and the full gate never replaces a hosted result.
+
+Cite each check's name, run identity, head SHA, and conclusion in the `Review target`, which Foreman reads before it starts Code Review. Name there a configured or required check that has no run at the head as missing; do not wait for it, because Land classifies it.
+
+A failed hosted check is a failed verification. Read its raw log. When the change can cause the failure, fix it within the passed plan, run the full gate on the new head, push it, and wait again; a fix outside the plan follows [Stay inside the passed plan](#stay-inside-the-passed-plan). When evidence shows the change cannot cause it, such as the same check failing on the base head, hand off and name the check, its run, and that evidence under `Open questions`.
 
 ## Hand off to Review
 
@@ -62,8 +70,9 @@ Return one exact code target:
 - base ref and full base SHA: the base ref's head observed when you report. Review diffs from the merge base of base and head, so the target covers every commit on the task branch, including implementation committed under an earlier plan;
 - head ref and full implementation SHA;
 - canonical task branch and physical branch or `none`;
-- PR identity or `none`; and
-- verification evidence and the passed plan path and full plan SHA.
+- PR identity or `none`;
+- verification evidence and the passed plan path and full plan SHA; and
+- the conclusion of every hosted check at the head, and each configured or required check with no run there, as [Await hosted checks](#await-hosted-checks) defines.
 
 Foreman routes the target to a fresh `valcraft-review` worker. Forge never invokes itself as reviewer and never treats its own verification as a Review verdict.
 

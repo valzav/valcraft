@@ -37,5 +37,6 @@ Require the passed task plan path and exact Review-passed plan commit for a non-
 - Exercise every failure mode named by a finding before closure.
 - Report behavior no requirement requests as scope creep.
 - Check repository change discipline: affected contracts and docs move with the code, commit subjects cite owned IDs, and generated files are not hand-edited.
+- Report delivery state that the change writes into a git-owned document, as `feature-contract.md`'s delivery-state rule defines it, as a material finding owned by the producer of the commit that writes it.
 
 Every pass or material-findings report names the exact repository, base ref and SHA, head ref and SHA, and PR identity or `none`. A later head requires a fresh Review.
