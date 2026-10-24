@@ -22,7 +22,7 @@ Immediately before each mutation stage, re-read every bound field from its autho
 
 ## Push
 
-Send physical `HEAD` by non-force refspec to the canonical remote ref. Read the remote ref back and require it to equal the local head. Report an unsuccessful or unverifiable push as `push_failed`. Never publish an isolated-workspace physical branch name.
+Send physical `HEAD` by non-force refspec to the canonical remote ref. Read the remote ref back and require it to equal the local head. Report an unsuccessful or unverifiable push as `push_failed`. A push whose read-back equals the local head advances that ref's bound observation to the pushed head for the rest of the same assignment, so a later push in it, such as Forge's fix for a failed hosted check, revalidates against the head this assignment pushed. A remote head that equals neither is drift. Never publish an isolated-workspace physical branch name.
 
 ## Pull request
 

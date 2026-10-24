@@ -58,7 +58,7 @@ Under `Outward mutations`, name the grant as ref-bound and record the exact head
 
 After every push, wait for the hosted checks at the pushed head before handing off. Read them from the sources Land's [applicable-check classifier](../../valcraft-land/references/final-head-and-checks.md#applicable-check-classifier) names, matched to the exact pushed head. Keep the run active while a check runs. A hosted result never replaces the full gate, and the full gate never replaces a hosted result.
 
-Under `Verification evidence`, cite each check's name, run identity, head SHA, and conclusion. Name a configured or required check that has no run at the head as missing; do not wait for it, because Land classifies it.
+Cite each check's name, run identity, head SHA, and conclusion in the `Review target`, which Foreman reads before it starts Code Review. Name there a configured or required check that has no run at the head as missing; do not wait for it, because Land classifies it.
 
 A failed hosted check is a failed verification. Read its raw log. When the change can cause the failure, fix it within the passed plan, run the full gate on the new head, push it, and wait again; a fix outside the plan follows [Stay inside the passed plan](#stay-inside-the-passed-plan). When evidence shows the change cannot cause it, such as the same check failing on the base head, hand off and name the check, its run, and that evidence under `Open questions`.
 
@@ -70,8 +70,9 @@ Return one exact code target:
 - base ref and full base SHA: the base ref's head observed when you report. Review diffs from the merge base of base and head, so the target covers every commit on the task branch, including implementation committed under an earlier plan;
 - head ref and full implementation SHA;
 - canonical task branch and physical branch or `none`;
-- PR identity or `none`; and
-- verification evidence and the passed plan path and full plan SHA.
+- PR identity or `none`;
+- verification evidence and the passed plan path and full plan SHA; and
+- the conclusion of every hosted check at the head, and each configured or required check with no run there, as [Await hosted checks](#await-hosted-checks) defines.
 
 Foreman routes the target to a fresh `valcraft-review` worker. Forge never invokes itself as reviewer and never treats its own verification as a Review verdict.
 
