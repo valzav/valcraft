@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.12.2
+
+### Eval fixture corrections
+
+Five Review plan fixtures are now committed git repositories, Forge's implemented-task fixture matches its own repository rules, and Forge's routing evals no longer assume a task-size classification. Only the shipped evals changed; no skill behavior changed.
+
+- Applies when: never; the change touches no consumer artifact.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.12.1
 
 ### Committed documents carry no delivery state

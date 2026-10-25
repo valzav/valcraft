@@ -49,9 +49,9 @@
     },
     {
       "id": 3,
-      "name": "non-trivial-task-without-reviewed-plan-routes-to-draft",
+      "name": "task-without-reviewed-plan-routes-to-draft",
       "prompt": "/valcraft:valcraft-forge — This is a Foreman assignment: named state `Implementing`, task FEAT-001/T-001, canonical task branch `feat/f001-t001-retention-window`, start SHA the fixture's prepared baseline, and the ref-bound producer grant for a non-force push of that canonical task ref and task-PR creation or update. The envelope names no task plan and no plan Review report. In the Cast project at evals/files/implement-local/, implement T-001 of specs/001-retention-windows/. This run is unattended.",
-      "expected_output": "Forge resolves T-001 and confirms that implementing the new parser is non-trivial. No committed task plan and no passing Review report tied to that plan commit exist. Forge changes no source, test, task, branch, or plan; it does not author the missing plan. It returns the exact Draft handoff for T-001 and ends its producer-owned Forge report with `Status: blocked: draft_required —` followed by the missing-plan detail.",
+      "expected_output": "Forge resolves T-001. No committed task plan and no passing Review report tied to that plan commit exist. Forge changes no source, test, task, branch, or plan; it does not author the missing plan. It returns the exact Draft handoff for T-001 and ends its producer-owned Forge report with `Status: blocked: draft_required —` followed by the missing-plan detail.",
       "files": [
         "evals/files/implement-local/AGENTS.md",
         "evals/files/implement-local/.valcraft/config.yaml",
@@ -64,7 +64,7 @@
         "evals/files/implement-local/tests/test_validation.py"
       ],
       "assertions": [
-        "Forge classifies the parser implementation as non-trivial and requires a committed task plan with a passing Review verdict for that exact plan commit",
+        "Forge requires a committed task plan with a passing Review verdict for that exact plan commit",
         "Because no current reviewed plan exists, Forge routes canonical task T-001 to Draft before any source or test edit",
         "Forge does not author, revise, or commit a plan and does not change src/, tests/, tasks.md, branches, or tracker state",
         "The exact Draft handoff identifies T-001 and its authoritative feature artifacts",
@@ -101,7 +101,7 @@
       "id": 5,
       "name": "accepted-adr-outranks-design",
       "prompt": "/valcraft:valcraft-forge — This is a Foreman assignment: named state `Implementing`, task FEAT-001/T-001, canonical task branch `feat/f001-t001-digest-send-time`, start SHA the fixture's prepared baseline, and the ref-bound producer grant for a non-force push of that canonical task ref and task-PR creation or update. The envelope names no task plan and no plan Review report. In the Cast project at evals/files/adr-precedence/, implement T-001 of specs/001-daily-digest/. This run is unattended.",
-      "expected_output": "Forge loads the git-owned contracts, including accepted ADR-0001, and finds that design.md directs local wall-clock storage while ADR-0001 requires UTC plus a separate timezone. Authority precedence resolves the contract: the ADR controls and the timezone remains required. T-001 is non-trivial and has no committed passing task plan, so Forge performs no implementation. It reports the resolvable authority conflict as Draft input, routes T-001 to Draft with `draft_required`, and leaves task state unchanged.",
+      "expected_output": "Forge loads the git-owned contracts, including accepted ADR-0001, and finds that design.md directs local wall-clock storage while ADR-0001 requires UTC plus a separate timezone. Authority precedence resolves the contract: the ADR controls and the timezone remains required. T-001 has no committed passing task plan, so Forge performs no implementation. It reports the resolvable authority conflict as Draft input, routes T-001 to Draft with `draft_required`, and leaves task state unchanged.",
       "files": [
         "evals/files/adr-precedence/AGENTS.md",
         "evals/files/adr-precedence/.valcraft/config.yaml",
@@ -118,7 +118,7 @@
         "Forge detects the conflict between design.md's local wall-clock storage and ADR-0001's UTC storage rule",
         "Contract precedence is applied: the accepted ADR prevails over design.md, so any plan must use UTC with timezone stored separately",
         "Forge does not invent an unresolved authority blocker because precedence settles the conflict",
-        "Because the task is non-trivial and lacks an exact passed plan, Forge changes no source and routes T-001 to Draft with draft_required",
+        "Because the task lacks an exact passed plan, Forge changes no source and routes T-001 to Draft with draft_required",
         "The conflict is surfaced as Draft input rather than silently ignored",
         "T-001's checkbox remains unchecked and the Forge report uses its exact terminal status grammar"
       ]
@@ -259,7 +259,7 @@
     {
       "id": 13,
       "name": "resumed-authority-executes-isolated-task-pr",
-      "prompt": "/valcraft:valcraft-forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.valcraft/foreman/forge-assignment.md`. That assignment is a Foreman re-dispatch in named state `Implementing` for task FEAT-001/T-001, from the external-orchestrator backend that owns physical branch `external/forge-f001-t001-eval`; its grant binds the already committed implementation head. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
+      "prompt": "/valcraft:valcraft-forge — in the isolated fixture at evals/files/implement-local/, run `./prepare-eval.sh implemented`, source `.eval/env.sh`, and resume the exact attributed Foreman assignment in `.valcraft/foreman/forge-assignment.md`. That assignment is a Foreman re-dispatch in named state `Implementing` for task FEAT-001/T-001, from the external-orchestrator backend that owns physical branch `external/forge-f001-t001-eval`; its grant covers the already committed implementation head. Its origin is a local bare repository and `gh` is an instrumented local PR shim, so execute the authorized non-force push and one create-or-update PR operation. Return the complete Forge report.",
       "expected_output": "Forge verifies the passing Review report covers the exact plan commit and that the external-orchestrator physical branch contains the prepared implementation head. It takes push and PR authority only from the attributed Foreman assignment, which binds that exact head, revalidates every bound field, runs the real tests, adds no commit, non-force pushes physical HEAD to the canonical ref, and invokes the PR shim exactly once to create the task PR. The canonical remote ref equals the local head, `.eval/pr-calls.log` contains one create call, and the report pins the exact repository, base, head, canonical branch, physical branch, and PR before ending `Status: done`.",
       "files": [
         "evals/files/implement-local/.gitignore",
