@@ -30,6 +30,9 @@ class Session:
     environ: Dict[str, str]
     base: Path
     record: config.EditorRecord
+    # Shown with the next message, never in a popup of its own: a second popup
+    # would block the picker (Herdr answers ui_busy while one is open).
+    warning: Optional[str] = None
 
 
 def enable(environ: Dict[str, str], invocation: herdr.Invocation) -> Optional[Session]:
@@ -79,24 +82,30 @@ def enable(environ: Dict[str, str], invocation: herdr.Invocation) -> Optional[Se
             environ, f"{problem[0].upper()}{problem[1:]}. Repair it in {TUNE_SECTION}."
         )
         return None
+    warning = None
     repository_version = config.read_valcraft_version(root)
     if repository_version and repository_version > config.parse_version(PLUGIN_VERSION):
-        herdr.notify(
-            environ,
+        warning = (
             f"This repository uses Valcraft {'.'.join(map(str, repository_version))}, newer than this plugin's"
-            f" release {PLUGIN_VERSION}. Update the plugin in {TUNE_SECTION}.",
+            f" release {PLUGIN_VERSION}. Update the plugin in {TUNE_SECTION}."
         )
-    return Session(environ, base, record)
+    return Session(environ, base, record, warning)
+
+
+def tell(session: Session, message: Optional[str]) -> None:
+    """Show one popup holding the message and any pending warning."""
+    text = "\n\n".join(part for part in (message, session.warning) if part)
+    if text:
+        herdr.notify(session.environ, text)
 
 
 def open_target(session: Session, target: Target) -> None:
     try:
         editors.launch(session.record.adapter, session.record.executable, target)
     except OSError as error:
-        herdr.notify(
-            session.environ,
-            f"Could not start {session.record.executable}: {error.strerror or error}. Repair it in {TUNE_SECTION}.",
-        )
+        tell(session, f"Could not start {session.record.executable}: {error.strerror or error}. Repair it in {TUNE_SECTION}.")
+        return
+    tell(session, None)
 
 
 _FAILURES = {
@@ -109,17 +118,14 @@ _FAILURES = {
 }
 
 
-def report_failure(environ: Dict[str, str], failure: Failure, reference: str) -> None:
-    herdr.notify(environ, _FAILURES[failure.failure].format(reference=reference))
+def report_failure(session: Session, failure: Failure, reference: str) -> None:
+    tell(session, _FAILURES[failure.failure].format(reference=reference))
 
 
 def _open_candidates_picker(session: Session, candidates: List[Candidate]) -> None:
     directory = herdr.state_dir(session.environ)
     if directory is None:
-        herdr.notify(
-            session.environ,
-            "Herdr did not provide a plugin state directory for the picker.",
-        )
+        tell(session, "Herdr did not provide a plugin state directory for the picker.")
         return
     directory.mkdir(parents=True, exist_ok=True)
     name = f"candidates-{uuid.uuid4().hex}.json"
@@ -128,7 +134,7 @@ def _open_candidates_picker(session: Session, candidates: List[Candidate]) -> No
     )
     if not herdr.open_picker(session.environ, {CANDIDATES_ENV: name}):
         (directory / name).unlink(missing_ok=True)
-        herdr.notify(session.environ, "Could not open the picker popup.")
+        tell(session, "Could not open the picker popup.")
 
 
 def act_on(session: Session, result: Result, reference: str) -> None:
@@ -137,7 +143,7 @@ def act_on(session: Session, result: Result, reference: str) -> None:
     elif isinstance(result, Ambiguous):
         _open_candidates_picker(session, list(result.candidates))
     else:
-        report_failure(session.environ, result, reference)
+        report_failure(session, result, reference)
 
 
 def open_selection(environ: Dict[str, str]) -> None:
@@ -146,8 +152,8 @@ def open_selection(environ: Dict[str, str]) -> None:
     if session is None:
         return
     if not invocation.selected_text:
-        herdr.notify(
-            environ,
+        tell(
+            session,
             "No text is selected. Select a reference in copy mode, or use the pane picker"
             f" ({herdr.PLUGIN_ID}.pick) to choose from the pane's output.",
         )
@@ -161,8 +167,9 @@ def open_selection(environ: Dict[str, str]) -> None:
 
 def pick(environ: Dict[str, str]) -> None:
     session = enable(environ, herdr.invocation(environ))
+    # The picker shows any warning itself, so nothing else opens a popup here.
     if session is not None and not herdr.open_picker(environ, {}):
-        herdr.notify(environ, "Could not open the picker popup.")
+        tell(session, "Could not open the picker popup.")
 
 
 def open_link(environ: Dict[str, str]) -> None:
@@ -173,7 +180,7 @@ def open_link(environ: Dict[str, str]) -> None:
         return
     target = links.parse(url)
     if target is None:
-        herdr.notify(environ, f"Cannot open {url!r}: not a supported file link.")
+        tell(session, f"Cannot open {url!r}: not a supported file link.")
         return
     act_on(
         session,

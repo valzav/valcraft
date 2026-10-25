@@ -342,6 +342,24 @@ class Harness:
         count += 1
         self.expect_editor(count, [f"{page}:4:1"], "Control-click on a file:// link")
 
+        # A repository newer than the plugin warns inside the picker, then lists references.
+        self.nested("pane", "run", self.inner, "clear && cat refs")
+        wait_for("the printed references", lambda: self.shows("three T-001"))
+        base = self.checkout / ".valcraft" / "config.yaml"
+        original = base.read_text(encoding="utf-8")
+        base.write_text(original.replace('valcraft_version: "0.12.2"', 'valcraft_version: "99.0.0"'), encoding="utf-8")
+        try:
+            self.keys("ctrl+b", "u")
+            wait_for("the version warning", lambda: self.shows("newer than this plugin"))
+            self.keys("x")
+            self.menu_labels("Open in editor:")
+            self.keys("esc")
+            wait_for("the picker to close", lambda: not self.shows("Open in editor:"))
+            time.sleep(POPUP_SETTLE_SECONDS)
+        finally:
+            base.write_text(original, encoding="utf-8")
+        print("ok  a version warning shows in the picker, and the picker still opens")
+
     def shows(self, text: str) -> bool:
         return any(text in line for line in self.screen())
 

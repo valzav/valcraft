@@ -6,6 +6,7 @@ Menu holds the list logic; run_menu draws it with curses.
 from __future__ import annotations
 
 import curses
+import dataclasses
 import json
 import os
 import textwrap
@@ -145,6 +146,9 @@ def main(environ: Dict[str, str]) -> None:
     session = actions.enable(environ, invocation)
     if session is None:
         return
+    if session.warning:
+        show_message(environ, session.warning)
+        session = dataclasses.replace(session, warning=None)
     candidates_name = environ.get(actions.CANDIDATES_ENV)
     if candidates_name:
         candidates = _load_candidates(environ, candidates_name)

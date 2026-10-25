@@ -300,6 +300,31 @@ class PluginTests(unittest.TestCase):
         self.assertIn("newer than this plugin's release", self.messages()[0])
         self.assertEqual(len(self.editor_calls()), 1)
 
+    def test_newer_repository_never_opens_two_popups(self) -> None:
+        base = self.roots["primary"] / ".valcraft" / "config.yaml"
+        original = base.read_text(encoding="utf-8")
+        self.addCleanup(base.write_text, original, encoding="utf-8")
+        base.write_text(original.replace('"0.12.2"', '"99.0.0"'), encoding="utf-8")
+
+        def opens() -> list:
+            return [call for call in self.herdr_calls() if call[:3] == ["plugin", "pane", "open"]]
+
+        with self.subTest("pick leaves the warning to the picker"):
+            self.run_entry("pick", self.roots["primary"])
+            self.assertEqual(len(opens()), 1)
+            self.assertNotIn("--env", opens()[0])
+        with self.subTest("ambiguous selection opens only the candidates picker"):
+            self.setUp()
+            self.run_entry("open-selection", self.roots["primary"], selected="T-001")
+            self.assertEqual(len(opens()), 1)
+            self.assertTrue(opens()[0][opens()[0].index("--env") + 1].startswith("VALCRAFT_NAVIGATION_CANDIDATES="))
+        with self.subTest("a failure and the warning share one popup"):
+            self.setUp()
+            self.run_entry("open-selection", self.roots["primary"], selected="T-01")
+            self.assertEqual(len(self.messages()), 1)
+            self.assertIn("malformed", self.messages()[0])
+            self.assertIn("newer than this plugin", self.messages()[0])
+
     def test_older_repository_does_not_warn(self) -> None:
         base = self.roots["primary"] / ".valcraft" / "config.yaml"
         original = base.read_text(encoding="utf-8")
