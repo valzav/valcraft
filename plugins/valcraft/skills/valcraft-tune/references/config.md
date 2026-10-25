@@ -133,7 +133,9 @@ It requires exactly these keys:
 
 Serialize `executable` as a plain YAML scalar when YAML allows one, which includes a path with spaces such as `/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`. Otherwise use a single-quoted scalar. The plugin reads exactly these forms, and a double-quoted scalar whose only escapes are `\\`, `\"`, and `\/`. It refuses anything else, such as a comment, an anchor, or another escape.
 
-An absent `editor` key means editor navigation is off. The plugin reads the record from the primary checkout, because a linked worktree has no overlay, and it refuses an overlay that git tracks or does not ignore.
+An absent `editor` key means editor navigation is off. The plugin refuses an overlay that git tracks or does not ignore.
+
+The record lives in the primary checkout's overlay, because the plugin reads it only there. The primary checkout is the working tree that owns the git common directory: the parent of `git rev-parse --path-format=absolute --git-common-dir`. In a linked worktree, Tune reads, writes, and removes `editor` in the primary checkout's `.valcraft/config.local.yaml`. It applies the same checks and atomic write as for the current overlay: that file must be a regular, untracked, ignored path inside the primary checkout. Tune never writes `editor` to a linked worktree's own overlay. An `editor` key there is invalid, because the plugin never reads it.
 
 ### Plugin version
 

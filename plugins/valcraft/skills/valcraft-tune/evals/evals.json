@@ -537,6 +537,24 @@
         "In both cases the report tells the operator to rerun the Editor navigation section after setup",
         "Tune does not install python3 or an editor launcher itself"
       ]
+    },
+    {
+      "id": 30,
+      "name": "editor-navigation-from-a-linked-worktree-writes-the-primary-overlay",
+      "prompt": "/valcraft:valcraft-tune — Tune runs in a linked worktree at `/work/app-feature`, whose primary checkout is `/work/app`. Both checkouts ignore `.valcraft/config.local.yaml`. The primary checkout's overlay holds `foreman.approval_mode: attended` and no `editor`; the linked worktree has no overlay. `herdr`, `python3`, and `zed` (at `/opt/homebrew/bin/zed`) are on PATH, and the Valcraft Herdr plugin is already installed from GitHub at the current release. The operator asks to enable editor navigation. State which file Tune reads the current record from, which file it writes, what that file holds afterwards, and what happens to the linked worktree's files. Then state what Tune does if, instead, the linked worktree's own overlay held an `editor` record. Do not mutate anything.",
+      "expected_output": "Tune reads and writes the record in the primary checkout's overlay, `/work/app/.valcraft/config.local.yaml`, because the plugin reads the record only there. After its checks that the file is regular, untracked, and ignored, the file holds `foreman.approval_mode: attended` and the new `editor` record with adapter `zed` and executable `/opt/homebrew/bin/zed`. Tune creates no overlay in the linked worktree and installs nothing, since the plugin is already at the current release. An `editor` record in the linked worktree's own overlay is invalid, because the plugin never reads it. Tune runs the overlay repair flow for that overlay instead of keeping it.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Tune writes the editor record to `/work/app/.valcraft/config.local.yaml`, the primary checkout's overlay",
+        "The primary overlay keeps `foreman.approval_mode: attended` beside the new `editor` record",
+        "Tune creates or changes no overlay in the linked worktree",
+        "Tune runs no plugin install, because the plugin is already at the current release",
+        "Tune treats an `editor` record in the linked worktree's own overlay as invalid"
+      ]
     }
   ]
 }
