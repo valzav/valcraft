@@ -166,7 +166,7 @@ Walk this order. Every quoted choice is a list item with its explanation, not an
 8. **Herdr, only when selected:** ask the session and worker questions below.
 9. **Browser tools, Herdr only:** `Discover browser tools (Recommended)` — each configured harness reports a browser tool it can drive on this machine, and Spec starts its browser checks from that record; `Skip — no web UI` — record nothing. Apply `Discover` without asking when a committed `design.md` records a browser verification route under `Verified baseline assumptions`. Run [browser discovery](#browser-discovery) after the last other answer.
 10. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
-11. **Editor navigation, only when [readiness](#editor-navigation) holds:** `Enable (Recommended)` — open Valcraft identities and file references from Herdr panes in your editor, which installs the Valcraft Herdr plugin; `Skip` — record nothing. When readiness fails, skip the step and name the missing requirement in the report.
+11. **Editor navigation, only when `herdr` is on `PATH`:** `Enable (Recommended)` — open Valcraft identities and file references from Herdr panes in your editor, which installs the Valcraft Herdr plugin; `Skip` — record nothing. Without `herdr`, skip the step and say in the report that the section becomes available once Herdr is installed.
 
 ### Herdr
 
@@ -258,18 +258,29 @@ Editor navigation lets the Valcraft Herdr plugin open a Valcraft identity or fil
 
 ### Readiness
 
-Editor navigation needs, on this machine:
+Tune offers the section when `herdr` is on `PATH`. Writing a record also needs, on this machine:
 
-- `herdr` on `PATH`, with its server running, because a plugin install registers through it;
-- `python3` on `PATH`, which the plugin runs on; and
-- at least one supported editor launcher on `PATH`: `zed` for the `zed` adapter, `code` for the `vscode` adapter.
+- `python3` on `PATH`, Python 3.9 or later, which the plugin runs on; and
+- the chosen editor's command-line launcher on `PATH`: `zed` for the `zed` adapter, or `zeditor` on Linux distributions that name it so, and `code` for the `vscode` adapter.
+
+The plugin install also needs the Herdr server running, because an install registers through it.
 
 ### Choices
 
 The section offers these choices. The current record decides which apply:
 
-- `Enable` (no record) or `Change editor` (a record exists): offer the adapters whose launcher readiness found. When exactly one is found, apply it without asking. Record the launcher's absolute path as `PATH` lookup returns it, without resolving symbolic links.
+- `Enable` (no record) or `Change editor` (a record exists): offer both adapters, and mark each one whose launcher is not found. When exactly one launcher is found, apply it without asking. Record the launcher's absolute path as `PATH` lookup returns it, without resolving symbolic links.
 - `Disable` (a record exists): remove `editor` from the overlay. Do not uninstall the plugin; it is machine-wide, and other repositories may use it.
+
+### Missing requirements
+
+When `python3` or the chosen adapter's launcher is missing, install nothing and write no `editor` record. Tune does not install these itself. In the report, name each missing requirement and how to provide it, then tell the operator to rerun the `Editor navigation` section:
+
+- `python3`: install Python 3.9 or later. On macOS, `xcode-select --install` provides `/usr/bin/python3`; Homebrew's `brew install python` also works. On Linux, install the distribution's `python3` package.
+- `zed`: on macOS, run `cli: install cli binary` from Zed's command palette, which installs `/usr/local/bin/zed`. On Linux, the launcher ships with Zed's package as `zed` or `zeditor`.
+- `code`: on macOS, run `Shell Command: Install 'code' and optionally 'copilot' commands in PATH` from Visual Studio Code's Command Palette. On Linux, the installer adds `code` to `PATH`; otherwise add Visual Studio Code's `bin` directory to `PATH`.
+
+A launcher installed outside `PATH` also counts as missing: the operator adds its directory to `PATH`, then reruns the section.
 
 ### Install
 
@@ -279,7 +290,7 @@ Before writing an `Enable` or `Change editor` record, bring the plugin to the re
 - Installed from GitHub at `v<version>`: install nothing.
 - Linked from a local path (`source.kind` is `local`): leave it in place and name it in the report as a development copy.
 
-When readiness fails, or the install command fails, write no `editor` record. Report the failure and the exact command run.
+When the install command fails, write no `editor` record. Report the failure and the exact command run.
 
 ### Report
 

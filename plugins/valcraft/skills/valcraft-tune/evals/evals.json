@@ -517,6 +517,26 @@
         "In Case B the report names `herdr` missing from PATH as the reason",
         "In Case B no `editor` record is written and no install runs"
       ]
+    },
+    {
+      "id": 29,
+      "name": "editor-navigation-missing-requirements-suggest-setup",
+      "prompt": "/valcraft:valcraft-tune — two separate situations on macOS. In both, the configuration is valid, no overlay exists, `.gitignore` ignores `.valcraft/config.local.yaml`, `herdr` is on PATH, and the operator asks to enable editor navigation. Case A: `python3` is on PATH, but neither `zed` nor `code` is on PATH; the operator picks Visual Studio Code. Case B: `zed` resolves to `/opt/homebrew/bin/zed`, but `python3` is not on PATH. For each case, state whether Tune offers the section, which adapters it offers, what it installs, what it writes, and what its report tells the operator to do. Do not mutate anything.",
+      "expected_output": "Tune offers the Editor navigation section in both cases, because `herdr` is on PATH. Case A: it offers both adapters and marks both launchers as not found; the operator picks VS Code. Tune installs nothing, writes no `editor` record, and reports that the `code` launcher is missing, with the setup step: run `Shell Command: Install 'code' and optionally 'copilot' commands in PATH` from Visual Studio Code's Command Palette, then rerun the Editor navigation section. Case B: the only launcher found is `zed`, so Tune picks it without asking, but `python3` is missing, so it installs nothing, writes no record, and reports how to provide Python 3.9 or later on macOS, such as `xcode-select --install` or `brew install python`, then rerun the section.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "In both cases Tune offers the Editor navigation section because `herdr` is on PATH",
+        "In Case A Tune offers both adapters and marks each launcher as not found",
+        "In Case A Tune names the VS Code Command Palette step that installs the `code` command",
+        "In Case B Tune names a way to install Python 3.9 or later on macOS",
+        "In both cases Tune runs no plugin install and writes no `editor` record",
+        "In both cases the report tells the operator to rerun the Editor navigation section after setup",
+        "Tune does not install python3 or an editor launcher itself"
+      ]
     }
   ]
 }
