@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import stat
 import subprocess
+import unicodedata
 from pathlib import Path
 
 # Variables that would point git at some other repository than the base directory's.
@@ -60,6 +61,11 @@ def is_valcraft_project(root: Path) -> bool:
     )
 
 
+def _fold(path: str) -> str:
+    """A path's spelling with case and Unicode composition differences removed."""
+    return unicodedata.normalize("NFC", unicodedata.normalize("NFD", path).casefold())
+
+
 def _on_disk_name(directory: Path, name: str) -> str | None:
     """The entry's real spelling in directory, or None when it is missing, a symlink, or ambiguous.
 
@@ -105,5 +111,12 @@ def is_user_local(root: Path, relative: str) -> bool:
         return False
     real = "/".join(spelled)
     if _git(root, "ls-files", "--error-unmatch", "--", real) is not None:
+        return False
+    # Second guard: no tracked path may fold to this one under case or Unicode equivalence.
+    index = _git(root, "ls-files", "-z")
+    if index is None:
+        return False
+    target = {_fold(relative), _fold(real)}
+    if any(_fold(entry) in target for entry in index.split("\0") if entry):
         return False
     return _git(root, "check-ignore", "--quiet", "--", real) is not None
