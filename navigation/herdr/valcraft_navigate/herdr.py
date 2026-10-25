@@ -8,7 +8,7 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
 PLUGIN_ID = "valcraft-navigation"
 PICKER_ENTRYPOINT = "picker"
@@ -55,13 +55,31 @@ def _run(environ: Dict[str, str], arguments: List[str]) -> subprocess.CompletedP
     )
 
 
+MESSAGE_ENV = "VALCRAFT_NAVIGATION_MESSAGE"
+
+
+def _open_message_popup(environ: Dict[str, str], message: str) -> None:
+    if not open_picker(environ, {MESSAGE_ENV: message}):
+        print("could not open the message popup", file=sys.stderr)
+
+
+_display: Callable[[Dict[str, str], str], None] = _open_message_popup
+
+
+def set_display(show: Callable[[Dict[str, str], str], None]) -> None:
+    """Replace how a message is shown, such as inside an already open popup."""
+    global _display
+    _display = show
+
+
 def notify(environ: Dict[str, str], message: str) -> None:
-    """Show a Herdr notification; also log it, since a notification can fail too."""
+    """Show a message in the plugin's own popup.
+
+    Not `herdr notification show`: Herdr 0.9.1 answers shown: true but displays
+    nothing unless ui.toast.delivery is "herdr", and its default is off.
+    """
     print(f"{NOTIFICATION_TITLE}: {message}", file=sys.stderr)
-    try:
-        _run(environ, ["notification", "show", NOTIFICATION_TITLE, "--body", message])
-    except OSError as error:
-        print(f"notification failed: {error}", file=sys.stderr)
+    _display(environ, message)
 
 
 def read_pane(environ: Dict[str, str], pane_id: str) -> Optional[str]:

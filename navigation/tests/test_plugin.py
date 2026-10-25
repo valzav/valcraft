@@ -109,11 +109,13 @@ class PluginTests(unittest.TestCase):
             else []
         )
 
-    def notifications(self) -> list:
+    def messages(self) -> list:
+        """Messages the plugin showed in its own popup."""
+        prefix = "VALCRAFT_NAVIGATION_MESSAGE="
         return [
-            call[4]
+            call[call.index("--env") + 1][len(prefix) :]
             for call in self.herdr_calls()
-            if call[:2] == ["notification", "show"]
+            if call[:3] == ["plugin", "pane", "open"] and "--env" in call and call[call.index("--env") + 1].startswith(prefix)
         ]
 
     def editor_calls(self, expected: int = 1) -> list:
@@ -141,7 +143,7 @@ class PluginTests(unittest.TestCase):
         )
         tasks = self.roots["primary"] / "specs/001-alpha/tasks.md"
         self.assertEqual(self.editor_calls(), [[str(self.editor), f"{tasks}:14:1"]])
-        self.assertEqual(self.notifications(), [])
+        self.assertEqual(self.messages(), [])
 
     def test_vscode_adapter_changes_only_the_argument_vector(self) -> None:
         self.write_overlay("vscode", str(self.editor))
@@ -180,8 +182,8 @@ class PluginTests(unittest.TestCase):
 
     def test_missing_selection_names_the_pane_picker(self) -> None:
         self.run_entry("open-selection", self.roots["primary"])
-        self.assertEqual(len(self.notifications()), 1)
-        self.assertIn("valcraft-navigation.pick", self.notifications()[0])
+        self.assertEqual(len(self.messages()), 1)
+        self.assertIn("valcraft-navigation.pick", self.messages()[0])
         self.assert_no_editor()
 
     def test_failures_notify_and_open_nothing(self) -> None:
@@ -197,31 +199,37 @@ class PluginTests(unittest.TestCase):
                 self.run_entry(
                     "open-selection", self.roots["primary"], selected=selection
                 )
-                self.assertEqual(len(self.notifications()), 1)
+                self.assertEqual(len(self.messages()), 1)
                 self.assert_no_editor()
+
+    def test_failure_message_opens_the_plugin_popup(self) -> None:
+        self.run_entry("open-selection", self.roots["primary"], selected="T-01")
+        self.assertEqual([call[:3] for call in self.herdr_calls()], [["plugin", "pane", "open"]])
+        self.assertIn("malformed", self.messages()[0])
+        self.assert_no_editor()
 
     def test_disabled_without_an_editor_record(self) -> None:
         self.overlay.unlink()
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
-        self.assertIn("Editor navigation is off", self.notifications()[0])
-        self.assertIn("Editor navigation section", self.notifications()[0])
+        self.assertIn("Editor navigation is off", self.messages()[0])
+        self.assertIn("Editor navigation section", self.messages()[0])
         self.assert_no_editor()
 
     def test_non_valcraft_pane_is_refused(self) -> None:
         self.run_entry("open-selection", self.roots["outside"], selected="T-002")
-        self.assertIn("not in a Valcraft project", self.notifications()[0])
+        self.assertIn("not in a Valcraft project", self.messages()[0])
         self.assert_no_editor()
 
     def test_missing_editor_executable_is_refused(self) -> None:
         self.write_overlay("zed", str(self.case / "no-such-editor"))
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
-        self.assertIn("missing or not executable", self.notifications()[0])
+        self.assertIn("missing or not executable", self.messages()[0])
         self.assert_no_editor()
 
     def test_unreadable_record_is_refused(self) -> None:
         self.overlay.write_text("editor: {adapter: zed}\n", encoding="utf-8")
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
-        self.assertIn("Cannot read the editor record", self.notifications()[0])
+        self.assertIn("Cannot read the editor record", self.messages()[0])
         self.assert_no_editor()
 
     def test_record_from_repository_content_is_refused(self) -> None:
@@ -232,7 +240,7 @@ class PluginTests(unittest.TestCase):
             self.overlay.unlink()
             self.overlay.symlink_to(target)
             self.run_entry("open-selection", primary, selected="T-002")
-            self.assertIn("Refusing", self.notifications()[0])
+            self.assertIn("Refusing", self.messages()[0])
             self.assert_no_editor()
         with self.subTest("not ignored"):
             self.setUp()
@@ -243,7 +251,7 @@ class PluginTests(unittest.TestCase):
                 self.run_entry("open-selection", primary, selected="T-002")
             finally:
                 ignore.write_text(original, encoding="utf-8")
-            self.assertIn("Refusing", self.notifications()[0])
+            self.assertIn("Refusing", self.messages()[0])
             self.assert_no_editor()
         with self.subTest("tracked under another case or normalization"):
             # A repository built on a case-sensitive filesystem tracks a variant
@@ -262,7 +270,7 @@ class PluginTests(unittest.TestCase):
                 finally:
                     git(primary, "rm", "--cached", "--quiet", variant)
                     (primary / variant).unlink()
-                self.assertIn("Refusing", self.notifications()[0])
+                self.assertIn("Refusing", self.messages()[0])
                 self.assert_no_editor()
         with self.subTest("tracked"):
             self.setUp()
@@ -271,7 +279,7 @@ class PluginTests(unittest.TestCase):
                 self.run_entry("open-selection", primary, selected="T-002")
             finally:
                 git(primary, "rm", "--cached", "--quiet", ".valcraft/config.local.yaml")
-            self.assertIn("Refusing", self.notifications()[0])
+            self.assertIn("Refusing", self.messages()[0])
             self.assert_no_editor()
 
     def test_worktree_reads_the_record_from_the_primary_checkout(self) -> None:
@@ -289,7 +297,7 @@ class PluginTests(unittest.TestCase):
         self.addCleanup(base.write_text, original, encoding="utf-8")
         base.write_text(original.replace('"0.12.2"', '"99.0.0"'), encoding="utf-8")
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
-        self.assertIn("newer than this plugin's release", self.notifications()[0])
+        self.assertIn("newer than this plugin's release", self.messages()[0])
         self.assertEqual(len(self.editor_calls()), 1)
 
     def test_older_repository_does_not_warn(self) -> None:
@@ -298,7 +306,7 @@ class PluginTests(unittest.TestCase):
         self.addCleanup(base.write_text, original, encoding="utf-8")
         base.write_text(original.replace('"0.12.2"', '"0.1.0"'), encoding="utf-8")
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
-        self.assertEqual(self.notifications(), [])
+        self.assertEqual(self.messages(), [])
 
     def test_open_link_opens_file_and_editor_links(self) -> None:
         page = self.roots["primary"] / "src/app/page.tsx"
@@ -322,7 +330,7 @@ class PluginTests(unittest.TestCase):
         self.run_entry(
             "open-link", self.roots["primary"], url="file://elsewhere.example/etc/hosts"
         )
-        self.assertIn("not a supported file link", self.notifications()[0])
+        self.assertIn("not a supported file link", self.messages()[0])
         self.assert_no_editor()
 
     def test_pick_opens_the_popup(self) -> None:

@@ -8,6 +8,7 @@ from __future__ import annotations
 import curses
 import json
 import os
+import textwrap
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Union
 
@@ -115,7 +116,31 @@ def _load_candidates(environ: Dict[str, str], name: str) -> Optional[List[Candid
         path.unlink(missing_ok=True)
 
 
+def show_message(environ: Dict[str, str], message: str) -> None:
+    """Show a message in this popup until a key is pressed."""
+    os.environ.setdefault("ESCDELAY", "25")
+
+    def view(screen) -> None:
+        curses.curs_set(0)
+        height, width = screen.getmaxyx()
+        screen.erase()
+        screen.addnstr(0, 0, herdr.NOTIFICATION_TITLE, width - 1, curses.A_BOLD)
+        lines = textwrap.wrap(message, max(1, width - 1)) or [""]
+        for row, line in enumerate(lines[: max(0, height - 3)]):
+            screen.addnstr(row + 2, 0, line, width - 1)
+        screen.addnstr(height - 1, 0, "Press any key to close", width - 1, curses.A_DIM)
+        screen.refresh()
+        screen.getch()
+
+    curses.wrapper(view)
+
+
 def main(environ: Dict[str, str]) -> None:
+    message = environ.get(herdr.MESSAGE_ENV)
+    if message:
+        show_message(environ, message)
+        return
+    herdr.set_display(show_message)  # this popup is already open, so show messages here
     invocation = herdr.invocation(environ)
     session = actions.enable(environ, invocation)
     if session is None:

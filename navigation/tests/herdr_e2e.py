@@ -31,6 +31,9 @@ PLUGIN = NAVIGATION / "herdr"
 # ready within 4 s and every UI reaction within 2 s; these leave headroom.
 STARTUP_SECONDS = 30
 REACTION_SECONDS = 10
+# A key sent right after a popup closes on a key press is lost: 0 s lost the
+# next key in 3 of 3 trials and 0.25 s kept it in 3 of 3 (measured 2026-10-25).
+POPUP_SETTLE_SECONDS = 0.25
 ESC = "\x1b"
 
 FAKE_EDITOR = """#!{python}
@@ -46,9 +49,6 @@ allow_nested = true
 [ui]
 copy_on_select = false
 
-# Herdr shows no notification while toast delivery is off, its default.
-[ui.toast]
-delivery = "herdr"
 
 [[keys.command]]
 key = "prefix+u"
@@ -271,11 +271,23 @@ class Harness:
         assert self.editor_calls() == [], "Escape opened something"
         print("ok  Escape closes the picker and opens nothing")
 
-        # A failure reaches the user as a Herdr notification.
+        # A failure appears in the plugin's own popup and closes on any key.
         self.keys("ctrl+b", "y")
-        wait_for("the no-selection notification", lambda: any("No text is selected" in line for line in self.screen()))
+        wait_for(
+            "the fallback message popup",
+            lambda: self.shows("No text is selected")
+            and self.shows("Press any key to close"),
+        )
+        self.keys("x")
+        wait_for(
+            "the message popup to close",
+            lambda: not self.shows("Press any key to close"),
+        )
+        time.sleep(POPUP_SETTLE_SECONDS)
         assert self.editor_calls() == [], "an empty selection opened something"
-        print("ok  open key without a selection shows a notification")
+        print(
+            "ok  a failure shows in the plugin popup and closes on a key"
+        )
 
         expected = {
             "FEAT-001/T-001": [f"{tasks}:14:1"],
@@ -330,6 +342,9 @@ class Harness:
         count += 1
         self.expect_editor(count, [f"{page}:4:1"], "Control-click on a file:// link")
 
+    def shows(self, text: str) -> bool:
+        return any(text in line for line in self.screen())
+
     def find(self, text: str):
         for index, line in enumerate(self.screen()):
             if text in line:
@@ -363,6 +378,9 @@ def main() -> int:
                 sep="\n",
                 file=sys.stderr,
             )
+            logs = json.loads(harness.nested("plugin", "log", "list", check=False) or "{}")
+            for entry in (logs.get("result") or {}).get("logs", [])[-3:]:
+                print("--- plugin log:", json.dumps(entry)[:2000], sep="\n", file=sys.stderr)
         raise
     finally:
         harness.cleanup()
