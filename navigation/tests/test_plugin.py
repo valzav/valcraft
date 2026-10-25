@@ -20,7 +20,7 @@ PLUGIN = NAVIGATION / "herdr"
 sys.path.insert(0, str(PLUGIN))
 sys.path.insert(0, str(NAVIGATION / "tests"))
 
-from test_conformance import prepare_fixture
+from test_conformance import git, prepare_fixture
 from valcraft_navigate import actions, config, links, picker
 from valcraft_navigate.scan import scan
 
@@ -223,6 +223,37 @@ class PluginTests(unittest.TestCase):
         self.run_entry("open-selection", self.roots["primary"], selected="T-002")
         self.assertIn("Cannot read the editor record", self.notifications()[0])
         self.assert_no_editor()
+
+    def test_record_from_repository_content_is_refused(self) -> None:
+        primary = self.roots["primary"]
+        with self.subTest("symbolic link"):
+            target = self.case / "record.yaml"
+            target.write_text(f"editor:\n  adapter: zed\n  executable: {self.editor}\n", encoding="utf-8")
+            self.overlay.unlink()
+            self.overlay.symlink_to(target)
+            self.run_entry("open-selection", primary, selected="T-002")
+            self.assertIn("Refusing", self.notifications()[0])
+            self.assert_no_editor()
+        with self.subTest("not ignored"):
+            self.setUp()
+            ignore = primary / ".gitignore"
+            original = ignore.read_text(encoding="utf-8")
+            ignore.write_text("", encoding="utf-8")
+            try:
+                self.run_entry("open-selection", primary, selected="T-002")
+            finally:
+                ignore.write_text(original, encoding="utf-8")
+            self.assertIn("Refusing", self.notifications()[0])
+            self.assert_no_editor()
+        with self.subTest("tracked"):
+            self.setUp()
+            git(primary, "add", "--force", ".valcraft/config.local.yaml")
+            try:
+                self.run_entry("open-selection", primary, selected="T-002")
+            finally:
+                git(primary, "rm", "--cached", "--quiet", ".valcraft/config.local.yaml")
+            self.assertIn("Refusing", self.notifications()[0])
+            self.assert_no_editor()
 
     def test_worktree_reads_the_record_from_the_primary_checkout(self) -> None:
         worktree = self.roots["worktree"]

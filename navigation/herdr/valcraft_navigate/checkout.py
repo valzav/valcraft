@@ -57,3 +57,21 @@ def is_valcraft_project(root: Path) -> bool:
         _git(root, "ls-files", "--error-unmatch", "--", ".valcraft/config.yaml")
         is not None
     )
+
+
+def is_user_local(root: Path, relative: str) -> bool:
+    """True when the file is absent, or a regular file that git neither tracks nor could deliver.
+
+    The editor record names a program to launch, so it must come from the user,
+    never from repository content: a tracked or symlinked file is refused.
+    """
+    path = root / relative
+    if path.is_symlink():
+        return False
+    if not path.exists():
+        return True
+    if not path.is_file():
+        return False
+    if _git(root, "ls-files", "--error-unmatch", "--", relative) is not None:
+        return False
+    return _git(root, "check-ignore", "--quiet", "--", relative) is not None

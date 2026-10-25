@@ -46,6 +46,13 @@ def enable(environ: Dict[str, str], invocation: herdr.Invocation) -> Optional[Se
         )
         return None
     primary = checkout.primary_checkout(base) or root
+    overlay = ".valcraft/config.local.yaml"
+    if not checkout.is_user_local(primary, overlay):
+        herdr.notify(
+            environ,
+            f"Refusing {primary}/{overlay}: it must be an ignored, untracked regular file, because it names a program to run.",
+        )
+        return None
     try:
         record = config.read_editor_record(primary)
     except config.Unreadable as error:
