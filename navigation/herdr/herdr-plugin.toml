@@ -1,0 +1,60 @@
+# Valcraft navigation: open Valcraft identities and file references shown in a
+# Herdr pane in the user's editor. Bind the actions in Herdr's config.toml with
+# [[keys.command]] entries of type "plugin_action"; a manifest cannot bind keys.
+#
+# Every command runs python3 from the plugin root. -B keeps Python from writing
+# bytecode into the plugin directory.
+
+id = "valcraft-navigation"
+name = "Valcraft navigation"
+version = "0.13.0"
+description = "Open Valcraft identities and file references from Herdr panes in your editor."
+min_herdr_version = "0.9.1"
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "pick"
+title = "Pick a reference from the pane"
+description = "List the Valcraft identities and file references in the focused pane's recent output and open the chosen one."
+contexts = ["pane"]
+command = ["python3", "-B", "-m", "valcraft_navigate", "pick"]
+
+[[actions]]
+id = "open-selection"
+title = "Open the selected reference"
+description = "Open the Valcraft identity or file reference selected in the focused pane."
+contexts = ["pane", "selection"]
+command = ["python3", "-B", "-m", "valcraft_navigate", "open-selection"]
+
+[[actions]]
+id = "open-link"
+title = "Open a file link"
+description = "Open a Control-clicked file or editor link in the configured editor."
+contexts = ["pane"]
+command = ["python3", "-B", "-m", "valcraft_navigate", "open-link"]
+
+[[panes]]
+id = "picker"
+title = "Valcraft navigation"
+placement = "popup"
+width = "80%"
+height = "60%"
+command = ["python3", "-B", "-m", "valcraft_navigate", "picker"]
+
+[[link_handlers]]
+id = "file"
+title = "Open in editor"
+pattern = "^file://"
+action = "open-link"
+
+[[link_handlers]]
+id = "vscode"
+title = "Open in editor"
+pattern = "^vscode://file/"
+action = "open-link"
+
+[[link_handlers]]
+id = "cursor"
+title = "Open in editor"
+pattern = "^cursor://file/"
+action = "open-link"

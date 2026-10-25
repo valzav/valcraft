@@ -431,6 +431,142 @@
         "Tune states that a collaborator without an overlay resolves the base `true` and gets the answer page",
         "Tune states that, with the page off, Foreman asks every question set in the chat or through the structured question tool"
       ]
+    },
+    {
+      "id": 24,
+      "name": "editor-navigation-enable-single-editor-installs-plugin",
+      "prompt": "/valcraft:valcraft-tune — the configuration is valid, committed, and at the current plugin version; no overlay exists, and `.gitignore` ignores `.valcraft/config.local.yaml`. The operator asks to turn on editor navigation. On this machine `herdr` is on PATH with its server running, `python3` is on PATH, `zed` resolves to `/opt/homebrew/bin/zed`, and `code` is not on PATH. `herdr plugin list --plugin valcraft-navigation --json` reports no such plugin. List every question Tune asks, every command it runs, what it writes to which file, whether it commits, and what its report contains. Do not mutate anything.",
+      "expected_output": "Tune shows the section menu with Editor navigation first and marked recommended, then the Enable choice. It asks no adapter question, because only the `zed` launcher is found, and no layer question, because the record is overlay-only. It runs `herdr plugin install valzav/valcraft/navigation/herdr --ref v0.13.0 --yes` without a separate confirmation question, then writes `.valcraft/config.local.yaml` holding exactly `editor:` with `adapter: zed` and `executable: /opt/homebrew/bin/zed`. It makes no commit. The report shows the record, the plugin installed from GitHub at v0.13.0, and the two `[[keys.command]]` bindings for `valcraft-navigation.pick` and `valcraft-navigation.open-selection` to add to Herdr's config.toml, notes that other keys are fine when these clash, and names the pane picker as the main way in.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Tune asks no adapter question and no layer question",
+        "Tune runs `herdr plugin install valzav/valcraft/navigation/herdr --ref v0.13.0 --yes` and asks no separate confirmation for it",
+        "The overlay holds exactly `editor` with `adapter: zed` and `executable: /opt/homebrew/bin/zed`",
+        "Tune writes nothing to the committed base and makes no commit",
+        "The report gives `[[keys.command]]` bindings of type `plugin_action` for `valcraft-navigation.pick` and `valcraft-navigation.open-selection`",
+        "The report says Tune does not edit Herdr's configuration and the operator adds the bindings"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "editor-navigation-change-editor-updates-older-plugin",
+      "prompt": "/valcraft:valcraft-tune — the overlay holds `editor` with adapter `zed` and executable `/opt/homebrew/bin/zed`. The operator asks to switch editor navigation to Visual Studio Code. Both `zed` and `code` are on PATH; `code` resolves to `/usr/local/bin/code`. `herdr` and `python3` are on PATH and the Herdr server runs. `herdr plugin list --plugin valcraft-navigation --json` reports the plugin installed from GitHub with `requested_ref` `v0.12.9`. State the questions, commands, and the resulting overlay. Do not mutate anything.",
+      "expected_output": "The operator already named Visual Studio Code, so Tune asks no adapter question, although both launchers are found. Because the installed plugin is from GitHub at another release, Tune reruns `herdr plugin install valzav/valcraft/navigation/herdr --ref v0.13.0 --yes`, which replaces it with the current release. It then replaces the record with `adapter: vscode` and `executable: /usr/local/bin/code`. It asks no layer question and makes no commit.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Tune applies `vscode` from the operator's request without asking which editor, although both launchers are found",
+        "Tune reinstalls the plugin at `v0.13.0` because the installed GitHub release differs",
+        "The overlay's `editor` record becomes adapter `vscode` with executable `/usr/local/bin/code`",
+        "Tune asks no layer question and makes no commit"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "editor-navigation-linked-plugin-and-failed-install",
+      "prompt": "/valcraft:valcraft-tune — two separate situations; the operator asks to enable editor navigation in both, `zed` is the only launcher found, and `herdr` and `python3` are on PATH. Case A: `herdr plugin list --plugin valcraft-navigation --json` reports the plugin with `source.kind` `local`, linked from a checkout of the Valcraft repository. Case B: the plugin is not installed, and `herdr plugin install valzav/valcraft/navigation/herdr --ref v0.13.0 --yes` exits non-zero because the network is unreachable. For each case, state the commands Tune runs, what it writes, and how the report ends. Do not mutate anything.",
+      "expected_output": "Case A: Tune installs nothing, leaves the linked plugin in place, names it in the report as a development copy, writes the `editor` record with adapter `zed`, and ends `Status: done`. Case B: Tune writes no `editor` record and reports the failed install with the exact command it ran; the overlay is unchanged. Both cases end with `Status: done`, because editor navigation is optional; the Case B report first states that editor navigation was not enabled and gives no key bindings.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "In Case A Tune runs no install command and does not unlink or replace the locally linked plugin",
+        "In Case A the report names the linked plugin as a development copy and the record is written",
+        "In Case B Tune writes no `editor` record",
+        "In Case B the report includes the failed command `herdr plugin install valzav/valcraft/navigation/herdr --ref v0.13.0 --yes`",
+        "In Case A the overlay's `editor` record holds exactly `adapter: zed` and the `zed` launcher's absolute path",
+        "The Case A report gives the Herdr key bindings, and the Case B report gives none",
+        "Both cases end with `Status: done`; in Case B the report first states that editor navigation was not enabled"
+      ]
+    },
+    {
+      "id": 27,
+      "name": "editor-navigation-disable-keeps-plugin",
+      "prompt": "/valcraft:valcraft-tune — the overlay holds `foreman.approval_mode: attended` and an `editor` record for Zed; the Valcraft Herdr plugin is installed from GitHub. The operator asks to turn off editor navigation in this repository. State what Tune changes in each file and on the machine. Do not mutate anything.",
+      "expected_output": "Tune removes only the `editor` key from `.valcraft/config.local.yaml`, keeping `foreman.approval_mode: attended`. It does not uninstall the Herdr plugin, because the plugin is machine-wide and other repositories may still use it. The base is unchanged and nothing is committed.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "The overlay keeps `foreman.approval_mode: attended` and no longer holds `editor`",
+        "Tune does not uninstall or disable the Herdr plugin",
+        "The base is unchanged and Tune makes no commit",
+        "Tune runs no `herdr` command",
+        "Tune does not edit Herdr's `config.toml`"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "editor-record-in-base-and-first-run-readiness",
+      "prompt": "/valcraft:valcraft-tune — two separate situations. Case A: a committed base that is otherwise valid also carries a top-level `editor:` mapping with adapter `zed`. Case B: a first run in a repository with no configuration, where `herdr` is not on PATH; the operator picks the first option for every question. For each case, state what Tune does about editor navigation and what each file ends up holding. Do not mutate anything.",
+      "expected_output": "Case A: the base is invalid, because `editor` is overlay-only machine state; Tune names it as a validation error and does not keep it in the base. Case B: Tune skips the Editor navigation step without asking, because readiness fails without `herdr`, names the missing requirement in the report, installs nothing, and writes no `editor` record.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "In Case A Tune rejects `editor` in the committed base as overlay-only",
+        "In Case B Tune asks no Editor navigation question",
+        "In Case B the report names `herdr` missing from PATH as the reason",
+        "In Case B no `editor` record is written and no install runs",
+        "In Case A Tune does not move the base's `editor` record into the overlay",
+        "In Case B no overlay file is created"
+      ]
+    },
+    {
+      "id": 29,
+      "name": "editor-navigation-missing-requirements-suggest-setup",
+      "prompt": "/valcraft:valcraft-tune — two separate situations on macOS. In both, the configuration is valid, no overlay exists, `.gitignore` ignores `.valcraft/config.local.yaml`, `herdr` is on PATH, and the operator asks to enable editor navigation. Case A: `python3` is on PATH, but neither `zed` nor `code` is on PATH; the operator picks Visual Studio Code. Case B: `zed` resolves to `/opt/homebrew/bin/zed`, but `python3` is not on PATH. For each case, state whether Tune offers the section, which adapters it offers, what it installs, what it writes, and what its report tells the operator to do. Do not mutate anything.",
+      "expected_output": "Tune offers the Editor navigation section in both cases, because `herdr` is on PATH. Case A: it offers both adapters and marks both launchers as not found; the operator picks VS Code. Tune installs nothing, writes no `editor` record, and reports that the `code` launcher is missing, with the setup step: run `Shell Command: Install 'code' and optionally 'copilot' commands in PATH` from Visual Studio Code's Command Palette, then rerun the Editor navigation section. Case B: the only launcher found is `zed`, so Tune picks it without asking, but `python3` is missing, so it installs nothing, writes no record, and reports how to provide Python 3.9 or later on macOS, such as `xcode-select --install` or `brew install python`, then rerun the section. No overlay file is created. Both cases end with `Status: done`, because editor navigation is optional, and each report first states that it was not enabled.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "In both cases Tune offers the Editor navigation section because `herdr` is on PATH",
+        "In Case A Tune offers both adapters and marks each launcher as not found",
+        "In Case A Tune names the VS Code Command Palette step that installs the `code` command",
+        "In Case B the report names Python 3.9 or later and a way to install it on macOS",
+        "In both cases Tune runs no plugin install and writes no `editor` record",
+        "In both cases the report tells the operator to rerun the Editor navigation section after setup",
+        "Tune does not install python3 or an editor launcher itself",
+        "In Case B Tune applies Zed without asking, because exactly one launcher is found",
+        "No overlay file is created in either case",
+        "Both cases end with `Status: done`, and each report first states that editor navigation was not enabled"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "editor-navigation-from-a-linked-worktree-writes-the-primary-overlay",
+      "prompt": "/valcraft:valcraft-tune — Tune runs in a linked worktree at `/work/app-feature`, whose primary checkout is `/work/app`. Both checkouts ignore `.valcraft/config.local.yaml`. The primary checkout's overlay holds `foreman.approval_mode: attended` and no `editor`; the linked worktree has no overlay. `herdr`, `python3`, and `zed` (at `/opt/homebrew/bin/zed`) are on PATH, and the Valcraft Herdr plugin is already installed from GitHub at the current release. The operator asks to enable editor navigation. State which file Tune reads the current record from, which file it writes, what that file holds afterwards, and what happens to the linked worktree's files. Then state what Tune does if, instead, the linked worktree's own overlay held an `editor` record. Do not mutate anything.",
+      "expected_output": "Tune reads and writes the record in the primary checkout's overlay, `/work/app/.valcraft/config.local.yaml`, because the plugin reads the record only there. After its checks that the file is regular, untracked, and ignored, the file holds `foreman.approval_mode: attended` and the new `editor` record with adapter `zed` and executable `/opt/homebrew/bin/zed`. Tune creates no overlay in the linked worktree and installs nothing, since the plugin is already at the current release. An `editor` record in the linked worktree's own overlay is invalid, because the plugin never reads it. Tune runs the overlay repair flow for that overlay instead of keeping it.",
+      "files": [
+        "SKILL.md",
+        "references/config.md",
+        "references/migrations.md"
+      ],
+      "assertions": [
+        "Tune writes the editor record to `/work/app/.valcraft/config.local.yaml`, the primary checkout's overlay",
+        "The primary overlay keeps `foreman.approval_mode: attended` beside the new `editor` record",
+        "Tune creates or changes no overlay in the linked worktree",
+        "Tune runs no plugin install, because the plugin is already at the current release",
+        "Tune treats an `editor` record in the linked worktree's own overlay as invalid",
+        "The new record holds exactly `adapter: zed` and `executable: /opt/homebrew/bin/zed`",
+        "Tune repairs the linked worktree's overlay rather than copying its stray `editor` record into the primary overlay"
+      ]
     }
   ]
 }

@@ -59,3 +59,11 @@ jobs:
             .cursor-plugin/marketplace.json
           python3 scripts/check-cursor-marketplace.py
           python3 scripts/tests/test_check_cursor_marketplace.py
+
+      - name: Set up the oldest supported navigation Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.9"
+
+      - name: Test the navigation resolver
+        run: python3 -m unittest discover -s navigation/tests -t navigation/tests

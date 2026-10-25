@@ -1,0 +1,2 @@
+# The Herdr plugin runs on the python3 that macOS ships (3.9).
+target-version = "py39"

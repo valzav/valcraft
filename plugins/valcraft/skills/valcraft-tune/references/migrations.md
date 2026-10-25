@@ -16,6 +16,16 @@ A migration whose applicable entries name no choice needs no interactive answer:
 
 Entry shape: a `### <title>` heading, one paragraph stating what changed, then `Applies when:`, `Tune performs:` (`none` when the loop or the operator carries the change), and `Operator:` (`none` when no human action remains).
 
+## v0.13.0
+
+### Editor navigation from Herdr panes
+
+A Valcraft Herdr plugin opens a Valcraft identity, such as `FEAT-023/T-001` or `Q-004/QT-001`, or a file reference shown in a Herdr pane in Zed or Visual Studio Code, at the defining line. Tune's new `Editor navigation` section records the editor in the optional overlay-only `editor` record and installs the plugin. Without the record, editor navigation is off, so no existing configuration changes.
+
+- Applies when: the operator checks whether they want to open Valcraft identities and file references from Herdr panes in their editor.
+- Tune performs: none.
+- Operator: none.
+
 ## v0.12.2
 
 ### Eval fixture corrections

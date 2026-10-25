@@ -215,6 +215,7 @@ After upgrading Valcraft, run Tune to apply any configuration changes your proje
 
 - [How Valcraft works](docs/how-it-works.md): the data model, artifact owners, each step of the loop, required approvals, backends, and recovery.
 - [Configuration](plugins/valcraft/skills/valcraft-tune/references/config.md): shared settings, personal overrides, and setup choices.
+- [Editor navigation from Herdr panes](docs/editor-navigation.md): open Valcraft identities and file references shown in Herdr panes in Zed or Visual Studio Code.
 - [Glossary](docs/glossary.md): project files, roles, and terms used by the skills.
 - [Models and presets](plugins/valcraft/skills/valcraft-tune/references/models.md): model choices for worker roles.
 - [Development guide](docs/development.md): contributing, live editing, packaging, and evaluations. Pull requests are welcome; the repository's lint checks must pass.
