@@ -13,7 +13,11 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 _KEY_VALUE = re.compile(r"(?P<key>[a-z_]+):(?: (?P<value>.*))?")
-_PLAIN = re.compile(r"[A-Za-z0-9_./@+~-]+")
+# YAML plain scalars cannot start with these; quoted scalars hold only the
+# escapes a path needs, so a value this reader cannot interpret is refused.
+_INDICATORS = "-?:,[]{}#&*!|>'\"%@`"
+_SINGLE = re.compile(r"'((?:[^']|'')*)'")
+_DOUBLE = re.compile(r'"((?:[^"\\\x00-\x1f]|\\["\\/])*)"')
 _VERSION = re.compile(
     r"(?P<major>0|[1-9][0-9]*)\.(?P<minor>0|[1-9][0-9]*)\.(?P<patch>0|[1-9][0-9]*)"
 )
@@ -30,14 +34,25 @@ class EditorRecord:
 
 
 def _scalar(raw: str) -> str:
+    """One YAML scalar: plain, single-quoted, or double-quoted.
+
+    A plain scalar may contain spaces, as in
+    /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code.
+    Anything this reader cannot interpret exactly is Unreadable.
+    """
     raw = raw.strip()
-    if len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "\"'":
-        inner = raw[1:-1]
-        if any(character in inner for character in "\"'\\"):
-            raise Unreadable("quoted value with escapes")
-        return inner
-    if not _PLAIN.fullmatch(raw):
-        raise Unreadable(f"unsupported value: {raw!r}")
+    if raw.startswith("'"):
+        match = _SINGLE.fullmatch(raw)
+        if not match:
+            raise Unreadable(f"unsupported single-quoted value: {raw!r}")
+        return match.group(1).replace("''", "'")
+    if raw.startswith('"'):
+        match = _DOUBLE.fullmatch(raw)
+        if not match:
+            raise Unreadable(f"unsupported double-quoted value: {raw!r}")
+        return re.sub(r'\\(["\\/])', r"\1", match.group(1))
+    if not raw or raw[0] in _INDICATORS or ": " in raw or " #" in raw or any(c < " " for c in raw):
+        raise Unreadable(f"unsupported plain value: {raw!r}")
     return raw
 
 

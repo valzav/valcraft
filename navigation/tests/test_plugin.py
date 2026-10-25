@@ -282,6 +282,16 @@ class PluginTests(unittest.TestCase):
             self.assertIn("Refusing", self.messages()[0])
             self.assert_no_editor()
 
+    def test_launcher_in_a_directory_with_spaces_opens(self) -> None:
+        folder = self.case / "Visual Studio Code.app" / "bin"
+        folder.mkdir(parents=True)
+        launcher = write_executable(folder / "code", FAKE_EDITOR)
+        self.write_overlay("vscode", str(launcher))
+        self.run_entry("open-selection", self.roots["primary"], selected="T-002")
+        tasks = self.roots["primary"] / "specs/001-alpha/tasks.md"
+        self.assertEqual(self.editor_calls(), [[str(launcher), "--goto", f"{tasks}:15:1"]])
+        self.assertEqual(self.messages(), [])
+
     def test_worktree_reads_the_record_from_the_primary_checkout(self) -> None:
         worktree = self.roots["worktree"]
         self.assertFalse((worktree / ".valcraft" / "config.local.yaml").exists())
@@ -453,6 +463,18 @@ class ConfigTests(unittest.TestCase):
             self.read(text), config.EditorRecord("vscode", "/usr/local/bin/code")
         )
 
+    def test_launcher_paths_with_spaces_and_quotes(self) -> None:
+        vscode = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+        cases = {
+            f"executable: {vscode}": vscode,
+            "executable: '/a/it''s/code'": "/a/it's/code",
+            'executable: "/a/b \\"q\\" c"': '/a/b "q" c',
+        }
+        for line, expected in cases.items():
+            with self.subTest(line):
+                record = self.read(f"editor:\n  adapter: vscode\n  {line}\n")
+                self.assertEqual(record, config.EditorRecord("vscode", expected))
+
     def test_absent_record(self) -> None:
         self.assertIsNone(self.read("foreman:\n  approval_mode: attended\n"))
         with tempfile.TemporaryDirectory() as directory:
@@ -467,6 +489,8 @@ class ConfigTests(unittest.TestCase):
             "editor:\n  adapter: zed\n  executable: /x\neditor:\n  adapter: zed\n",
             "editor:\n  adapter: zed\n  executable: &anchor /x\n",
             "editor:\n    adapter: zed\n    executable: /x\n",
+            "editor:\n  adapter: zed\n  executable: /x # comment\n",
+            'editor:\n  adapter: zed\n  executable: "/x\\ny"\n',
         ):
             with self.subTest(text), self.assertRaises(config.Unreadable):
                 self.read(text)

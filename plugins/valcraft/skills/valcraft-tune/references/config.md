@@ -131,6 +131,8 @@ It requires exactly these keys:
 - `adapter`: `zed` or `vscode`, the editor launchers the Valcraft Herdr plugin supports.
 - `executable`: an absolute path that resolves, through any symbolic links, to an executable file.
 
+Serialize `executable` as a plain YAML scalar when YAML allows one, which includes a path with spaces such as `/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`. Otherwise use a single-quoted scalar. The plugin reads exactly these forms, and a double-quoted scalar whose only escapes are `\\`, `\"`, and `\/`. It refuses anything else, such as a comment, an anchor, or another escape.
+
 An absent `editor` key means editor navigation is off. The plugin reads the record from the primary checkout, because a linked worktree has no overlay, and it refuses an overlay that git tracks or does not ignore.
 
 ### Plugin version
