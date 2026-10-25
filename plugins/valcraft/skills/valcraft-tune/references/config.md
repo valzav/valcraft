@@ -296,6 +296,10 @@ Before writing an `Enable` or `Change editor` record, bring the plugin to the re
 
 When the install command fails, write no `editor` record. Report the failure and the exact command run.
 
+### Outcome
+
+Editor navigation is optional: no Valcraft workflow reads the `editor` record. When a missing requirement or a failed install keeps Tune from writing the record, Tune still ends with `Status: done` once every other change in the run is saved and valid. The report then states first that editor navigation was not enabled, why, and what the operator does next. It gives no key bindings.
+
 ### Report
 
 After an `Enable` or `Change editor` write, report the record, the plugin's installed source and release, and these key bindings for the operator to add to Herdr's `config.toml`. A plugin manifest cannot bind keys, and Tune never edits Herdr's configuration:
