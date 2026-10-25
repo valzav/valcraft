@@ -3,7 +3,7 @@
 
 The newest `## vX.Y.Z` heading in valcraft-tune/references/migrations.md is the
 plugin version Tune compares against `valcraft_version`, so it must equal the
-version in the portable, Codex, and Cursor manifests, and every change under a
+version in the portable, Codex, and Cursor manifests and the Herdr plugin manifest, and every change under a
 release must carry the three labels the migration procedure reads.
 """
 
@@ -22,6 +22,8 @@ MANIFESTS = [
     PLUGIN / ".codex-plugin" / "plugin.json",
     PLUGIN / ".cursor-plugin" / "plugin.json",
 ]
+HERDR_PLUGIN = ROOT / "navigation" / "herdr" / "herdr-plugin.toml"
+HERDR_VERSION = re.compile(r'^version = "([^"]+)"$', re.M)
 RELEASE = re.compile(r"^## v(\d+\.\d+\.\d+)$")
 LABELS = ("- Applies when:", "- Tune performs:", "- Operator:")
 
@@ -43,6 +45,12 @@ def main() -> int:
                 failures.append(
                     f"{manifest.relative_to(ROOT)}: version {version!r} differs from newest ledger heading {newest!r}"
                 )
+        # Tune installs the Herdr plugin from the tag of the running release.
+        found = HERDR_VERSION.search(HERDR_PLUGIN.read_text(encoding="utf-8"))
+        if not found or found.group(1) != newest:
+            failures.append(
+                f"{HERDR_PLUGIN.relative_to(ROOT)}: version {found and found.group(1)!r} differs from newest ledger heading {newest!r}"
+            )
     # every change under a release carries the three labels
     sections = re.split(r"^## ", text, flags=re.M)[1:]
     for section in sections:

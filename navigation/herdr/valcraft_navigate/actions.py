@@ -20,7 +20,7 @@ from .resolve import (
 )
 
 # The Valcraft release this plugin belongs to. It equals the manifest version.
-PLUGIN_VERSION = "0.12.2"
+PLUGIN_VERSION = "0.13.0"
 CANDIDATES_ENV = "VALCRAFT_NAVIGATION_CANDIDATES"
 TUNE_SECTION = "Valcraft Tune's Editor navigation section"
 

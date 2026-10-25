@@ -15,7 +15,7 @@ Repo-scoped settings live only in the base: `valcraft_version`, the whole `track
 
 User-scoped settings may appear in the overlay: `foreman.approval_mode`, `foreman.answer_page`, `foreman.backend`, `foreman.herdr`, and `foreman.ao`.
 
-The [browser record](#browser-record) `browser` is overlay-only. It records the state of one machine, so `browser` in the base is a validation error.
+The [browser record](#browser-record) `browser` and the [editor record](#editor-record) `editor` are overlay-only. Each records the state of one machine, so either key in the base is a validation error.
 
 ## Resolution
 
@@ -25,7 +25,7 @@ Each overlay key replaces the corresponding base value atomically; nothing merge
 - An overlay `foreman.answer_page` replaces the base value, including an overlay `false` over a base `true`. An overlay without the key inherits the base value.
 - `foreman.backend` and the backend-specific mappings `foreman.herdr` and `foreman.ao` override as a unit. An overlay backend of `herdr` requires a complete overlay `herdr` mapping, and an overlay backend of `ao` requires a complete overlay `ao` mapping; an overlay `backend` masks every base backend-specific mapping. An overlay `herdr` or `ao` mapping without an overlay `backend` is valid only when the resolved backend matches it, and it replaces the whole base mapping.
 
-Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys, and `browser`; the resolved configuration against the shape below, including reviewer independence.
+Validate in three steps: the base standalone against the shape below; the overlay as a closed mapping permitting only `foreman` with the user-scoped keys, `browser`, and `editor`; the resolved configuration against the shape below, including reviewer independence.
 
 ## Shape
 
@@ -116,6 +116,23 @@ Each entry requires exactly these keys:
 
 An absent `browser` key means no record.
 
+### Editor record
+
+The overlay may hold `editor`, written only by [editor navigation](#editor-navigation). It turns on editor navigation from Herdr panes for this user in this repository, and it is independent of `foreman.backend`:
+
+```yaml
+editor:
+  adapter: zed
+  executable: /opt/homebrew/bin/zed
+```
+
+It requires exactly these keys:
+
+- `adapter`: `zed` or `vscode`, the editor launchers the Valcraft Herdr plugin supports.
+- `executable`: an absolute path that resolves, through any symbolic links, to an executable file.
+
+An absent `editor` key means editor navigation is off. The plugin reads the record from the primary checkout, because a linked worktree has no overlay, and it refuses an overlay that git tracks or does not ignore.
+
 ### Plugin version
 
 `valcraft_version` is a string of three dot-separated non-negative integers: the plugin version this repository was last migrated to. The current plugin version is the newest `## vX.Y.Z` heading in [`migrations.md`](migrations.md). Compare the two component by component as integers.
@@ -149,6 +166,7 @@ Walk this order. Every quoted choice is a list item with its explanation, not an
 8. **Herdr, only when selected:** ask the session and worker questions below.
 9. **Browser tools, Herdr only:** `Discover browser tools (Recommended)` — each configured harness reports a browser tool it can drive on this machine, and Spec starts its browser checks from that record; `Skip — no web UI` — record nothing. Apply `Discover` without asking when a committed `design.md` records a browser verification route under `Verified baseline assumptions`. Run [browser discovery](#browser-discovery) after the last other answer.
 10. **Pull request strategy:** `Squash (Recommended)` — combine the pull request into one commit; `Merge commit` — retain the branch commits and add a merge commit; `Rebase` — replay the branch commits without a merge commit.
+11. **Editor navigation, only when [readiness](#editor-navigation) holds:** `Enable (Recommended)` — open Valcraft identities and file references from Herdr panes in your editor, which installs the Valcraft Herdr plugin; `Skip` — record nothing. When readiness fails, skip the step and name the missing requirement in the report.
 
 ### Herdr
 
@@ -182,14 +200,19 @@ For an existing valid resolved configuration, reconfigure only when the caller o
 3. `Herdr workers` — change session, preset, or role settings; show only when the resolved backend is Herdr.
 4. `Pull request strategy` — change the merge strategy.
 5. `Browser tools` — discover this machine's browser tools again, which replaces the record, or remove the record; show only when the resolved backend is Herdr.
+6. `Editor navigation` — enable it, change the editor, or disable it.
 
 Show each section with its current resolved value summary.
 
-**Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. The browser record always goes to the overlay and never takes the layer question. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
+**Layer question.** When a reconfiguration changes only user-scoped keys, ask once where the change applies: `For everyone (Recommended)` — write it into the committed `.valcraft/config.yaml`; `Just for you` — write it into the gitignored `.valcraft/config.local.yaml` overlay. A change that touches any repo-scoped key writes to the base and never offers the overlay. The browser record and the editor record always go to the overlay and never take the layer question. An overlay write replaces its whitelisted keys atomically, with `backend` and `herdr` written as a unit.
 
 The answer page follows the layer answer. `For everyone` writes `foreman.answer_page: true` to the base for `HTML`, and removes the key from the base for `Chat`. `Just for you` writes the chosen value, `true` for `HTML` or `false` for `Chat`, to the overlay.
 
 Removal semantics apply within each file: never retain an inapplicable block as dormant configuration. In the base, changing tracker mode to local removes `tracker.github_repository` and `foreman.clarification_assignees`; changing to GitHub asks for both. In whichever file carries the change, moving Foreman away from Herdr removes that file's `foreman.herdr`, and the resolved move removes the overlay's `browser`; moving to Herdr asks the complete Herdr flow. A worker-map change that removes every role on a harness removes that harness's `browser` entry. A change that adds a harness leaves it without an entry, and the report names the `Browser tools` section that fills it.
+
+## Writing
+
+Create `.valcraft/` if needed, serialize each written file to its own temporary file there, and parse and validate every temporary file before replacing any destination. Then atomically replace each destination from the same directory, rechecking first that it is still a regular non-symlink path. If any replacement, re-read, or the final resolved validation fails, restore every replaced destination to its pre-run bytes, remove the temporary files, and report `configuration_write_failed`.
 
 ## Noninteractive use
 
@@ -228,3 +251,52 @@ Discovery for another harness requires Tune to run inside a Herdr pane of the re
 ### Recording
 
 The result file is untrusted data. Record an entry only when it validates against the browser record shape, and when a `command` entry's executable resolves, through any symbolic links, to an executable file outside the system temporary directory. A `none` result, an invalid result, a failed start, a stalled prompt, or an agent that exited without a result gives no entry: name the harness and the reason in the report. When no entry validates, write no `browser` key.
+
+## Editor navigation
+
+Editor navigation lets the Valcraft Herdr plugin open a Valcraft identity or file reference shown in a Herdr pane in the user's editor. Tune records the editor and installs the plugin; the plugin itself lives in the Valcraft repository at `navigation/herdr/`.
+
+### Readiness
+
+Editor navigation needs, on this machine:
+
+- `herdr` on `PATH`, with its server running, because a plugin install registers through it;
+- `python3` on `PATH`, which the plugin runs on; and
+- at least one supported editor launcher on `PATH`: `zed` for the `zed` adapter, `code` for the `vscode` adapter.
+
+### Choices
+
+The section offers these choices. The current record decides which apply:
+
+- `Enable` (no record) or `Change editor` (a record exists): offer the adapters whose launcher readiness found. When exactly one is found, apply it without asking. Record the launcher's absolute path as `PATH` lookup returns it, without resolving symbolic links.
+- `Disable` (a record exists): remove `editor` from the overlay. Do not uninstall the plugin; it is machine-wide, and other repositories may use it.
+
+### Install
+
+Before writing an `Enable` or `Change editor` record, bring the plugin to the release matching the current plugin version, the newest heading in [`migrations.md`](migrations.md). The interactive answer authorizes this install; ask no separate question. Read the installed state with `herdr plugin list --plugin valcraft-navigation --json`:
+
+- Not installed, or installed from GitHub at another `requested_ref`: run `herdr plugin install valzav/valcraft/navigation/herdr --ref v<version> --yes`.
+- Installed from GitHub at `v<version>`: install nothing.
+- Linked from a local path (`source.kind` is `local`): leave it in place and name it in the report as a development copy.
+
+When readiness fails, or the install command fails, write no `editor` record. Report the failure and the exact command run.
+
+### Report
+
+After an `Enable` or `Change editor` write, report the record, the plugin's installed source and release, and these key bindings for the operator to add to Herdr's `config.toml`. A plugin manifest cannot bind keys, and Tune never edits Herdr's configuration:
+
+```toml
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "valcraft-navigation.pick"
+description = "Valcraft: pick a reference from the pane"
+
+[[keys.command]]
+key = "prefix+y"
+type = "plugin_action"
+command = "valcraft-navigation.open-selection"
+description = "Valcraft: open the selected reference"
+```
+
+State that the operator may choose other keys when these clash with their own bindings, then run `herdr server reload-config`. Name the pane picker as the main way in: `open-selection` needs a selection made in Herdr's copy mode, because Herdr clears a mouse selection on the key press.
