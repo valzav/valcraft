@@ -1,6 +1,8 @@
-"""Command line: python3 -m valcraft_navigate resolve --base DIR REFERENCE.
+"""Command line for the Herdr plugin and for direct resolution.
 
-Prints one JSON object: a target, an ambiguous candidate list, or a failure.
+- resolve --base DIR REFERENCE: print one JSON result.
+- open-selection, pick, open-link, picker: the Herdr entry points, which read
+  their input from the environment Herdr provides.
 """
 
 from __future__ import annotations
@@ -8,6 +10,7 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
+import os
 import sys
 from pathlib import Path
 from typing import List, Optional
@@ -40,14 +43,28 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="the directory the reference was shown in",
     )
     resolve_command.add_argument("reference")
+    for name in ("open-selection", "pick", "open-link", "picker"):
+        commands.add_parser(name, help=f"Herdr entry point: {name}")
     arguments = parser.parse_args(argv)
-    json.dump(
-        to_json(resolve(arguments.base, arguments.reference)),
-        sys.stdout,
-        ensure_ascii=False,
-    )
-    sys.stdout.write("\n")
-    return 0
+    if arguments.command == "resolve":
+        json.dump(
+            to_json(resolve(arguments.base, arguments.reference)),
+            sys.stdout,
+            ensure_ascii=False,
+        )
+        sys.stdout.write("\n")
+        return 0
+    from . import actions, picker  # curses loads only for the Herdr entry points
+
+    environ = dict(os.environ)
+    entry_points = {
+        "open-selection": actions.open_selection,
+        "pick": actions.pick,
+        "open-link": actions.open_link,
+        "picker": picker.main,
+    }
+    entry_points[arguments.command](environ)
+    return 0  # failures reach the user as Herdr notifications
 
 
 if __name__ == "__main__":

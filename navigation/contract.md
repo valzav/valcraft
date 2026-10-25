@@ -55,8 +55,8 @@ Recognition is case-sensitive.
 
 A tool that collects references from terminal output, such as a picker over a pane's recent output, recognizes these tokens:
 
-- every identity form above, delimited by characters that cannot appear in the form;
-- every file reference whose path contains `/`, or whose final path component contains a `.` that is neither its first nor its last character.
+- every identity form above, preceded by the start of the line or a character other than an ASCII letter, an ASCII digit, `-`, or `/`, and followed by the end of the line or such a character. The longest form wins: `FEAT-001/T-002` is one reference, not three;
+- every file reference whose path is a run of path characters (ASCII letters and digits, `_`, `.`, `-`, `+`, `@`, and `/`, optionally starting with `~/`), preceded by the start of the line or a character that is not a path character or `:`, and either containing `/` or having a final path component with a `.` that is neither its first nor its last character. A `:LINE` or `:LINE:COLUMN` suffix is part of the reference, and trailing periods are not.
 
 A tool lists a collected file reference only when it resolves to a target. An identity is listed as written and resolved when chosen.
 

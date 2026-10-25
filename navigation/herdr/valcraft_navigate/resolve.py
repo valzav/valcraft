@@ -269,3 +269,8 @@ def resolve(base: Path, reference: str) -> Result:
     if isinstance(recognized, Identity):
         return _resolve_identity(base, recognized)
     return _resolve_file(base, recognized)
+
+
+def resolve_path(base: Path, path: str, line: int, column: int) -> Result:
+    """Resolve a file location that did not come from a typed reference, such as a hyperlink."""
+    return _resolve_file(base, FileReference(path, line, column))
