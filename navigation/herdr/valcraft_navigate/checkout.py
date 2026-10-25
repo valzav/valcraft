@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import stat
 import subprocess
 from pathlib import Path
 
@@ -59,19 +60,50 @@ def is_valcraft_project(root: Path) -> bool:
     )
 
 
+def _on_disk_name(directory: Path, name: str) -> str | None:
+    """The entry's real spelling in directory, or None when it is missing, a symlink, or ambiguous.
+
+    A case-insensitive or normalization-insensitive filesystem opens
+    .valcraft/CONFIG.LOCAL.YAML for .valcraft/config.local.yaml, but git
+    records the spelling it checked out, so tracked checks must use that.
+    """
+    try:
+        wanted = os.lstat(directory / name)
+        entries = os.listdir(directory)
+    except OSError:
+        return None
+    if stat.S_ISLNK(wanted.st_mode):
+        return None
+    matches = []
+    for entry in entries:
+        try:
+            found = os.lstat(directory / entry)
+        except OSError:
+            continue
+        if (found.st_dev, found.st_ino) == (wanted.st_dev, wanted.st_ino):
+            matches.append(entry)
+    return matches[0] if len(matches) == 1 else None
+
+
 def is_user_local(root: Path, relative: str) -> bool:
-    """True when the file is absent, or a regular file that git neither tracks nor could deliver.
+    """True when the file is absent, or a regular file that git ignores and does not track.
 
     The editor record names a program to launch, so it must come from the user,
-    never from repository content: a tracked or symlinked file is refused.
+    never from repository content a clone can deliver. A symlink anywhere on
+    the path is refused.
     """
-    path = root / relative
-    if path.is_symlink():
-        return False
-    if not path.exists():
+    if not os.path.lexists(root / relative):
         return True
-    if not path.is_file():
+    directory, spelled = root, []
+    for part in relative.split("/"):
+        name = _on_disk_name(directory, part)
+        if name is None:
+            return False
+        spelled.append(name)
+        directory = directory / name
+    if not stat.S_ISREG(os.lstat(directory).st_mode):
         return False
-    if _git(root, "ls-files", "--error-unmatch", "--", relative) is not None:
+    real = "/".join(spelled)
+    if _git(root, "ls-files", "--error-unmatch", "--", real) is not None:
         return False
-    return _git(root, "check-ignore", "--quiet", "--", relative) is not None
+    return _git(root, "check-ignore", "--quiet", "--", real) is not None

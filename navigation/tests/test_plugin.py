@@ -245,6 +245,25 @@ class PluginTests(unittest.TestCase):
                 ignore.write_text(original, encoding="utf-8")
             self.assertIn("Refusing", self.notifications()[0])
             self.assert_no_editor()
+        with self.subTest("tracked under another case or normalization"):
+            # A repository built on a case-sensitive filesystem tracks a variant
+            # spelling; a case-insensitive clone opens it as the overlay.
+            self.setUp()
+            variant = ".valcraft/CONFIG.LOCAL.YAML"
+            probe = primary / variant
+            if probe.exists() and os.path.samefile(probe, self.overlay):
+                self.overlay.unlink()
+                (primary / variant).write_text(
+                    f"editor:\n  adapter: zed\n  executable: {self.editor}\n", encoding="utf-8"
+                )
+                git(primary, "add", "--force", variant)
+                try:
+                    self.run_entry("open-selection", primary, selected="T-002")
+                finally:
+                    git(primary, "rm", "--cached", "--quiet", variant)
+                    (primary / variant).unlink()
+                self.assertIn("Refusing", self.notifications()[0])
+                self.assert_no_editor()
         with self.subTest("tracked"):
             self.setUp()
             git(primary, "add", "--force", ".valcraft/config.local.yaml")
