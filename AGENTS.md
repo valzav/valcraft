@@ -2,9 +2,10 @@
 
 ## Orientation
 
-- `plugins/valcraft/` — the shipped plugin. Everything under it is copied into a consumer's plugin cache on install; everything outside it is development scaffold.
+- `plugins/valcraft/` — the shipped plugin. Everything under it is copied into a consumer's plugin cache on install; everything outside it, except `navigation/herdr/`, is development scaffold.
 - `plugins/valcraft/skills/<skill>/SKILL.md` — one directory per skill, with its own `references/`, `templates/`, or `evals/` beside it.
 - `plugins/valcraft/scripts/` — executables that ship with the plugin. `controller-stop.sh` is the Claude Code Stop hook.
+- `navigation/` — editor navigation for Valcraft identities. `contract.md` is the resolver contract every navigation tool implements, `fixtures/` holds its conformance cases, and `herdr/` is the Herdr plugin, which Herdr installs from this subdirectory. Its Python must run on Python 3.9, the `python3` macOS ships.
 - `docs/` — repository documentation.
 
 Read the docs relevant to your change before modifying a skill or a manifest. Do not invent missing requirements — ask, or record the assumption in the change.
@@ -50,6 +51,7 @@ There is no application build or dependency install. The shipped plugin is Markd
 - Check the federated worker-report registry, routing codes, backend returns, and active transport-deviation eval references: `python3 scripts/check-coordination-contracts.py`. Run its discriminating static tests with `python3 scripts/tests/test_check_coordination_contracts.py`. These checks detect declaration drift; behavioral evals prove behavior.
 - Audit a graded eval batch: `python3 scripts/jev-grade.py --runs <dir>`, `jev-compare.py`, `jev-review.py`, and `jev-apply.py`, all under `scripts/` and all taking `--runs <dir>`. Only `jev-grade.py` calls out, with `OPENROUTER_API_KEY` from the environment. Static tests: `python3 scripts/tests/test_jev_audit.py`. Protocol: `docs/evals.md`.
 - Test the shipped controller Stop hook: `python3 scripts/tests/test_controller_stop_hook.py` (CI runs it in the lint workflow). The tests feed Stop payloads to `plugins/valcraft/scripts/controller-stop.sh` in temporary repositories.
+- Test the navigation resolver against its conformance cases: `python3 -m unittest discover -s navigation/tests -t navigation/tests` (CI runs it in the lint workflow). Run it with `/usr/bin/python3` on macOS too, which is Python 3.9. A change to an identity rule in `valcraft-spec`'s feature or quick-task contract updates `navigation/contract.md` and `navigation/fixtures/` in the same change.
 - Check every shipped `SKILL.md` against the 8,000-byte Codex ceiling: `python3 scripts/check-skill-sizes.py` (CI runs it in the lint workflow).
 - Check that the migration ledger's newest release equals the manifest versions and every entry carries its three labels: `python3 scripts/check-migrations.py` (CI runs it in the lint workflow).
 - Check that the Cursor team-marketplace catalog resolves to `plugins/valcraft/.cursor-plugin/plugin.json`: `python3 scripts/check-cursor-marketplace.py` (CI runs it in the lint workflow after schema validation).
