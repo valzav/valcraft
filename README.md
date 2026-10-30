@@ -3,6 +3,9 @@
   <img src="docs/assets/valcraft-banner.png" alt="valcraft: the Field Engineer helmet beside the lowercase valcraft wordmark" width="1280">
 </p>
 
+> [!WARNING]
+> This version of Valcraft is deprecated. Valcraft v2 is coming to replace it.
+
 A software factory in your repository.
 
 Valcraft is a set of skills for coding agents. You describe what needs to be built; Valcraft coordinates planning, implementation, and independent review. The requirements, decisions, and progress stay with your code.
