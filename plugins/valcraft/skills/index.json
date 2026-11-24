@@ -75,10 +75,10 @@
     },
     {
       "name": "valcraft-hone",
-      "version": "3af4f922f4d9e708",
+      "version": "1b88db5d5677c5d1",
       "files": [
         "SKILL.md",
-        "references/claude.md",
+        "references/anthropic.md",
         "references/codex.md",
         "references/divergence.md",
         "references/shared-checklist.md",
