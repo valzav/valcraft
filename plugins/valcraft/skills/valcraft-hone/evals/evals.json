@@ -49,6 +49,30 @@
         "Scope contract preserved (never push to main, PR-only, src/ and test/ paths, no CI-config edits)",
         "text.verbosity mentioned as the Responses-API-level length control in the refined file or the change report"
       ]
+    },
+    {
+      "id": 4,
+      "name": "claude-release-agent-cautions",
+      "prompt": "Refine the system prompt at evals/files/release-agent/system-prompt.md. It drives our release agent on the Claude API at high effort, and it ran fine on the model we used before. Since we moved to the newest Claude model, the agent stops and waits for approval on routine steps, and it starts far more subagents than the work needs. No distill pass.",
+      "expected_output": "Claude-targeted refinement with the distill offer declined. The think-less line is removed, with the effort setting named in the change report as the working control. The standing delegation instruction is removed or narrowed, because the author reports over-delegation. The token budget line, the 'Never retry' caution, the stop-at-first-error condition, and the hard sentence limit are each removed or flagged for the author with the motivating guideline. The 'Never delete files' rule and the broad outside-messages approval rule are safety rules: the output flags them and suggests the approval-before form and specific named actions, and it does not silently delete or loosen them. The release-branch and version-number rules, the five steps, and the report contract survive. No ownership sentence is added. The refined file names no model or version, and harness-side notes appear only in the change report.",
+      "files": ["evals/files/release-agent/system-prompt.md"],
+      "assertions": [
+        "No distill pass runs — the request declines it",
+        "'Answer directly without deliberating' is removed from the refined file",
+        "The change report names the effort setting as the control for thinking depth",
+        "The standing instruction to delegate research and to start a subagent for every file is removed or narrowed in the refined file",
+        "The 'Never delete files' rule is not silently removed or loosened: either its text survives, or the change report flags the change as a judgment call for the author",
+        "The change report says that an absolute 'never' rule removes the action from the model and offers an ask-for-approval form",
+        "The change report flags the approval rule for messages outside the conversation as too broad for the routine question to the owning team in step 2, or the refined file names that question as a step that needs no approval",
+        "'Never retry a failed command' and 'Stop and review at the first error' are each removed or flagged as cautions that block unattended work",
+        "The 2,000,000-token budget line is removed or flagged for a test without it",
+        "The 20-word sentence limit is removed or flagged",
+        "The rules 'Never push to the `release` branch' and 'Do not change the version number by hand' survive in the refined file",
+        "The refined file adds no sentence that tells the model it owns or maintains the codebase",
+        "The approval rule for messages outside the conversation is not silently removed or loosened: either its text survives, or the change report flags the change as a judgment call for the author",
+        "The refined file adds no model name and no model version beyond the fixture's own 'Claude API'",
+        "The change report maps each change to a motivating guideline"
+      ]
     }
   ]
 }
